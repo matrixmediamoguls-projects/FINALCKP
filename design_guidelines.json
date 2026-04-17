@@ -1,0 +1,95 @@
+{
+  "theme": "dark",
+  "archetype": "Archetype 5 (Jewel & Luxury) + Terminal Console",
+  "design_philosophy": "Cyber-Noir aesthetic blending luxury materials (dark matte leather) with minimalist etched-gold and neon-line art. The interface acts as a masculine, minimalist command console for a self-mastery program. High contrast, sharp edges, hairline borders, and glowing accents.",
+  "colors": {
+    "background": {
+      "base": "#08080A",
+      "surface": "#121318",
+      "surface_hover": "#1C1D24",
+      "card": "#0D0E12"
+    },
+    "text": {
+      "primary": "#E0E2E8",
+      "secondary": "#8A8D98",
+      "muted": "#565A66"
+    },
+    "accents": {
+      "gold": "#D4AF37",
+      "gold_muted": "rgba(212, 175, 55, 0.2)",
+      "earth_green": "#00FF66",
+      "water_blue": "#00E5FF",
+      "fire_red": "#FF3366",
+      "air_yellow": "#FFCC00"
+    },
+    "border": {
+      "default": "#2A2B32",
+      "subtle": "#1A1B20"
+    }
+  },
+  "typography": {
+    "primary_font": "Outfit",
+    "primary_font_fallback": "sans-serif",
+    "secondary_font": "JetBrains Mono",
+    "secondary_font_fallback": "monospace",
+    "heading_font": "Unbounded",
+    "heading_font_fallback": "sans-serif",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-heading font-bold tracking-tight uppercase",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-heading font-semibold tracking-tight",
+      "h3": "text-xl sm:text-2xl font-heading font-medium tracking-wide",
+      "body": "text-base font-primary text-primary leading-relaxed",
+      "mono_label": "text-xs font-mono uppercase tracking-[0.2em] text-secondary",
+      "button": "text-xs font-mono uppercase tracking-[0.15em] font-medium"
+    }
+  },
+  "layout_and_spacing": {
+    "system": "Dense 'Control Room' Bento Grid for dashboard sections.",
+    "container_padding": "p-6 md:p-8 lg:p-12",
+    "gap_standard": "gap-6",
+    "gap_large": "gap-8 lg:gap-12",
+    "border_radius": "rounded-none",
+    "borders": "hairline borders (1px solid border-default). Avoid soft rounded corners to maintain the masculine, command-console feel."
+  },
+  "surface_strategies": {
+    "background_texture": "Use the dark leather background image with a very heavy black overlay (e.g., bg-black/90 or mix-blend-multiply) to create a subtle matte leather texture.",
+    "cards": "Flat background (#0D0E12), 1px subtle border (#2A2B32), no shadow. Hover state: slight neon glow drop-shadow and border color shifts.",
+    "act_cards": "Each act card must feature its respective elemental neon color as a top border (border-t-2) and subtle glowing effects.",
+    "buttons_etched_gold": "bg-transparent border border-gold text-gold hover:bg-gold hover:text-black transition-all duration-300"
+  },
+  "components": {
+    "navigation": "Minimalist top bar. Brand logo on left, current 'Seeker Status' (avatar + level) on right. Glassmorphism or solid dark bg.",
+    "act_cards": "4 column grid (grid-cols-1 md:grid-cols-2 lg:grid-cols-4). Elements: Earth (Green), Water (Blue), Fire (Red), Air (Yellow). Card content includes act number, title, element icon, and an 'ENTER' button.",
+    "progress_widgets": "Bento grid below acts. Seeker status avatar, current stage indicator, checklist of reflections, and a circular progress tracker. Use dense, terminal-like spacing.",
+    "forms_and_inputs": "Use Shadcn components but override borders to be square (rounded-none), text to mono where appropriate, and focus rings to gold or neon colors."
+  },
+  "media": {
+    "images": [
+      {
+        "category": "background",
+        "url": "https://images.pexels.com/photos/7598668/pexels-photo-7598668.jpeg",
+        "description": "Dark matte leather texture. Apply heavy dark overlay so it doesn't distract from the UI."
+      },
+      {
+        "category": "avatar",
+        "url": "https://images.unsplash.com/photo-1648526605941-d87e594f24f7",
+        "description": "Cyberpunk silhouette avatar for the Seeker Status widget."
+      }
+    ],
+    "icons": "Use @phosphor-icons/react for clean, technical, duotone or sharp line icons matching the cyber-noir aesthetic."
+  },
+  "animations": {
+    "hover": "Subtle border color shifts, neon text shadows.",
+    "transitions": "transition-all duration-300 ease-in-out",
+    "motion": "Use framer-motion for staggering entrance of bento grid cards."
+  },
+  "instructions_to_main_agent": [
+    "Install and setup @phosphor-icons/react for icons.",
+    "Install and setup framer-motion for animations.",
+    "Install and setup recharts for the circular progress gauge.",
+    "Use standard Tailwind classes, extending the configuration for fonts (Unbounded, JetBrains Mono, Outfit) and custom colors provided.",
+    "All interactive elements MUST include data-testid attributes.",
+    "Ensure the layout mimics a high-tech, luxury terminal. Use exact hex colors provided.",
+    "Do NOT use generic rounded cards with drop shadows. Stick strictly to flat, sharp, hairline-bordered geometric layouts."
+  ]
+}

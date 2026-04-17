@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void:#060604; --surface:#0c0c0a; --panel:#111110; --panel2:#161614;
+  --border:#1c1c1a; --border2:#282824;
+  --g3:#5ab038; --g4:#80d050; --g2:#3a8028; --gdim:#0c1a08; --gsurf:#0a1208;
+  --b3:#50a0e0; --b4:#80c8f8; --b2:#1e50a0; --bdim:#060f20; --bsurf:#060c18;
+  --r3:#d03010; --r4:#f07040; --r2:#a01808; --rdim:#1a0400; --rsurf:#180a06;
+  --y3:#c8a020; --y4:#f0cc40; --y2:#806010; --ydim:#100c00; --ysurf:#120e02;
+  --gold:#c8a020; --gold2:#f0cc40;
+  --white:#e8e4d8; --muted:#484840; --fog:#222220;
+  --act:var(--g3); --act2:var(--g4); --act-dim:var(--gdim); --act-surf:var(--gsurf);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body, #root { height:100%; overflow:hidden; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; mix-blend-mode:overlay;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width:3px; height:3px; }
+::-webkit-scrollbar-track { background:var(--void); }
+::-webkit-scrollbar-thumb { background:var(--border2); }
+
+/* Animations */
+@keyframes obIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+@keyframes pulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
+@keyframes sIn { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+@keyframes ctaPulse { 0%,100%{border-color:var(--act);box-shadow:none;} 50%{border-color:var(--act2);box-shadow:0 0 12px rgba(90,176,56,0.3);} }
+@keyframes spinWheel { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+@keyframes trailPulse { 0%,100%{opacity:0.5;transform:scale(1);} 50%{opacity:1;transform:scale(1.6);} }
+@keyframes trailSpark { 0%,100%{opacity:0.4;transform:scale(0.8);} 50%{opacity:1;transform:scale(1.2);} }
+@keyframes popupCycle { 0%{opacity:0;transform:translateY(8px);} 8%{opacity:1;transform:translateY(0);} 85%{opacity:1;transform:translateY(0);} 100%{opacity:0;transform:translateY(-6px);} }
+
+/* Font utility classes */
+.font-cinzel { font-family: 'Cinzel', serif; }
+.font-mono { font-family: 'Share Tech Mono', monospace; }
+.font-fell { font-family: 'IM Fell English', serif; font-style: italic; }
+.font-raj { font-family: 'Rajdhani', sans-serif; }
+
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 43 16% 88%;
+    --card: 60 7% 7%;
+    --card-foreground: 43 16% 88%;
+    --popover: 60 7% 4%;
+    --popover-foreground: 43 16% 88%;
+    --primary: 98 54% 46%;
+    --primary-foreground: 0 0% 2%;
+    --secondary: 60 4% 10%;
+    --secondary-foreground: 43 16% 88%;
+    --muted: 60 4% 10%;
+    --muted-foreground: 55 6% 26%;
+    --accent: 60 7% 7%;
+    --accent-foreground: 43 16% 88%;
+    --destructive: 13 81% 44%;
+    --destructive-foreground: 43 16% 88%;
+    --border: 55 6% 10%;
+    --input: 55 6% 10%;
+    --ring: 98 54% 46%;
+    --radius: 0px;
+  }
+}
