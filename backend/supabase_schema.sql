@@ -21,15 +21,7 @@ CREATE TABLE users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. user_sessions
-CREATE TABLE user_sessions (
-    session_token TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
-    expires_at TIMESTAMPTZ NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 3. reflections
+-- 2. reflections
 CREATE TABLE reflections (
     id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -39,7 +31,7 @@ CREATE TABLE reflections (
     UNIQUE(user_id, act)
 );
 
--- 4. journal_entries
+-- 3. journal_entries
 CREATE TABLE journal_entries (
     id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -50,7 +42,7 @@ CREATE TABLE journal_entries (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 5. payment_transactions
+-- 4. payment_transactions
 CREATE TABLE payment_transactions (
     session_id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -63,7 +55,7 @@ CREATE TABLE payment_transactions (
     updated_at TIMESTAMPTZ
 );
 
--- 6. license_keys
+-- 5. license_keys
 CREATE TABLE license_keys (
     key TEXT PRIMARY KEY,
     used BOOLEAN DEFAULT FALSE,
@@ -72,7 +64,7 @@ CREATE TABLE license_keys (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. tracks
+-- 6. tracks
 CREATE TABLE tracks (
     track_id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -93,7 +85,7 @@ CREATE TABLE tracks (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 8. protocol_sessions
+-- 7. protocol_sessions
 CREATE TABLE protocol_sessions (
     session_id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -106,7 +98,7 @@ CREATE TABLE protocol_sessions (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 9. protocol_steps
+-- 8. protocol_steps
 CREATE TABLE protocol_steps (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -119,7 +111,7 @@ CREATE TABLE protocol_steps (
     UNIQUE(user_id, act, step)
 );
 
--- 10. act_completions
+-- 9. act_completions
 CREATE TABLE act_completions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -128,7 +120,7 @@ CREATE TABLE act_completions (
     UNIQUE(user_id, act)
 );
 
--- 11. app_settings
+-- 10. app_settings
 CREATE TABLE app_settings (
     key TEXT PRIMARY KEY,
     value JSONB NOT NULL

@@ -18,7 +18,7 @@ import ActProtocol from './pages/ActProtocol';
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 axios.defaults.baseURL = `${API_URL}/api`;
 axios.defaults.withCredentials = true;
 

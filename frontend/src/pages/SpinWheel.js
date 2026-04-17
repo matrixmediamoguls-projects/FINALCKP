@@ -17,12 +17,7 @@ const SpinWheel = () => {
   const [loading, setLoading] = useState(true);
   const [spinsAvailable, setSpinsAvailable] = useState(0);
 
-  useEffect(() => {
-    fetchBonusTracks();
-    fetchSpins();
-  }, []);
-
-  const fetchSpins = async () => {
+  const fetchSpins = useCallback(async () => {
     try {
       const res = await axios.get('/spins');
       setSpinsAvailable(res.data.spins_available || 0);
@@ -30,9 +25,9 @@ const SpinWheel = () => {
       // Admin gets unlimited
       if (user?.is_admin) setSpinsAvailable(99);
     }
-  };
+  }, [user?.is_admin]);
 
-  const fetchBonusTracks = async () => {
+  const fetchBonusTracks = useCallback(async () => {
     try {
       const res = await axios.get('/tracks');
       const bonus = (res.data.tracks || []).filter(t => t.type === 'bonus').slice(0, 12);
@@ -49,7 +44,12 @@ const SpinWheel = () => {
       setBonusTracks(fallback);
     }
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchBonusTracks();
+    fetchSpins();
+  }, [fetchBonusTracks, fetchSpins]);
 
   const segmentAngle = 360 / 12;
 

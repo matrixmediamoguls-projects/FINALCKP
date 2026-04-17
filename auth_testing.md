@@ -1,94 +1,83 @@
-# Auth-Gated App Testing Playbook
+# Auth Testing Playbook
 
-## Step 1: Create Test User & Session
+## Overview
+
+This app now uses local email/password authentication through the backend:
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- `POST /api/auth/logout`
+
+Authenticated browser sessions are stored in the `session_token` cookie, which contains a backend-issued JWT.
+
+## Local Setup
+
+Backend environment must include:
+
+- `JWT_SECRET`
+- `SUPABASE_URL`
+- `SUPABASE_KEY`
+
+Frontend environment must include:
+
+- `REACT_APP_BACKEND_URL`
+
+## Manual API Checks
+
 ```bash
-mongosh --eval "
-use('test_database');
-var userId = 'test-user-' + Date.now();
-var sessionToken = 'test_session_' + Date.now();
-db.users.insertOne({
-  user_id: userId,
-  email: 'test.user.' + Date.now() + '@example.com',
-  name: 'Test User',
-  picture: 'https://via.placeholder.com/150',
-  level: 1,
-  current_act: 1,
-  completed_acts: [],
-  created_at: new Date()
-});
-db.user_sessions.insertOne({
-  user_id: userId,
-  session_token: sessionToken,
-  expires_at: new Date(Date.now() + 7*24*60*60*1000),
-  created_at: new Date()
-});
-print('Session token: ' + sessionToken);
-print('User ID: ' + userId);
-"
-```
-
-## Step 2: Test Backend API
-```bash
-# Test auth endpoint
-curl -X GET "https://your-app.com/api/auth/me" \
-  -H "Authorization: Bearer YOUR_SESSION_TOKEN"
-
-# Test protected endpoints
-curl -X GET "https://your-app.com/api/journal" \
-  -H "Authorization: Bearer YOUR_SESSION_TOKEN"
-
-curl -X POST "https://your-app.com/api/journal" \
+# Register
+curl -X POST "http://localhost:8000/api/auth/register" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_SESSION_TOKEN" \
-  -d '{"title": "Test Entry", "content": "Test content", "act": 1}'
+  -d '{"name":"Test User","email":"test@example.com","password":"password123"}'
+
+# Login and store cookies
+curl -X POST "http://localhost:8000/api/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}' \
+  -c cookies.txt
+
+# Read current session
+curl -X GET "http://localhost:8000/api/auth/me" \
+  -b cookies.txt
+
+# Logout
+curl -X POST "http://localhost:8000/api/auth/logout" \
+  -b cookies.txt
 ```
 
-## Step 3: Browser Testing
+## Browser / E2E Setup
+
+Use the backend login endpoint first, then reuse the cookie jar in the browser context.
+
 ```javascript
-// Set cookie and navigate
-await page.context.add_cookies([{
-    "name": "session_token",
-    "value": "YOUR_SESSION_TOKEN",
-    "domain": "your-app.com",
-    "path": "/",
-    "httpOnly": true,
-    "secure": true,
-    "sameSite": "None"
-}]);
-await page.goto("https://your-app.com");
+await page.goto("http://localhost:3000/login");
+await page.getByTestId("login-email-input").fill("test@example.com");
+await page.getByTestId("login-password-input").fill("password123");
+await page.getByTestId("login-submit-btn").click();
+await page.waitForURL("**/dashboard");
 ```
 
-## Quick Debug
-```bash
-# Check data format
-mongosh --eval "
-use('test_database');
-db.users.find().limit(2).pretty();
-db.user_sessions.find().limit(2).pretty();
-"
+## Direct Database Checks
 
-# Clean test data
-mongosh --eval "
-use('test_database');
-db.users.deleteMany({email: /test\.user\./});
-db.user_sessions.deleteMany({session_token: /test_session/});
-"
-```
+Verify the `users` table contains:
 
-## Checklist
-- User document has user_id field (custom UUID, MongoDB's _id is separate)
-- Session user_id matches user's user_id exactly
-- All queries use `{"_id": 0}` projection to exclude MongoDB's _id
-- Backend queries use user_id (not _id or id)
-- API returns user data with user_id field (not 401/404)
-- Browser loads dashboard (not login page)
+- `user_id`
+- `email`
+- `name`
+- hashed `password`
+
+There is no separate OAuth/session table in the current auth model.
 
 ## Success Indicators
-✅ /api/auth/me returns user data
-✅ Dashboard loads without redirect
-✅ CRUD operations work
+
+- `/api/auth/login` returns `200`
+- `/api/auth/me` returns the logged-in user
+- Browser lands on `/dashboard`
+- Logout clears the session and `/api/auth/me` returns `401`
 
 ## Failure Indicators
-❌ "User not found" errors
-❌ 401 Unauthorized responses
-❌ Redirect to login page
+
+- `401 Invalid credentials`
+- `500` due to missing `JWT_SECRET` or Supabase config
+- Redirect loop back to `/login`

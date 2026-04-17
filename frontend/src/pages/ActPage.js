@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -164,6 +164,15 @@ const ActPage = () => {
   const actNum = parseInt(actNumber);
   const act = actConfigs[actNum];
 
+  const fetchReflections = useCallback(async () => {
+    try {
+      const response = await axios.get(`/reflections/${actNum}`);
+      setReflections(response.data.items || {});
+    } catch (error) {
+      console.error('Error fetching reflections:', error);
+    }
+  }, [actNum]);
+
   useEffect(() => {
     if (actNum === 4 && !user?.is_admin) {
       navigate('/act/4');
@@ -179,16 +188,7 @@ const ActPage = () => {
       return;
     }
     fetchReflections();
-  }, [actNum, act, navigate, user]);
-
-  const fetchReflections = async () => {
-    try {
-      const response = await axios.get(`/reflections/${actNum}`);
-      setReflections(response.data.items || {});
-    } catch (error) {
-      console.error('Error fetching reflections:', error);
-    }
-  };
+  }, [actNum, act, fetchReflections, navigate, user]);
 
   const handleReflectionChange = async (index, checked) => {
     const itemId = `protocol_${index}`;

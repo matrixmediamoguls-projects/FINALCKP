@@ -267,7 +267,7 @@ class TestPaymentCheckout:
     def test_checkout_creates_session(self, auth_session_locked):
         """Test POST /payments/checkout creates checkout session"""
         response = auth_session_locked.post(f"{BASE_URL}/api/payments/checkout", json={
-            "origin_url": "https://chroma-key-protocol.preview.emergentagent.com"
+            "origin_url": "http://localhost:3000"
         })
         # May fail if user already unlocked, or succeed with checkout URL
         if response.status_code == 400:
@@ -284,7 +284,7 @@ class TestPaymentCheckout:
     def test_checkout_already_unlocked(self, auth_session_unlocked):
         """Test POST /payments/checkout when already unlocked"""
         response = auth_session_unlocked.post(f"{BASE_URL}/api/payments/checkout", json={
-            "origin_url": "https://chroma-key-protocol.preview.emergentagent.com"
+            "origin_url": "http://localhost:3000"
         })
         assert response.status_code == 400
         data = response.json()

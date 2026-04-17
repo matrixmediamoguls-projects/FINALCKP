@@ -39,7 +39,7 @@ const ImmersionLanding = () => {
   const { user } = useAuth();
   const [trackCounts, setTrackCounts] = useState({});
 
-  useEffect(() => {
+  const fetchTrackCounts = useCallback(() => {
     axios.get('/tracks').then(res => {
       const counts = {};
       (res.data.tracks || []).filter(t => t.type === 'track').forEach(t => {
@@ -48,6 +48,10 @@ const ImmersionLanding = () => {
       setTrackCounts(counts);
     }).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    fetchTrackCounts();
+  }, [fetchTrackCounts]);
 
   const isLocked = (act) => {
     if (user?.is_admin) return false;
@@ -179,14 +183,6 @@ const ActImmersion = ({ actNumber }) => {
   const barsIntervalRef = useRef(null);
   const popupTimerRef = useRef(null);
 
-  useEffect(() => {
-    fetchTracks();
-    return () => {
-      if (barsIntervalRef.current) clearInterval(barsIntervalRef.current);
-      if (popupTimerRef.current) clearInterval(popupTimerRef.current);
-    };
-  }, [actNumber]);
-
   // Build the list of available content segments for the current track
   const getPopupSegments = useCallback((track) => {
     if (!track) return [];
@@ -229,7 +225,7 @@ const ActImmersion = ({ actNumber }) => {
     };
   }, [isPlaying, currentTrack, getPopupSegments]);
 
-  const fetchTracks = async () => {
+  const fetchTracks = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get('/tracks');
@@ -239,7 +235,15 @@ const ActImmersion = ({ actNumber }) => {
       else { setCurrentTrack(null); }
     } catch (e) { console.error(e); }
     setLoading(false);
-  };
+  }, [actNumber]);
+
+  useEffect(() => {
+    fetchTracks();
+    return () => {
+      if (barsIntervalRef.current) clearInterval(barsIntervalRef.current);
+      if (popupTimerRef.current) clearInterval(popupTimerRef.current);
+    };
+  }, [fetchTracks]);
 
   const selectTrack = useCallback((track, index) => {
     if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ''; }

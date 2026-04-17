@@ -23,12 +23,7 @@ const ActProtocol = () => {
   const [completed, setCompleted] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!actDef) return;
-    loadStepProgress();
-  }, [actNum]);
-
-  const loadStepProgress = async () => {
+  const loadStepProgress = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`/protocol/steps/${actNum}`);
@@ -44,7 +39,12 @@ const ActProtocol = () => {
       if (completedSteps.length === 5) setCompleted(true);
     } catch (e) { console.error(e); }
     setLoading(false);
-  };
+  }, [actNum]);
+
+  useEffect(() => {
+    if (!actDef) return;
+    loadStepProgress();
+  }, [actDef, loadStepProgress]);
 
   const getStepState = (step) => stepData[step] || {};
   const updateStepState = (step, key, value) => {

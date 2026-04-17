@@ -5,7 +5,6 @@ from starlette.middleware.cors import CORSMiddleware
 from db_client import get_db, init_db
 import os
 import logging
-import httpx
 import requests
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
@@ -19,8 +18,47 @@ import boto3
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+def get_required_env(name: str) -> str:
+    value = os.environ.get(name)
+    if not value:
+        raise RuntimeError(f"{name} must be set")
+    return value
+
+def get_cors_origins() -> list[str]:
+    raw_origins = os.environ.get("CORS_ORIGINS", "").strip()
+    if not raw_origins or raw_origins == "*":
+        return [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+        ]
+
+    origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+    if "*" in origins:
+        return [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+        ]
+    return origins
+
+def get_cookie_settings(request: Optional[Request] = None) -> dict:
+    secure_cookie = os.environ.get("COOKIE_SECURE", "").lower()
+    if secure_cookie in {"true", "1", "yes"}:
+        secure = True
+    elif secure_cookie in {"false", "0", "no"}:
+        secure = False
+    else:
+        scheme = request.url.scheme if request else "https"
+        secure = scheme == "https"
+
+    return {
+        "httponly": True,
+        "secure": secure,
+        "samesite": "none" if secure else "lax",
+        "path": "/",
+    }
+
 # JWT Configuration
-JWT_SECRET = os.environ.get('JWT_SECRET', 'chroma_key_protocol_secret_2024')
+JWT_SECRET = get_required_env("JWT_SECRET")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 168  # 7 days
 
@@ -197,21 +235,6 @@ async def get_current_user(request: Request) -> Optional[dict]:
         
     client = await get_db()
     
-    # Check if it's a session token (Google OAuth)
-    session_res = await client.table("user_sessions").select("*").eq("session_token", session_token).limit(1).execute()
-    if session_res.data:
-        session = session_res.data[0]
-        expires_at = session.get("expires_at")
-        if isinstance(expires_at, str):
-            expires_at = datetime.fromisoformat(expires_at)
-        if expires_at.tzinfo is None:
-            expires_at = expires_at.replace(tzinfo=timezone.utc)
-        if expires_at < datetime.now(timezone.utc):
-            return None
-            
-        user_res = await client.table("users").select("*").eq("user_id", session["user_id"]).limit(1).execute()
-        return user_res.data[0] if user_res.data else None
-    
     # Check if it's a JWT token
     payload = decode_jwt_token(session_token)
     if payload:
@@ -224,7 +247,7 @@ async def get_current_user(request: Request) -> Optional[dict]:
 # ==================== AUTH ENDPOINTS ====================
 
 @api_router.post("/auth/register", response_model=UserResponse)
-async def register(user_data: UserCreate, response: Response):
+async def register(user_data: UserCreate, response: Response, request: Request):
     client = await get_db()
     # Check if user exists
     existing_res = await client.table("users").select("*").eq("email", user_data.email).limit(1).execute()
@@ -259,11 +282,8 @@ async def register(user_data: UserCreate, response: Response):
     response.set_cookie(
         key="session_token",
         value=token,
-        httponly=True,
-        secure=True,
-        samesite="none",
-        path="/",
-        max_age=JWT_EXPIRATION_HOURS * 3600
+        max_age=JWT_EXPIRATION_HOURS * 3600,
+        **get_cookie_settings(request)
     )
     
     user_response = {k: v for k, v in user_doc.items() if k != "password"}
@@ -273,7 +293,7 @@ async def register(user_data: UserCreate, response: Response):
     return UserResponse(**user_response)
 
 @api_router.post("/auth/login", response_model=UserResponse)
-async def login(credentials: UserLogin, response: Response):
+async def login(credentials: UserLogin, response: Response, request: Request):
     client = await get_db()
     user_res = await client.table("users").select("*").eq("email", credentials.email).limit(1).execute()
     if not user_res.data:
@@ -288,94 +308,10 @@ async def login(credentials: UserLogin, response: Response):
     response.set_cookie(
         key="session_token",
         value=token,
-        httponly=True,
-        secure=True,
-        samesite="none",
-        path="/",
-        max_age=JWT_EXPIRATION_HOURS * 3600
+        max_age=JWT_EXPIRATION_HOURS * 3600,
+        **get_cookie_settings(request)
     )
     
-    user_response = {k: v for k, v in user.items() if k != "password"}
-    # Convert datetime to string if needed
-    if "created_at" in user_response and hasattr(user_response["created_at"], "isoformat"):
-        user_response["created_at"] = user_response["created_at"].isoformat()
-    return UserResponse(**user_response)
-
-@api_router.get("/auth/session")
-async def get_session(request: Request, response: Response):
-    """Handle Google OAuth session exchange"""
-    session_id = request.headers.get("X-Session-ID")
-    if not session_id:
-        raise HTTPException(status_code=400, detail="Session ID required")
-    
-    # Call Emergent Auth to get session data
-    async with httpx.AsyncClient() as client_http:
-        try:
-            auth_response = await client_http.get(
-                "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data",
-                headers={"X-Session-ID": session_id}
-            )
-            if auth_response.status_code != 200:
-                raise HTTPException(status_code=401, detail="Invalid session")
-            
-            session_data = auth_response.json()
-        except Exception as e:
-            logger.error(f"Auth error: {e}")
-            raise HTTPException(status_code=500, detail="Authentication failed")
-    
-    # Check if user exists
-    client = await get_db()
-    existing_user_res = await client.table("users").select("*").eq("email", session_data["email"]).limit(1).execute()
-    
-    if existing_user_res.data:
-        user_id = existing_user_res.data[0]["user_id"]
-        # Update user info
-        await client.table("users").update(
-            {"name": session_data["name"], "picture": session_data.get("picture")}
-        ).eq("user_id", user_id).execute()
-    else:
-        # Create new user
-        user_id = f"user_{uuid.uuid4().hex[:12]}"
-        user_doc = {
-            "user_id": user_id,
-            "email": session_data["email"],
-            "name": session_data["name"],
-            "picture": session_data.get("picture"),
-            "level": 0,
-            "current_act": 1,
-            "completed_acts": [],
-            "tier": "free",
-            "spins_earned": 0,
-            "spins_used": 0,
-            "owns_all_albums": False,
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-        await client.table("users").insert(user_doc).execute()
-    
-    # Store session
-    session_token = session_data["session_token"]
-    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
-    
-    await client.table("user_sessions").upsert({
-        "session_token": session_token,
-        "user_id": user_id,
-        "expires_at": expires_at.isoformat(),
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }).execute()
-    
-    # Set cookie
-    response.set_cookie(
-        key="session_token",
-        value=session_token,
-        httponly=True,
-        secure=True,
-        samesite="none",
-        path="/",
-        max_age=7 * 24 * 3600
-    )
-    
-    user_res = await client.table("users").select("*").eq("user_id", user_id).limit(1).execute()
-    user = user_res.data[0]
     user_response = {k: v for k, v in user.items() if k != "password"}
     # Convert datetime to string if needed
     if "created_at" in user_response and hasattr(user_response["created_at"], "isoformat"):
@@ -395,12 +331,7 @@ async def get_current_user_endpoint(request: Request):
 
 @api_router.post("/auth/logout")
 async def logout(request: Request, response: Response):
-    session_token = request.cookies.get("session_token")
-    if session_token:
-        client = await get_db()
-        await client.table("user_sessions").delete().eq("session_token", session_token).execute()
-    
-    response.delete_cookie(key="session_token", path="/", secure=True, samesite="none")
+    response.delete_cookie(key="session_token", **get_cookie_settings(request))
     return {"message": "Logged out successfully"}
 
 
@@ -1338,7 +1269,7 @@ app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=get_cors_origins(),
     allow_methods=["*"],
     allow_headers=["*"],
 )

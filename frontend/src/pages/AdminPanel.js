@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
@@ -29,7 +29,6 @@ const TracksTab = () => {
   const [uploading, setUploading] = useState(null);
   const [newTrack, setNewTrack] = useState(false);
   const [newForm, setNewForm] = useState({ name: '', act: 1, type: 'track', color: '#5ab038', lyrics: '' });
-  const fileRef = useRef(null);
 
   const fetchTracks = async () => {
     try {
@@ -180,18 +179,16 @@ const TracksTab = () => {
             </div>
             {/* Actions */}
             <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
-              <input type="file" ref={fileRef} accept="audio/*" style={{ display: 'none' }}
+              <input id={`track-upload-${track.track_id}`} type="file" accept="audio/*" style={{ display: 'none' }}
                 onChange={e => { if (e.target.files[0]) handleUploadAudio(track.track_id, e.target.files[0]); }} />
-              <button onClick={() => { fileRef.current?.click(); }}
-                disabled={uploading === track.track_id}
-                data-testid={`upload-btn-${track.track_id}`}
+              <label htmlFor={`track-upload-${track.track_id}`}
                 style={{
                   padding: '4px 10px', border: '1px solid var(--act)', background: 'transparent',
                   color: 'var(--act)', cursor: uploading === track.track_id ? 'wait' : 'pointer',
                   fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em', textTransform: 'uppercase'
                 }}>
                 {uploading === track.track_id ? 'Uploading...' : 'Upload'}
-              </button>
+              </label>
               <button onClick={() => { setEditingTrack(track.track_id); setEditForm({ name: track.name, act: track.act, lyrics: track.lyrics || '' }); }}
                 style={{ padding: '4px 10px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em' }}>
                 Edit
@@ -649,7 +646,7 @@ const GuideTab = () => (
     </Section>
 
     <Section title="5. How Users Access Content" color="var(--r3)">
-      <Step n="1">New users register or sign in with Google</Step>
+      <Step n="1">New users register with email and password or sign in with existing credentials</Step>
       <Step n="2">They see the Onboarding flow (emotional state + 2 entry options)</Step>
       <Step n="3">Acts I and II are free. Act III requires $29.99 or a license key</Step>
       <Step n="4">The Spin Wheel gives random track assignments from bonus tracks</Step>
