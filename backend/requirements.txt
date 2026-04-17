@@ -11,3 +11,5 @@ python-dotenv
 httpx
 requests
 email-validator
+fastapi-limiter2
+redis>=4.0.0
