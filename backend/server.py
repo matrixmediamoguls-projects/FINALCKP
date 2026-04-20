@@ -1,5 +1,7 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends, UploadFile, File, Query, Header
 from fastapi.responses import JSONResponse
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.util import get_remote_address
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from db_client import get_db, init_db
@@ -14,6 +16,7 @@ from datetime import datetime, timezone, timedelta
 import bcrypt
 import jwt
 import boto3
+import redis.asyncio as redis
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -220,6 +223,13 @@ def decode_jwt_token(token: str) -> Optional[dict]:
     except jwt.InvalidTokenError:
         return None
 
+def serialize_user(user: dict) -> dict:
+    """Serialize user object removing sensitive fields"""
+    serialized = {k: v for k, v in user.items() if k != "password"}
+    if "created_at" in serialized and hasattr(serialized["created_at"], "isoformat"):
+        serialized["created_at"] = serialized["created_at"].isoformat()
+    return serialized
+
 async def get_current_user(request: Request) -> Optional[dict]:
     # Check cookie first
     session_token = request.cookies.get("session_token")
@@ -286,10 +296,7 @@ async def register(user_data: UserCreate, response: Response, request: Request):
         **get_cookie_settings(request)
     )
     
-    user_response = {k: v for k, v in user_doc.items() if k != "password"}
-    # Convert datetime to string if needed
-    if "created_at" in user_response and hasattr(user_response["created_at"], "isoformat"):
-        user_response["created_at"] = user_response["created_at"].isoformat()
+    user_response = serialize_user(user_doc)
     return UserResponse(**user_response)
 
 @api_router.post("/auth/login", response_model=UserResponse)
@@ -312,10 +319,7 @@ async def login(credentials: UserLogin, response: Response, request: Request):
         **get_cookie_settings(request)
     )
     
-    user_response = {k: v for k, v in user.items() if k != "password"}
-    # Convert datetime to string if needed
-    if "created_at" in user_response and hasattr(user_response["created_at"], "isoformat"):
-        user_response["created_at"] = user_response["created_at"].isoformat()
+    user_response = serialize_user(user)
     return UserResponse(**user_response)
 
 @api_router.get("/auth/me", response_model=UserResponse)
@@ -323,10 +327,7 @@ async def get_current_user_endpoint(request: Request):
     user = await get_current_user(request)
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
-    user_response = {k: v for k, v in user.items() if k != "password"}
-    # Convert datetime to string if needed
-    if "created_at" in user_response and hasattr(user_response["created_at"], "isoformat"):
-        user_response["created_at"] = user_response["created_at"].isoformat()
+    user_response = serialize_user(user)
     return UserResponse(**user_response)
 
 @api_router.post("/auth/logout")
@@ -342,10 +343,7 @@ async def get_progress(request: Request):
     user = await get_current_user(request)
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
-    user_response = {k: v for k, v in user.items() if k != "password"}
-    # Convert datetime to string if needed
-    if "created_at" in user_response and hasattr(user_response["created_at"], "isoformat"):
-        user_response["created_at"] = user_response["created_at"].isoformat()
+    user_response = serialize_user(user)
     return UserResponse(**user_response)
 
 @api_router.put("/progress")
@@ -369,10 +367,7 @@ async def update_progress(progress: ProgressUpdate, request: Request):
     client = await get_db()
     updated_user_res = await client.table("users").select("*").eq("user_id", user["user_id"]).limit(1).execute()
     updated_user = updated_user_res.data[0]
-    user_response = {k: v for k, v in updated_user.items() if k != "password"}
-    # Convert datetime to string if needed
-    if "created_at" in user_response and hasattr(user_response["created_at"], "isoformat"):
-        user_response["created_at"] = user_response["created_at"].isoformat()
+    user_response = serialize_user(updated_user)
     return UserResponse(**user_response)
 
 

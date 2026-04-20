@@ -1,7 +1,12 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(null);
+
+// JWT expiration time in milliseconds (7 days)
+const JWT_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
+// Refresh token 1 minute before expiration
+const REFRESH_BEFORE_EXPIRY = 60 * 1000;
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -14,11 +19,13 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const tokenRefreshTimer = useRef(null);
 
   const checkAuth = useCallback(async () => {
     try {
       const response = await axios.get('/auth/me');
       setUser(response.data);
+      scheduleTokenRefresh();
     } catch (error) {
       setUser(null);
     } finally {
@@ -26,19 +33,71 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const scheduleTokenRefresh = useCallback(() => {
+    if (tokenRefreshTimer.current) {
+      clearTimeout(tokenRefreshTimer.current);
+    }
+    
+    // Refresh token before it expires
+    tokenRefreshTimer.current = setTimeout(async () => {
+      try {
+        // Call /auth/me to validate session (acts as implicit refresh)
+        const response = await axios.get('/auth/me');
+        setUser(response.data);
+        // Reschedule for next refresh
+        scheduleTokenRefresh();
+      } catch (error) {
+        // Token expired or invalid, logout user
+        setUser(null);
+        if (tokenRefreshTimer.current) {
+          clearTimeout(tokenRefreshTimer.current);
+        }
+      }
+    }, JWT_EXPIRATION_TIME - REFRESH_BEFORE_EXPIRY);
+  }, []);
+
   useEffect(() => {
     checkAuth();
+    
+    return () => {
+      if (tokenRefreshTimer.current) {
+        clearTimeout(tokenRefreshTimer.current);
+      }
+    };
   }, [checkAuth]);
+
+  // Add response interceptor to handle 401 errors
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response?.status === 401) {
+          // Unauthorized - clear user and stop refresh timer
+          setUser(null);
+          if (tokenRefreshTimer.current) {
+            clearTimeout(tokenRefreshTimer.current);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, []);
 
   const login = async (email, password) => {
     const response = await axios.post('/auth/login', { email, password });
     setUser(response.data);
+    scheduleTokenRefresh();
     return response.data;
   };
 
   const register = async (name, email, password) => {
     const response = await axios.post('/auth/register', { name, email, password });
     setUser(response.data);
+    scheduleTokenRefresh();
     return response.data;
   };
 
@@ -49,6 +108,9 @@ export const AuthProvider = ({ children }) => {
       console.error('Logout error:', error);
     }
     setUser(null);
+    if (tokenRefreshTimer.current) {
+      clearTimeout(tokenRefreshTimer.current);
+    }
   };
 
   const updateProgress = async (progressData) => {
