@@ -173,7 +173,7 @@ const AppShell = ({ children }) => {
   };
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <div
         data-testid="topbar"
         style={{

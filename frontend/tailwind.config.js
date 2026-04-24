@@ -9,9 +9,12 @@ module.exports = {
 				primary: ['Outfit', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace'],
 			},
+
 			colors: {
+				// ✅ KEEP (used by shadcn / system)
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
@@ -40,9 +43,11 @@ module.exports = {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
+
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
+
 				chart: {
 					'1': 'hsl(var(--chart-1))',
 					'2': 'hsl(var(--chart-2))',
@@ -50,25 +55,30 @@ module.exports = {
 					'4': 'hsl(var(--chart-4))',
 					'5': 'hsl(var(--chart-5))'
 				},
-				// Chroma Key Custom Colors
-				chroma: {
-					base: '#08080A',
-					surface: '#121318',
-					'surface-hover': '#1C1D24',
-					card: '#0D0E12',
-					gold: '#D4AF37',
-					'gold-muted': 'rgba(212, 175, 55, 0.2)',
-					earth: '#00FF66',
-					water: '#00E5FF',
-					fire: '#FF3366',
-					air: '#FFCC00',
-					'border-default': '#2A2B32',
-					'border-subtle': '#1A1B20',
-					'text-primary': '#E0E2E8',
-					'text-secondary': '#8A8D98',
-					'text-muted': '#565A66',
+
+				// ✅ NEW BRIGHTENED SYSTEM (YOUR REAL COLORS)
+				brand: {
+					background: "#0A0A0B",
+					surface: "#111113",
+					surfaceElevated: "#18181B",
+
+					primary: "#A3FF3F",
+					primarySoft: "#D8FF8A",
+
+					accent: "#F5D061",
+					accentGlow: "#FFE27A",
+
+					textPrimary: "#FAFAFA",
+					textSecondary: "#C5C5D0",
+					textMuted: "#8A8A95",
+
+					border: "#2A2A2E",
+
+					error: "#FF5A5F",
+					success: "#4ADE80"
 				}
 			},
+
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',

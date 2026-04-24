@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
+import SocialAuthButtons from '../components/SocialAuthButtons';
 
 const HERO_IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/banani-prod.appspot.com/o/reference-images%2F472bbff8-144d-45e0-b298-42659f149878?alt=media&token=0149655e-82d8-4a6a-a53f-a4f395656542';
@@ -24,7 +25,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isPending, startTransition] = useTransition();
-  const { login } = useAuth();
+  const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -48,7 +49,7 @@ const Login = () => {
           initial={{ opacity: 0, scale: 1.03 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="relative hidden min-h-screen overflow-hidden lg:block"
+          className="relative hidden overflow-hidden lg:block"
         >
           <img
             src={HERO_IMAGE}
@@ -59,8 +60,8 @@ const Login = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(122,184,41,0.16),transparent_35%),radial-gradient(circle_at_78%_24%,rgba(205,164,52,0.12),transparent_30%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.45))]" />
         </motion.div>
 
-        <div className="flex min-h-screen flex-col bg-[#030303]">
-          <div className="flex flex-1 items-center justify-center px-6 py-10 sm:px-10 lg:px-12">
+        <div className="flex flex-col bg-[#030303]">
+          <div className="flex flex-1 justify-center px-6 py-12 sm:px-10 lg:px-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -100,9 +101,9 @@ const Login = () => {
                 />
 
                 <PasswordField
-                  label="Access Code"
+                  label="Password"
                   id="login-password-input"
-                  placeholder="Enter access code"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={setPassword}
                   showPassword={showPassword}
@@ -120,6 +121,19 @@ const Login = () => {
                   {isPending ? 'Authenticating...' : 'Access Protocol'}
                 </button>
               </form>
+
+              <SocialAuthButtons
+                onSocialLogin={async (provider, token) => {
+                  setError('');
+                  try {
+                    await socialLogin(provider, token);
+                    navigate('/dashboard');
+                  } catch (err) {
+                    setError(err.response?.data?.detail || 'Social login failed. Please try again.');
+                  }
+                }}
+                disabled={isPending}
+              />
 
               <p className="pt-1 text-center text-sm text-chroma-text-secondary">
                 New to the Protocol?{' '}

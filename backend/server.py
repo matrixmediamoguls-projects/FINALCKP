@@ -1,7 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends, UploadFile, File, Query, Header
 from fastapi.responses import JSONResponse
-from fastapi_limiter import FastAPILimiter
-from fastapi_limiter.util import get_remote_address
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from db_client import get_db, init_db
@@ -334,6 +332,115 @@ async def get_current_user_endpoint(request: Request):
 async def logout(request: Request, response: Response):
     response.delete_cookie(key="session_token", **get_cookie_settings(request))
     return {"message": "Logged out successfully"}
+
+
+class BootstrapAdminPayload(BaseModel):
+    email: EmailStr
+    secret: str
+
+@api_router.post("/auth/bootstrap-admin")
+async def bootstrap_admin(payload: BootstrapAdminPayload):
+    bootstrap_secret = os.environ.get("ADMIN_BOOTSTRAP_SECRET")
+    if not bootstrap_secret:
+        raise HTTPException(status_code=403, detail="Bootstrap is not enabled")
+    if payload.secret != bootstrap_secret:
+        raise HTTPException(status_code=403, detail="Invalid bootstrap secret")
+
+    db = await get_db()
+
+    # Block if any admin already exists
+    existing_admins = await db.table("users").select("user_id").eq("is_admin", True).limit(1).execute()
+    if existing_admins.data:
+        raise HTTPException(status_code=403, detail="An admin account already exists. Use the admin panel to promote users.")
+
+    user_res = await db.table("users").select("*").eq("email", payload.email).limit(1).execute()
+    if not user_res.data:
+        raise HTTPException(status_code=404, detail="No account found with that email. Register first, then run bootstrap.")
+
+    user = user_res.data[0]
+    await db.table("users").update({"is_admin": True}).eq("user_id", user["user_id"]).execute()
+    logger.info(f"Admin bootstrapped for user {user['user_id']} ({payload.email})")
+    return {"message": f"{payload.email} is now an admin."}
+
+
+class SocialAuthPayload(BaseModel):
+    provider: str  # "google" or "facebook"
+    token: str     # Google access_token or Facebook access_token
+
+@api_router.post("/auth/social", response_model=UserResponse)
+async def social_auth(payload: SocialAuthPayload, response: Response, request: Request):
+    import httpx
+
+    if payload.provider == "google":
+        async with httpx.AsyncClient() as hc:
+            resp = await hc.get(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                headers={"Authorization": f"Bearer {payload.token}"}
+            )
+        if resp.status_code != 200:
+            raise HTTPException(status_code=401, detail="Invalid Google token")
+        data = resp.json()
+        email = data.get("email")
+        name = data.get("name") or email
+        picture = data.get("picture")
+
+    elif payload.provider == "facebook":
+        async with httpx.AsyncClient() as hc:
+            resp = await hc.get(
+                "https://graph.facebook.com/me",
+                params={"fields": "id,name,email,picture", "access_token": payload.token}
+            )
+        if resp.status_code != 200:
+            raise HTTPException(status_code=401, detail="Invalid Facebook token")
+        data = resp.json()
+        email = data.get("email")
+        name = data.get("name", "Facebook User")
+        pic_data = data.get("picture", {})
+        picture = pic_data.get("data", {}).get("url") if isinstance(pic_data, dict) else None
+        if not email:
+            email = f"fb_{data.get('id')}@facebook.placeholder"
+
+    else:
+        raise HTTPException(status_code=400, detail="Unsupported provider")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="Could not retrieve email from provider")
+
+    db = await get_db()
+    user_res = await db.table("users").select("*").eq("email", email).limit(1).execute()
+
+    if user_res.data:
+        user = user_res.data[0]
+        if not user.get("picture") and picture:
+            await db.table("users").update({"picture": picture}).eq("user_id", user["user_id"]).execute()
+            user["picture"] = picture
+    else:
+        user_id = f"user_{uuid.uuid4().hex[:12]}"
+        user = {
+            "user_id": user_id,
+            "email": email,
+            "name": name,
+            "password": None,
+            "picture": picture,
+            "level": 0,
+            "current_act": 1,
+            "completed_acts": [],
+            "tier": "free",
+            "spins_earned": 0,
+            "spins_used": 0,
+            "owns_all_albums": False,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.table("users").insert(user).execute()
+
+    token = create_jwt_token(user["user_id"])
+    response.set_cookie(
+        key="session_token",
+        value=token,
+        max_age=JWT_EXPIRATION_HOURS * 3600,
+        **get_cookie_settings(request)
+    )
+    return UserResponse(**serialize_user(user))
 
 
 # ==================== PROGRESS ENDPOINTS ====================

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
+import SocialAuthButtons from '../components/SocialAuthButtons';
 
 const HERO_IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/banani-prod.appspot.com/o/reference-images%2F472bbff8-144d-45e0-b298-42659f149878?alt=media&token=0149655e-82d8-4a6a-a53f-a4f395656542';
@@ -30,7 +31,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isPending, startTransition] = useTransition();
-  const { register } = useAuth();
+  const { register, socialLogin } = useAuth();
   const navigate = useNavigate();
 
   const protocolIdentity = useMemo(() => {
@@ -84,7 +85,7 @@ const Register = () => {
           initial={{ opacity: 0, scale: 1.03 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="relative hidden min-h-screen overflow-hidden lg:block"
+          className="relative hidden overflow-hidden lg:block"
         >
           <img
             src={HERO_IMAGE}
@@ -95,8 +96,8 @@ const Register = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(122,184,41,0.16),transparent_35%),radial-gradient(circle_at_78%_24%,rgba(205,164,52,0.12),transparent_30%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.45))]" />
         </motion.div>
 
-        <div className="flex min-h-screen flex-col bg-[#030303]">
-          <div className="flex flex-1 items-center justify-center px-6 py-10 sm:px-10 lg:px-12">
+        <div className="flex flex-col bg-[#030303]">
+          <div className="flex flex-1 justify-center px-6 py-12 sm:px-10 lg:px-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -143,25 +144,6 @@ const Register = () => {
                 />
 
                 <Field
-                  label="Date Of Birth"
-                  id="register-dob-input"
-                  type="date"
-                  placeholder="MM / DD / YYYY"
-                  value={dateOfBirth}
-                  onChange={setDateOfBirth}
-                  required
-                />
-
-                <Field
-                  label="Protocol Handle"
-                  id="register-handle-input"
-                  placeholder="Enter your protocol handle"
-                  value={protocolHandle}
-                  onChange={setProtocolHandle}
-                  helper="This becomes your seeker identity in the system."
-                />
-
-                <Field
                   label="Email Address"
                   id="register-email-input"
                   type="email"
@@ -172,10 +154,20 @@ const Register = () => {
                   required
                 />
 
+                <Field
+                  label="Date Of Birth"
+                  id="register-dob-input"
+                  type="date"
+                  placeholder="MM / DD / YYYY"
+                  value={dateOfBirth}
+                  onChange={setDateOfBirth}
+                  required
+                />
+
                 <PasswordField
                   label="Password"
                   id="register-password-input"
-                  placeholder="Create your access code"
+                  placeholder="Create your password"
                   value={password}
                   onChange={setPassword}
                   showPassword={showPassword}
@@ -185,21 +177,30 @@ const Register = () => {
                 />
 
                 <Field
-                  label="Access Key"
-                  id="register-access-key-input"
-                  placeholder="Enter access key"
-                  value={accessKey}
-                  onChange={setAccessKey}
-                />
-
-                <Field
-                  label="Confirm Access Code"
+                  label="Confirm Password"
                   id="register-confirm-password-input"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Confirm access code"
+                  placeholder="Confirm your password"
                   value={confirmPassword}
                   onChange={setConfirmPassword}
                   required
+                />
+
+                <Field
+                  label="Protocol Handle"
+                  id="register-handle-input"
+                  placeholder="Your seeker identity (optional)"
+                  value={protocolHandle}
+                  onChange={setProtocolHandle}
+                  helper="Defaults to your name if left blank."
+                />
+
+                <Field
+                  label="Access Key"
+                  id="register-access-key-input"
+                  placeholder="Invite / access key (optional)"
+                  value={accessKey}
+                  onChange={setAccessKey}
                 />
 
                 <button
@@ -211,6 +212,19 @@ const Register = () => {
                   {isPending ? 'Initializing...' : 'Begin Protocol'}
                 </button>
               </form>
+
+              <SocialAuthButtons
+                onSocialLogin={async (provider, token) => {
+                  setError('');
+                  try {
+                    await socialLogin(provider, token);
+                    navigate('/dashboard');
+                  } catch (err) {
+                    setError(err.response?.data?.detail || 'Social login failed. Please try again.');
+                  }
+                }}
+                disabled={isPending}
+              />
 
               <p className="pt-1 text-center text-sm text-chroma-text-secondary">
                 Already a Seeker?{' '}

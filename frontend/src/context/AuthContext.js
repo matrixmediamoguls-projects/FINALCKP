@@ -94,6 +94,13 @@ export const AuthProvider = ({ children }) => {
     return response.data;
   };
 
+  const socialLogin = async (provider, token) => {
+    const response = await axios.post('/auth/social', { provider, token });
+    setUser(response.data);
+    scheduleTokenRefresh();
+    return response.data;
+  };
+
   const register = async (name, email, password) => {
     const response = await axios.post('/auth/register', { name, email, password });
     setUser(response.data);
@@ -123,6 +130,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     login,
+    socialLogin,
     register,
     logout,
     checkAuth,
