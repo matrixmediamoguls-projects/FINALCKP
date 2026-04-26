@@ -1,0 +1,398 @@
+.ip-root {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  background: #030303;
+  color: #f5f0e6;
+}
+
+.ip-loading,
+.ip-error {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c8a020;
+}
+
+.ip-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #030303;
+}
+
+.ip-error {
+  position: absolute;
+  left: 50%;
+  top: 72px;
+  transform: translateX(-50%);
+  z-index: 6;
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.64);
+  font-size: 9px;
+}
+
+.ip-track-selector {
+  width: 260px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(180deg, rgba(12,12,12,0.98), rgba(0,0,0,0.98));
+  padding: 16px 10px;
+}
+
+.ip-panel-label,
+.ip-topline,
+.ip-artifact span,
+.ip-act-keys span,
+.ip-lyrics-engine span,
+.ip-player,
+.ip-title-block small {
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.ip-panel-label {
+  font-size: 9px;
+  color: var(--ip-color, #5ab038);
+  margin: 0 6px 12px;
+}
+
+.ip-track-selector button {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 2px 8px;
+  border: 1px solid transparent;
+  border-left: 2px solid transparent;
+  background: transparent;
+  color: rgba(245,240,230,0.56);
+  padding: 9px 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.ip-track-selector button.active,
+.ip-track-selector button:hover {
+  border-color: rgba(255,255,255,0.13);
+  border-left-color: var(--ip-color, #5ab038);
+  background: rgba(255,255,255,0.045);
+  color: #f5f0e6;
+}
+
+.ip-track-selector button span {
+  grid-row: span 2;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--ip-color, #5ab038);
+  font-size: 10px;
+}
+
+.ip-track-selector button strong {
+  font-size: 12px;
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ip-track-selector button small {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ip-shell {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.ip-background,
+.ip-background > * {
+  position: absolute;
+  inset: 0;
+}
+
+.ip-shell-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.82;
+  filter: contrast(1.04) saturate(1.05);
+}
+
+.ip-shell-fallback {
+  background: radial-gradient(circle at center, color-mix(in srgb, var(--ip-color, #5ab038) 25%, #050505), #050505 60%);
+}
+
+.ip-vignette {
+  background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.84) 100%);
+  pointer-events: none;
+}
+
+.ip-reactive-wash {
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  transition: transform 0.1s linear, background 0.1s linear;
+}
+
+.ip-scanlines {
+  background: repeating-linear-gradient(180deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 5px);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.ip-noise {
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.08), transparent 25%, rgba(255,255,255,0.06) 50%, transparent 75%);
+  background-size: 18px 18px;
+  mix-blend-mode: overlay;
+  animation: ip-noise 0.7s steps(2) infinite;
+}
+
+@keyframes ip-noise {
+  0% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(-8px,5px,0); }
+  100% { transform: translate3d(4px,-6px,0); }
+}
+
+.ip-topline {
+  position: absolute;
+  z-index: 3;
+  top: 18px;
+  left: 22px;
+  right: 22px;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(245,240,230,0.58);
+  font-size: 9px;
+}
+
+.ip-title-block {
+  position: absolute;
+  z-index: 3;
+  left: 32px;
+  top: 64px;
+}
+
+.ip-title-block small {
+  color: var(--ip-color, #5ab038);
+  font-size: 9px;
+}
+
+.ip-title-block h1 {
+  margin: 4px 0 0;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 5vw, 72px);
+  letter-spacing: 0.08em;
+  color: #f5f0e6;
+  text-shadow: 0 0 22px rgba(0,0,0,0.72);
+}
+
+.ip-artifact,
+.ip-act-keys,
+.ip-lyrics-engine {
+  position: absolute;
+  z-index: 4;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.52);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 28px rgba(0,0,0,0.3);
+}
+
+.ip-artifact {
+  left: 32px;
+  bottom: 118px;
+  width: min(360px, 36vw);
+  padding: 16px 18px;
+  border-left: 2px solid var(--ip-color, #5ab038);
+}
+
+.ip-artifact span,
+.ip-act-keys span,
+.ip-lyrics-engine span {
+  display: block;
+  color: var(--ip-color, #5ab038);
+  font-size: 8px;
+  margin-bottom: 8px;
+}
+
+.ip-artifact p,
+.ip-lyrics-engine p {
+  margin: 0;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: rgba(245,240,230,0.88);
+  line-height: 1.55;
+}
+
+.ip-act-keys {
+  right: 32px;
+  top: 116px;
+  width: 280px;
+  padding: 16px 18px;
+  border-right: 2px solid var(--ip-color, #5ab038);
+}
+
+.ip-act-keys ol {
+  margin: 0;
+  padding-left: 20px;
+  color: rgba(245,240,230,0.76);
+  line-height: 1.8;
+  font-size: 13px;
+}
+
+.ip-logo-wrap {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 48%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s linear;
+}
+
+.ip-logo-orbit {
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--ip-color, #5ab038);
+  border-radius: 50%;
+  box-shadow: 0 0 34px var(--ip-color, #5ab038), inset 0 0 30px rgba(255,255,255,0.05);
+  animation: ip-spin 10s linear infinite;
+}
+
+@keyframes ip-spin { to { transform: rotate(360deg); } }
+
+.ip-radial-bars {
+  position: absolute;
+  inset: 0;
+  transform: translate(140px,140px);
+}
+
+.ip-radial-bars span {
+  position: absolute;
+  width: 2px;
+  transform-origin: center 112px;
+  background: var(--ip-color, #5ab038);
+  border-radius: 999px;
+  box-shadow: 0 0 10px var(--ip-color, #5ab038);
+  transition: height 0.08s linear, opacity 0.08s linear;
+}
+
+.ip-logo-core {
+  position: absolute;
+  inset: 64px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%;
+  background: rgba(0,0,0,0.72);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 18px;
+}
+
+.ip-logo-core strong {
+  font-family: 'Cinzel', serif;
+  color: #f5f0e6;
+  letter-spacing: 0.12em;
+  font-size: 14px;
+}
+
+.ip-logo-core small {
+  margin-top: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--ip-color, #5ab038);
+  letter-spacing: 0.16em;
+  font-size: 8px;
+}
+
+.ip-logo-core img {
+  max-width: 86%;
+  max-height: 86%;
+  object-fit: contain;
+}
+
+.ip-lyrics-engine {
+  left: 50%;
+  bottom: 108px;
+  transform: translateX(-50%);
+  width: min(560px, 56vw);
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.ip-lyrics-engine p {
+  font-size: clamp(18px, 2.2vw, 32px);
+}
+
+.ip-player {
+  position: absolute;
+  z-index: 5;
+  left: 32px;
+  right: 32px;
+  bottom: 28px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(18px);
+  color: rgba(245,240,230,0.62);
+  font-size: 9px;
+}
+
+.ip-control,
+.ip-play {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.02);
+  color: rgba(245,240,230,0.72);
+  padding: 8px 12px;
+}
+
+.ip-play {
+  border-color: var(--ip-color, #5ab038);
+  color: var(--ip-color, #5ab038);
+  min-width: 82px;
+}
+
+.ip-progress {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.12);
+  cursor: pointer;
+}
+
+.ip-progress > div {
+  height: 100%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 14px var(--ip-color, #5ab038);
+}
+
+@media (max-width: 900px) {
+  .ip-root { flex-direction: column; }
+  .ip-track-selector { width: 100%; height: 150px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .ip-artifact { width: auto; right: 24px; left: 24px; bottom: 148px; }
+  .ip-act-keys { display: none; }
+  .ip-logo-wrap { width: 220px; height: 220px; }
+  .ip-radial-bars { transform: translate(110px,110px); }
+  .ip-radial-bars span { transform-origin: center 88px; }
+  .ip-lyrics-engine { width: auto; left: 24px; right: 24px; transform: none; bottom: 88px; }
+  .ip-player { left: 12px; right: 12px; bottom: 14px; }
+}
