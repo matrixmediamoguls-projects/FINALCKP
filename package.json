@@ -7,9 +7,9 @@
   ],
   "scripts": {
     "bootstrap": "npm install --prefix frontend",
-    "start": "npm --prefix frontend start",
-    "build": "npm --prefix frontend build",
-    "test": "npm --prefix frontend test"
+    "start": "npm --prefix frontend run start",
+    "build": "npm --prefix frontend run build",
+    "test": "npm --prefix frontend run test"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",
