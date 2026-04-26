@@ -17,6 +17,7 @@ import SeekerPage from './pages/SeekerPage';
 import ProtocolChat from './pages/ProtocolChat';
 import GuidedListen from './pages/GuidedListen';
 import ActProtocol from './pages/ActProtocol';
+import ReclamationProtocol from './pages/ReclamationProtocol';
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
 
@@ -84,6 +85,7 @@ function AppRoutes() {
       <Route path="/seeker" element={<ProtectedRoute><SeekerPage /></ProtectedRoute>} />
       <Route path="/protocol" element={<ProtectedRoute><ProtocolChat /></ProtectedRoute>} />
       <Route path="/protocol/:actNumber" element={<ProtectedRoute><ActProtocol /></ProtectedRoute>} />
+      <Route path="/reclamation" element={<ProtectedRoute withShell={false}><ReclamationProtocol /></ProtectedRoute>} />
       <Route path="/act/4" element={<ProtectedRoute><LockedAct /></ProtectedRoute>} />
       <Route path="/act/:actNumber" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
