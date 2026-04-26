@@ -34,6 +34,7 @@
     "@radix-ui/react-tooltip": "^1.2.4",
     "@react-oauth/google": "^0.13.5",
     "axios": "^1.8.4",
+    "build": "^0.1.4",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
