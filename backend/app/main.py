@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import auth, user  # adjust if your paths differ
+from app.routes import auth, user, immersive
 
 app = FastAPI()
 
@@ -17,6 +17,7 @@ app.add_middleware(
 # ✅ ROUTES
 app.include_router(auth.router, prefix="/auth")
 app.include_router(user.router, prefix="/user")
+app.include_router(immersive.router, prefix="/api/immersive")
 
 # ✅ ROOT TEST
 @app.get("/")
