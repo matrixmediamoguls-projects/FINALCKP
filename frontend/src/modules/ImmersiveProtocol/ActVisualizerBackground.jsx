@@ -30,7 +30,11 @@ export default function ActVisualizerBackground({ currentTrack, audioData }) {
       <div
         className="protocol-bg-glow"
         style={{
-          background: `radial-gradient(circle at 50% 45%, ${color}${Math.round((0.2 + intensity * pulse) * 255).toString(16).padStart(2, '0')} 0%, transparent 62%)`,
+          background: `radial-gradient(circle at 50% 45%, ${color}${Math.round(
+            Math.min(1, 0.2 + intensity * pulse) * 255,
+          )
+            .toString(16)
+            .padStart(2, '0')} 0%, transparent 62%)`,
         }}
       />
 
