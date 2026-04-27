@@ -1,94 +1,101 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const smoothStep = (previous, next, easing = 0.15) => previous + (next - previous) * easing;
+const EMPTY_AUDIO_DATA = {
+  frequencyData: [],
+  averageVolume: 0,
+  bassLevel: 0,
+  midLevel: 0,
+  trebleLevel: 0,
+};
 
-export default function useAudioAnalyser() {
+const averageRange = (array, startRatio, endRatio) => {
+  if (!array || array.length === 0) return 0;
+  const start = Math.floor(array.length * startRatio);
+  const end = Math.max(start + 1, Math.floor(array.length * endRatio));
+  let total = 0;
+  for (let i = start; i < end; i += 1) total += array[i] || 0;
+  return total / (end - start) / 255;
+};
+
+export const useAudioAnalyser = () => {
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
   const sourceRef = useRef(null);
-  const frameRef = useRef(null);
-  const dataRef = useRef(new Uint8Array(256));
-  const smoothRef = useRef({ averageVolume: 0, bassLevel: 0, midLevel: 0, trebleLevel: 0 });
-
-  const [audioData, setAudioData] = useState({
-    frequencyData: Array(128).fill(0),
-    averageVolume: 0,
-    bassLevel: 0,
-    midLevel: 0,
-    trebleLevel: 0,
-  });
+  const rafRef = useRef(null);
+  const previousRef = useRef(EMPTY_AUDIO_DATA);
+  const [audioData, setAudioData] = useState(EMPTY_AUDIO_DATA);
 
   const stop = useCallback(() => {
-    if (frameRef.current) cancelAnimationFrame(frameRef.current);
-    frameRef.current = null;
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    setAudioData(EMPTY_AUDIO_DATA);
   }, []);
 
   const tick = useCallback(() => {
     const analyser = analyserRef.current;
     if (!analyser) return;
 
-    analyser.getByteFrequencyData(dataRef.current);
-    const spectrum = dataRef.current;
-    const chunkSize = spectrum.length;
+    const buffer = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(buffer);
 
-    let total = 0;
-    let bass = 0;
-    let mid = 0;
-    let treble = 0;
+    const rawAverage = averageRange(buffer, 0, 1);
+    const rawBass = averageRange(buffer, 0, 0.12);
+    const rawMid = averageRange(buffer, 0.12, 0.55);
+    const rawTreble = averageRange(buffer, 0.55, 1);
 
-    for (let i = 0; i < chunkSize; i += 1) {
-      const value = spectrum[i] / 255;
-      total += value;
-      if (i < chunkSize * 0.2) bass += value;
-      else if (i < chunkSize * 0.65) mid += value;
-      else treble += value;
-    }
+    const previous = previousRef.current;
+    const smooth = (next, prev, factor = 0.78) => prev * factor + next * (1 - factor);
 
-    const averageVolumeRaw = total / chunkSize;
-    const bassRaw = bass / Math.max(1, chunkSize * 0.2);
-    const midRaw = mid / Math.max(1, chunkSize * 0.45);
-    const trebleRaw = treble / Math.max(1, chunkSize * 0.35);
-
-    smoothRef.current = {
-      averageVolume: smoothStep(smoothRef.current.averageVolume, averageVolumeRaw, 0.22),
-      bassLevel: smoothStep(smoothRef.current.bassLevel, bassRaw, 0.2),
-      midLevel: smoothStep(smoothRef.current.midLevel, midRaw, 0.18),
-      trebleLevel: smoothStep(smoothRef.current.trebleLevel, trebleRaw, 0.16),
+    const nextData = {
+      frequencyData: Array.from(buffer),
+      averageVolume: smooth(rawAverage, previous.averageVolume),
+      bassLevel: smooth(rawBass, previous.bassLevel),
+      midLevel: smooth(rawMid, previous.midLevel),
+      trebleLevel: smooth(rawTreble, previous.trebleLevel),
     };
 
-    const sampled = Array.from(spectrum).filter((_, i) => i % 2 === 0).map((n) => n / 255);
-
-    setAudioData({ frequencyData: sampled, ...smoothRef.current });
-    frameRef.current = requestAnimationFrame(tick);
+    previousRef.current = nextData;
+    setAudioData(nextData);
+    rafRef.current = requestAnimationFrame(tick);
   }, []);
 
-  const connect = useCallback((audioElement) => {
+  const connectAudioElement = useCallback(async (audioElement) => {
     if (!audioElement) return;
 
-    const audioContext =
-      audioContextRef.current ||
-      new (window.AudioContext || window.webkitAudioContext)();
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
 
-    audioContextRef.current = audioContext;
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContextClass();
+    }
 
-    if (!sourceRef.current) {
-      sourceRef.current = audioContext.createMediaElementSource(audioElement);
+    if (audioContextRef.current.state === 'suspended') {
+      await audioContextRef.current.resume();
     }
 
     if (!analyserRef.current) {
-      analyserRef.current = audioContext.createAnalyser();
-      analyserRef.current.fftSize = 512;
-      dataRef.current = new Uint8Array(analyserRef.current.frequencyBinCount);
-      sourceRef.current.connect(analyserRef.current);
-      analyserRef.current.connect(audioContext.destination);
+      const analyser = audioContextRef.current.createAnalyser();
+      analyser.fftSize = 1024;
+      analyser.smoothingTimeConstant = 0.82;
+      analyserRef.current = analyser;
     }
 
-    if (audioContext.state === 'suspended') audioContext.resume();
-    stop();
-    frameRef.current = requestAnimationFrame(tick);
-  }, [stop, tick]);
+    if (!sourceRef.current) {
+      sourceRef.current = audioContextRef.current.createMediaElementSource(audioElement);
+      sourceRef.current.connect(analyserRef.current);
+      analyserRef.current.connect(audioContextRef.current.destination);
+    }
+
+    if (!rafRef.current) tick();
+  }, [tick]);
 
   useEffect(() => () => stop(), [stop]);
 
-  return { audioData, connect, stop };
-}
+  return {
+    audioData,
+    connectAudioElement,
+    stopAudioAnalyser: stop,
+  };
+};
