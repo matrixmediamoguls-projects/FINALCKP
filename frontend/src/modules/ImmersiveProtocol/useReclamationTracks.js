@@ -45,9 +45,9 @@ export default function useReclamationTracks() {
   const [error, setError] = useState('');
 
   const config = useMemo(() => {
-    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '';
-    const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '';
-    const r2BaseUrl = process.env.VITE_R2_PUBLIC_BASE_URL || process.env.REACT_APP_R2_PUBLIC_BASE_URL || '';
+    const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || '';
+    const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || '';
+    const r2BaseUrl = process.env.REACT_APP_R2_PUBLIC_BASE_URL || '';
     return { supabaseUrl, supabaseAnonKey, r2BaseUrl };
   }, []);
 
