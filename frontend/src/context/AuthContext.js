@@ -21,18 +21,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const tokenRefreshTimer = useRef(null);
 
-  const checkAuth = useCallback(async () => {
-    try {
-      const response = await axios.get('/auth/me');
-      setUser(response.data);
-      scheduleTokenRefresh();
-    } catch (error) {
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   const scheduleTokenRefresh = useCallback(() => {
     if (tokenRefreshTimer.current) {
       clearTimeout(tokenRefreshTimer.current);
@@ -55,6 +43,18 @@ export const AuthProvider = ({ children }) => {
       }
     }, JWT_EXPIRATION_TIME - REFRESH_BEFORE_EXPIRY);
   }, []);
+
+  const checkAuth = useCallback(async () => {
+    try {
+      const response = await axios.get('/auth/me');
+      setUser(response.data);
+      scheduleTokenRefresh();
+    } catch (error) {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [scheduleTokenRefresh]);
 
   useEffect(() => {
     checkAuth();

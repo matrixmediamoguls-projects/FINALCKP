@@ -1,9 +1,7 @@
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
-import SocialAuthButtons from '../components/SocialAuthButtons';
 
 const HERO_IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/banani-prod.appspot.com/o/reference-images%2F472bbff8-144d-45e0-b298-42659f149878?alt=media&token=0149655e-82d8-4a6a-a53f-a4f395656542';
@@ -20,26 +18,44 @@ const filledInputClass =
 const monoFooterClass = 'font-mono text-[11px] uppercase tracking-[0.32em] text-chroma-text-muted';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [protocolHandle, setProtocolHandle] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [isPending, startTransition] = useTransition();
-  const { login, socialLogin } = useAuth();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    startTransition(async () => {
-      try {
-        await login(email.trim(), password);
+    try {
+      const res = await fetch('http://localhost:8000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: protocolHandle,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      console.log('BACKEND RESPONSE:', data);
+
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        console.log('NAVIGATING NOW');
         navigate('/dashboard');
-      } catch (err) {
-        setError(err.response?.data?.detail || 'Login failed. Please try again.');
+      } else {
+        setError(data.detail || 'Login failed');
       }
-    });
+    } catch (err) {
+      console.error('ERROR:', err);
+      setError('Server error. Check backend.');
+    }
   };
 
   return (
@@ -57,7 +73,6 @@ const Login = () => {
             className="h-full w-full object-cover opacity-85"
           />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,3,3,0)_48%,rgba(3,3,3,0.72)_77%,#030303_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(122,184,41,0.16),transparent_35%),radial-gradient(circle_at_78%_24%,rgba(205,164,52,0.12),transparent_30%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.45))]" />
         </motion.div>
 
         <div className="flex flex-col bg-[#030303]">
@@ -72,83 +87,62 @@ const Login = () => {
                 <div className="flex h-12 w-12 items-center justify-center border border-chroma-gold">
                   <Fingerprint size={24} className="text-chroma-gold" weight="thin" />
                 </div>
+
                 <div className="space-y-2">
-                  <h1 className="font-heading text-[1.95rem] font-bold uppercase tracking-[0.04em] text-white sm:text-[2.15rem]">
+                  <h1 className="font-heading text-[2rem] font-bold uppercase text-white">
                     Chroma Key
                   </h1>
-                  <p className="font-mono text-[13px] tracking-[0.08em] text-chroma-text-secondary">
-                    Protocol Access
-                  </p>
+                  <p className="font-mono text-[13px] text-chroma-text-secondary">Protocol Access</p>
                 </div>
               </div>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 {error && (
-                  <div className="border border-chroma-fire/40 bg-chroma-fire/10 px-4 py-3 text-sm text-chroma-fire">
+                  <div className="border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-400">
                     {error}
                   </div>
                 )}
 
                 <Field
-                  label="Email Address"
-                  id="login-email-input"
-                  type="email"
-                  placeholder="seeker@chromakeyprotocol.com"
-                  value={email}
-                  onChange={setEmail}
-                  filled={Boolean(email)}
+                  label="Protocol Handle"
+                  id="login-handle"
+                  placeholder="Enter your handle"
+                  value={protocolHandle}
+                  onChange={setProtocolHandle}
+                  filled={Boolean(protocolHandle)}
                   required
                 />
 
                 <PasswordField
                   label="Password"
-                  id="login-password-input"
-                  placeholder="Enter your password"
+                  id="login-password"
+                  placeholder="Enter password"
                   value={password}
                   onChange={setPassword}
                   showPassword={showPassword}
-                  onTogglePassword={() => setShowPassword((current) => !current)}
+                  onTogglePassword={() => setShowPassword((p) => !p)}
                   filled={Boolean(password)}
                   required
                 />
 
                 <button
                   type="submit"
-                  data-testid="login-submit-btn"
-                  disabled={isPending}
-                  className="mt-2 flex h-12 w-full items-center justify-center bg-[#7ab829] text-sm font-bold uppercase tracking-[0.12em] text-black transition-all duration-200 hover:bg-[#8dd338] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-2 flex h-12 w-full items-center justify-center bg-[#7ab829] text-sm font-bold uppercase text-black hover:bg-[#8dd338]"
                 >
-                  {isPending ? 'Authenticating...' : 'Access Protocol'}
+                  Access Protocol
                 </button>
               </form>
 
-              <SocialAuthButtons
-                onSocialLogin={async (provider, token) => {
-                  setError('');
-                  try {
-                    await socialLogin(provider, token);
-                    navigate('/dashboard');
-                  } catch (err) {
-                    setError(err.response?.data?.detail || 'Social login failed. Please try again.');
-                  }
-                }}
-                disabled={isPending}
-              />
-
-              <p className="pt-1 text-center text-sm text-chroma-text-secondary">
+              <p className="text-center text-sm text-chroma-text-secondary">
                 New to the Protocol?{' '}
-                <Link
-                  to="/register"
-                  className="text-chroma-gold transition-colors duration-200 hover:text-[#f0cc40]"
-                  data-testid="register-link"
-                >
+                <Link to="/register" className="text-chroma-gold hover:text-[#f0cc40]">
                   Initialize Access
                 </Link>
               </p>
             </motion.div>
           </div>
 
-          <div className={`px-6 pb-8 pt-4 text-center sm:px-10 lg:px-12 ${monoFooterClass}`}>
+          <div className={`px-6 pb-8 pt-4 text-center ${monoFooterClass}`}>
             The Chroma Key Protocol // Musiq Matrix
           </div>
         </div>
@@ -157,29 +151,15 @@ const Login = () => {
   );
 };
 
-const Field = ({
-  id,
-  label,
-  placeholder,
-  value,
-  onChange,
-  type = 'text',
-  filled = false,
-  required = false
-}) => (
+const Field = ({ id, label, placeholder, value, onChange, filled, required }) => (
   <label className="flex flex-col gap-2">
-    <span className="font-mono text-[13px] font-medium tracking-[0.02em] text-[#f4f4f5]">
-      {label}
-      {required ? ' *' : ''}
-    </span>
+    <span className="text-sm text-white">{label}</span>
     <input
       id={id}
-      type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       required={required}
-      data-testid={id}
       className={`${baseInputClass} ${filled ? filledInputClass : emptyInputClass}`}
     />
   </label>
@@ -194,13 +174,10 @@ const PasswordField = ({
   showPassword,
   onTogglePassword,
   filled,
-  required
+  required,
 }) => (
   <label className="flex flex-col gap-2">
-    <span className="font-mono text-[13px] font-medium tracking-[0.02em] text-[#f4f4f5]">
-      {label}
-      {required ? ' *' : ''}
-    </span>
+    <span className="text-sm text-white">{label}</span>
     <div className="relative">
       <input
         id={id}
@@ -209,13 +186,12 @@ const PasswordField = ({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        data-testid={id}
         className={`${baseInputClass} pr-12 ${filled ? filledInputClass : emptyInputClass}`}
       />
       <button
         type="button"
         onClick={onTogglePassword}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#52525b] transition-colors duration-200 hover:text-chroma-gold"
+        className="absolute right-4 top-1/2 -translate-y-1/2"
       >
         {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
       </button>
