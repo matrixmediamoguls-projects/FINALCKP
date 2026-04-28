@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
+import { useAuth } from '../context/AuthContext';
+import SocialAuthButtons from '../components/SocialAuthButtons';
 
 const HERO_IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/banani-prod.appspot.com/o/reference-images%2F472bbff8-144d-45e0-b298-42659f149878?alt=media&token=0149655e-82d8-4a6a-a53f-a4f395656542';
@@ -22,39 +24,32 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
+  const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+    setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: protocolHandle,
-          password,
-        }),
-      });
-
-      const data = await res.json();
-
-      console.log('BACKEND RESPONSE:', data);
-
-      if (res.ok) {
-        localStorage.setItem('token', data.token);
-        console.log('NAVIGATING NOW');
-        navigate('/dashboard');
-      } else {
-        setError(data.detail || 'Login failed');
-      }
+      await login(protocolHandle, password);
+      navigate('/dashboard');
     } catch (err) {
-      console.error('ERROR:', err);
-      setError('Server error. Check backend.');
+      setError(err?.response?.data?.detail || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSocialLogin = async (provider, token) => {
+    setError('');
+    try {
+      await socialLogin(provider, token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err?.response?.data?.detail || 'Google sign-in failed');
     }
   };
 
@@ -127,11 +122,14 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="mt-2 flex h-12 w-full items-center justify-center bg-[#7ab829] text-sm font-bold uppercase text-black hover:bg-[#8dd338]"
+                  disabled={loading}
+                  className="mt-2 flex h-12 w-full items-center justify-center bg-[#7ab829] text-sm font-bold uppercase text-black hover:bg-[#8dd338] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Access Protocol
+                  {loading ? 'Accessing…' : 'Access Protocol'}
                 </button>
               </form>
+
+              <SocialAuthButtons onSocialLogin={handleSocialLogin} disabled={loading} />
 
               <p className="text-center text-sm text-chroma-text-secondary">
                 New to the Protocol?{' '}

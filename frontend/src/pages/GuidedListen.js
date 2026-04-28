@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = import.meta.env.VITE_APP_BACKEND_URL;
 
 const actMeta = [
   { num: 1, roman: 'I', element: 'Earth', title: 'The Fractured Veil', color: 'var(--g3)', hex: '#5ab038', dim: 'var(--gdim)', bg: 'var(--gsurf)', surfGrad: 'linear-gradient(180deg,var(--gsurf),#070c05)', borderGrad: 'linear-gradient(90deg,var(--g3),var(--g4))', desc: 'Awareness. Recognition. Naming what was hidden beneath the surface.' },

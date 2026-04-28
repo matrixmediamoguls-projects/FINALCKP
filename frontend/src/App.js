@@ -21,7 +21,7 @@ import ImmersiveProtocol from './modules/ImmersiveProtocol';
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_APP_BACKEND_URL || 'http://localhost:8000';
 axios.defaults.baseURL = `${API_URL}/api`;
 axios.defaults.withCredentials = false;
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 
 const GoogleIcon = () => (
@@ -10,47 +10,10 @@ const GoogleIcon = () => (
   </svg>
 );
 
-const FacebookIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-    <path d="M18 9a9 9 0 10-10.406 8.892V11.61H5.309V9h2.285V7.017c0-2.256 1.344-3.502 3.4-3.502.984 0 2.014.175 2.014.175v2.215h-1.135c-1.118 0-1.467.694-1.467 1.406V9h2.496l-.399 2.61H10.41v6.282A9.003 9.003 0 0018 9z" fill="#1877F2"/>
-  </svg>
-);
-
-const useFacebookSDK = () => {
-  const [ready, setReady] = useState(false);
-  const initialized = useRef(false);
-
-  useEffect(() => {
-    const appId = process.env.REACT_APP_FACEBOOK_APP_ID;
-    if (!appId || initialized.current) return;
-    initialized.current = true;
-
-    window.fbAsyncInit = () => {
-      window.FB.init({ appId, cookie: true, xfbml: false, version: 'v19.0' });
-      setReady(true);
-    };
-
-    if (!document.getElementById('facebook-jssdk')) {
-      const s = document.createElement('script');
-      s.id = 'facebook-jssdk';
-      s.async = true;
-      s.src = 'https://connect.facebook.net/en_US/sdk.js';
-      document.body.appendChild(s);
-    } else if (window.FB) {
-      setReady(true);
-    }
-  }, []);
-
-  return ready;
-};
-
 const SocialAuthButtons = ({ onSocialLogin, disabled }) => {
-  const fbReady = useFacebookSDK();
   const [googlePending, setGooglePending] = useState(false);
-  const [fbPending, setFbPending] = useState(false);
 
-  const googleConfigured = Boolean(process.env.REACT_APP_GOOGLE_CLIENT_ID);
-  const fbConfigured = Boolean(process.env.REACT_APP_FACEBOOK_APP_ID);
+  const googleConfigured = Boolean(import.meta.env.VITE_APP_GOOGLE_CLIENT_ID);
 
   const handleGoogle = useGoogleLogin({
     onSuccess: async (tok) => {
@@ -64,24 +27,7 @@ const SocialAuthButtons = ({ onSocialLogin, disabled }) => {
     onError: () => setGooglePending(false),
   });
 
-  const handleFacebook = () => {
-    if (!fbReady || !window.FB) return;
-    setFbPending(true);
-    window.FB.login(
-      (res) => {
-        if (res.authResponse) {
-          onSocialLogin('facebook', res.authResponse.accessToken).finally(() =>
-            setFbPending(false)
-          );
-        } else {
-          setFbPending(false);
-        }
-      },
-      { scope: 'email,public_profile' }
-    );
-  };
-
-  if (!googleConfigured && !fbConfigured) return null;
+  if (!googleConfigured) return null;
 
   const btnClass =
     'flex h-12 w-full items-center justify-center gap-3 border border-[#2a2a2e] bg-[#121214] text-sm tracking-[0.04em] text-[#e4e4e7] transition-all duration-200 hover:border-[#52525b] hover:bg-[#18181b] disabled:cursor-not-allowed disabled:opacity-50';
@@ -94,29 +40,15 @@ const SocialAuthButtons = ({ onSocialLogin, disabled }) => {
         <div className="flex-1 border-t border-[#2a2a2e]" />
       </div>
 
-      {googleConfigured && (
-        <button
-          type="button"
-          onClick={() => handleGoogle()}
-          disabled={disabled || googlePending}
-          className={btnClass}
-        >
-          <GoogleIcon />
-          {googlePending ? 'Connecting…' : 'Continue with Google'}
-        </button>
-      )}
-
-      {fbConfigured && (
-        <button
-          type="button"
-          onClick={handleFacebook}
-          disabled={disabled || fbPending || !fbReady}
-          className={btnClass}
-        >
-          <FacebookIcon />
-          {fbPending ? 'Connecting…' : 'Continue with Facebook'}
-        </button>
-      )}
+      <button
+        type="button"
+        onClick={() => handleGoogle()}
+        disabled={disabled || googlePending}
+        className={btnClass}
+      >
+        <GoogleIcon />
+        {googlePending ? 'Connecting…' : 'Continue with Google'}
+      </button>
     </div>
   );
 };
