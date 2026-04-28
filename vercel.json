@@ -6,10 +6,10 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "env": {
-    "VITE_APP_BACKEND_URL": "@vite_app_backend_url",
-    "VITE_APP_SUPABASE_URL": "@vite_app_supabase_url",
-    "VITE_APP_SUPABASE_ANON_KEY": "@vite_app_supabase_anon_key",
-    "VITE_APP_R2_PUBLIC_BASE_URL": "@vite_app_r2_public_base_url",
-    "VITE_APP_GOOGLE_CLIENT_ID": "@vite_app_google_client_id"
+    "VITE_APP_BACKEND_URL": "https://chromakeyprotocol-production.up.railway.app",
+    "VITE_APP_SUPABASE_URL": "https://crhlirtaxkmkpbdnkjvc.supabase.co",
+    "VITE_APP_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyaGxpcnRheGtta3BiZG5ranZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNzc2MzEsImV4cCI6MjA5MTk1MzYzMX0.PjmJ_e6FvuxI2VWDR7hM1_uYU5ZIJMp-TaaYJ25wgyA",
+    "VITE_APP_R2_PUBLIC_BASE_URL": "https://media.chromakeyprotocol.com",
+    "VITE_APP_GOOGLE_CLIENT_ID": "74836963939-4h963m16oodc6ndov3j2r7c9dptnob76.apps.googleusercontent.com"
   }
 }
