@@ -17,6 +17,7 @@ import ProtocolChat from './pages/ProtocolChat';
 import GuidedListen from './pages/GuidedListen';
 import ActProtocol from './pages/ActProtocol';
 import ImmersiveProtocol from './modules/ImmersiveProtocol';
+import LyricsProtocol from './components/LyricsProtocol';
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -74,6 +75,7 @@ function AppRoutes() {
       <Route path="/act/4" element={<ProtectedRoute><LockedAct /></ProtectedRoute>} />
       <Route path="/act/:actNumber" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
+      <Route path="/lyrics-protocol" element={<LyricsProtocol />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
