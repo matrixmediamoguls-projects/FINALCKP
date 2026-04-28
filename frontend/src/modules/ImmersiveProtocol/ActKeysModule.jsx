@@ -1,6 +1,8 @@
 import React from 'react';
+import { useProtocol } from './context/ProtocolContext';
 
-export default function ActKeysModule({ currentTrack }) {
+export default function ActKeysModule() {
+  const { currentTrack } = useProtocol();
   if (!currentTrack?.act_keys_enabled) return null;
 
   return (

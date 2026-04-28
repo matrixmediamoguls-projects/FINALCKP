@@ -1,75 +1,49 @@
-import React, { useMemo, useRef, useState } from 'react';
-import AudioEngine from './AudioEngine';
+import React from 'react';
+import { useProtocol } from './context/ProtocolContext';
 
-const formatTime = (seconds) => {
-  if (!Number.isFinite(seconds)) return '0:00';
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-  return `${mins}:${secs}`;
+const fmt = (s) => {
+  if (!s || Number.isNaN(s)) return '0:00';
+  return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 };
 
-export default function ProtocolPlayer({ tracks, currentTrackIndex, setCurrentTrackIndex, connectAudio }) {
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-
-  const currentTrack = tracks[currentTrackIndex];
-
-  const controls = useMemo(() => ({
-    previous: () => setCurrentTrackIndex((index) => (index - 1 + tracks.length) % tracks.length),
-    next: () => setCurrentTrackIndex((index) => (index + 1) % tracks.length),
-  }), [setCurrentTrackIndex, tracks.length]);
-
-  const togglePlayback = async () => {
-    if (!audioRef.current) return;
-    if (audioRef.current.paused) {
-      await audioRef.current.play();
-      connectAudio(audioRef.current);
-      setIsPlaying(true);
-    } else {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const onSeek = (event) => {
-    if (!audioRef.current || !duration) return;
-    const next = Number(event.target.value);
-    audioRef.current.currentTime = (next / 1000) * duration;
-    setProgress(next);
-  };
+export default function ProtocolPlayer() {
+  const {
+    currentTrack,
+    isPlaying,
+    togglePlay,
+    nextTrack,
+    prevTrack,
+    progress,
+    duration,
+    currentTime,
+    handleSeek,
+    audioRef,
+    handleTimeUpdate,
+    handleLoadedMetadata,
+  } = useProtocol();
 
   return (
-    <footer className="protocol-player">
-      <AudioEngine
+    <footer className="ip-player">
+      <audio
         ref={audioRef}
-        src={currentTrack?.audio_url}
-        onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
-        onTimeUpdate={() => {
-          const current = audioRef.current?.currentTime || 0;
-          setProgress(duration ? (current / duration) * 1000 : 0);
-        }}
-        onEnded={controls.next}
+        crossOrigin="anonymous"
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={nextTrack}
       />
-
-      <div className="protocol-player-now">
-        <span className="kicker">NOW PLAYING</span>
-        <h3>{currentTrack?.title || 'NO TRACK'}</h3>
-        <p>{currentTrack?.act || ''}</p>
+      <button onClick={prevTrack} className="ip-control" type="button">PREV</button>
+      <button onClick={togglePlay} className="ip-play" type="button">{isPlaying ? 'PAUSE' : 'PLAY'}</button>
+      <button onClick={nextTrack} className="ip-control" type="button">NEXT</button>
+      <div
+        className="ip-progress"
+        onClick={handleSeek}
+        role="button"
+        tabIndex={0}
+        onKeyDown={() => {}}
+      >
+        <div style={{ width: `${progress}%`, background: currentTrack?.primary_color }} />
       </div>
-
-      <div className="protocol-player-controls">
-        <button type="button" onClick={controls.previous}>Prev</button>
-        <button type="button" onClick={togglePlayback}>{isPlaying ? 'Pause' : 'Play'}</button>
-        <button type="button" onClick={controls.next}>Next</button>
-      </div>
-
-      <div className="protocol-player-timeline">
-        <span>{formatTime((progress / 1000) * duration)}</span>
-        <input type="range" min="0" max="1000" value={progress} onChange={onSeek} />
-        <span>{formatTime(duration)}</span>
-      </div>
+      <span>{fmt(currentTime)} / {fmt(duration)}</span>
     </footer>
   );
 }

@@ -1,23 +1,29 @@
 import React from 'react';
-import ActVisualizerBackground from './ActVisualizerBackground';
-import ActLogoVisualizer from './ActLogoVisualizer';
-import LyricsEngine from './LyricsEngine';
-import SonicArtifactDeclaration from './SonicArtifactDeclaration';
+import { useProtocol } from './context/ProtocolContext';
+import ActBackground from './background/ActBackground';
+import AudioVisualizer from './modules/AudioVisualizer';
+import LyricsProtocol from './modules/LyricsProtocol';
+import SonicArtifact from './modules/SonicArtifact';
 import ActKeysModule from './ActKeysModule';
 
-export default function ProtocolShell({ currentTrack, audioData }) {
-  const reactiveStrength = (audioData.averageVolume || 0) * ((currentTrack?.intensity || 50) / 100);
+export default function ProtocolShell({ children }) {
+  const { currentTrack, error } = useProtocol();
 
   return (
-    <div className="protocol-shell" style={{ '--accent': currentTrack?.primary_color || '#ff1a2d' }}>
-      <ActVisualizerBackground currentTrack={currentTrack} audioData={audioData} />
-
-      <div className="protocol-content-layer">
-        <SonicArtifactDeclaration currentTrack={currentTrack} />
-        <ActLogoVisualizer currentTrack={currentTrack} audioData={audioData} />
-        <ActKeysModule currentTrack={currentTrack} />
-        <LyricsEngine currentTrack={currentTrack} reactiveStrength={reactiveStrength} />
+    <main className="protocol-shell" style={{ '--accent': currentTrack?.primary_color || '#ff1a2d' }}>
+      <ActBackground />
+      <div className="protocol-topline">
+        <span>MUSIQ MATRIX MAINFRAME</span>
+        <span>{currentTrack?.visual_mode || ''}</span>
       </div>
-    </div>
+      <div className="protocol-content">
+        <SonicArtifact />
+        <AudioVisualizer />
+        <ActKeysModule />
+        <LyricsProtocol />
+      </div>
+      {error && <div className="ip-error">{error}</div>}
+      {children}
+    </main>
   );
 }

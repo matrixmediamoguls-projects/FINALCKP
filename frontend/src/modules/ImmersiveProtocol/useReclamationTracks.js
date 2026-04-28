@@ -35,7 +35,8 @@ const normalizeTrack = (raw, r2BaseUrl) => ({
   act_keys: safeArray(raw.act_keys),
   audio_url: `${(r2BaseUrl || '').replace(/\/$/, '')}/audio/reclamation/${raw.audio_file_name || ''}`,
   shell_image_url: resolveR2Url(r2BaseUrl, raw.shell_image),
-  act_logo_image_url: resolveR2Url(r2BaseUrl, raw.act_logo_image),
+  act_background_image: resolveR2Url(r2BaseUrl, raw.shell_image || raw.background_image || ''),
+  act_logo_asset: resolveR2Url(r2BaseUrl, raw.act_logo_asset || raw.act_logo_image || ''),
   background_image_url: resolveR2Url(r2BaseUrl, raw.background_image),
 });
 

@@ -1,19 +1,24 @@
 import React from 'react';
+import { useProtocol } from './context/ProtocolContext';
 
-export default function TrackSelector({ tracks, currentTrackId, onSelect }) {
+export default function TrackSelector() {
+  const { tracks, currentIndex, selectTrack } = useProtocol();
+
   return (
-    <div className="track-selector">
-      {tracks.map((track) => (
+    <aside className="ip-track-selector">
+      <div className="ip-panel-label">RECLAMATION MANIFEST</div>
+      {tracks.map((track, index) => (
         <button
           key={track.id}
-          className={`track-chip ${track.id === currentTrackId ? 'is-active' : ''}`}
-          onClick={() => onSelect(track.id)}
+          className={index === currentIndex ? 'active' : ''}
+          onClick={() => selectTrack(index)}
           type="button"
         >
-          <span>{track.title}</span>
-          <small>{track.act} · {track.release_status || 'draft'}</small>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{track.title}</strong>
+          <small>{track.act} · {track.release_status}</small>
         </button>
       ))}
-    </div>
+    </aside>
   );
 }
