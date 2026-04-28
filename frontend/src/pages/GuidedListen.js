@@ -19,7 +19,7 @@ const shareBtnStyle = {
 };
 
 const ShareButtons = ({ track, act }) => {
-  const text = `Listening to "${track.name}" from Balanced Elementals — Act ${act.roman} · ${act.element}`;
+  const text = `Listening to "${track.name}" from Chroma Key Protocol — Act ${act.roman} · ${act.element}`;
   const url = window.location.href;
   return (
     <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -69,7 +69,7 @@ const ImmersionLanding = () => {
           Musiq Matrix
         </div>
         <div data-testid="immersion-title" style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(18px,3vw,30px)', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--act)' }}>
-          Balanced Elementals
+          Chroma Key Protocol
         </div>
         <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)', marginTop: 4 }}>
           The Chroma Key Protocol

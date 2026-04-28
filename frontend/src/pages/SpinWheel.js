@@ -92,7 +92,7 @@ const SpinWheel = () => {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
         <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 6 }}>
-          Balanced Elementals · Bonus System
+          Chroma Key Protocol · Bonus System
         </div>
         <div style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(20px,3vw,32px)', fontWeight: 600, letterSpacing: '0.12em', color: 'var(--white)' }}>
           The Wheel of Transmissions
@@ -245,14 +245,14 @@ const SpinWheel = () => {
             <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, alignItems: 'center' }}>
               <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Share</span>
               <button data-testid="wheel-share-x" onClick={() => {
-                const text = `The Wheel spoke: "${result.name}" — Balanced Elementals`;
+                const text = `The Wheel spoke: "${result.name}" — Chroma Key Protocol`;
                 window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank', 'width=550,height=420');
               }} style={shareStyle}>X</button>
               <button data-testid="wheel-share-fb" onClick={() => {
                 window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(`The Wheel spoke: "${result.name}"`)}`, '_blank', 'width=550,height=420');
               }} style={shareStyle}>FB</button>
               <button data-testid="wheel-share-copy" onClick={() => {
-                navigator.clipboard.writeText(`The Wheel spoke: "${result.name}" — Balanced Elementals\n${window.location.href}`);
+                navigator.clipboard.writeText(`The Wheel spoke: "${result.name}" — Chroma Key Protocol\n${window.location.href}`);
                 alert('Copied to clipboard!');
               }} style={shareStyle}>&#x2398;</button>
             </div>

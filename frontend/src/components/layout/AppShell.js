@@ -220,7 +220,7 @@ const AppShell = ({ children }) => {
             whiteSpace: "nowrap",
           }}
         >
-          Balanced Elementals
+          Chroma Key Protocol
         </div>
 
         {!isMobile && (
