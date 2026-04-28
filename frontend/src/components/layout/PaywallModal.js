@@ -55,7 +55,7 @@ const PaywallModal = ({ isOpen, onClose }) => {
             Choose your path to unlock Acts III & beyond
           </div>
           <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', color: 'var(--muted)', marginTop: 4, textTransform: 'uppercase' }}>
-            Musiq Matrix presents: Balanced Elementals
+            Musiq Matrix presents: Chroma Key Protocol
           </div>
         </div>
 

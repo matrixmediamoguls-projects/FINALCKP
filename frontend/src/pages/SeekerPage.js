@@ -11,7 +11,7 @@ const chapters = [
 
 const framework = [
   { label: 'Input', title: 'Chaos · Trauma', desc: 'Systemic compression. Inherited limitation. The fracture that initiates.' },
-  { label: 'Process', title: 'The Four-Stage Balanced Elementals System', desc: 'Earth · Fire · Water · Air — Awareness · Reclamation · Reflection · Sovereignty' },
+  { label: 'Process', title: 'The Four-Stage Chroma Key Protocol System', desc: 'Earth · Fire · Water · Air — Awareness · Reclamation · Reflection · Sovereignty' },
   { label: 'Output', title: 'Coherence · Sovereignty', desc: 'Structural integrity. Personal alchemy. The integrated self.' },
 ];
 

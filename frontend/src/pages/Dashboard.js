@@ -482,7 +482,7 @@ const Dashboard = () => {
           }}>
             <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#D4AF37', boxShadow: '0 0 8px #D4AF37' }} />
             <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.42em', textTransform: 'uppercase', color: '#D4AF37' }}>
-              Musiq Matrix · Balanced Elementals
+              Musiq Matrix · Chroma Key Protocol
             </span>
             <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#D4AF37', boxShadow: '0 0 8px #D4AF37' }} />
           </div>
