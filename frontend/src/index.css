@@ -44,6 +44,9 @@ body::before {
 @keyframes trailPulse { 0%,100%{opacity:0.5;transform:scale(1);} 50%{opacity:1;transform:scale(1.6);} }
 @keyframes trailSpark { 0%,100%{opacity:0.4;transform:scale(0.8);} 50%{opacity:1;transform:scale(1.2);} }
 @keyframes popupCycle { 0%{opacity:0;transform:translateY(8px);} 8%{opacity:1;transform:translateY(0);} 85%{opacity:1;transform:translateY(0);} 100%{opacity:0;transform:translateY(-6px);} }
+@keyframes heroFadeIn { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+@keyframes cardRise { from{opacity:0;transform:translateY(22px) scale(0.97);} to{opacity:1;transform:translateY(0) scale(1);} }
+@keyframes glowPulse { 0%,100%{box-shadow:0 0 16px currentColor;} 50%{box-shadow:0 0 32px currentColor, 0 0 60px currentColor;} }
 
 /* Font utility classes */
 .font-cinzel { font-family: 'Cinzel', serif; }
