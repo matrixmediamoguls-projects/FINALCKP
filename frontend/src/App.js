@@ -1,34 +1,36 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import axios from 'axios';
+import { useAuth } from './context/AuthContext';
 
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import ActPage from './pages/ActPage';
-import LockedAct from './pages/LockedAct';
-import Journal from './pages/Journal';
-import SpinWheel from './pages/SpinWheel';
-import Onboarding from './pages/Onboarding';
-import AdminPanel from './pages/AdminPanel';
-import SeekerPage from './pages/SeekerPage';
-import ProtocolChat from './pages/ProtocolChat';
-import GuidedListen from './pages/GuidedListen';
-import ActProtocol from './pages/ActProtocol';
-import ImmersiveProtocol from './modules/ImmersiveProtocol';
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const ActPage = lazy(() => import('./pages/ActPage'));
+const LockedAct = lazy(() => import('./pages/LockedAct'));
+const Journal = lazy(() => import('./pages/Journal'));
+const SpinWheel = lazy(() => import('./pages/SpinWheel'));
+const Onboarding = lazy(() => import('./pages/Onboarding'));
+const AdminPanel = lazy(() => import('./pages/AdminPanel'));
+const SeekerPage = lazy(() => import('./pages/SeekerPage'));
+const ProtocolChat = lazy(() => import('./pages/ProtocolChat'));
+const GuidedListen = lazy(() => import('./pages/GuidedListen'));
+const ActProtocol = lazy(() => import('./pages/ActProtocol'));
+const ImmersiveProtocol = lazy(() => import('./modules/ImmersiveProtocol'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
 
 const API_URL = import.meta.env.VITE_APP_BACKEND_URL || 'http://localhost:8000';
 axios.defaults.baseURL = `${API_URL}/api`;
-axios.defaults.withCredentials = false;
+axios.defaults.withCredentials = true;
 
 const ProtectedRoute = ({ children, withShell = true }) => {
-  const token = localStorage.getItem('token');
+  const { user, loading } = useAuth();
 
-  if (!token) return <Navigate to="/login" replace />;
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" replace />;
 
   if (withShell) return <AppShellWrapper>{children}</AppShellWrapper>;
   return children;
@@ -54,12 +56,14 @@ const AppShellWrapper = ({ children }) => {
 };
 
 function AppRoutes() {
-  const token = localStorage.getItem('token');
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
 
   return (
     <Routes>
-      <Route path="/login" element={token ? <Navigate to="/dashboard" replace /> : <Login />} />
-      <Route path="/register" element={token ? <Navigate to="/dashboard" replace /> : <Register />} />
+      <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
+      <Route path="/register" element={user ? <Navigate to="/dashboard" replace /> : <Register />} />
       <Route path="/onboarding" element={<ProtectedRoute withShell={false}><Onboarding /></ProtectedRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />
@@ -84,7 +88,9 @@ function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <AppRoutes />
+        <Suspense fallback={null}>
+          <AppRoutes />
+        </Suspense>
       </BrowserRouter>
     </ErrorBoundary>
   );

@@ -6,9 +6,10 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "env": {
-    "REACT_APP_BACKEND_URL": "@react_app_backend_url",
-    "REACT_APP_SUPABASE_URL": "@react_app_supabase_url",
-    "REACT_APP_SUPABASE_ANON_KEY": "@react_app_supabase_anon_key",
-    "REACT_APP_R2_PUBLIC_BASE_URL": "@react_app_r2_public_base_url"
+    "VITE_APP_BACKEND_URL": "@vite_app_backend_url",
+    "VITE_APP_SUPABASE_URL": "@vite_app_supabase_url",
+    "VITE_APP_SUPABASE_ANON_KEY": "@vite_app_supabase_anon_key",
+    "VITE_APP_R2_PUBLIC_BASE_URL": "@vite_app_r2_public_base_url",
+    "VITE_APP_GOOGLE_CLIENT_ID": "@vite_app_google_client_id"
   }
 }

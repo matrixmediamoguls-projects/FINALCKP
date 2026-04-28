@@ -1,11 +1,38 @@
-nohup: ignoring input
 INFO:     Will watch for changes in these directories: ['/workspaces/FINALCKP/backend']
-INFO:     Uvicorn running on http://127.0.0.1:5000 (Press CTRL+C to quit)
-INFO:     Started reloader process [112660] using StatReload
-INFO:     Started server process [112666]
+INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+INFO:     Started reloader process [109178] using StatReload
+INFO:     Started server process [109180]
 INFO:     Waiting for application startup.
-2026-04-24 04:17:29,552 - server - WARNING - R2 Cloudflare credentials not set. Storage might fail.
-2026-04-24 04:17:29,552 - server - INFO - Object storage initialized successfully
+2026-04-28 14:02:03,070 - server - WARNING - R2 Cloudflare credentials not set. Storage might fail.
+2026-04-28 14:02:03,071 - server - INFO - Object storage initialized successfully
 INFO:     Application startup complete.
-INFO:     127.0.0.1:43202 - "GET / HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:34704 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+WARNING:  Invalid HTTP request received.
+INFO:     127.0.0.1:46690 - "HEAD / HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     127.0.0.1:46826 - "GET / HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
