@@ -20,7 +20,7 @@ const filledInputClass =
 const monoFooterClass = 'font-mono text-[11px] uppercase tracking-[0.32em] text-chroma-text-muted';
 
 const Login = () => {
-  const [protocolHandle, setProtocolHandle] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -34,7 +34,7 @@ const Login = () => {
     setError('');
     setLoading(true);
     try {
-      await login(protocolHandle, password);
+      await login(email, password);
       navigate('/dashboard');
     } catch (err) {
       setError(err?.response?.data?.detail || 'Login failed');
@@ -99,12 +99,13 @@ const Login = () => {
                 )}
 
                 <Field
-                  label="Protocol Handle"
-                  id="login-handle"
-                  placeholder="Enter your handle"
-                  value={protocolHandle}
-                  onChange={setProtocolHandle}
-                  filled={Boolean(protocolHandle)}
+                  label="Email Address"
+                  id="login-email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={setEmail}
+                  filled={Boolean(email)}
                   required
                 />
 
@@ -149,11 +150,12 @@ const Login = () => {
   );
 };
 
-const Field = ({ id, label, placeholder, value, onChange, filled, required }) => (
+const Field = ({ id, label, placeholder, value, onChange, type = 'text', filled, required }) => (
   <label className="flex flex-col gap-2">
     <span className="text-sm text-white">{label}</span>
     <input
       id={id}
+      type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
