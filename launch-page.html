@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chroma Key Protocol | Central Launch</title>
+  <style>
+    :root {
+      --bg: #030a26;
+      --panel: rgba(1, 11, 37, 0.9);
+      --line: rgba(25, 161, 255, 0.25);
+      --accent: #22b8ff;
+      --accent-soft: #7fd8ff;
+      --text: #e6f3ff;
+      --muted: #5ba4cc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(9, 97, 168, 0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(9, 97, 168, 0.22) 1px, transparent 1px),
+        radial-gradient(circle at 50% 20%, #0d1e58 0%, var(--bg) 55%);
+      background-size: 64px 64px, 64px 64px, cover;
+      letter-spacing: 0.07em;
+    }
+    .page {
+      min-height: 100vh;
+      padding: 2.25rem;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 2rem;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      color: var(--accent);
+      font-size: .9rem;
+      text-transform: uppercase;
+    }
+    .hero {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .hero small { color: var(--accent-soft); display:block; margin-bottom: .9rem; }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 5rem);
+      text-shadow: 0 0 24px rgba(125, 207, 255, .35);
+      letter-spacing: .22em;
+    }
+    .module-shell {
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 1.75rem;
+      background: var(--panel);
+      box-shadow: inset 0 0 0 1px rgba(9, 113, 168, 0.15), 0 0 28px rgba(18, 132, 216, 0.1);
+    }
+    .module-shell h2 {
+      text-align: center;
+      color: var(--accent);
+      margin: 0 0 1.5rem;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 1.2rem;
+    }
+    .card {
+      border: 1px solid rgba(32, 158, 233, 0.45);
+      border-radius: 28px;
+      padding: 1.4rem;
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: rgba(2, 12, 44, 0.65);
+    }
+    .card.active {
+      border-color: rgba(235, 247, 255, 0.95);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 0 34px rgba(170, 219, 255, 0.16);
+    }
+    .card h3 { margin: 0; color: var(--accent); font-size: 2rem; }
+    .card.active h3 { color: var(--text); }
+    .subtitle { color: var(--accent); opacity: .85; }
+    .ring {
+      width: 122px; height: 122px; border-radius: 50%;
+      border: 2px solid rgba(57, 180, 250, .7);
+      margin: 2rem auto;
+      display: grid; place-items: center;
+      color: var(--accent);
+      font-size: 2rem;
+    }
+    .active .ring { border-color: #e6f3ff; color: #ffffff; box-shadow: 0 0 0 6px rgba(230,243,255,0.15); }
+    .progress {
+      border-top: 3px solid rgba(56, 183, 255, .75);
+      position: relative;
+      margin-top: .5rem;
+      color: var(--accent-soft);
+      font-size: .85rem;
+      display:flex;
+      justify-content: space-between;
+      padding-top: .6rem;
+    }
+    .progress::before {
+      content: "";
+      position: absolute;
+      inset: -3px auto auto 0;
+      width: var(--p, 100%);
+      border-top: 3px solid #fff;
+    }
+    .cta-wrap { text-align: center; margin-top: 1rem; }
+    .cta {
+      border: 1px solid #d6e9ff;
+      color: #fff;
+      background: transparent;
+      font: inherit;
+      letter-spacing: .18em;
+      padding: .9rem 2.8rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .footer { display:flex; justify-content:space-between; color: var(--accent); font-size: .85rem; }
+    @media (max-width: 1200px) { .cards { grid-template-columns: repeat(2, minmax(230px, 1fr)); } }
+    @media (max-width: 700px) {
+      .page { padding: 1rem; }
+      .cards { grid-template-columns: 1fr; }
+      .hero h1 { letter-spacing: .09em; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div>■ STATUS: ACTIVE<br/><span style="opacity:.7">ACT THREE: THE CRUCIBLE</span></div>
+      <div style="text-align:right">MEMORY LOAD ▮▮▮▮▮<br/><span style="color:#fff">24:88:91</span></div>
+    </header>
+
+    <section class="hero">
+      <small>INITIALIZING PROTOCOL</small>
+      <h1>CHROMA KEY PROTOCOL</h1>
+    </section>
+
+    <section class="module-shell" aria-label="Module selection panel">
+      <h2>MODULE SELECT</h2>
+      <div class="cards">
+        <article class="card">
+          <div>
+            <h3>ACT I</h3>
+            <p class="subtitle">THE SEED</p>
+            <div class="ring">◌</div>
+          </div>
+          <div class="progress" style="--p:100%"><span>COMPLETE</span><span>100%</span></div>
+        </article>
+
+        <article class="card">
+          <div>
+            <h3>ACT II</h3>
+            <p class="subtitle">THE REFLECTION</p>
+            <div class="ring">◍</div>
+          </div>
+          <div class="progress" style="--p:100%"><span>COMPLETE</span><span>100%</span></div>
+        </article>
+
+        <article class="card active">
+          <div>
+            <h3>ACT III</h3>
+            <p class="subtitle" style="color:#d2ebff">THE CRUCIBLE</p>
+            <div class="ring">◉</div>
+          </div>
+          <div class="progress" style="--p:12%"><span>IN PROGRESS</span><span>12%</span></div>
+          <div class="cta-wrap"><button class="cta">ENTER</button></div>
+        </article>
+
+        <article class="card">
+          <div>
+            <h3>ACT IV</h3>
+            <p class="subtitle">THE SPARK</p>
+            <div class="ring">○</div>
+          </div>
+          <div class="progress" style="--p:0%"><span>ENCRYPTED</span><span>0%</span></div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>SELF ANALYSIS: ACTIVE</div>
+      <div>NODE.03 [ACTIVE]</div>
+    </footer>
+  </main>
+</body>
+</html>
