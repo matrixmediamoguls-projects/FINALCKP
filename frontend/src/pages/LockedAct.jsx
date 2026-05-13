@@ -10,7 +10,7 @@ const LockedAct = () => {
       <div className="sticky top-0 z-50 bg-chroma-base/80 backdrop-blur-md border-b border-chroma-border-default">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16">
-            <Link to="/dashboard" data-testid="back-to-dashboard">
+            <Link to="/launchmodule" data-testid="back-to-launchmodule">
               <Button variant="ghost" size="icon" className="text-chroma-text-muted hover:text-chroma-gold">
                 <ArrowLeft size={20} />
               </Button>
@@ -89,8 +89,8 @@ const LockedAct = () => {
 
           {/* Back Button */}
           <div className="mt-12">
-            <Link to="/dashboard">
-              <Button className="btn-gold" data-testid="return-dashboard-btn">
+            <Link to="/launchmodule">
+              <Button className="btn-gold" data-testid="return-launchmodule-btn">
                 <ArrowLeft size={18} className="mr-2" />
                 Return to Protocol
               </Button>

@@ -125,11 +125,11 @@ const ActProtocol = () => {
 
   useEffect(() => {
     if (!actDef) {
-      navigate("/dashboard", { replace: true });
+      navigate("/launchmodule", { replace: true });
       return;
     }
     if (!canAccessAct(user, actNum)) {
-      navigate(actNum === 4 ? "/act/4" : "/dashboard?showUnlock=true", { replace: true });
+      navigate(actNum === 4 ? "/act/4" : "/acts?showUnlock=true", { replace: true });
       return;
     }
     loadStepProgress();
@@ -242,7 +242,7 @@ const ActProtocol = () => {
         actDef={actDef}
         declaration={getStepState(4)?.text || "Protocol complete. The declaration lives in the record now."}
         onWheel={() => navigate("/wheel")}
-        onDashboard={() => navigate("/dashboard")}
+        onLaunchModule={() => navigate("/launchmodule")}
         onReview={() => {
           setCompleted(false);
           setStepWithUrl(0, true);

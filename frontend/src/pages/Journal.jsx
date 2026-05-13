@@ -143,7 +143,7 @@ const Journal = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <Link to="/dashboard" data-testid="back-to-dashboard">
+              <Link to="/launchmodule" data-testid="back-to-launchmodule">
                 <Button variant="ghost" size="icon" className="text-chroma-text-muted hover:text-chroma-gold">
                   <ArrowLeft size={20} />
                 </Button>

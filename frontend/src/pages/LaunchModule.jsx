@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import "./LaunchDashboard.css";
+import "./LaunchModule.css";
 
 import act1Orb from "../public/emblems/act_one_emblem.gif";
 import act2Orb from "../public/emblems/act_two_emblem.gif";
@@ -66,7 +66,6 @@ const PILLARS = [
     colorClass: "pillar-green",
     tagline: "REALITY IS\nNOT AS IT SEEMS.",
     footerItems: ["DISRUPT", "DISCOVER", "DECODE"],
-    path: "/protocol/1",
     orbSrc: act1Orb,
   },
   {
@@ -77,7 +76,6 @@ const PILLARS = [
     colorClass: "pillar-orange",
     tagline: "SEE YOURSELF.\nBREAK THE PATTERN.",
     footerItems: ["ANALYZE", "REFLECT", "TRANSCEND"],
-    path: "/protocol/2",
     orbSrc: act2Orb,
   },
   {
@@ -88,7 +86,6 @@ const PILLARS = [
     colorClass: "pillar-blue",
     tagline: "RECLAIM WHO YOU ARE.\nREWRITE THE SYSTEM.",
     footerItems: ["ADAPT", "FLOW", "CONTROL"],
-    path: "/protocol/3",
     orbSrc: act3Orb,
   },
   {
@@ -99,7 +96,6 @@ const PILLARS = [
     colorClass: "pillar-gold",
     tagline: "CODE YOUR REALITY.\nENGINEER THE FUTURE.",
     footerItems: ["CREATE", "ENGINEER", "EVOLVE"],
-    path: "/protocol/4",
     orbSrc: act4Orb,
   },
 ];
@@ -184,9 +180,9 @@ const LaunchPillar = ({ pillar, onLaunch, index }) => {
   );
 };
 
-/* ── Dashboard (main export) ─────────────────────────────────── */
+/* LaunchModule main export */
 
-const Dashboard = () => {
+const LaunchModule = () => {
   const { checkAuth } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -222,7 +218,8 @@ const Dashboard = () => {
   }, []);
 
   const handleWarpComplete = useCallback(() => {
-    navigate(`/launch-sequence/${warpDest}`);
+    if (!warpDest) return;
+    navigate(`/activation?act=${warpDest}`, { state: { act: warpDest } });
   }, [navigate, warpDest]);
 
   return (
@@ -244,4 +241,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default LaunchModule;

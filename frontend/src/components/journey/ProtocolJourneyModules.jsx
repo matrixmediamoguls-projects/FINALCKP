@@ -115,7 +115,7 @@ export const ProtocolActionFooter = ({ actDef, currentStep, onBack, onAdvance, o
   </footer>
 );
 
-export const ProtocolCompletion = ({ actDef, declaration, onWheel, onDashboard, onReview }) => (
+export const ProtocolCompletion = ({ actDef, declaration, onWheel, onLaunchModule, onReview }) => (
   <section className="protocol-completion" style={{ "--protocol-act": actDef.color }}>
     <div className="protocol-completion-mark">
       <SealCheck size={34} weight="fill" />
@@ -132,7 +132,7 @@ export const ProtocolCompletion = ({ actDef, declaration, onWheel, onDashboard, 
         Spin the Wheel
         <ArrowRight size={14} weight="bold" />
       </button>
-      <button type="button" className="protocol-secondary-action" onClick={onDashboard}>Back to Dashboard</button>
+      <button type="button" className="protocol-secondary-action" onClick={onLaunchModule}>Back to Launch Module</button>
       <button type="button" className="protocol-secondary-action" onClick={onReview}>Review Steps</button>
     </div>
   </section>

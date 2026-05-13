@@ -71,7 +71,7 @@ const Register = () => {
     startTransition(async () => {
       try {
         await register(protocolIdentity, email.trim(), password);
-        navigate('/dashboard');
+        navigate('/launchmodule');
       } catch (err) {
         setError(err.response?.data?.detail || 'Registration failed. Please try again.');
       }
@@ -218,7 +218,7 @@ const Register = () => {
                   setError('');
                   try {
                     await socialLogin(provider, token);
-                    navigate('/dashboard');
+                    navigate('/launchmodule');
                   } catch (err) {
                     setError(err.response?.data?.detail || 'Social login failed. Please try again.');
                   }

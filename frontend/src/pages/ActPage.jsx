@@ -51,7 +51,7 @@ const ActPage = () => {
     const invalidRouteAct = actNumber && !routeAct;
     const invalidQueryAct = isHub && queryActParam && !queryAct;
     if (invalidRouteAct || invalidQueryAct || !act) {
-      navigate("/dashboard", { replace: true });
+      navigate("/launchmodule", { replace: true });
       return;
     }
 
@@ -97,7 +97,7 @@ const ActPage = () => {
 
   const handleProtocol = () => {
     if (!hasAccess) {
-      navigate(actNum === 4 ? "/act/4" : "/dashboard?showUnlock=true");
+      navigate(actNum === 4 ? "/act/4" : "/acts?showUnlock=true");
       return;
     }
     navigate(buildProtocolPath(actNum, 0));
@@ -105,7 +105,7 @@ const ActPage = () => {
 
   const handleImmersion = () => {
     if (!hasAccess) {
-      navigate(actNum === 4 ? "/act/4" : "/dashboard?showUnlock=true");
+      navigate(actNum === 4 ? "/act/4" : "/acts?showUnlock=true");
       return;
     }
     navigate(`/listen/${actNum}`);
@@ -124,13 +124,13 @@ const ActPage = () => {
       onReflectionChange={handleReflectionChange}
       onCompleteAct={handleCompleteAct}
       onSelectAct={handleSelectAct}
-      onBack={() => navigate("/dashboard")}
+      onBack={() => navigate("/launchmodule")}
       onPrevious={() => handleAdjacentAct(actNum - 1)}
       onNext={() => handleAdjacentAct(actNum + 1)}
       onProtocol={handleProtocol}
       onImmersion={handleImmersion}
       onJournal={() => navigate("/journal")}
-      onUnlock={() => navigate(actNum === 4 ? "/act/4" : "/dashboard?showUnlock=true")}
+      onUnlock={() => navigate(actNum === 4 ? "/act/4" : "/acts?showUnlock=true")}
     />
   );
 };

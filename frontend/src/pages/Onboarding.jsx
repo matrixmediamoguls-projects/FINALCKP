@@ -39,7 +39,7 @@ const Onboarding = () => {
     setPhase(3);
   };
 
-  const enterProtocol = () => navigate('/dashboard');
+  const enterProtocol = () => navigate('/launchmodule');
   const enterWheel = () => navigate('/wheel');
 
   return (

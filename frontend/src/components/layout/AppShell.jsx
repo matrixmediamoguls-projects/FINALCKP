@@ -86,7 +86,7 @@ const AppShell = ({ children }) => {
 
   const handleActClick = (act) => {
     if (!canAccessAct(user, act.num)) {
-      handleNavigate(act.num === 4 ? "/act/4" : "/dashboard?showUnlock=true");
+      handleNavigate(act.num === 4 ? "/act/4" : "/acts?showUnlock=true");
       return;
     }
 

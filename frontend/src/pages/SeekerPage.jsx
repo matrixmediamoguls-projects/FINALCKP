@@ -126,7 +126,7 @@ const SeekerPage = () => {
           "Reality responds to structure."<br />
           We do not just make art. We build the architecture for others to survive their own collapse and engineer their own rebirth.
         </div>
-        <button onClick={() => navigate('/dashboard')} style={{
+        <button onClick={() => navigate('/launchmodule')} style={{
           fontFamily: "'Share Tech Mono',monospace", fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase',
           padding: '14px 40px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer'
         }}>

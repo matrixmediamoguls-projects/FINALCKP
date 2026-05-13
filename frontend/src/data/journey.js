@@ -78,7 +78,7 @@ export const ACTS = [
 ];
 
 export const JOURNEY_MODULES = [
-  { id: "acts", label: "Acts", path: "/", icon: ShieldChevron },
+  { id: "acts", label: "Acts", path: "/launchmodule", icon: ShieldChevron },
   { id: "seeker", label: "The Seeker", path: "/seeker", icon: Compass },
   { id: "listen", label: "Immersion", path: "/listen", icon: MusicNotes },
   { id: "wheel", label: "Wheel", path: "/wheel", icon: Spiral },
@@ -178,7 +178,7 @@ export const deriveNextAction = ({ user, stepRecords = [], activeAct }) => {
     return {
       label: currentAct === 4 ? "Review Your Path" : "Unlock Act III",
       eyebrow: currentAct === 4 ? "Act IV Sealed" : "Access Threshold",
-      path: currentAct === 4 ? "/dashboard" : "/dashboard?showUnlock=true",
+      path: currentAct === 4 ? "/act/4" : "/acts?showUnlock=true",
       act: currentAct,
       step: 0,
       description: getActLockReason(user, currentAct),

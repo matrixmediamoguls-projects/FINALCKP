@@ -56,7 +56,7 @@ const CodexTopbar = ({ actNum, isHub, onBack, onPrevious, onNext, canPrevious, c
     <div className="codex-topbar-left">
       <button className="codex-back" type="button" onClick={onBack}>
         <ArrowLeft size={16} weight="bold" />
-        <span>Dashboard</span>
+        <span>Launch Module</span>
       </button>
       <span className="codex-route-chip">{isHub ? "Codex Hub" : `Deep Link / Act ${actNum}`}</span>
     </div>
@@ -190,7 +190,7 @@ const LockedDossier = ({ act, actMeta, reason, onBack, onUnlock }) => (
     <div className="codex-locked-actions">
       <button type="button" onClick={onBack}>
         <Compass size={16} weight="fill" />
-        Dashboard
+        Launch Module
       </button>
       <button type="button" onClick={onUnlock}>
         <Lightning size={16} weight="fill" />

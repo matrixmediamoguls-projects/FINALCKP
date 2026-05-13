@@ -15,8 +15,7 @@ import ElementalBackground from "./components/ElementalBackground";
 
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const LaunchPage = lazy(() => import('./pages/LaunchPage'));
+const LaunchModule = lazy(() => import('./pages/LaunchModule'));
 const ActModulesPage = lazy(() => import('./pages/ActModulesPage'));
 const ActPage = lazy(() => import('./pages/ActPage'));
 const LockedAct = lazy(() => import('./pages/LockedAct'));
@@ -31,7 +30,7 @@ const ActProtocol = lazy(() => import('./pages/ActProtocol'));
 const ImmersiveProtocol = lazy(() => import('./modules/ImmersiveProtocol'));
 const FinalVisualizerPage = lazy(() => import('./pages/FinalVisualizerPage'));
 const LaunchSequencePage = lazy(() => import('./pages/LaunchSequencePage'));
-const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
+const Activation = lazy(() => import('./pages/Activation'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -81,13 +80,13 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
+      <Route path="/login" element={user ? <Navigate to="/launchmodule" replace /> : <Login />} />
+      <Route path="/register" element={user ? <Navigate to="/launchmodule" replace /> : <Register />} />
       <Route path="/onboarding" element={<ProtectedRoute withShell={false}><Onboarding /></ProtectedRoute>} />
-      <Route path="/" element={<ProtectedRoute withShell={false}><LaunchPage /></ProtectedRoute>} />
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/" element={user ? <Navigate to="/launchmodule" replace /> : <Login />} />
+      <Route path="/launchmodule" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
       <Route path="/acts" element={<ProtectedRoute><ActModulesPage /></ProtectedRoute>} />
-      <Route path="/transmission" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/transmission" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
       <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />
       <Route path="/listen" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
       <Route path="/listen/:actNumber" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
@@ -104,7 +103,7 @@ function AppRoutes() {
       <Route path="/act/4" element={<ProtectedRoute><LockedAct /></ProtectedRoute>} />
       <Route path="/act/:actNumber" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
-      <Route path="/premium" element={<ChromaKeyProtocolPremium />} />
+      <Route path="/activation" element={<Activation />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
