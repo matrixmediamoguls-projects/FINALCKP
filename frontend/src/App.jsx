@@ -18,6 +18,7 @@ const ProtocolChat = lazy(() => import('./pages/ProtocolChat'));
 const GuidedListen = lazy(() => import('./pages/GuidedListen'));
 const ActProtocol = lazy(() => import('./pages/ActProtocol'));
 const ImmersiveProtocol = lazy(() => import('./modules/ImmersiveProtocol'));
+const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -78,6 +79,7 @@ function AppRoutes() {
       <Route path="/act/4" element={<ProtectedRoute><LockedAct /></ProtectedRoute>} />
       <Route path="/act/:actNumber" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
+      <Route path="/premium" element={<ChromaKeyProtocolPremium />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
