@@ -1,0 +1,4 @@
+INFO:     127.0.0.1:50265 - "GET /api/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62027 - "GET /api/tracks HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62817 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62817 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized

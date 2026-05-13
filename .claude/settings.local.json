@@ -8,7 +8,8 @@
       "Bash(claude mcp *)",
       "mcp__banani__banani_get_selected_designs",
       "mcp__Claude_Preview__preview_start",
-      "WebFetch(domain:firebasestorage.googleapis.com)"
+      "WebFetch(domain:firebasestorage.googleapis.com)",
+      "Bash(git add *)"
     ]
   }
 }
