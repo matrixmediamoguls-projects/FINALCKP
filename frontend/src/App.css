@@ -1,0 +1,161 @@
+/* Animation keyframes */
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+@keyframes border-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-border-flow {
+    background-size: 200% 200%;
+    animation: border-flow 3s ease infinite;
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out forwards;
+}
+
+/* Element icons */
+.element-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Progress circle */
+.progress-circle {
+    transform: rotate(-90deg);
+}
+
+.progress-circle-bg {
+    fill: none;
+    stroke: #2A2B32;
+    stroke-width: 8;
+}
+
+.progress-circle-fill {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: square;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+/* Act card hover effects */
+.act-card-earth:hover {
+    border-color: #00FF66;
+    box-shadow: 0 0 30px rgba(0, 255, 102, 0.2);
+}
+
+.act-card-water:hover {
+    border-color: #00E5FF;
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+}
+
+.act-card-fire:hover {
+    border-color: #FF3366;
+    box-shadow: 0 0 30px rgba(255, 51, 102, 0.2);
+}
+
+.act-card-air:hover {
+    border-color: #FFCC00;
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.2);
+}
+
+/* Locked act overlay */
+.locked-overlay {
+    background: linear-gradient(180deg, rgba(8, 8, 10, 0.7) 0%, rgba(8, 8, 10, 0.95) 100%);
+}
+
+/* Video placeholder */
+.video-placeholder {
+    background: linear-gradient(135deg, #121318 0%, #0D0E12 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.video-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(212, 175, 55, 0.03) 2px,
+        rgba(212, 175, 55, 0.03) 4px
+    );
+}
+
+/* Journal entry card */
+.journal-card {
+    background: linear-gradient(180deg, #0D0E12 0%, #08080A 100%);
+}
+
+/* Key station styling */
+.key-station {
+    position: relative;
+}
+
+.key-station::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, transparent 0%, currentColor 20%, currentColor 80%, transparent 100%);
+}
+
+/* Reflection checklist */
+.reflection-item {
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.reflection-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border: 1px solid #2A2B32;
+    background: transparent;
+}
+
+.reflection-item.checked::before {
+    background: #D4AF37;
+    border-color: #D4AF37;
+}

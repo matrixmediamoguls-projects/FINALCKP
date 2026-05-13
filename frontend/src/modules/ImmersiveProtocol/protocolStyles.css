@@ -1,0 +1,897 @@
+/* ── Root layout ─────────────────────────────────────────────── */
+.ip-root {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  background: #030303;
+  color: #f5f0e6;
+}
+
+.ip-loading,
+.ip-error {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c8a020;
+}
+
+.ip-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #030303;
+}
+
+.ip-error {
+  position: absolute;
+  left: 50%;
+  top: 72px;
+  transform: translateX(-50%);
+  z-index: 6;
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.64);
+  font-size: 9px;
+}
+
+/* ── Track selector sidebar ──────────────────────────────────── */
+.ip-track-selector {
+  width: 260px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(180deg, rgba(12,12,12,0.98), rgba(0,0,0,0.98));
+  padding: 16px 10px;
+}
+
+.ip-panel-label {
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 9px;
+  color: var(--accent, #5ab038);
+  margin: 0 6px 12px;
+}
+
+.ip-track-selector button {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 2px 8px;
+  border: 1px solid transparent;
+  border-left: 2px solid transparent;
+  background: transparent;
+  color: rgba(245,240,230,0.56);
+  padding: 9px 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.ip-track-selector button.active,
+.ip-track-selector button:hover {
+  border-color: rgba(255,255,255,0.13);
+  border-left-color: var(--accent, #5ab038);
+  background: rgba(255,255,255,0.045);
+  color: #f5f0e6;
+}
+
+.ip-track-selector button span {
+  grid-row: span 2;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--accent, #5ab038);
+  font-size: 10px;
+}
+
+.ip-track-selector button strong {
+  font-size: 12px;
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ip-track-selector button small {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── Protocol shell (main canvas) ────────────────────────────── */
+.protocol-shell {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.protocol-topline {
+  position: absolute;
+  z-index: 3;
+  top: 18px;
+  left: 22px;
+  right: 22px;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(245,240,230,0.58);
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 9px;
+}
+
+.protocol-content {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.protocol-content > * {
+  pointer-events: auto;
+}
+
+/* ── Act background module ───────────────────────────────────── */
+.act-bg,
+.act-bg > * {
+  position: absolute;
+  inset: 0;
+}
+
+.act-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.82;
+  filter: contrast(1.04) saturate(1.05);
+}
+
+.act-bg-fallback {
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--ab-color, #5ab038) 25%, #050505),
+    #050505 60%
+  );
+}
+
+.act-bg-glow {
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  transition: background 0.1s linear;
+}
+
+.act-bg-scanlines {
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255,255,255,0.06) 0,
+    rgba(255,255,255,0.06) 1px,
+    transparent 1px,
+    transparent 5px
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: 0.16;
+}
+
+.act-bg-noise {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.08),
+    transparent 25%,
+    rgba(255,255,255,0.06) 50%,
+    transparent 75%
+  );
+  background-size: 18px 18px;
+  mix-blend-mode: overlay;
+  animation: act-noise 0.7s steps(2) infinite;
+}
+
+@keyframes act-noise {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(-8px, 5px, 0); }
+  100% { transform: translate3d(4px, -6px, 0); }
+}
+
+.act-bg-fog {
+  background: radial-gradient(circle at 50% 100%, rgba(255,255,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.act-bg-vignette {
+  background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.84) 100%);
+  pointer-events: none;
+}
+
+/* ── Audio visualizer module (circles act logo) ──────────────── */
+.av-wrap {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 48%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s linear;
+}
+
+.av-orbit {
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--av-color, #5ab038);
+  border-radius: 50%;
+  box-shadow: 0 0 34px var(--av-color, #5ab038), inset 0 0 30px rgba(255,255,255,0.05);
+  animation: av-spin 10s linear infinite;
+}
+
+@keyframes av-spin { to { transform: rotate(360deg); } }
+
+.av-bars {
+  position: absolute;
+  inset: 0;
+  transform: translate(140px, 140px);
+}
+
+.av-bars span {
+  position: absolute;
+  width: 2px;
+  transform-origin: center 112px;
+  background: var(--av-color, #5ab038);
+  border-radius: 999px;
+  box-shadow: 0 0 10px var(--av-color, #5ab038);
+  transition: height 0.08s linear, opacity 0.08s linear;
+}
+
+.av-core {
+  position: absolute;
+  inset: 64px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%;
+  background: rgba(0,0,0,0.72);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 18px;
+}
+
+.av-logo {
+  max-width: 86%;
+  max-height: 86%;
+  object-fit: contain;
+}
+
+.av-logo-text {
+  font-family: 'Cinzel', serif;
+  color: #f5f0e6;
+  letter-spacing: 0.12em;
+  font-size: 14px;
+}
+
+.av-logo-subtitle {
+  margin-top: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--av-color, #5ab038);
+  letter-spacing: 0.16em;
+  font-size: 8px;
+}
+
+/* ── Sonic artifact module ───────────────────────────────────── */
+.sonic-artifact {
+  position: absolute;
+  z-index: 4;
+  left: 32px;
+  bottom: 118px;
+  width: min(360px, 36vw);
+  padding: 16px 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-left: 2px solid var(--accent, #5ab038);
+  background: rgba(0,0,0,0.52);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 28px rgba(0,0,0,0.3);
+}
+
+.sa-label {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent, #5ab038);
+  font-size: 8px;
+  margin-bottom: 8px;
+}
+
+.sa-text {
+  margin: 0;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: rgba(245,240,230,0.88);
+  line-height: 1.55;
+}
+
+/* ── Act keys module ─────────────────────────────────────────── */
+.act-keys-module {
+  position: absolute;
+  z-index: 4;
+  right: 32px;
+  top: 116px;
+  width: 280px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-right: 2px solid var(--accent, #5ab038);
+  background: rgba(0,0,0,0.52);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 28px rgba(0,0,0,0.3);
+}
+
+.act-keys-module h4 {
+  margin: 0 0 8px;
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent, #5ab038);
+  font-size: 8px;
+}
+
+.act-keys-module ul {
+  margin: 0;
+  padding-left: 20px;
+  color: rgba(245,240,230,0.76);
+  line-height: 1.8;
+  font-size: 13px;
+}
+
+/* ── Lyrics protocol module ──────────────────────────────────── */
+.lyrics-protocol {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 108px;
+  transform: translateX(-50%);
+  width: min(560px, 56vw);
+  padding: 14px 20px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.52);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 28px rgba(0,0,0,0.3);
+  text-align: center;
+  transition: opacity 0.1s linear;
+}
+
+.lyrics-label {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent, #5ab038);
+  font-size: 8px;
+  margin-bottom: 8px;
+}
+
+.lyrics-text {
+  margin: 0;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: rgba(245,240,230,0.88);
+  line-height: 1.55;
+  font-size: clamp(18px, 2.2vw, 32px);
+}
+
+/* ── Track audio info module ─────────────────────────────────── */
+.track-audio-info {
+  margin-bottom: 10px;
+}
+
+.tai-act {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent, #5ab038);
+  font-size: 8px;
+}
+
+.tai-title {
+  margin: 3px 0 2px;
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: #f5f0e6;
+}
+
+.tai-time {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  color: rgba(245,240,230,0.5);
+  letter-spacing: 0.1em;
+}
+
+/* ── Player bar ──────────────────────────────────────────────── */
+.ip-player {
+  position: absolute;
+  z-index: 5;
+  left: 32px;
+  right: 32px;
+  bottom: 28px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(18px);
+  color: rgba(245,240,230,0.62);
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 9px;
+}
+
+.ip-control,
+.ip-play {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.02);
+  color: rgba(245,240,230,0.72);
+  padding: 8px 12px;
+}
+
+.ip-play {
+  border-color: var(--accent, #5ab038);
+  color: var(--accent, #5ab038);
+  min-width: 82px;
+}
+
+.ip-progress {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.12);
+  cursor: pointer;
+}
+
+.ip-progress > div {
+  height: 100%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 14px var(--accent, #5ab038);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .ip-root { flex-direction: column; }
+  .ip-track-selector {
+    width: 100%;
+    height: 150px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .sonic-artifact { width: auto; right: 24px; left: 24px; bottom: 148px; }
+  .act-keys-module { display: none; }
+  .av-wrap { width: 220px; height: 220px; }
+  .av-bars { transform: translate(110px, 110px); }
+  .av-bars span { transform-origin: center 88px; }
+  .lyrics-protocol { width: auto; left: 24px; right: 24px; transform: none; bottom: 88px; }
+  .ip-player { left: 12px; right: 12px; bottom: 14px; }
+}
+
+/* Engine protocol stage */
+.engine-root {
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+
+.engine-root .ip-track-selector {
+  position: absolute;
+  z-index: 10;
+  left: 18px;
+  top: 62px;
+  width: min(264px, calc(100vw - 36px));
+  max-height: calc(100vh - 148px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-left: 2px solid var(--accent, #ff5a34);
+  background:
+    linear-gradient(180deg, rgba(8,8,9,0.86), rgba(0,0,0,0.6)),
+    rgba(0,0,0,0.44);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 58px rgba(0,0,0,0.28);
+}
+
+.engine-root .ip-track-selector button {
+  border-radius: 0;
+}
+
+.protocol-shell.engine-shell {
+  width: 100%;
+  height: 100vh;
+  flex: none;
+  background:
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 36%),
+    #030303;
+}
+
+.protocol-shell.engine-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black 0 42%, transparent 74%);
+  opacity: calc(0.14 + (var(--engine-energy, 0) * 0.22));
+}
+
+.rv-stage,
+.rv-stage canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.rv-stage {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.engine-topline {
+  position: absolute;
+  z-index: 8;
+  left: 306px;
+  top: 18px;
+  right: 22px;
+  min-height: 28px;
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto minmax(120px, 1fr);
+  align-items: center;
+  gap: 14px;
+  color: rgba(245,240,230,0.68);
+  font-family: var(--font-console, 'Share Tech Mono', monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.engine-topline strong {
+  color: #f5f0e6;
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: clamp(0.95rem, 1.4vw, 1.36rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.engine-topline span:last-child {
+  text-align: right;
+}
+
+.engine-core-mark {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 48%;
+  width: clamp(82px, 10vmin, 132px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 48%, rgba(255,255,255,0.2));
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.08), rgba(0,0,0,0.62) 58%),
+    rgba(0,0,0,0.3);
+  color: var(--accent);
+  cursor: pointer;
+  transform: translate(-50%, -50%) scale(calc(1 + (var(--engine-energy, 0) * 0.08)));
+  box-shadow:
+    0 0 calc(28px + (var(--engine-energy, 0) * 72px)) color-mix(in srgb, var(--accent) 38%, transparent),
+    inset 0 0 30px rgba(255,255,255,0.06);
+  transition: border-color 160ms ease, filter 160ms ease;
+}
+
+.engine-core-mark:hover,
+.engine-core-mark:focus-visible {
+  border-color: var(--accent);
+  filter: saturate(1.18) brightness(1.08);
+}
+
+.engine-core-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--accent) 48%, transparent));
+}
+
+.engine-core-mark span {
+  font-family: var(--font-console, 'Share Tech Mono', monospace);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+}
+
+.engine-content {
+  z-index: 7;
+}
+
+.orbital-lyrics {
+  --orbit-radius: clamp(118px, 23vmin, 252px);
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  top: 48%;
+  width: min(74vw, 780px);
+  height: min(74vw, 780px);
+  max-height: calc(100vh - 160px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.orbital-lyrics-ring {
+  position: absolute;
+  inset: 0;
+}
+
+.orbital-lyrics-ring span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-width: 124px;
+  overflow: hidden;
+  color: rgba(245,240,230,0.34);
+  font-family: var(--font-console, 'Share Tech Mono', monospace);
+  font-size: clamp(0.62rem, 1vw, 0.86rem);
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 120ms linear, opacity 120ms linear, text-shadow 120ms linear;
+}
+
+.orbital-lyrics-ring span.is-passed {
+  color: rgba(245,240,230,0.68);
+}
+
+.orbital-lyrics-ring span.is-active {
+  color: var(--lyric-color);
+  opacity: 1;
+  text-shadow:
+    0 0 14px color-mix(in srgb, var(--lyric-color) 74%, transparent),
+    0 0 32px color-mix(in srgb, var(--lyric-color) 38%, transparent);
+}
+
+.orbital-lyrics-active {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + clamp(84px, 16vmin, 160px));
+  width: min(560px, 84vw);
+  margin: 0;
+  color: #f5f0e6;
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: clamp(1.5rem, 4vw, 4.6rem);
+  line-height: 1.02;
+  text-align: center;
+  text-shadow:
+    0 0 22px color-mix(in srgb, var(--lyric-color) 38%, transparent),
+    0 0 calc(26px + (var(--lyric-bass, 0) * 72px)) color-mix(in srgb, var(--lyric-color) 26%, transparent);
+  transform: translateX(-50%) scale(calc(1 + (var(--lyric-bass, 0) * 0.05)));
+}
+
+.fx-controller {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fx-energy-field {
+  position: absolute;
+  inset: -12%;
+  opacity: calc(0.1 + (var(--fx-energy, 0) * 0.24));
+  background:
+    radial-gradient(circle at center, color-mix(in srgb, var(--fx-color) 24%, transparent), transparent 44%),
+    conic-gradient(from 90deg, transparent, color-mix(in srgb, var(--fx-color) 18%, transparent), transparent);
+  mix-blend-mode: screen;
+  animation: fx-drift 8s linear infinite;
+}
+
+.fx-event {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 34vmin;
+  aspect-ratio: 1;
+  border: 1px solid var(--fx-color);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.2);
+  mix-blend-mode: screen;
+  box-shadow: 0 0 40px color-mix(in srgb, var(--fx-color) 45%, transparent);
+}
+
+.fx-burst {
+  background: radial-gradient(circle, color-mix(in srgb, var(--fx-color) 28%, transparent), transparent 62%);
+  animation: fx-burst 880ms ease-out forwards;
+}
+
+.fx-shockwave {
+  animation: fx-shockwave 1050ms ease-out forwards;
+}
+
+.fx-glitch {
+  border-radius: 0;
+  width: 100vw;
+  height: 100vh;
+  border: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 18px, color-mix(in srgb, var(--fx-color) 20%, transparent) 18px 20px),
+    repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,255,255,0.12) 7px 8px);
+  animation: fx-glitch 620ms steps(2) forwards;
+}
+
+.fx-ripple,
+.fx-root,
+.fx-airlift,
+.fx-prism {
+  animation: fx-shockwave 980ms ease-out forwards;
+}
+
+.fx-prism {
+  border-color: var(--act-secondary, #d4af37);
+  box-shadow:
+    0 0 38px color-mix(in srgb, var(--fx-color) 40%, transparent),
+    0 0 70px color-mix(in srgb, var(--act-secondary) 34%, transparent);
+}
+
+@keyframes fx-drift {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fx-burst {
+  0% { opacity: 0.78; transform: translate(-50%, -50%) scale(0.16); filter: blur(0); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.85); filter: blur(9px); }
+}
+
+@keyframes fx-shockwave {
+  0% { opacity: 0.72; transform: translate(-50%, -50%) scale(0.34); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.6); }
+}
+
+@keyframes fx-glitch {
+  0% { opacity: 0; transform: translate(-50%, -50%) skewX(0deg); }
+  20% { opacity: 0.52; transform: translate(calc(-50% - 18px), -50%) skewX(8deg); }
+  48% { opacity: 0.28; transform: translate(calc(-50% + 24px), -50%) skewX(-9deg); }
+  100% { opacity: 0; transform: translate(-50%, -50%) skewX(0deg); }
+}
+
+.engine-shell .sonic-artifact {
+  left: 306px;
+  bottom: 112px;
+}
+
+.engine-shell .act-keys-module {
+  top: 86px;
+}
+
+.engine-shell .lyrics-protocol {
+  display: none;
+}
+
+.engine-shell .ip-player {
+  left: 306px;
+  right: 28px;
+  height: 58px;
+  border-color: color-mix(in srgb, var(--accent) 34%, rgba(255,255,255,0.14));
+}
+
+.engine-shell .ip-control,
+.engine-shell .ip-play {
+  width: 38px;
+  height: 38px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+}
+
+.engine-shell .ip-play {
+  width: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent), rgba(0,0,0,0.16));
+}
+
+.ip-player-error {
+  max-width: min(320px, 28vw);
+  overflow: hidden;
+  color: #ffbf6b;
+  font-size: 0.64rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 1020px) {
+  .engine-root .ip-track-selector {
+    left: 12px;
+    top: auto;
+    bottom: 86px;
+    max-height: 178px;
+  }
+
+  .engine-topline {
+    left: 16px;
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .engine-topline strong,
+  .engine-topline span,
+  .engine-topline span:last-child {
+    text-align: left;
+  }
+
+  .engine-shell .sonic-artifact {
+    display: none;
+  }
+
+  .engine-shell .ip-player {
+    left: 12px;
+    right: 12px;
+  }
+}
+
+@media (max-width: 720px) {
+  .engine-root .ip-track-selector {
+    display: none;
+  }
+
+  .engine-topline {
+    right: 14px;
+    font-size: 0.62rem;
+  }
+
+  .orbital-lyrics {
+    --orbit-radius: clamp(92px, 28vw, 132px);
+    width: 96vw;
+    height: 96vw;
+  }
+
+  .orbital-lyrics-ring span {
+    max-width: 78px;
+    font-size: 0.58rem;
+  }
+
+  .orbital-lyrics-active {
+    top: calc(50% + 112px);
+    width: 92vw;
+  }
+
+  .engine-core-mark {
+    width: 76px;
+  }
+
+  .engine-shell .ip-player {
+    gap: 8px;
+    padding: 0 10px;
+  }
+
+  .engine-shell .ip-player > span {
+    display: none;
+  }
+
+  .ip-player-error {
+    display: none;
+  }
+}

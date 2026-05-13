@@ -81,6 +81,10 @@ agenthub/agents/youtube/db
 *.deb
 *.dylib
 
+# Files exceeding GitHub's 100MB limit
+frontend/src/public/emblems/act_three_emblem.gif
+frontend/src/public/visualizer/act_one_visualizer_background_image.png
+
 # Build caches
 .cache/
 

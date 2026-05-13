@@ -1,0 +1,187 @@
+/* ================================================================
+   LAUNCH SEQUENCE PAGE — Full-screen video with neon frame
+   ================================================================ */
+
+.lseq-shell {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* ── Video ── */
+.lseq-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* ── Neon frame overlay ── */
+.lseq-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Border strips ── */
+.lseq-border {
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.lseq-border-top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 14, 4, 0.97) 0%,
+    rgba(12, 8, 2, 0.7) 100%
+  );
+  border-bottom: 1px solid rgba(243, 189, 66, 0.7);
+  box-shadow:
+    0 0 14px rgba(243, 189, 66, 0.5),
+    0 0 36px rgba(243, 189, 66, 0.2),
+    inset 0 -1px 0 rgba(243, 189, 66, 0.3);
+}
+
+.lseq-border-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  background: linear-gradient(
+    0deg,
+    rgba(20, 14, 4, 0.97) 0%,
+    rgba(12, 8, 2, 0.7) 100%
+  );
+  border-top: 1px solid rgba(214, 164, 65, 0.7);
+  box-shadow:
+    0 0 14px rgba(214, 164, 65, 0.5),
+    0 0 36px rgba(214, 164, 65, 0.2),
+    inset 0 1px 0 rgba(214, 164, 65, 0.3);
+}
+
+.lseq-border-left {
+  top: 36px;
+  bottom: 36px;
+  left: 0;
+  width: 36px;
+  flex-direction: column;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 14, 4, 0.97) 0%,
+    rgba(12, 8, 2, 0.7) 100%
+  );
+  border-right: 1px solid rgba(243, 189, 66, 0.6);
+  box-shadow:
+    0 0 14px rgba(243, 189, 66, 0.35),
+    inset -1px 0 0 rgba(243, 189, 66, 0.2);
+}
+
+.lseq-border-right {
+  top: 36px;
+  bottom: 36px;
+  right: 0;
+  width: 36px;
+  flex-direction: column;
+  background: linear-gradient(
+    270deg,
+    rgba(20, 14, 4, 0.97) 0%,
+    rgba(12, 8, 2, 0.7) 100%
+  );
+  border-left: 1px solid rgba(214, 164, 65, 0.6);
+  box-shadow:
+    0 0 14px rgba(214, 164, 65, 0.35),
+    inset 1px 0 0 rgba(214, 164, 65, 0.2);
+}
+
+/* ── Scrolling ticker text ── */
+.lseq-ticker {
+  display: flex;
+  white-space: nowrap;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(243, 189, 66, 0.95);
+  text-shadow: 0 0 8px rgba(243, 189, 66, 0.6);
+  animation: lseqTickerScroll 18s linear infinite;
+  will-change: transform;
+}
+
+.lseq-ticker-reverse {
+  color: rgba(214, 164, 65, 0.9);
+  text-shadow: 0 0 8px rgba(214, 164, 65, 0.5);
+  animation-direction: reverse;
+}
+
+.lseq-ticker-vert {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  animation: lseqTickerScrollVert 18s linear infinite;
+  color: rgba(243, 189, 66, 0.9);
+  text-shadow: 0 0 8px rgba(243, 189, 66, 0.5);
+  font-size: 9px;
+}
+
+@keyframes lseqTickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes lseqTickerScrollVert {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* ── Corner accents ── */
+.lseq-corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+
+.lseq-corner-tl {
+  top: 18px;
+  left: 18px;
+  border-top: 2px solid rgba(243, 189, 66, 1);
+  border-left: 2px solid rgba(243, 189, 66, 1);
+  box-shadow: -2px -2px 14px rgba(243, 189, 66, 0.7);
+}
+
+.lseq-corner-tr {
+  top: 18px;
+  right: 18px;
+  border-top: 2px solid rgba(243, 189, 66, 1);
+  border-right: 2px solid rgba(243, 189, 66, 1);
+  box-shadow: 2px -2px 14px rgba(243, 189, 66, 0.7);
+}
+
+.lseq-corner-bl {
+  bottom: 18px;
+  left: 18px;
+  border-bottom: 2px solid rgba(243, 189, 66, 1);
+  border-left: 2px solid rgba(243, 189, 66, 1);
+  box-shadow: -2px 2px 14px rgba(243, 189, 66, 0.7);
+}
+
+.lseq-corner-br {
+  bottom: 18px;
+  right: 18px;
+  border-bottom: 2px solid rgba(243, 189, 66, 1);
+  border-right: 2px solid rgba(243, 189, 66, 1);
+  box-shadow: 2px 2px 14px rgba(243, 189, 66, 0.7);
+}

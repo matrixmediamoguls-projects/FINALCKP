@@ -72,10 +72,18 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 168  # 7 days
 
 # Object Storage - Cloudflare R2
-R2_ACCOUNT_ID = os.environ.get("R2_ACCOUNT_ID")
-R2_ACCESS_KEY_ID = os.environ.get("R2_ACCESS_KEY_ID")
-R2_SECRET_ACCESS_KEY = os.environ.get("R2_SECRET_ACCESS_KEY")
-R2_BUCKET_NAME = os.environ.get("R2_BUCKET_NAME")
+def get_env_alias(*names: str) -> str:
+    for name in names:
+        value = os.environ.get(name)
+        if value and not value.strip().lower().startswith("your_"):
+            return value.strip()
+    return ""
+
+R2_ACCOUNT_ID = get_env_alias("R2_ACCOUNT_ID")
+R2_ENDPOINT = get_env_alias("R2_ENDPOINT", "S3_HOST")
+R2_ACCESS_KEY_ID = get_env_alias("R2_ACCESS_KEY_ID", "S3_ACCESS_KEY")
+R2_SECRET_ACCESS_KEY = get_env_alias("R2_SECRET_ACCESS_KEY", "S3_SECRET_KEY")
+R2_BUCKET_NAME = get_env_alias("R2_BUCKET_NAME", "R2_BUCKET_AUDIO", "S3_BUCKET")
 APP_NAME = "chroma-key-protocol"
 s3_client = None
 
@@ -83,12 +91,12 @@ def init_storage():
     global s3_client
     if s3_client is not None:
         return s3_client
-        
-    if not all([R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY]):
+
+    endpoint_url = R2_ENDPOINT or (f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com" if R2_ACCOUNT_ID else "")
+    if not all([endpoint_url, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME]):
         logger.warning("R2 Cloudflare credentials not set. Storage might fail.")
         return None
-        
-    endpoint_url = f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
     s3_client = boto3.client(
         "s3",
         endpoint_url=endpoint_url,
