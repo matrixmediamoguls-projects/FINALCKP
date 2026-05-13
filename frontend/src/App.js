@@ -121,14 +121,12 @@ function AppWithBackground() {
   if (path.includes("/act/3") || path.includes("act_three") || path.includes("reclamation") || path.includes("visualizer")) act = "fire";
   if (path.includes("/act/4") || path.includes("act_four")) act = "air";
 
-  // 🔊 AUDIO REACTIVITY
   return (
     <>
-      {/* 🔥 BACKGROUND SYSTEM */}
       <ElementalBackground act={act} audioLevel={0} />
-
-      {/* APP */}
-      <AppRoutes />
+      <Suspense fallback={null}>
+        <AppRoutes />
+      </Suspense>
     </>
   );
 }
@@ -138,11 +136,9 @@ function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <Suspense fallback={null}>
-          <Routes>
-            <Route path="*" element={<AppWithBackground />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="*" element={<AppWithBackground />} />
+        </Routes>
       </BrowserRouter>
     </ErrorBoundary>
   );
