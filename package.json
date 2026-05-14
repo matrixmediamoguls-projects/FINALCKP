@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "bootstrap": "npm install --prefix frontend",
+    "cloudflare:build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build",
     "dev": "npm --prefix frontend run dev",
     "start": "npm --prefix frontend run start",
     "build": "npm --prefix frontend run build"
