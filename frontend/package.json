@@ -67,6 +67,9 @@
     "preview": "vite preview",
     "test": "echo \"No tests yet\""
   },
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
     "@eslint/js": "9.23.0",
     "@vitejs/plugin-react": "^4.7.0",
@@ -79,6 +82,9 @@
     "globals": "15.15.0",
     "postcss": "^8.5.12",
     "tailwindcss": "^3.4.19",
+    "vite": "6.0.0"
+  },
+  "overrides": {
     "vite": "6.0.0"
   },
   "packageManager": "npm@9.8.1"
