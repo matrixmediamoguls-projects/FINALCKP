@@ -7,6 +7,29 @@ const AuthContext = createContext(null);
 const JWT_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
 // Refresh token 1 minute before expiration
 const REFRESH_BEFORE_EXPIRY = 60 * 1000;
+const AUTH_REQUEST_TIMEOUT_MS = 5000;
+const authRequestConfig = { timeout: AUTH_REQUEST_TIMEOUT_MS };
+const LOCAL_AUTH_ERROR =
+  'Local auth service is not responding. Restart the backend on http://127.0.0.1:5000 and try again.';
+
+const isTimeoutOrNetworkError = (error) =>
+  error?.code === 'ECONNABORTED' ||
+  error?.code === 'ERR_NETWORK' ||
+  String(error?.message || '').toLowerCase().includes('timeout');
+
+const normalizeAuthError = (error, fallback) => {
+  if (isTimeoutOrNetworkError(error)) {
+    const normalized = new Error(LOCAL_AUTH_ERROR);
+    normalized.cause = error;
+    return normalized;
+  }
+
+  const message = error?.response?.data?.detail || fallback;
+  const normalized = new Error(message);
+  normalized.cause = error;
+  normalized.response = error?.response;
+  return normalized;
+};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -30,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     tokenRefreshTimer.current = setTimeout(async () => {
       try {
         // Call /auth/me to validate session (acts as implicit refresh)
-        const response = await axios.get('/auth/me');
+        const response = await axios.get('/auth/me', authRequestConfig);
         setUser(response.data);
         // Reschedule for next refresh
         scheduleTokenRefresh();
@@ -46,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = useCallback(async () => {
     try {
-      const response = await axios.get('/auth/me');
+      const response = await axios.get('/auth/me', authRequestConfig);
       setUser(response.data);
       scheduleTokenRefresh();
     } catch (error) {
@@ -88,17 +111,25 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/auth/login', { email, password });
-    setUser(response.data);
-    scheduleTokenRefresh();
-    return response.data;
+    try {
+      const response = await axios.post('/auth/login', { email, password }, authRequestConfig);
+      setUser(response.data);
+      scheduleTokenRefresh();
+      return response.data;
+    } catch (error) {
+      throw normalizeAuthError(error, 'Login failed');
+    }
   };
 
   const socialLogin = async (provider, token) => {
-    const response = await axios.post('/auth/social', { provider, token });
-    setUser(response.data);
-    scheduleTokenRefresh();
-    return response.data;
+    try {
+      const response = await axios.post('/auth/social', { provider, token }, authRequestConfig);
+      setUser(response.data);
+      scheduleTokenRefresh();
+      return response.data;
+    } catch (error) {
+      throw normalizeAuthError(error, 'Social login failed');
+    }
   };
 
   const register = async (name, email, password) => {

@@ -24,6 +24,9 @@ const Login = () => {
   const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
 
+  const getAuthErrorMessage = (err, fallback) =>
+    err?.response?.data?.detail || err?.message || fallback;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -33,7 +36,7 @@ const Login = () => {
       await login(email.trim(), password);
       navigate('/');
     } catch (err) {
-      setError(err?.response?.data?.detail || 'Login failed');
+      setError(getAuthErrorMessage(err, 'Login failed'));
     } finally {
       setLoading(false);
     }
@@ -50,7 +53,7 @@ const Login = () => {
         await socialLogin('google', token.access_token);
         navigate('/');
       } catch (err) {
-        setError(err?.response?.data?.detail || 'Google sign-in failed');
+        setError(getAuthErrorMessage(err, 'Google sign-in failed'));
       } finally {
         setGooglePending(false);
       }
@@ -59,8 +62,8 @@ const Login = () => {
   });
 
   return (
-    <main className="relative h-screen overflow-y-auto overflow-x-hidden bg-[#0a0e17] text-[#e2e8f0]">
-      <div className="absolute inset-0 -z-10 overflow-hidden bg-black">
+    <main className="relative isolate h-screen overflow-y-auto overflow-x-hidden bg-[#0a0e17] text-[#e2e8f0]">
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-black" aria-hidden="true">
         <video
           src={AUTH_BACKGROUND_VIDEO}
           autoPlay
@@ -72,13 +75,13 @@ const Login = () => {
         />
       </div>
 
-      <div className="absolute inset-0 bg-black/45" />
-      <div className="absolute inset-y-0 left-0 w-8 bg-[#00ff00]/50 blur-2xl" />
-      <div className="absolute inset-y-0 right-0 w-8 bg-[#00ff00]/50 blur-2xl" />
-      <div className="absolute right-[min(28vw,356px)] top-12 hidden h-px w-[320px] bg-[#00ff00]/20 lg:block" />
-      <div className="absolute bottom-16 right-[min(28vw,356px)] hidden h-px w-[320px] bg-[#00ff00]/20 lg:block" />
+      <div className="pointer-events-none fixed inset-0 z-10 bg-black/45" aria-hidden="true" />
+      <div className="pointer-events-none fixed inset-y-0 left-0 z-10 w-8 bg-[#00ff00]/50 blur-2xl" aria-hidden="true" />
+      <div className="pointer-events-none fixed inset-y-0 right-0 z-10 w-8 bg-[#00ff00]/50 blur-2xl" aria-hidden="true" />
+      <div className="pointer-events-none fixed right-[min(28vw,356px)] top-12 z-10 hidden h-px w-[320px] bg-[#00ff00]/20 lg:block" aria-hidden="true" />
+      <div className="pointer-events-none fixed bottom-16 right-[min(28vw,356px)] z-10 hidden h-px w-[320px] bg-[#00ff00]/20 lg:block" aria-hidden="true" />
 
-      <section className="relative z-10 flex min-h-full items-center justify-center px-5 py-10 sm:px-8 lg:justify-end lg:px-24 lg:py-16">
+      <section className="relative z-20 flex min-h-full items-center justify-center px-5 py-10 sm:px-8 lg:justify-end lg:px-24 lg:py-16">
         <motion.div
           initial={{ opacity: 0, x: 28 }}
           animate={{ opacity: 1, x: 0 }}
