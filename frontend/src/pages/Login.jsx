@@ -4,9 +4,7 @@ import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import SocialAuthButtons from '../components/SocialAuthButtons';
-
-const HERO_IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/banani-prod.appspot.com/o/reference-images%2F472bbff8-144d-45e0-b298-42659f149878?alt=media&token=0149655e-82d8-4a6a-a53f-a4f395656542';
+import AuthVideoFrame from '../components/AuthVideoFrame';
 
 const baseInputClass =
   'h-12 w-full border px-4 text-sm tracking-[0.02em] outline-none transition-all duration-200 rounded-none';
@@ -56,19 +54,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-chroma-text-primary">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[minmax(0,1fr)_520px] xl:grid-cols-[minmax(0,1fr)_540px]">
-        <motion.div
-          initial={{ opacity: 0, scale: 1.03 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="relative hidden overflow-hidden lg:block"
-        >
-          <img
-            src={HERO_IMAGE}
-            alt="Protocol Background"
-            className="h-full w-full object-cover opacity-85"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,3,3,0)_48%,rgba(3,3,3,0.72)_77%,#030303_100%)]" />
-        </motion.div>
+        <AuthVideoFrame />
 
         <div className="flex flex-col bg-[#030303]">
           <div className="flex flex-1 justify-center px-6 py-12 sm:px-10 lg:px-12">
