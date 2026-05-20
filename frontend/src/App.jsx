@@ -81,7 +81,7 @@ function AppRoutes() {
       <Route path="/onboarding" element={<ProtectedRoute withShell={false}><Onboarding /></ProtectedRoute>} />
       <Route path="/" element={user ? <Navigate to="/acts" replace /> : <Login />} />
       <Route path="/launchmodule" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
-      <Route path="/acts" element={<ProtectedRoute><ActModulesPage /></ProtectedRoute>} />
+      <Route path="/acts" element={<ProtectedRoute withShell={false}><ActModulesPage /></ProtectedRoute>} />
       <Route path="/dashboard" element={<Navigate to="/acts" replace />} />
       <Route path="/transmission" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
       <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />

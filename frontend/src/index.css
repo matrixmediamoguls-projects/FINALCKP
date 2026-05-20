@@ -505,3 +505,652 @@ body::before {
 
   clip-path: inherit;
 }
+
+/* =========================================================
+   POST-LOGIN ACT LAUNCH BOARD
+========================================================= */
+
+.ckp-launch-page {
+  --metal-edge: rgba(178, 206, 222, 0.56);
+  --metal-mid: rgba(34, 43, 48, 0.94);
+  --metal-dark: rgba(3, 6, 9, 0.98);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(14px, 2.4vh, 30px) clamp(18px, 3vw, 44px) clamp(18px, 2.8vh, 38px);
+  color: #f4f7f8;
+  background:
+    linear-gradient(180deg, rgba(0, 6, 10, 0.52), rgba(0, 0, 0, 0.9)),
+    url("/media/act-gateway-scene.jpg") center 36% / cover no-repeat,
+    #02070b;
+  isolation: isolate;
+}
+
+.ckp-launch-page::before,
+.ckp-launch-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.ckp-launch-page::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(106, 201, 255, 0.06) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(90deg, rgba(106, 201, 255, 0.05) 0 1px, transparent 1px 96px);
+  opacity: 0.32;
+  mix-blend-mode: screen;
+}
+
+.ckp-launch-page::after {
+  background:
+    radial-gradient(circle at 87% 8%, rgba(30, 150, 255, 0.42), transparent 16rem),
+    radial-gradient(circle at 11% 22%, rgba(30, 150, 255, 0.18), transparent 19rem),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.88), transparent 28%, transparent 72%, rgba(0, 0, 0, 0.88));
+}
+
+.ckp-launch-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 0 42%, rgba(72, 200, 255, 0.09) 42.2% 42.6%, transparent 43%),
+    linear-gradient(250deg, transparent 0 56%, rgba(72, 200, 255, 0.07) 56.1% 56.5%, transparent 57%);
+  opacity: 0.75;
+  z-index: 0;
+}
+
+.ckp-launch-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin: 0 auto clamp(10px, 1.4vh, 18px);
+}
+
+.ckp-launch-header h1 {
+  margin: 0;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  font-size: clamp(2.2rem, 5vw, 5rem);
+  line-height: 0.9;
+  color: transparent;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #d8dde1 34%, #737d86 38%, #ffffff 50%, #58636b 74%, #f7fbff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 15px rgba(82, 179, 255, 0.36)) drop-shadow(0 7px 0 rgba(0, 0, 0, 0.45));
+}
+
+.ckp-launch-header p {
+  margin: 8px auto 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: rgba(247, 251, 255, 0.86);
+  font-size: clamp(0.95rem, 1.7vw, 1.42rem);
+  text-shadow: 0 0 12px rgba(70, 196, 255, 0.55);
+}
+
+.ckp-launch-header p span {
+  width: clamp(42px, 8vw, 108px);
+  height: 1px;
+  display: block;
+  background: linear-gradient(90deg, transparent, #18cbff, transparent);
+}
+
+.ckp-command-frame {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1488px);
+  min-height: min(720px, calc(100vh - 132px));
+  margin: 0 auto;
+  padding: clamp(34px, 4vw, 56px) clamp(24px, 3vw, 48px) clamp(64px, 6vw, 104px);
+  border: 1px solid rgba(185, 220, 238, 0.5);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), transparent 12%, transparent 82%, rgba(255, 255, 255, 0.06)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent 7%, transparent 93%, rgba(255, 255, 255, 0.08)),
+    rgba(4, 8, 10, 0.88);
+  box-shadow:
+    inset 0 0 0 3px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 5px rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    0 22px 70px rgba(0, 0, 0, 0.76),
+    0 0 44px rgba(84, 191, 255, 0.18);
+  clip-path: polygon(2.7% 0, 97.3% 0, 100% 6.4%, 100% 93.6%, 97.3% 100%, 2.7% 100%, 0 93.6%, 0 6.4%);
+}
+
+.ckp-command-frame::before,
+.ckp-command-frame::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 16px;
+  border: 1px solid rgba(122, 184, 211, 0.28);
+  clip-path: polygon(2.4% 0, 97.6% 0, 100% 5.5%, 100% 94.5%, 97.6% 100%, 2.4% 100%, 0 94.5%, 0 5.5%);
+}
+
+.ckp-command-frame::after {
+  inset: 28px;
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 0 35px rgba(18, 211, 255, 0.12);
+}
+
+.ckp-frame-rail {
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  height: 30px;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent),
+    linear-gradient(180deg, #293137, #05080a 45%, #141c20);
+  border: 1px solid rgba(178, 206, 222, 0.34);
+  clip-path: polygon(0 0, 12% 0, 14% 34%, 36% 34%, 38% 0, 62% 0, 64% 34%, 86% 34%, 88% 0, 100% 0, 98% 100%, 2% 100%);
+}
+
+.ckp-frame-rail-top {
+  top: 0;
+}
+
+.ckp-frame-rail-bottom {
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+.ckp-frame-corner {
+  position: absolute;
+  width: 118px;
+  height: 118px;
+  border: 2px solid rgba(185, 220, 238, 0.58);
+  pointer-events: none;
+}
+
+.ckp-frame-corner-tl {
+  top: 12px;
+  left: 12px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.ckp-frame-corner-tr {
+  top: 12px;
+  right: 12px;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.ckp-frame-corner-bl {
+  bottom: 12px;
+  left: 12px;
+  border-right: 0;
+  border-top: 0;
+}
+
+.ckp-frame-corner-br {
+  bottom: 12px;
+  right: 12px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.ckp-act-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px);
+}
+
+.ckp-act-card {
+  position: relative;
+  min-height: clamp(440px, 58vh, 684px);
+  padding: clamp(16px, 2vw, 24px) clamp(18px, 2vw, 24px) clamp(18px, 2vw, 26px);
+  overflow: hidden;
+  border: 1px solid var(--act-card);
+  background:
+    linear-gradient(180deg, rgba(var(--act-card-rgb), 0.16), rgba(2, 7, 9, 0.45) 28%, rgba(0, 0, 0, 0.74)),
+    linear-gradient(90deg, rgba(var(--act-card-rgb), 0.12), transparent 48%, rgba(var(--act-card-rgb), 0.1)),
+    rgba(0, 0, 0, 0.78);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.78),
+    inset 0 0 0 4px rgba(var(--act-card-rgb), 0.15),
+    inset 0 0 42px rgba(var(--act-card-rgb), 0.2),
+    0 0 28px rgba(var(--act-card-rgb), 0.22);
+  clip-path: polygon(9% 0, 91% 0, 100% 7%, 100% 93%, 91% 100%, 9% 100%, 0 93%, 0 7%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ckp-act-card::before,
+.ckp-act-card::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  border: 1px solid rgba(var(--act-card-rgb), 0.5);
+  clip-path: polygon(8% 0, 92% 0, 100% 7%, 100% 93%, 92% 100%, 8% 100%, 0 93%, 0 7%);
+}
+
+.ckp-act-card::after {
+  inset: 22px 18px;
+  opacity: 0.58;
+  background:
+    linear-gradient(135deg, transparent 0 47%, rgba(var(--act-card-rgb), 0.16) 47.2% 47.8%, transparent 48%),
+    repeating-linear-gradient(90deg, rgba(var(--act-card-rgb), 0.11) 0 1px, transparent 1px 18px),
+    repeating-linear-gradient(0deg, rgba(var(--act-card-rgb), 0.08) 0 1px, transparent 1px 22px);
+}
+
+.ckp-card-circuit {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 25% 20%, rgba(var(--act-card-rgb), 0.3), transparent 18%),
+    radial-gradient(circle at 72% 70%, rgba(var(--act-card-rgb), 0.22), transparent 22%),
+    repeating-linear-gradient(115deg, transparent 0 14px, rgba(var(--act-card-rgb), 0.12) 15px 16px, transparent 17px 36px);
+  mix-blend-mode: screen;
+}
+
+.ckp-card-topline {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  color: var(--act-card);
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  font-size: clamp(0.85rem, 1vw, 1rem);
+  text-shadow: 0 0 12px rgba(var(--act-card-rgb), 0.75);
+}
+
+.ckp-act-card h2 {
+  position: relative;
+  z-index: 2;
+  margin: 7px 0 8px;
+  min-height: clamp(76px, 11vh, 112px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Rajdhani", sans-serif;
+  font-size: clamp(1.72rem, 2.8vw, 3.38rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--act-card);
+  text-shadow:
+    0 0 10px rgba(var(--act-card-rgb), 0.88),
+    0 3px 0 #050505,
+    0 0 25px rgba(var(--act-card-rgb), 0.36);
+}
+
+.ckp-card-discipline,
+.ckp-card-charge,
+.ckp-card-verbs,
+.ckp-launch-button,
+.ckp-codex-link {
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.ckp-card-discipline {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 clamp(8px, 1.3vh, 14px);
+  min-height: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.75rem, 1vw, 0.92rem);
+}
+
+.ckp-card-orbit {
+  position: relative;
+  z-index: 2;
+  width: min(100%, clamp(190px, 29vh, 270px));
+  aspect-ratio: 1;
+  margin: 2px auto clamp(12px, 2vh, 20px);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--act-card);
+}
+
+.ckp-card-orbit::before,
+.ckp-card-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--act-card-rgb), 0.76);
+  box-shadow:
+    0 0 18px rgba(var(--act-card-rgb), 0.76),
+    inset 0 0 22px rgba(var(--act-card-rgb), 0.48);
+}
+
+.ckp-card-orbit::after {
+  inset: 13px;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.ckp-card-scene {
+  position: absolute;
+  inset: 18px;
+  border-radius: 50%;
+  background:
+    linear-gradient(180deg, rgba(var(--act-card-rgb), 0.22), rgba(0, 0, 0, 0.62)),
+    url("/media/act-gateway-scene.jpg") 76% 35% / cover no-repeat;
+  filter: saturate(1.24) hue-rotate(var(--scene-hue, 0deg));
+  opacity: 0.82;
+  overflow: hidden;
+}
+
+.ckp-act-reflection {
+  --scene-hue: 120deg;
+}
+
+.ckp-act-reclamation {
+  --scene-hue: 60deg;
+}
+
+.ckp-act-crucible {
+  --scene-hue: 185deg;
+}
+
+.ckp-card-emblem,
+.ckp-card-icon {
+  position: absolute;
+  inset: 28%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.ckp-card-emblem {
+  background: radial-gradient(circle, rgba(var(--act-card-rgb), 0.4), rgba(0, 0, 0, 0.3) 58%, transparent 70%);
+  filter: drop-shadow(0 0 18px rgba(var(--act-card-rgb), 0.9));
+}
+
+.ckp-card-emblem img {
+  width: 112%;
+  height: 112%;
+  object-fit: contain;
+  opacity: 0.86;
+}
+
+.ckp-card-icon {
+  inset: 36%;
+  color: var(--act-card);
+  opacity: 0.94;
+  filter: drop-shadow(0 0 14px rgba(var(--act-card-rgb), 0.95));
+}
+
+.ckp-card-charge {
+  position: relative;
+  z-index: 2;
+  margin: auto 0 clamp(10px, 1.8vh, 16px);
+  min-height: clamp(32px, 5vh, 42px);
+  max-width: 230px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(0.82rem, 1vw, 0.98rem);
+  line-height: 1.26;
+  text-shadow: 0 0 12px rgba(var(--act-card-rgb), 0.42);
+}
+
+.ckp-launch-button {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 250px);
+  min-height: clamp(42px, 6vh, 52px);
+  border: 1px solid rgba(var(--act-card-rgb), 0.95);
+  color: var(--act-card);
+  background:
+    linear-gradient(180deg, rgba(var(--act-card-rgb), 0.2), rgba(var(--act-card-rgb), 0.08)),
+    rgba(0, 0, 0, 0.62);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: clamp(0.9rem, 1.1vw, 1.08rem);
+  cursor: pointer;
+  clip-path: polygon(8% 0, 92% 0, 100% 34%, 100% 66%, 92% 100%, 8% 100%, 0 66%, 0 34%);
+  box-shadow:
+    inset 0 0 18px rgba(var(--act-card-rgb), 0.2),
+    0 0 18px rgba(var(--act-card-rgb), 0.22);
+}
+
+.ckp-launch-button:hover,
+.ckp-card-orbit:hover + .ckp-card-charge + .ckp-launch-button {
+  color: #050505;
+  background: var(--act-card);
+  box-shadow:
+    0 0 24px rgba(var(--act-card-rgb), 0.72),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.ckp-play-mark {
+  width: 29px;
+  height: 29px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.ckp-play-mark::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 9px solid currentColor;
+  margin-left: 2px;
+}
+
+.ckp-card-verbs {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: clamp(10px, 1.8vh, 18px);
+  color: var(--act-card);
+  font-size: clamp(0.62rem, 0.8vw, 0.76rem);
+}
+
+.ckp-card-verbs span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.ckp-card-verbs i {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  box-shadow: inset 0 0 8px rgba(var(--act-card-rgb), 0.55);
+}
+
+.ckp-bottom-rail {
+  position: absolute;
+  z-index: 3;
+  left: 30%;
+  right: 30%;
+  bottom: 0;
+  min-height: clamp(56px, 7vw, 86px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(185, 220, 238, 0.28);
+  border-bottom: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent),
+    rgba(0, 0, 0, 0.48);
+}
+
+.ckp-bottom-rail span {
+  display: grid;
+  place-items: center;
+  border-left: 1px solid rgba(185, 220, 238, 0.16);
+  color: #ff3f34;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3.4vw, 3.2rem);
+  text-shadow:
+    0 0 12px rgba(255, 63, 52, 0.82),
+    0 3px 0 #050505;
+}
+
+.ckp-bottom-rail span:first-child {
+  border-left: 0;
+}
+
+.ckp-codex-link {
+  position: absolute;
+  right: clamp(18px, 3vw, 44px);
+  bottom: clamp(14px, 2vw, 24px);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.46);
+  color: rgba(255, 255, 255, 0.78);
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 0.76rem;
+}
+
+.ckp-codex-link:hover {
+  border-color: rgba(41, 186, 255, 0.8);
+  color: #ffffff;
+}
+
+.act-melt-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #020506;
+}
+
+.act-melt-field {
+  position: absolute;
+  inset: 0;
+  transform-origin: top;
+  background:
+    linear-gradient(180deg, rgba(var(--act-card-rgb), 0.18), rgba(0, 0, 0, 0.94)),
+    repeating-linear-gradient(90deg, rgba(var(--act-card-rgb), 0.14) 0 1px, transparent 1px 32px);
+}
+
+.act-melt-emblem {
+  width: min(32vw, 360px);
+  height: min(32vw, 360px);
+  object-fit: contain;
+  filter: drop-shadow(0 0 36px rgba(var(--act-card-rgb), 0.88));
+  z-index: 1;
+}
+
+.act-melt-copy {
+  position: absolute;
+  bottom: 12vh;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Share Tech Mono", monospace;
+  letter-spacing: 0;
+}
+
+.act-melt-copy span {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.act-melt-copy strong {
+  color: var(--act-card);
+  font-size: clamp(1.4rem, 3vw, 2.8rem);
+  font-family: "Rajdhani", sans-serif;
+}
+
+@media (max-width: 1180px) {
+  .ckp-launch-page {
+    overflow-y: auto;
+  }
+
+  .ckp-command-frame {
+    min-height: 0;
+    padding-bottom: 88px;
+  }
+
+  .ckp-act-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ckp-bottom-rail {
+    left: 20%;
+    right: 20%;
+  }
+}
+
+@media (max-width: 720px) {
+  .ckp-launch-page {
+    padding: 18px 12px 76px;
+  }
+
+  .ckp-launch-header h1 {
+    font-size: clamp(2.1rem, 15vw, 3.45rem);
+  }
+
+  .ckp-launch-header p {
+    gap: 10px;
+    font-size: 0.86rem;
+  }
+
+  .ckp-command-frame {
+    padding: 42px 14px 72px;
+    clip-path: polygon(5% 0, 95% 0, 100% 3%, 100% 97%, 95% 100%, 5% 100%, 0 97%, 0 3%);
+  }
+
+  .ckp-act-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ckp-act-card {
+    min-height: 540px;
+  }
+
+  .ckp-card-orbit {
+    width: min(100%, 240px);
+  }
+
+  .ckp-bottom-rail {
+    left: 12%;
+    right: 12%;
+  }
+
+  .ckp-codex-link {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}

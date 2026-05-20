@@ -1,32 +1,77 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, LockKey } from "@phosphor-icons/react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
+import PaywallModal from "../components/layout/PaywallModal";
 import useJourneyProgress from "../hooks/useJourneyProgress";
 import {
   ACTS,
-  JOURNEY_MODULES,
   buildProtocolPath,
   canAccessAct,
-  getActLockReason,
-  getActStatus,
 } from "../data/journey";
-import actDefs from "../data/actDefinitions";
 import { DEFAULT_VISUALIZER_PATH } from "../components/visualizer/visualizerAssets";
 
-const panelMotion = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0 },
+const cardMotion = {
+  hidden: { opacity: 0, y: 18, scale: 0.985 },
+  show: { opacity: 1, y: 0, scale: 1 },
+};
+
+const actPresentation = {
+  1: {
+    eyebrow: "Act One",
+    title: "The Fractured Veil",
+    titleLines: ["The", "Fractured", "Veil"],
+    discipline: "Awakening",
+    charge: "Reality is not as it seems.",
+    verbs: ["Disrupt", "Discover", "Decode"],
+    tone: "fracture",
+    color: "#ff4a2f",
+    colorSoft: "255,74,47",
+  },
+  2: {
+    eyebrow: "Act Two",
+    title: "The Reflection Chamber",
+    titleLines: ["The", "Reflection", "Chamber"],
+    discipline: "Confrontation",
+    charge: "See yourself. Break the pattern.",
+    verbs: ["Analyze", "Reflect", "Transcend"],
+    tone: "reflection",
+    color: "#29baff",
+    colorSoft: "41,186,255",
+  },
+  3: {
+    eyebrow: "Act Three",
+    title: "The Reclamation",
+    titleLines: ["The", "Reclamation"],
+    discipline: "Empowerment",
+    charge: "Reclaim who you are. Rewrite the system.",
+    verbs: ["Adapt", "Flow", "Control"],
+    tone: "reclamation",
+    color: "#8ff044",
+    colorSoft: "143,240,68",
+  },
+  4: {
+    eyebrow: "Act Four",
+    title: "The Crucible Code",
+    titleLines: ["The", "Crucible", "Code"],
+    discipline: "Transcendence",
+    charge: "Code your reality. Engineer the future.",
+    verbs: ["Create", "Engineer", "Evolve"],
+    tone: "crucible",
+    color: "#ffd12d",
+    colorSoft: "255,209,45",
+  },
 };
 
 const ActMeltTransition = ({ act, reducedMotion }) => {
   if (!act) return null;
+  const card = actPresentation[act.num];
 
   return (
     <motion.div
-      className={`act-melt-transition ${act.tone}`}
-      style={{ "--act-card": `var(${act.colorVar})`, "--act-card-raw": act.hex }}
+      className={`act-melt-transition ${card.tone}`}
+      style={{ "--act-card": card.color, "--act-card-rgb": card.colorSoft }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -48,74 +93,75 @@ const ActMeltTransition = ({ act, reducedMotion }) => {
         transition={{ duration: 0.62, ease: "easeOut" }}
       />
       <div className="act-melt-copy">
-        <span>Act {act.roman} route opening</span>
-        <strong>{act.title}</strong>
+        <span>{card.eyebrow} route opening</span>
+        <strong>{card.title}</strong>
       </div>
     </motion.div>
   );
 };
 
-const ActModuleCard = ({ act, user, activeAct, completedActs, completedSteps, onEnter }) => {
+const ActLaunchCard = ({ act, user, activeAct, completedActs, onEnter }) => {
+  const card = actPresentation[act.num];
   const Icon = act.icon;
   const locked = !canAccessAct(user, act.num);
-  const status = getActStatus(user, act.num, activeAct);
-  const stepsDone = act.num === activeAct ? completedSteps.length : completedActs.includes(act.num) ? 5 : 0;
-  const stepNames = actDefs[act.num]?.steps?.map((step) => step.label || step.name) || [];
+  const isActive = act.num === activeAct;
+  const isComplete = completedActs.includes(act.num);
 
   return (
     <motion.article
       data-testid={`journey-act-${act.num}`}
-      data-act-label={`ACT ${act.roman}`}
-      className={`journey-card journey-act-card act-gateway-card ${act.tone} ${locked ? "is-locked" : ""} ${act.num === activeAct ? "is-active" : ""}`}
-      style={{ "--act-card": `var(${act.colorVar})`, "--act-card-raw": act.hex }}
-      variants={panelMotion}
+      className={`ckp-act-card ckp-act-${card.tone} ${locked ? "is-locked" : ""} ${isActive ? "is-active" : ""} ${isComplete ? "is-complete" : ""}`}
+      style={{ "--act-card": card.color, "--act-card-rgb": card.colorSoft }}
+      variants={cardMotion}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
     >
-      <div className="journey-act-card-glow" aria-hidden="true" />
-      <div className="journey-act-head">
-        <span>Act {act.roman} / {act.element}</span>
-        <em>{status}</em>
+      <div className="ckp-card-circuit" aria-hidden="true" />
+      <div className="ckp-card-topline">
+        <span>{card.eyebrow}</span>
       </div>
+
+      <h2>
+        {card.titleLines.map((line) => (
+          <span key={line}>{line}</span>
+        ))}
+      </h2>
+      <p className="ckp-card-discipline">{card.discipline}</p>
 
       <button
-        className="journey-emblem"
         type="button"
+        className="ckp-card-orbit"
         onClick={() => onEnter(act)}
-        aria-label={`Open Act ${act.roman}: ${act.title}`}
+        aria-label={`Launch ${card.title}`}
       >
-        <img src={act.emblem} alt="" aria-hidden="true" />
-        <span><Icon size={21} weight="duotone" />{act.glyph}</span>
+        <span className="ckp-card-scene" aria-hidden="true" />
+        <span className="ckp-card-emblem">
+          <img src={act.emblem} alt="" aria-hidden="true" />
+        </span>
+        <span className="ckp-card-icon">
+          <Icon size={54} weight="duotone" />
+        </span>
       </button>
 
-      <h2>{act.title}</h2>
-      <p>{act.principle}</p>
+      <p className="ckp-card-charge">{card.charge}</p>
 
-      <div className="journey-step-pips" aria-label={`${stepsDone} of 5 steps complete`}>
-        {[0, 1, 2, 3, 4].map((step) => (
-          <span key={step} className={step < stepsDone ? "is-complete" : step === stepsDone && act.num === activeAct ? "is-current" : ""} />
-        ))}
-      </div>
+      <button
+        type="button"
+        data-testid={`journey-enter-${act.num}`}
+        className="ckp-launch-button"
+        onClick={() => onEnter(act)}
+      >
+        <span className="ckp-play-mark" aria-hidden="true" />
+        <span>Launch Protocol</span>
+      </button>
 
-      <div className="journey-step-list">
-        {stepNames.slice(0, 5).map((step, index) => (
-          <span key={step} className={index < stepsDone ? "is-complete" : index === stepsDone && act.num === activeAct ? "is-next" : ""}>
-            {String(index + 1).padStart(2, "0")} / {step}
+      <div className="ckp-card-verbs" aria-label={`${card.title} operating verbs`}>
+        {card.verbs.map((verb) => (
+          <span key={verb}>
+            <i aria-hidden="true" />
+            {verb}
           </span>
         ))}
-      </div>
-
-      {locked && (
-        <div className="journey-lock">
-          <LockKey size={22} weight="duotone" />
-          <strong>{act.num === 4 ? "Sealed" : "Locked"}</strong>
-          <span>{getActLockReason(user, act.num)}</span>
-        </div>
-      )}
-
-      <div className="journey-card-actions">
-        <button type="button" data-testid={`journey-enter-${act.num}`} onClick={() => onEnter(act)}>
-          {locked ? (act.num === 4 ? "View Seal" : "Unlock") : "Enter"}
-          <ArrowUpRight size={13} weight="bold" />
-        </button>
       </div>
     </motion.article>
   );
@@ -124,22 +170,24 @@ const ActModuleCard = ({ act, user, activeAct, completedActs, completedSteps, on
 const ActModulesPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const reducedMotion = useReducedMotion();
   const [activatingAct, setActivatingAct] = useState(null);
+  const [showPaywall, setShowPaywall] = useState(false);
   const activationTimerRef = useRef(null);
 
   const {
     activeAct,
     completedActs,
-    completedSteps,
-    nextAction,
     nextStepIndex,
   } = useJourneyProgress(user);
 
-  const activeActMeta = ACTS.find((act) => act.num === activeAct) || ACTS[0];
-  const userName = user?.name || user?.full_name || "Seeker";
-  const userTier = user?.tier || "free";
-  const availableModules = JOURNEY_MODULES.filter((module) => module.id !== "admin" || user?.is_admin);
+  useEffect(() => {
+    if (searchParams.get("showUnlock") === "true") {
+      setShowPaywall(true);
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     return () => {
@@ -149,7 +197,11 @@ const ActModulesPage = () => {
 
   const handleActEnter = (act) => {
     if (!canAccessAct(user, act.num)) {
-      navigate(act.num === 4 ? "/act/4" : "/acts?showUnlock=true");
+      if (act.num === 4) {
+        navigate("/act/4");
+        return;
+      }
+      setShowPaywall(true);
       return;
     }
 
@@ -163,103 +215,58 @@ const ActModulesPage = () => {
     if (activationTimerRef.current) window.clearTimeout(activationTimerRef.current);
     activationTimerRef.current = window.setTimeout(
       () => navigate(buildProtocolPath(act.num, step)),
-      reducedMotion ? 70 : 820,
+      reducedMotion ? 70 : 760,
     );
   };
 
   return (
     <motion.main
       data-testid="act-gateway"
-      className="act-gateway protocol-launch"
+      className="ckp-launch-page"
       initial={reducedMotion ? false : "hidden"}
       animate="show"
-      transition={{ staggerChildren: reducedMotion ? 0 : 0.07 }}
+      transition={{ staggerChildren: reducedMotion ? 0 : 0.08 }}
     >
-      <motion.section
-        className={`protocol-launch-hero ${activeActMeta.tone}`}
-        style={{ "--act-card": `var(${activeActMeta.colorVar})`, "--act-card-raw": activeActMeta.hex }}
-        variants={panelMotion}
-      >
-        <div className="protocol-launch-copy">
-          <span className="console-label">Authenticated Launch</span>
-          <h1>Chroma Key Protocol</h1>
-          <p>
-            Welcome back, {userName}. Your current signal is staged; the act sequence,
-            archive, and journal are synchronized for this session.
-          </p>
+      <div className="ckp-launch-backdrop" aria-hidden="true" />
+      <motion.header className="ckp-launch-header" variants={cardMotion}>
+        <h1>Chroma Key Protocol</h1>
+        <p><span />Four Acts. One Reality.<span /></p>
+      </motion.header>
 
-          <div className="protocol-launch-actions">
-            <button type="button" onClick={() => navigate(nextAction.path)}>
-              {nextAction.label}
-              <ArrowUpRight size={14} weight="bold" />
-            </button>
-            <button type="button" onClick={() => navigate("/codex")}>
-              Open Codex
-              <ArrowUpRight size={14} weight="bold" />
-            </button>
-            <button type="button" onClick={() => navigate("/journal")}>
-              Journal
-              <ArrowUpRight size={14} weight="bold" />
-            </button>
-          </div>
+      <motion.section className="ckp-command-frame" variants={cardMotion} aria-label="Chroma Key Protocol acts">
+        <div className="ckp-frame-rail ckp-frame-rail-top" aria-hidden="true" />
+        <div className="ckp-frame-rail ckp-frame-rail-bottom" aria-hidden="true" />
+        <div className="ckp-frame-corner ckp-frame-corner-tl" aria-hidden="true" />
+        <div className="ckp-frame-corner ckp-frame-corner-tr" aria-hidden="true" />
+        <div className="ckp-frame-corner ckp-frame-corner-bl" aria-hidden="true" />
+        <div className="ckp-frame-corner ckp-frame-corner-br" aria-hidden="true" />
+
+        <div className="ckp-act-grid">
+          {ACTS.map((act) => (
+            <ActLaunchCard
+              key={act.num}
+              act={act}
+              user={user}
+              activeAct={activeAct}
+              completedActs={completedActs}
+              onEnter={handleActEnter}
+            />
+          ))}
         </div>
 
-        <button
-          className="protocol-launch-emblem"
-          type="button"
-          onClick={() => handleActEnter(activeActMeta)}
-          aria-label={`Open active act: ${activeActMeta.title}`}
-        >
-          <img src={activeActMeta.emblem} alt="" aria-hidden="true" />
-          <span>Act {activeActMeta.roman} // {activeActMeta.element}</span>
-        </button>
-
-        <div className="protocol-launch-status" aria-label="Launch status">
-          <div>
-            <span>Active Act</span>
-            <strong>{activeActMeta.title}</strong>
-          </div>
-          <div>
-            <span>Current Operation</span>
-            <strong>{nextAction.eyebrow}</strong>
-          </div>
-          <div>
-            <span>Protocol State</span>
-            <strong>{nextAction.description}</strong>
-          </div>
-          <div>
-            <span>Access Tier</span>
-            <strong>{userTier}</strong>
-          </div>
+        <div className="ckp-bottom-rail" aria-hidden="true">
+          <span>MM</span>
+          <span>CKP</span>
+          <span>VMA</span>
         </div>
       </motion.section>
 
-      <motion.section className="protocol-launch-modules" variants={panelMotion} aria-label="Main modules">
-        {availableModules.map((module) => {
-          const Icon = module.icon;
-          const path = module.id === "codex" ? "/codex" : module.path;
-          return (
-            <button key={module.id} type="button" onClick={() => navigate(path)}>
-              <Icon size={18} weight="duotone" />
-              <span>{module.label}</span>
-            </button>
-          );
-        })}
-      </motion.section>
+      <button type="button" className="ckp-codex-link" onClick={() => navigate("/codex")}>
+        Open Codex
+        <ArrowUpRight size={14} weight="bold" />
+      </button>
 
-      <div className="act-gateway-grid">
-        {ACTS.map((act) => (
-          <ActModuleCard
-            key={act.num}
-            act={act}
-            user={user}
-            activeAct={activeAct}
-            completedActs={completedActs}
-            completedSteps={completedSteps}
-            onEnter={handleActEnter}
-          />
-        ))}
-      </div>
+      <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
 
       <AnimatePresence>
         {activatingAct && <ActMeltTransition act={activatingAct} reducedMotion={reducedMotion} />}
