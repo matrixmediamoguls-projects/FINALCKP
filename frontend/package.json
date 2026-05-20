@@ -63,6 +63,7 @@
   },
   "scripts": {
     "restore-env": "node scripts/restore-env.mjs",
+    "dev": "npm run restore-env && vite",
     "start": "npm run restore-env && vite",
     "build": "vite build",
     "preview": "vite preview"
