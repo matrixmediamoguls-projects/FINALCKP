@@ -33,21 +33,20 @@ const Login = () => {
     setLoading(true);
     try {
       await login(email, password);
-      navigate('/dashboard');
+      navigate('/acts');
     } catch (err) {
-      setError(err?.response?.data?.detail || 'Login failed');
+      setError(err?.message || 'Login failed');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSocialLogin = async (provider, token) => {
+  const handleSocialLogin = async (provider) => {
     setError('');
     try {
-      await socialLogin(provider, token);
-      navigate('/dashboard');
+      await socialLogin(provider);
     } catch (err) {
-      setError(err?.response?.data?.detail || 'Google sign-in failed');
+      setError(err?.message || 'Google sign-in failed');
     }
   };
 

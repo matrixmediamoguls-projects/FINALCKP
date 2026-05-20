@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useGoogleLogin } from '@react-oauth/google';
 
 const GoogleIcon = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -11,23 +10,16 @@ const GoogleIcon = () => (
 );
 
 const SocialAuthButtons = ({ onSocialLogin, disabled }) => {
-  const [googlePending, setGooglePending] = useState(false);
+  const [pending, setPending] = useState(false);
 
-  const googleConfigured = Boolean(import.meta.env.VITE_APP_GOOGLE_CLIENT_ID);
-
-  const handleGoogle = useGoogleLogin({
-    onSuccess: async (tok) => {
-      try {
-        setGooglePending(true);
-        await onSocialLogin('google', tok.access_token);
-      } finally {
-        setGooglePending(false);
-      }
-    },
-    onError: () => setGooglePending(false),
-  });
-
-  if (!googleConfigured) return null;
+  const handleGoogle = async () => {
+    setPending(true);
+    try {
+      await onSocialLogin('google');
+    } finally {
+      setPending(false);
+    }
+  };
 
   const btnClass =
     'flex h-12 w-full items-center justify-center gap-3 border border-[#2a2a2e] bg-[#121214] text-sm tracking-[0.04em] text-[#e4e4e7] transition-all duration-200 hover:border-[#52525b] hover:bg-[#18181b] disabled:cursor-not-allowed disabled:opacity-50';
@@ -42,12 +34,12 @@ const SocialAuthButtons = ({ onSocialLogin, disabled }) => {
 
       <button
         type="button"
-        onClick={() => handleGoogle()}
-        disabled={disabled || googlePending}
+        onClick={handleGoogle}
+        disabled={disabled || pending}
         className={btnClass}
       >
         <GoogleIcon />
-        {googlePending ? 'Connecting…' : 'Continue with Google'}
+        {pending ? 'Connecting…' : 'Continue with Google'}
       </button>
     </div>
   );

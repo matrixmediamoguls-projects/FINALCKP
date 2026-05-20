@@ -1,144 +1,107 @@
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
-import axios from 'axios';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { getSupabaseClient } from '../services/supabase/client';
 
 const AuthContext = createContext(null);
 
-// JWT expiration time in milliseconds (7 days)
-const JWT_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
-// Refresh token 1 minute before expiration
-const REFRESH_BEFORE_EXPIRY = 60 * 1000;
+const supabase = getSupabaseClient();
+
+const toAppUser = (supabaseUser) => {
+  if (!supabaseUser) return null;
+  const meta = supabaseUser.user_metadata || {};
+  return {
+    user_id: supabaseUser.id,
+    id: supabaseUser.id,
+    email: supabaseUser.email,
+    name: meta.name || meta.full_name || supabaseUser.email?.split('@')[0] || 'Seeker',
+    full_name: meta.full_name || meta.name,
+    picture: meta.avatar_url || meta.picture || null,
+    tier: meta.tier || 'free',
+    is_admin: meta.is_admin || false,
+    current_act: meta.current_act || 1,
+    completed_acts: meta.completed_acts || [],
+    act3_unlocked: meta.act3_unlocked || false,
+    level: meta.level || 0,
+  };
+};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const tokenRefreshTimer = useRef(null);
 
-  const scheduleTokenRefresh = useCallback(() => {
-    if (tokenRefreshTimer.current) {
-      clearTimeout(tokenRefreshTimer.current);
-    }
-    
-    // Refresh token before it expires
-    tokenRefreshTimer.current = setTimeout(async () => {
-      try {
-        // Call /auth/me to validate session (acts as implicit refresh)
-        const response = await axios.get('/auth/me');
-        setUser(response.data);
-        // Reschedule for next refresh
-        scheduleTokenRefresh();
-      } catch (error) {
-        // Token expired or invalid, logout user
-        setUser(null);
-        if (tokenRefreshTimer.current) {
-          clearTimeout(tokenRefreshTimer.current);
-        }
-      }
-    }, JWT_EXPIRATION_TIME - REFRESH_BEFORE_EXPIRY);
-  }, []);
-
-  const checkAuth = useCallback(async () => {
-    try {
-      const response = await axios.get('/auth/me');
-      setUser(response.data);
-      scheduleTokenRefresh();
-    } catch (error) {
-      setUser(null);
-    } finally {
+  useEffect(() => {
+    if (!supabase) {
       setLoading(false);
+      return;
     }
-  }, [scheduleTokenRefresh]);
 
-  useEffect(() => {
-    checkAuth();
-    
-    return () => {
-      if (tokenRefreshTimer.current) {
-        clearTimeout(tokenRefreshTimer.current);
-      }
-    };
-  }, [checkAuth]);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(toAppUser(session?.user ?? null));
+      setLoading(false);
+    });
 
-  // Add response interceptor to handle 401 errors
-  useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        if (error.response?.status === 401) {
-          // Unauthorized - clear user and stop refresh timer
-          setUser(null);
-          if (tokenRefreshTimer.current) {
-            clearTimeout(tokenRefreshTimer.current);
-          }
-        }
-        return Promise.reject(error);
-      }
-    );
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(toAppUser(session?.user ?? null));
+    });
 
-    return () => {
-      axios.interceptors.response.eject(interceptor);
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/auth/login', { email, password });
-    setUser(response.data);
-    scheduleTokenRefresh();
-    return response.data;
-  };
-
-  const socialLogin = async (provider, token) => {
-    const response = await axios.post('/auth/social', { provider, token });
-    setUser(response.data);
-    scheduleTokenRefresh();
-    return response.data;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw new Error(error.message);
+    const appUser = toAppUser(data.user);
+    setUser(appUser);
+    return appUser;
   };
 
   const register = async (name, email, password) => {
-    const response = await axios.post('/auth/register', { name, email, password });
-    setUser(response.data);
-    scheduleTokenRefresh();
-    return response.data;
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name, full_name: name } },
+    });
+    if (error) throw new Error(error.message);
+    const appUser = toAppUser(data.user);
+    setUser(appUser);
+    return appUser;
+  };
+
+  const socialLogin = async (provider) => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: `${window.location.origin}/acts` },
+    });
+    if (error) throw new Error(error.message);
   };
 
   const logout = async () => {
-    try {
-      await axios.post('/auth/logout');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+    await supabase.auth.signOut();
     setUser(null);
-    if (tokenRefreshTimer.current) {
-      clearTimeout(tokenRefreshTimer.current);
-    }
   };
+
+  const checkAuth = useCallback(async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    setUser(toAppUser(session?.user ?? null));
+  }, []);
 
   const updateProgress = async (progressData) => {
-    const response = await axios.put('/progress', progressData);
-    setUser(response.data);
-    return response.data;
-  };
-
-  const value = {
-    user,
-    loading,
-    login,
-    socialLogin,
-    register,
-    logout,
-    checkAuth,
-    updateProgress
+    const { data: { user: sbUser }, error } = await supabase.auth.updateUser({
+      data: progressData,
+    });
+    if (error) throw new Error(error.message);
+    const appUser = toAppUser(sbUser);
+    setUser(appUser);
+    return appUser;
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, loading, login, register, socialLogin, logout, checkAuth, updateProgress }}>
       {children}
     </AuthContext.Provider>
   );

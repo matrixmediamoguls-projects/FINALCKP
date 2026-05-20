@@ -1,77 +1,505 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+@import "tailwindcss";
+
+/* =========================================================
+   ROOT VARIABLES
+========================================================= */
 
 :root {
-  --void:#060604; --surface:#0c0c0a; --panel:#111110; --panel2:#161614;
-  --border:#1c1c1a; --border2:#282824;
-  --g3:#5ab038; --g4:#80d050; --g2:#3a8028; --gdim:#0c1a08; --gsurf:#0a1208;
-  --b3:#50a0e0; --b4:#80c8f8; --b2:#1e50a0; --bdim:#060f20; --bsurf:#060c18;
-  --r3:#d03010; --r4:#f07040; --r2:#a01808; --rdim:#1a0400; --rsurf:#180a06;
-  --y3:#c8a020; --y4:#f0cc40; --y2:#806010; --ydim:#100c00; --ysurf:#120e02;
-  --gold:#c8a020; --gold2:#f0cc40;
-  --white:#e8e4d8; --muted:#484840; --fog:#222220;
-  --act:var(--g3); --act2:var(--g4); --act-dim:var(--gdim); --act-surf:var(--gsurf);
+  --void:#060604;
+  --surface:#0c0c0a;
+  --panel:#111110;
+  --panel2:#161614;
+
+  --border:#1c1c1a;
+  --border2:#282824;
+
+  --g3:#5ab038;
+  --g4:#80d050;
+  --g2:#3a8028;
+  --gdim:#0c1a08;
+  --gsurf:#0a1208;
+
+  --b3:#50a0e0;
+  --b4:#80c8f8;
+  --b2:#1e50a0;
+  --bdim:#060f20;
+  --bsurf:#060c18;
+
+  --r3:#d03010;
+  --r4:#f07040;
+  --r2:#a01808;
+  --rdim:#1a0400;
+  --rsurf:#180a06;
+
+  --y3:#c8a020;
+  --y4:#f0cc40;
+  --y2:#806010;
+  --ydim:#100c00;
+  --ysurf:#120e02;
+
+  --gold:#c8a020;
+  --gold2:#f0cc40;
+
+  --white:#e8e4d8;
+  --muted:#484840;
+  --fog:#222220;
+
+  --act:var(--g3);
+  --act2:var(--g4);
+  --act-dim:var(--gdim);
+  --act-surf:var(--gsurf);
+
+  --background: 0 0% 2%;
+  --foreground: 43 16% 88%;
+  --card: 60 7% 7%;
+  --card-foreground: 43 16% 88%;
+  --popover: 60 7% 4%;
+  --popover-foreground: 43 16% 88%;
+  --primary: 98 54% 46%;
+  --primary-foreground: 0 0% 2%;
+  --secondary: 60 4% 10%;
+  --secondary-foreground: 43 16% 88%;
+  --muted-color: 60 4% 10%;
+  --muted-foreground: 55 6% 26%;
+  --accent: 60 7% 7%;
+  --accent-foreground: 43 16% 88%;
+  --destructive: 13 81% 44%;
+  --destructive-foreground: 43 16% 88%;
+  --input: 55 6% 10%;
+  --ring: 98 54% 46%;
+  --radius: 0px;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body { min-height:100%; }
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
 body {
   background: var(--void);
   color: var(--white);
+
   font-family: 'Rajdhani', sans-serif;
   font-size: 15px;
+
+  overflow-x: hidden;
 }
+
+/* =========================================================
+   FILM GRAIN OVERLAY
+========================================================= */
+
 body::before {
-  content:''; position:fixed; inset:0;
-  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:9999; mix-blend-mode:overlay;
+  content:'';
+
+  position: fixed;
+  inset: 0;
+
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+
+  pointer-events: none;
+  z-index: 9999;
+
+  mix-blend-mode: overlay;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width:3px; height:3px; }
-::-webkit-scrollbar-track { background:var(--void); }
-::-webkit-scrollbar-thumb { background:var(--border2); }
+/* =========================================================
+   SCROLLBAR
+========================================================= */
 
-/* Animations */
-@keyframes obIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
-@keyframes pulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
-@keyframes sIn { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
-@keyframes ctaPulse { 0%,100%{border-color:var(--act);box-shadow:none;} 50%{border-color:var(--act2);box-shadow:0 0 12px rgba(90,176,56,0.3);} }
-@keyframes spinWheel { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
-@keyframes trailPulse { 0%,100%{opacity:0.5;transform:scale(1);} 50%{opacity:1;transform:scale(1.6);} }
-@keyframes trailSpark { 0%,100%{opacity:0.4;transform:scale(0.8);} 50%{opacity:1;transform:scale(1.2);} }
-@keyframes popupCycle { 0%{opacity:0;transform:translateY(8px);} 8%{opacity:1;transform:translateY(0);} 85%{opacity:1;transform:translateY(0);} 100%{opacity:0;transform:translateY(-6px);} }
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
 
-/* Font utility classes */
-.font-cinzel { font-family: 'Cinzel', serif; }
-.font-mono { font-family: 'Share Tech Mono', monospace; }
-.font-fell { font-family: 'IM Fell English', serif; font-style: italic; }
-.font-raj { font-family: 'Rajdhani', sans-serif; }
+::-webkit-scrollbar-track {
+  background: var(--void);
+}
 
-@layer base {
-  :root {
-    --background: 0 0% 2%;
-    --foreground: 43 16% 88%;
-    --card: 60 7% 7%;
-    --card-foreground: 43 16% 88%;
-    --popover: 60 7% 4%;
-    --popover-foreground: 43 16% 88%;
-    --primary: 98 54% 46%;
-    --primary-foreground: 0 0% 2%;
-    --secondary: 60 4% 10%;
-    --secondary-foreground: 43 16% 88%;
-    --muted: 60 4% 10%;
-    --muted-foreground: 55 6% 26%;
-    --accent: 60 7% 7%;
-    --accent-foreground: 43 16% 88%;
-    --destructive: 13 81% 44%;
-    --destructive-foreground: 43 16% 88%;
-    --border: 55 6% 10%;
-    --input: 55 6% 10%;
-    --ring: 98 54% 46%;
-    --radius: 0px;
+::-webkit-scrollbar-thumb {
+  background: var(--border2);
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes obIn {
+  from {
+    opacity:0;
+    transform:translateY(20px);
   }
+
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,100% {
+    opacity:0.6;
+  }
+
+  50% {
+    opacity:1;
+  }
+}
+
+@keyframes sIn {
+  from {
+    opacity:0;
+    transform:translateY(6px);
+  }
+
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity:0;
+    transform:translateY(8px);
+  }
+
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes ctaPulse {
+  0%,100% {
+    border-color: var(--act);
+    box-shadow: none;
+  }
+
+  50% {
+    border-color: var(--act2);
+    box-shadow: 0 0 12px rgba(90,176,56,0.3);
+  }
+}
+
+@keyframes spinWheel {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes trailPulse {
+  0%,100% {
+    opacity:0.5;
+    transform:scale(1);
+  }
+
+  50% {
+    opacity:1;
+    transform:scale(1.6);
+  }
+}
+
+@keyframes trailSpark {
+  0%,100% {
+    opacity:0.4;
+    transform:scale(0.8);
+  }
+
+  50% {
+    opacity:1;
+    transform:scale(1.2);
+  }
+}
+
+@keyframes popupCycle {
+  0% {
+    opacity:0;
+    transform:translateY(8px);
+  }
+
+  8% {
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  85% {
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  100% {
+    opacity:0;
+    transform:translateY(-6px);
+  }
+}
+
+@keyframes conduitFlow {
+  from {
+    background-position: 0% 0%;
+  }
+
+  to {
+    background-position: 200% 0%;
+  }
+}
+
+/* =========================================================
+   FONT UTILITIES
+========================================================= */
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-mono {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.font-fell {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+}
+
+.font-raj {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* =========================================================
+   MECH PANEL SYSTEM
+========================================================= */
+
+.mech-panel {
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,0,60,.95),
+      rgba(255,0,60,.2)
+    );
+
+  padding: 2px;
+
+  clip-path: polygon(
+    0% 14px,
+    14px 0%,
+    calc(100% - 14px) 0%,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0% calc(100% - 14px)
+  );
+
+  box-shadow:
+    0 0 24px rgba(255,0,60,.18),
+    inset 0 0 28px rgba(255,0,60,.08);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   INNER CHASSIS
+========================================================= */
+
+.mech-panel-inner {
+  position: relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,12,12,.98),
+      rgba(5,5,5,.98)
+    );
+
+  padding: 1rem;
+
+  border:
+    1px solid rgba(255,0,60,.35);
+
+  clip-path: inherit;
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   CONDUIT LAYER
+========================================================= */
+
+.mech-panel::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,0,60,.25),
+      transparent
+    );
+
+  background-size: 200% 100%;
+
+  animation:
+    conduitFlow 6s linear infinite;
+
+  opacity: .45;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   CORNER HARDWARE
+========================================================= */
+
+.corner {
+  position: absolute;
+
+  width: 22px;
+  height: 22px;
+
+  border: 2px solid #ff003c;
+
+  opacity: .9;
+
+  z-index: 5;
+
+  animation: ctaPulse 2s infinite;
+}
+
+/* TOP LEFT */
+
+.corner.tl {
+  top: 8px;
+  left: 8px;
+
+  border-right: none;
+  border-bottom: none;
+}
+
+/* TOP RIGHT */
+
+.corner.tr {
+  top: 8px;
+  right: 8px;
+
+  border-left: none;
+  border-bottom: none;
+}
+
+/* BOTTOM LEFT */
+
+.corner.bl {
+  bottom: 8px;
+  left: 8px;
+
+  border-right: none;
+  border-top: none;
+
+  animation-delay: 1s;
+}
+
+/* BOTTOM RIGHT */
+
+.corner.br {
+  bottom: 8px;
+  right: 8px;
+
+  border-left: none;
+  border-top: none;
+
+  animation-delay: 1s;
+}
+
+/* =========================================================
+   LEFT SIDE DOCKING SHAPE
+========================================================= */
+
+.left-module {
+  clip-path: polygon(
+    0% 14px,
+    14px 0%,
+    100% 0%,
+    100% 34%,
+    92% 50%,
+    100% 66%,
+    100% 100%,
+    14px 100%,
+    0% calc(100% - 14px)
+  );
+}
+
+/* =========================================================
+   RIGHT SIDE DOCKING SHAPE
+========================================================= */
+
+.right-module {
+  clip-path: polygon(
+    0% 0%,
+    calc(100% - 14px) 0%,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    0% 100%,
+    0% 66%,
+    8% 50%,
+    0% 34%
+  );
+}
+
+/* =========================================================
+   REACTOR GLOW
+========================================================= */
+
+.reactor-glow {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255,0,60,.12),
+      transparent 70%
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   PREMIUM FRAME LINES
+========================================================= */
+
+.mech-panel::after {
+  content: '';
+
+  position: absolute;
+
+  inset: 10px;
+
+  border:
+    1px solid rgba(255,255,255,.04);
+
+  pointer-events: none;
+
+  clip-path: inherit;
 }

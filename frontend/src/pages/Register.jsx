@@ -69,9 +69,9 @@ const Register = () => {
     startTransition(async () => {
       try {
         await register(protocolIdentity, email.trim(), password);
-        navigate('/dashboard');
+        navigate('/acts');
       } catch (err) {
-        setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+        setError(err.message || 'Registration failed. Please try again.');
       }
     });
   };
@@ -199,13 +199,12 @@ const Register = () => {
               </form>
 
               <SocialAuthButtons
-                onSocialLogin={async (provider, token) => {
+                onSocialLogin={async (provider) => {
                   setError('');
                   try {
-                    await socialLogin(provider, token);
-                    navigate('/dashboard');
+                    await socialLogin(provider);
                   } catch (err) {
-                    setError(err.response?.data?.detail || 'Social login failed. Please try again.');
+                    setError(err.message || 'Social login failed. Please try again.');
                   }
                 }}
                 disabled={isPending}
