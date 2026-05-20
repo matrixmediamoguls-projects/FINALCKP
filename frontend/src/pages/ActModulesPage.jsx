@@ -5,6 +5,9 @@ import { ArrowUpRight } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
 import PaywallModal from "../components/layout/PaywallModal";
 import useJourneyProgress from "../hooks/useJourneyProgress";
+import matrixIcon from "../public/icons/matrix_icon.svg";
+import ckpIcon from "../public/icons/ckp_icon.svg";
+import vmaIcon from "../public/icons/vma_icon.svg";
 import {
   ACTS,
   buildProtocolPath,
@@ -16,6 +19,12 @@ const cardMotion = {
   hidden: { opacity: 0, y: 18, scale: 0.985 },
   show: { opacity: 1, y: 0, scale: 1 },
 };
+
+const bottomRailIcons = [
+  { src: matrixIcon, label: "Musiq Matrix" },
+  { src: ckpIcon, label: "Chroma Key Protocol" },
+  { src: vmaIcon, label: "VMA" },
+];
 
 const actPresentation = {
   1: {
@@ -259,9 +268,11 @@ const ActModulesPage = () => {
         </div>
 
         <div className="ckp-bottom-rail" aria-hidden="true">
-          <span>MM</span>
-          <span>CKP</span>
-          <span>VMA</span>
+          {bottomRailIcons.map((icon) => (
+            <span key={icon.label} className="ckp-bottom-rail-item">
+              <img src={icon.src} alt="" />
+            </span>
+          ))}
         </div>
       </motion.section>
 

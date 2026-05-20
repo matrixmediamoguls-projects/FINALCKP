@@ -1008,13 +1008,16 @@ body::before {
   display: grid;
   place-items: center;
   border-left: 1px solid rgba(185, 220, 238, 0.16);
-  color: #ff3f34;
-  font-family: "Rajdhani", sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.6rem, 3.4vw, 3.2rem);
-  text-shadow:
-    0 0 12px rgba(255, 63, 52, 0.82),
-    0 3px 0 #050505;
+}
+
+.ckp-bottom-rail img {
+  width: clamp(58px, 6vw, 112px);
+  max-width: 72%;
+  height: clamp(38px, 4.8vw, 70px);
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 10px rgba(255, 63, 52, 0.78))
+    drop-shadow(0 3px 0 rgba(0, 0, 0, 0.78));
 }
 
 .ckp-bottom-rail span:first-child {
