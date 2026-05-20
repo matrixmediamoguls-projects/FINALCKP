@@ -5,7 +5,7 @@ import AudioVisualizer from './modules/AudioVisualizer';
 import LyricsProtocol from './modules/LyricsProtocol';
 import SonicArtifact from './modules/SonicArtifact';
 import ActKeysModule from './ActKeysModule';
-import MechPanel from './components/ui/MechPanel'; // adjust the import path as needed
+import MechPanel from '@/components/ui/mechpanel';
 
 export default function ProtocolShell({ children }) {
   const { currentTrack, error } = useProtocol();
