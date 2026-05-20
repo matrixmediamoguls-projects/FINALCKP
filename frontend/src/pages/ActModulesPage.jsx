@@ -26,8 +26,9 @@ const actPresentation = {
     charge: "Reality is not as it seems.",
     verbs: ["Disrupt", "Discover", "Decode"],
     tone: "fracture",
-    color: "#ff4a2f",
-    colorSoft: "255,74,47",
+    color: "#8ff044",
+    colorSoft: "143,240,68",
+    sceneHue: "0deg",
   },
   2: {
     eyebrow: "Act Two",
@@ -39,6 +40,7 @@ const actPresentation = {
     tone: "reflection",
     color: "#29baff",
     colorSoft: "41,186,255",
+    sceneHue: "120deg",
   },
   3: {
     eyebrow: "Act Three",
@@ -48,8 +50,9 @@ const actPresentation = {
     charge: "Reclaim who you are. Rewrite the system.",
     verbs: ["Adapt", "Flow", "Control"],
     tone: "reclamation",
-    color: "#8ff044",
-    colorSoft: "143,240,68",
+    color: "#ff4a2f",
+    colorSoft: "255,74,47",
+    sceneHue: "240deg",
   },
   4: {
     eyebrow: "Act Four",
@@ -61,6 +64,7 @@ const actPresentation = {
     tone: "crucible",
     color: "#ffd12d",
     colorSoft: "255,209,45",
+    sceneHue: "300deg",
   },
 };
 
@@ -111,7 +115,7 @@ const ActLaunchCard = ({ act, user, activeAct, completedActs, onEnter }) => {
     <motion.article
       data-testid={`journey-act-${act.num}`}
       className={`ckp-act-card ckp-act-${card.tone} ${locked ? "is-locked" : ""} ${isActive ? "is-active" : ""} ${isComplete ? "is-complete" : ""}`}
-      style={{ "--act-card": card.color, "--act-card-rgb": card.colorSoft }}
+      style={{ "--act-card": card.color, "--act-card-rgb": card.colorSoft, "--scene-hue": card.sceneHue }}
       variants={cardMotion}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.28, ease: "easeOut" }}
