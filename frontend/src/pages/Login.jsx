@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
@@ -26,6 +26,8 @@ const Login = () => {
 
   const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectPath = location.state?.from?.pathname || '/acts';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ const Login = () => {
     setLoading(true);
     try {
       await login(email, password);
-      navigate('/acts');
+      navigate(redirectPath, { replace: true });
     } catch (err) {
       setError(err?.message || 'Login failed');
     } finally {

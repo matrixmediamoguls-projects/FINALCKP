@@ -30,7 +30,7 @@ const ImmersiveProtocol = lazy(() => import('./modules/ImmersiveProtocol'));
 const FinalVisualizerPage = lazy(() => import('./pages/FinalVisualizerPage'));
 const LaunchSequencePage = lazy(() => import('./pages/LaunchSequencePage'));
 const Activation = lazy(() => import('./pages/Activation'));
-const MatrixAssistant = lazy(() => import('./components/VMA/MatrixAssistant'));
+const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistant'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -39,9 +39,10 @@ import { UNLOCK_ALL_ACCESS } from './lib/accessFlags';
 // 🔒 Protected Route
 const ProtectedRoute = ({ children, withShell = true }) => {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) return null;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
 
   if (withShell) return <AppShellWrapper>{children}</AppShellWrapper>;
   return children;
@@ -88,8 +89,8 @@ function AppRoutes() {
       <Route path="/listen" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
       <Route path="/listen/:actNumber" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
       <Route path="/launch-sequence/:actNumber" element={<LaunchSequencePage />} />
-      <Route path="/visualizer" element={<FinalVisualizerPage />} />
-      <Route path="/visualizer/:actId" element={<FinalVisualizerPage />} />
+      <Route path="/visualizer" element={<ProtectedRoute withShell={false}><FinalVisualizerPage /></ProtectedRoute>} />
+      <Route path="/visualizer/:actId" element={<ProtectedRoute withShell={false}><FinalVisualizerPage /></ProtectedRoute>} />
       <Route path="/immersive" element={<ProtectedRoute withShell={false}><ImmersiveProtocol /></ProtectedRoute>} />
       <Route path="/reclamation" element={<ProtectedRoute withShell={false}><ImmersiveProtocol /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />

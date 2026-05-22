@@ -228,6 +228,76 @@ def serialize_user(user: dict) -> dict:
         serialized["created_at"] = serialized["created_at"].isoformat()
     return serialized
 
+def get_supabase_auth_headers(token: str) -> dict:
+    supabase_key = os.environ.get("SUPABASE_KEY") or os.environ.get("SUPABASE_ANON_KEY")
+    return {
+        "apikey": supabase_key or "",
+        "Authorization": f"Bearer {token}",
+    }
+
+def app_user_from_supabase_user(supabase_user: dict) -> dict:
+    metadata = supabase_user.get("user_metadata") or {}
+    email = supabase_user.get("email")
+    name = metadata.get("name") or metadata.get("full_name") or (email.split("@")[0] if email else "Seeker")
+    return {
+        "user_id": supabase_user["id"],
+        "email": email,
+        "name": name,
+        "password": None,
+        "picture": metadata.get("avatar_url") or metadata.get("picture"),
+        "level": 0,
+        "current_act": 1,
+        "completed_acts": [],
+        "tier": "free",
+        "spins_earned": 0,
+        "spins_used": 0,
+        "owns_all_albums": False,
+        "act3_unlocked": False,
+        "is_admin": False,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+
+async def verify_supabase_access_token(token: str) -> Optional[dict]:
+    supabase_url = os.environ.get("SUPABASE_URL")
+    if not supabase_url:
+        return None
+
+    headers = get_supabase_auth_headers(token)
+    if not headers["apikey"]:
+        logger.warning("SUPABASE_KEY or SUPABASE_ANON_KEY is required to verify Supabase access tokens")
+        return None
+
+    try:
+        resp = requests.get(
+            f"{supabase_url.rstrip('/')}/auth/v1/user",
+            headers=headers,
+            timeout=5,
+        )
+    except requests.RequestException as exc:
+        logger.warning("Supabase token verification failed: %s", exc)
+        return None
+
+    if resp.status_code != 200:
+        return None
+
+    supabase_user = resp.json()
+    email = supabase_user.get("email")
+    if not supabase_user.get("id") or not email:
+        return None
+
+    client = await get_db()
+    user_res = await client.table("users").select("*").eq("user_id", supabase_user["id"]).limit(1).execute()
+    if user_res.data:
+        return user_res.data[0]
+
+    email_res = await client.table("users").select("*").eq("email", email).limit(1).execute()
+    if email_res.data:
+        return email_res.data[0]
+
+    app_user = app_user_from_supabase_user(supabase_user)
+    await client.table("users").insert(app_user).execute()
+    return app_user
+
 async def get_current_user(request: Request) -> Optional[dict]:
     # Check cookie first
     session_token = request.cookies.get("session_token")
@@ -248,6 +318,10 @@ async def get_current_user(request: Request) -> Optional[dict]:
     if payload:
         user_res = await client.table("users").select("*").eq("user_id", payload["user_id"]).limit(1).execute()
         return user_res.data[0] if user_res.data else None
+
+    supabase_user = await verify_supabase_access_token(session_token)
+    if supabase_user:
+        return supabase_user
     
     return None
 

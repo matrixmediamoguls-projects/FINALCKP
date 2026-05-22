@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { getSupabaseClient } from '../services/supabase/client';
+import '../services/apiClient';
 
 const AuthContext = createContext(null);
 
@@ -40,19 +41,38 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(toAppUser(session?.user ?? null));
-      setLoading(false);
-    });
+    let mounted = true;
+
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        if (!mounted) return;
+        setUser(toAppUser(session?.user ?? null));
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(toAppUser(session?.user ?? null));
     });
 
-    return () => subscription.unsubscribe();
+    const handleSessionExpired = async () => {
+      await supabase.auth.signOut({ scope: 'local' });
+      setUser(null);
+    };
+
+    window.addEventListener('auth:session-expired', handleSessionExpired);
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+      window.removeEventListener('auth:session-expired', handleSessionExpired);
+    };
   }, []);
 
   const login = async (email, password) => {
+    if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw new Error(error.message);
     const appUser = toAppUser(data.user);
@@ -61,6 +81,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
+    if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -73,6 +94,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const socialLogin = async (provider) => {
+    if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: `${window.location.origin}/acts` },
@@ -81,16 +103,23 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    if (supabase) await supabase.auth.signOut({ scope: 'local' });
     setUser(null);
   };
 
   const checkAuth = useCallback(async () => {
+    if (!supabase) {
+      setUser(null);
+      return null;
+    }
     const { data: { session } } = await supabase.auth.getSession();
-    setUser(toAppUser(session?.user ?? null));
+    const appUser = toAppUser(session?.user ?? null);
+    setUser(appUser);
+    return appUser;
   }, []);
 
   const updateProgress = async (progressData) => {
+    if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
     const { data: { user: sbUser }, error } = await supabase.auth.updateUser({
       data: progressData,
     });
