@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { getSupabaseClient } from '../services/supabase/client';
 import '../services/apiClient';
 
@@ -8,7 +8,9 @@ const supabase = getSupabaseClient();
 
 const toAppUser = (supabaseUser) => {
   if (!supabaseUser) return null;
+
   const meta = supabaseUser.user_metadata || {};
+
   return {
     user_id: supabaseUser.id,
     id: supabaseUser.id,
@@ -38,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (!supabase) {
       setLoading(false);
-      return;
+      return undefined;
     }
 
     let mounted = true;
@@ -53,7 +55,9 @@ export const AuthProvider = ({ children }) => {
         if (mounted) setLoading(false);
       });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(toAppUser(session?.user ?? null));
     });
 
@@ -73,8 +77,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw new Error(error.message);
+
     const appUser = toAppUser(data.user);
     setUser(appUser);
     return appUser;
@@ -82,12 +88,14 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { name, full_name: name } },
     });
     if (error) throw new Error(error.message);
+
     const appUser = toAppUser(data.user);
     setUser(appUser);
     return appUser;
@@ -95,6 +103,7 @@ export const AuthProvider = ({ children }) => {
 
   const socialLogin = async (provider) => {
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: `${window.location.origin}/acts` },
@@ -112,7 +121,10 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       return null;
     }
-    const { data: { session } } = await supabase.auth.getSession();
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     const appUser = toAppUser(session?.user ?? null);
     setUser(appUser);
     return appUser;
@@ -120,17 +132,22 @@ export const AuthProvider = ({ children }) => {
 
   const updateProgress = async (progressData) => {
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
-    const { data: { user: sbUser }, error } = await supabase.auth.updateUser({
-      data: progressData,
-    });
+
+    const {
+      data: { user: supabaseUser },
+      error,
+    } = await supabase.auth.updateUser({ data: progressData });
     if (error) throw new Error(error.message);
-    const appUser = toAppUser(sbUser);
+
+    const appUser = toAppUser(supabaseUser);
     setUser(appUser);
     return appUser;
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, socialLogin, logout, checkAuth, updateProgress }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, register, socialLogin, logout, checkAuth, updateProgress }}
+    >
       {children}
     </AuthContext.Provider>
   );
