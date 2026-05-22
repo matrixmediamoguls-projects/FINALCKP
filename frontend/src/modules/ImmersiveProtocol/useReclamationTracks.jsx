@@ -28,12 +28,21 @@ const resolveR2Url = (base, path) => {
   return `${baseClean}${pathClean}`;
 };
 
+const resolveAudioUrl = (raw, r2BaseUrl) => {
+  if (raw.audio_url) return raw.audio_url;
+  if (!raw.audio_file_name) return '';
+  const fileName = raw.audio_file_name.includes('.')
+    ? raw.audio_file_name
+    : `${raw.audio_file_name}.mp3`;
+  return `${(r2BaseUrl || '').replace(/\/$/, '')}/audio/reclamation/${fileName}`;
+};
+
 const normalizeTrack = (raw, r2BaseUrl) => ({
   ...raw,
   sort_order: Number(raw.sort_order ?? 999),
   intensity: Number(raw.intensity ?? 50),
   act_keys: safeArray(raw.act_keys),
-  audio_url: `${(r2BaseUrl || '').replace(/\/$/, '')}/audio/reclamation/${raw.audio_file_name || ''}`,
+  audio_url: resolveAudioUrl(raw, r2BaseUrl),
   shell_image_url: resolveR2Url(r2BaseUrl, raw.shell_image),
   act_background_image: resolveR2Url(r2BaseUrl, raw.shell_image || raw.background_image || ''),
   act_logo_asset: resolveR2Url(r2BaseUrl, raw.act_logo_asset || raw.act_logo_image || ''),
