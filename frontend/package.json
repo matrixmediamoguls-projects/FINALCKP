@@ -66,6 +66,7 @@
     "dev": "npm run restore-env && vite",
     "start": "npm run restore-env && vite",
     "build": "vite build",
+    "test": "vitest run src/context/authUserNormalizer.test.js",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -80,7 +81,8 @@
     "globals": "15.15.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "vite": "^8.0.13"
+    "vite": "^8.0.13",
+    "vitest": "^4.1.7"
   },
   "packageManager": "npm@9.8.1"
 }
