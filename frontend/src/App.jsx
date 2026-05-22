@@ -10,7 +10,6 @@ const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Journal = lazy(() => import('./pages/Journal'));
 const SpinWheel = lazy(() => import('./pages/SpinWheel'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
-const AdminPanel = lazy(() => import('./pages/AdminPanel'));
 const SeekerPage = lazy(() => import('./pages/SeekerPage'));
 const GuidedListen = lazy(() => import('./pages/GuidedListen'));
 const ActProtocol = lazy(() => import('./pages/ActProtocol'));
@@ -66,7 +65,6 @@ function AppRoutes() {
       <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />
       <Route path="/listen" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
       <Route path="/listen/:actNumber" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
-      <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
       <Route path="/seeker" element={<ProtectedRoute><SeekerPage /></ProtectedRoute>} />
       <Route path="/protocol/:actNumber" element={<ProtectedRoute><ActProtocol /></ProtectedRoute>} />
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
