@@ -7,17 +7,13 @@ import { useAuth } from './context/AuthContext';
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
-const ActPage = lazy(() => import('./pages/ActPage'));
-const LockedAct = lazy(() => import('./pages/LockedAct'));
 const Journal = lazy(() => import('./pages/Journal'));
 const SpinWheel = lazy(() => import('./pages/SpinWheel'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
 const AdminPanel = lazy(() => import('./pages/AdminPanel'));
 const SeekerPage = lazy(() => import('./pages/SeekerPage'));
-const ProtocolChat = lazy(() => import('./pages/ProtocolChat'));
 const GuidedListen = lazy(() => import('./pages/GuidedListen'));
 const ActProtocol = lazy(() => import('./pages/ActProtocol'));
-const ImmersiveProtocol = lazy(() => import('./modules/ImmersiveProtocol'));
 const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 
 import AppShell from './components/layout/AppShell';
@@ -70,14 +66,9 @@ function AppRoutes() {
       <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />
       <Route path="/listen" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
       <Route path="/listen/:actNumber" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
-      <Route path="/immersive" element={<ProtectedRoute withShell={false}><ImmersiveProtocol /></ProtectedRoute>} />
-      <Route path="/reclamation" element={<ProtectedRoute withShell={false}><ImmersiveProtocol /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
       <Route path="/seeker" element={<ProtectedRoute><SeekerPage /></ProtectedRoute>} />
-      <Route path="/protocol" element={<ProtectedRoute><ProtocolChat /></ProtectedRoute>} />
       <Route path="/protocol/:actNumber" element={<ProtectedRoute><ActProtocol /></ProtectedRoute>} />
-      <Route path="/act/4" element={<ProtectedRoute><LockedAct /></ProtectedRoute>} />
-      <Route path="/act/:actNumber" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
       <Route path="/premium" element={<ChromaKeyProtocolPremium />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
