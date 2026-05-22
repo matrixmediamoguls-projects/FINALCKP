@@ -1,24 +1,8 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+"""Canonical FastAPI entrypoint shim.
 
-from app.routes import auth, user  # adjust if your paths differ
+This module intentionally re-exports the app from backend/server.py so any
+legacy command like `uvicorn app.main:app` uses the same API surface as
+`uvicorn server:app`.
+"""
 
-app = FastAPI()
-
-# ✅ CORS FIX (this is what solves your error)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # allow React (localhost:3000)
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# ✅ ROUTES
-app.include_router(auth.router, prefix="/auth")
-app.include_router(user.router, prefix="/user")
-
-# ✅ ROOT TEST
-@app.get("/")
-def root():
-    return {"status": "API running"}
+from server import app

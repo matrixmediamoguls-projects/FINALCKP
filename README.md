@@ -27,8 +27,9 @@ This project is a **React + Python full-stack application** with:
 
 ### Backend
 
-* Python (Flask-style API)
-* Custom DB client (`db_client.py`)
+* FastAPI
+* Uvicorn
+* Supabase-backed DB client (`backend/db_client.py`)
 
 ### Design System
 
@@ -53,6 +54,7 @@ This project is a **React + Python full-stack application** with:
 
 /backend
   server.py
+  run.py
   db_client.py
 
 /memory
@@ -70,7 +72,7 @@ design_guidelines.json
 
 ```bash
 cd backend
-python server.py
+python run.py
 ```
 
 ---
@@ -94,7 +96,8 @@ Login → Authentication → Dashboard / SeekerPage
 ### Expected behavior:
 
 * User submits credentials
-* Backend validates
+* Supabase Auth creates the frontend session
+* Backend protected endpoints validate the Supabase bearer token
 * Frontend redirects on success
 * User-specific page loads
 
@@ -163,7 +166,7 @@ This project is currently:
 1. Complete auth flow (frontend ↔ backend)
 2. Standardize UI components using tokens
 3. Remove legacy `chroma-*` styles
-4. Expand backend routes and validation
+4. Expand backend route validation inside `backend/server.py`
 5. Add minimal testing
 
 ---

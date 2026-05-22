@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight } from "@phosphor-icons/react";
+import { ArrowUpRight, CheckCircle, LockKey, Play } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
 import PaywallModal from "../components/layout/PaywallModal";
 import useJourneyProgress from "../hooks/useJourneyProgress";
@@ -41,26 +41,26 @@ const actPresentation = {
   },
   2: {
     eyebrow: "Act Two",
-    title: "The Reflection Chamber",
-    titleLines: ["The", "Reflection", "Chamber"],
+    title: "Reclamation",
+    titleLines: ["Reclamation"],
     discipline: "Confrontation",
-    charge: "See yourself. Break the pattern.",
-    verbs: ["Analyze", "Reflect", "Transcend"],
-    tone: "reflection",
-    color: "#29baff",
-    colorSoft: "41,186,255",
+    charge: "Burn away what is not essential.",
+    verbs: ["Confront", "Burn", "Reclaim"],
+    tone: "reclamation",
+    color: "#ff6338",
+    colorSoft: "255,99,56",
     sceneHue: "120deg",
   },
   3: {
     eyebrow: "Act Three",
-    title: "The Reclamation",
-    titleLines: ["The", "Reclamation"],
+    title: "The Reflection Chamber",
+    titleLines: ["The", "Reflection", "Chamber"],
     discipline: "Empowerment",
-    charge: "Reclaim who you are. Rewrite the system.",
-    verbs: ["Adapt", "Flow", "Control"],
-    tone: "reclamation",
-    color: "#ff4a2f",
-    colorSoft: "255,74,47",
+    charge: "Look clearly into the mirror of self.",
+    verbs: ["Reflect", "Integrate", "Control"],
+    tone: "reflection",
+    color: "#33b9ff",
+    colorSoft: "51,185,255",
     sceneHue: "240deg",
   },
   4: {
@@ -115,10 +115,11 @@ const ActMeltTransition = ({ act, reducedMotion }) => {
 
 const ActLaunchCard = ({ act, user, activeAct, completedActs, onEnter }) => {
   const card = actPresentation[act.num];
-  const Icon = act.icon;
   const locked = !canAccessAct(user, act.num);
   const isActive = act.num === activeAct;
   const isComplete = completedActs.includes(act.num);
+  const statusLabel = isComplete ? "Complete" : locked ? "Locked" : isActive ? "Active" : "Available";
+  const buttonLabel = locked ? (act.num === 4 ? "View Seal" : "Unlock Act") : `Enter Act ${act.roman}`;
 
   return (
     <motion.article
@@ -132,14 +133,10 @@ const ActLaunchCard = ({ act, user, activeAct, completedActs, onEnter }) => {
       <div className="ckp-card-circuit" aria-hidden="true" />
       <div className="ckp-card-topline">
         <span>{card.eyebrow}</span>
+        <strong>{statusLabel}</strong>
       </div>
 
-      <h2>
-        {card.titleLines.map((line) => (
-          <span key={line}>{line}</span>
-        ))}
-      </h2>
-      <p className="ckp-card-discipline">{card.discipline}</p>
+      <div className="ckp-card-roman" aria-hidden="true">{act.roman}</div>
 
       <button
         type="button"
@@ -151,10 +148,14 @@ const ActLaunchCard = ({ act, user, activeAct, completedActs, onEnter }) => {
         <span className="ckp-card-emblem">
           <img src={act.emblem} alt="" aria-hidden="true" />
         </span>
-        <span className="ckp-card-icon">
-          <Icon size={54} weight="duotone" />
-        </span>
       </button>
+
+      <h2>
+        {card.titleLines.map((line) => (
+          <span key={line}>{line}</span>
+        ))}
+      </h2>
+      <p className="ckp-card-discipline">{card.discipline}</p>
 
       <p className="ckp-card-charge">{card.charge}</p>
 
@@ -164,8 +165,10 @@ const ActLaunchCard = ({ act, user, activeAct, completedActs, onEnter }) => {
         className="ckp-launch-button"
         onClick={() => onEnter(act)}
       >
-        <span className="ckp-play-mark" aria-hidden="true" />
-        <span>Launch Protocol</span>
+        <span className="ckp-play-mark" aria-hidden="true">
+          {isComplete ? <CheckCircle size={15} weight="fill" /> : locked ? <LockKey size={15} weight="bold" /> : <Play size={14} weight="fill" />}
+        </span>
+        <span>{buttonLabel}</span>
       </button>
 
       <div className="ckp-card-verbs" aria-label={`${card.title} operating verbs`}>
