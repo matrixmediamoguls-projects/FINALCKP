@@ -1544,4 +1544,283 @@ body::before {
     width: min(100%, 218px);
     margin-top: 16px;
   }
+
+  :root {
+  --bg-black: #050505;
+  --text-primary: #f5f5f5;
+
+  --veil-green: #54ff9f;
+  --reflection-blue: #5ab6ff;
+  --reclamation-red: #ff4d4d;
+  --crucible-gold: #ffc857;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: black;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: radial-gradient(circle at center, #0a0a0a, #000);
+  color: white;
+}
+
+.mainframe-shell {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.protocol-boot {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background:
+    radial-gradient(circle at center, #111 0%, #000 100%);
+}
+
+.boot-center {
+  text-align: center;
+}
+
+.boot-center h1 {
+  font-size: 4rem;
+  letter-spacing: 0.4rem;
+  margin-bottom: 2rem;
+}
+
+.boot-center button {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+
+  padding: 1rem 2rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.boot-center button:hover {
+  background: white;
+  color: black;
+}
+
+.portal-grid {
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 2rem;
+
+  padding: 4rem;
+
+  align-items: center;
+  justify-items: center;
+}
+
+.act-portal {
+  position: relative;
+
+  width: 100%;
+  max-width: 500px;
+  height: 260px;
+
+  border: 1px solid;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: 2rem;
+
+  background:
+    rgba(255,255,255,0.03);
+
+  backdrop-filter: blur(20px);
+
+  transition:
+    transform 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.portal-glow {
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  opacity: 0.15;
+
+  top: -100px;
+  right: -100px;
+}
+
+.act-portal h2 {
+  position: relative;
+
+  font-size: 2rem;
+  letter-spacing: 0.15rem;
+
+  margin: 0;
+}
+
+.act-portal p {
+  position: relative;
+
+  opacity: 0.7;
+
+  margin-top: 0.5rem;
+
+  letter-spacing: 0.2rem;
+}
+
+.reclamation-codex {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reclamation-background {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255,70,70,0.15),
+      transparent 60%
+    ),
+    linear-gradient(
+      to bottom,
+      #090909,
+      #000
+    );
+}
+
+.reclamation-overlay {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.02) 3px
+    );
+
+  opacity: 0.3;
+
+  mix-blend-mode: screen;
+}
+
+.codex-header {
+  position: absolute;
+
+  top: 80px;
+  left: 80px;
+
+  z-index: 20;
+}
+
+.codex-header span {
+  letter-spacing: 0.3rem;
+  opacity: 0.5;
+}
+
+.codex-header h1 {
+  font-size: 6rem;
+  margin: 0;
+
+  color: #ff4d4d;
+
+  letter-spacing: 0.4rem;
+}
+
+.codex-header p {
+  letter-spacing: 0.25rem;
+  opacity: 0.7;
+}
+.orbital-system {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.orbital-node {
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid rgba(255,255,255,0.15);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  backdrop-filter: blur(20px);
+
+  background:
+    rgba(255,255,255,0.03);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.4s ease,
+    background 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.orbital-node:hover {
+  background:
+    rgba(255,70,70,0.12);
+
+  border-color:
+    rgba(255,70,70,0.8);
+}
+
+.orbital-node span {
+  text-align: center;
+
+  font-size: 0.8rem;
+
+  letter-spacing: 0.2rem;
+}
 }

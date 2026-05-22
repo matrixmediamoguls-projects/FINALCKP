@@ -1,0 +1,257 @@
+.activation-video-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 980;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 44px);
+  background:
+    linear-gradient(180deg, rgba(2, 3, 4, 0.42), rgba(0, 0, 0, 0.88)),
+    repeating-linear-gradient(90deg, rgba(213, 180, 90, 0.06) 0 1px, transparent 1px 88px),
+    rgba(0, 0, 0, 0.74);
+  backdrop-filter: blur(18px) saturate(0.82);
+}
+
+.activation-video-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 0 50%, rgba(143, 240, 68, 0.12) 50.1% 50.35%, transparent 50.45%),
+    linear-gradient(245deg, transparent 0 44%, rgba(255, 99, 56, 0.13) 44.1% 44.35%, transparent 44.45%),
+    radial-gradient(circle at 50% 10%, rgba(213, 180, 90, 0.16), transparent 28rem);
+}
+
+.activation-video-module {
+  position: relative;
+  width: min(100%, 1040px);
+  max-height: min(92svh, 880px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid rgba(213, 180, 90, 0.38);
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 221, 0.07), transparent 34%),
+    linear-gradient(90deg, rgba(143, 240, 68, 0.08), transparent 28%, transparent 70%, rgba(255, 99, 56, 0.08)),
+    rgba(5, 6, 5, 0.94);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+    0 36px 110px rgba(0, 0, 0, 0.82),
+    0 0 48px rgba(213, 180, 90, 0.14);
+}
+
+.activation-video-module::before,
+.activation-video-module::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 12px;
+  border: 1px solid rgba(244, 234, 212, 0.08);
+  border-radius: 3px;
+}
+
+.activation-video-module::after {
+  inset: auto 0 0;
+  height: 38%;
+  border: 0;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.48));
+}
+
+.activation-video-topline,
+.activation-video-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(13px, 2vw, 18px) clamp(16px, 2.6vw, 28px);
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.activation-video-topline {
+  border-bottom: 1px solid rgba(213, 180, 90, 0.18);
+  color: rgba(244, 234, 212, 0.66);
+  font-size: clamp(0.72rem, 1.4vw, 0.9rem);
+}
+
+.activation-video-topline strong {
+  color: #f4ead4;
+  font: inherit;
+}
+
+.activation-video-frame {
+  position: relative;
+  z-index: 1;
+  margin: clamp(14px, 2.4vw, 26px);
+  aspect-ratio: 16 / 9;
+  min-height: 220px;
+  overflow: hidden;
+  border: 1px solid rgba(244, 234, 212, 0.18);
+  border-radius: 4px;
+  background: #020202;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+    0 0 38px rgba(213, 180, 90, 0.12);
+}
+
+.activation-video-frame video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: #000;
+}
+
+.activation-video-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(143, 240, 68, 0.07), transparent 18%, transparent 82%, rgba(255, 99, 56, 0.08)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 8px);
+  mix-blend-mode: screen;
+  opacity: 0.32;
+}
+
+.activation-video-play {
+  position: absolute;
+  inset: auto auto 18px 18px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(213, 180, 90, 0.55);
+  border-radius: 3px;
+  background: rgba(5, 5, 4, 0.84);
+  color: #f4ead4;
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.activation-video-play:hover,
+.activation-video-primary:hover,
+.activation-video-secondary:hover {
+  border-color: rgba(255, 247, 221, 0.7);
+  color: #fff8e5;
+}
+
+.activation-video-footer {
+  border-top: 1px solid rgba(213, 180, 90, 0.16);
+}
+
+.activation-video-primary,
+.activation-video-secondary {
+  position: relative;
+  z-index: 3;
+  min-height: 40px;
+  border: 1px solid rgba(213, 180, 90, 0.32);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.44);
+  color: rgba(244, 234, 212, 0.72);
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.activation-video-secondary {
+  padding: 0 14px;
+}
+
+.activation-video-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  color: #0a0905;
+  border-color: rgba(244, 234, 212, 0.55);
+  background: linear-gradient(90deg, #d5b45a, #f4ead4);
+}
+
+.activation-video-primary:hover {
+  color: #050504;
+  box-shadow: 0 0 24px rgba(213, 180, 90, 0.28);
+}
+
+.activation-video-warp {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, rgba(255, 248, 229, 0.98) 0 4%, rgba(213, 180, 90, 0.7) 5% 12%, transparent 13%),
+    conic-gradient(from 0deg, transparent, rgba(143, 240, 68, 0.36), transparent, rgba(255, 99, 56, 0.38), transparent);
+  animation: activation-video-warp 0.96s cubic-bezier(0.7, 0, 0.18, 1) forwards;
+}
+
+@keyframes activation-video-warp {
+  0% {
+    opacity: 0;
+    transform: scale(0.12) rotate(0deg);
+    filter: blur(18px);
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(3.4) rotate(160deg);
+    filter: blur(2px);
+  }
+}
+
+@media (max-width: 720px) {
+  .activation-video-layer {
+    padding: 10px;
+    align-items: start;
+  }
+
+  .activation-video-module {
+    margin-top: 8px;
+    max-height: calc(100svh - 18px);
+  }
+
+  .activation-video-topline,
+  .activation-video-footer {
+    align-items: stretch;
+  }
+
+  .activation-video-topline {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .activation-video-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 12px;
+  }
+
+  .activation-video-frame {
+    margin: 12px;
+    min-height: 190px;
+  }
+
+  .activation-video-primary,
+  .activation-video-secondary {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .activation-video-warp {
+    animation-duration: 0.1s;
+  }
+}
