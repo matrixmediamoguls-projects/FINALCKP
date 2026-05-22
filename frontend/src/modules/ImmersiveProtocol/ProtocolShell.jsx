@@ -1,7 +1,6 @@
 import React from 'react';
 import { useProtocol } from './context/ProtocolContext';
 import ActBackground from './background/ActBackground';
-import AudioVisualizer from './modules/AudioVisualizer';
 import LyricsProtocol from './modules/LyricsProtocol';
 import SonicArtifact from './modules/SonicArtifact';
 import ActKeysModule from './ActKeysModule';
@@ -20,12 +19,9 @@ export default function ProtocolShell({ children }) {
       </div>
 
       <div className="protocol-content">
-
         <MechPanel className="left-module">
           <SonicArtifact />
         </MechPanel>
-
-        <AudioVisualizer />
 
         <MechPanel className="right-module">
           <ActKeysModule />
@@ -34,7 +30,6 @@ export default function ProtocolShell({ children }) {
         <MechPanel className="lyrics-module">
           <LyricsProtocol />
         </MechPanel>
-
       </div>
 
       {error && <div className="ip-error">{error}</div>}
