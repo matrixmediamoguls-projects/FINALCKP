@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
 const acts = [
-  { num: 1, roman: 'ONE', title: 'The Fractured Veil', subtitle: 'Awakening', statement: 'Reality is not as it seems.', tags: ['Disrupt', 'Discover', 'Decode'], color: '#ff3526', glow: 'rgba(255,53,38,0.42)', emblem: '/emblem/fractured-veil.gif', route: '/protocol/1' },
-  { num: 2, roman: 'TWO', title: 'The Reflection Chamber', subtitle: 'Confrontation', statement: 'See yourself. Break the pattern.', tags: ['Analyze', 'Reflect', 'Transcend'], color: '#24b7ff', glow: 'rgba(36,183,255,0.42)', emblem: '/emblem/reflection-chamber.gif', route: '/protocol/2' },
-  { num: 3, roman: 'THREE', title: 'Reclamation', subtitle: 'Empowerment', statement: 'Reclaim who you are. Rewrite the system.', tags: ['Adapt', 'Flow', 'Control'], color: '#8cff36', glow: 'rgba(140,255,54,0.38)', emblem: '/emblem/reclamation.gif', route: '/protocol/3' },
-  { num: 4, roman: 'FOUR', title: 'The Crucible Code', subtitle: 'Transcendence', statement: 'Code your reality. Engineer the future.', tags: ['Create', 'Engineer', 'Evolve'], color: '#ffd21f', glow: 'rgba(255,210,31,0.42)', emblem: '/emblem/crucible-code.gif', route: '/protocol/4' },
+  { num: 1, roman: 'ONE', title: 'The Fractured Veil', subtitle: 'Awakening', statement: 'Reality is not as it seems.', tags: ['Disrupt', 'Discover', 'Decode'], color: '#ff3526', glow: 'rgba(255,53,38,0.42)', emblem: '/emblem/act_one_module_emblem.gif', route: '/protocol/1' },
+  { num: 2, roman: 'TWO', title: 'The Reflection Chamber', subtitle: 'Confrontation', statement: 'See yourself. Break the pattern.', tags: ['Analyze', 'Reflect', 'Transcend'], color: '#24b7ff', glow: 'rgba(36,183,255,0.42)', emblem: '/emblem/act_two_module_emblem.gif', route: '/protocol/2' },
+  { num: 3, roman: 'THREE', title: 'Reclamation', subtitle: 'Empowerment', statement: 'Reclaim who you are. Rewrite the system.', tags: ['Adapt', 'Flow', 'Control'], color: '#8cff36', glow: 'rgba(140,255,54,0.38)', emblem: '/emblem/act_three_module_emblem.gif', route: '/protocol/3' },
+  { num: 4, roman: 'FOUR', title: 'The Crucible Code', subtitle: 'Transcendence', statement: 'Code your reality. Engineer the future.', tags: ['Create', 'Engineer', 'Evolve'], color: '#ffd21f', glow: 'rgba(255,210,31,0.42)', emblem: '/emblem/act_four_module_emblem.gif', route: '/protocol/4' },
 ];
 
 function ActCard({ act }) {
