@@ -6,7 +6,7 @@ import { useAuth } from './context/AuthContext';
 
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
+const ActNavigation = lazy(() => import('./pages/ActNavigation'));
 const Journal = lazy(() => import('./pages/Journal'));
 const SpinWheel = lazy(() => import('./pages/SpinWheel'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
@@ -58,10 +58,11 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to="/dashboard" replace /> : <Register />} />
+      <Route path="/login" element={user ? <Navigate to="/acts" replace /> : <Login />} />
+      <Route path="/register" element={user ? <Navigate to="/acts" replace /> : <Register />} />
       <Route path="/onboarding" element={<ProtectedRoute withShell={false}><Onboarding /></ProtectedRoute>} />
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/acts" element={<ProtectedRoute><ActNavigation /></ProtectedRoute>} />
+      <Route path="/dashboard" element={<Navigate to="/acts" replace />} />
       <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />
       <Route path="/listen" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
       <Route path="/listen/:actNumber" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
@@ -69,8 +70,8 @@ function AppRoutes() {
       <Route path="/protocol/:actNumber" element={<ProtectedRoute><ActProtocol /></ProtectedRoute>} />
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
       <Route path="/premium" element={<ChromaKeyProtocolPremium />} />
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/" element={<Navigate to="/acts" replace />} />
+      <Route path="*" element={<Navigate to="/acts" replace />} />
     </Routes>
   );
 }
