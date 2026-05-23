@@ -14,6 +14,7 @@ import ElementalBackground from "./components/ElementalBackground";
 
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
+const ActNavigation = lazy(() => import('./pages/ActNavigation'));
 const LaunchModule = lazy(() => import('./pages/LaunchModule'));
 const ActModulesPage = lazy(() => import('./pages/ActModulesPage'));
 const ActPage = lazy(() => import('./pages/ActPage'));
@@ -21,12 +22,10 @@ const LockedAct = lazy(() => import('./pages/LockedAct'));
 const Journal = lazy(() => import('./pages/Journal'));
 const SpinWheel = lazy(() => import('./pages/SpinWheel'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
-const AdminPanel = lazy(() => import('./pages/AdminPanel'));
 const SeekerPage = lazy(() => import('./pages/SeekerPage'));
 const ProtocolChat = lazy(() => import('./pages/ProtocolChat'));
 const GuidedListen = lazy(() => import('./pages/GuidedListen'));
 const ActProtocol = lazy(() => import('./pages/ActProtocol'));
-const ImmersiveProtocol = lazy(() => import('./modules/ImmersiveProtocol'));
 const FinalVisualizerPage = lazy(() => import('./pages/FinalVisualizerPage'));
 const LaunchSequencePage = lazy(() => import('./pages/LaunchSequencePage'));
 const Activation = lazy(() => import('./pages/Activation'));
@@ -36,7 +35,6 @@ import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
 import { UNLOCK_ALL_ACCESS } from './lib/accessFlags';
 
-// 🔒 Protected Route
 const ProtectedRoute = ({ children, withShell = true }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
@@ -48,7 +46,6 @@ const ProtectedRoute = ({ children, withShell = true }) => {
   return children;
 };
 
-// 🧱 App Shell Wrapper
 const AppShellWrapper = ({ children }) => {
   const [showPaywall, setShowPaywall] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -70,7 +67,6 @@ const AppShellWrapper = ({ children }) => {
   );
 };
 
-// 🧭 ROUTES
 function AppRoutes() {
   const { user, loading } = useAuth();
   if (loading) return null;
@@ -80,43 +76,69 @@ function AppRoutes() {
       <Route path="/login" element={user ? <Navigate to="/acts" replace /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/acts" replace /> : <Register />} />
       <Route path="/onboarding" element={<ProtectedRoute withShell={false}><Onboarding /></ProtectedRoute>} />
+
       <Route path="/" element={user ? <Navigate to="/acts" replace /> : <Login />} />
-      <Route path="/launchmodule" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
-      <Route path="/acts" element={<ProtectedRoute withShell={false}><ActModulesPage /></ProtectedRoute>} />
+
+      {/* This is the corrected route */}
+      <Route path="/acts" element={<ProtectedRoute withShell={false}><ActNavigation /></ProtectedRoute>} />
+
+      {/* Old names redirect here */}
       <Route path="/dashboard" element={<Navigate to="/acts" replace />} />
+
+      <Route path="/launchmodule" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
       <Route path="/transmission" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
+
       <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />
       <Route path="/listen" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
       <Route path="/listen/:actNumber" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
+
       <Route path="/launch-sequence/:actNumber" element={<LaunchSequencePage />} />
+
       <Route path="/visualizer" element={<ProtectedRoute withShell={false}><FinalVisualizerPage /></ProtectedRoute>} />
       <Route path="/visualizer/:actId" element={<ProtectedRoute withShell={false}><FinalVisualizerPage /></ProtectedRoute>} />
-      <Route path="/immersive" element={<ProtectedRoute withShell={false}><ImmersiveProtocol /></ProtectedRoute>} />
-      <Route path="/reclamation" element={<ProtectedRoute withShell={false}><ImmersiveProtocol /></ProtectedRoute>} />
-      <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+
       <Route path="/seeker" element={<ProtectedRoute><SeekerPage /></ProtectedRoute>} />
       <Route path="/vma" element={<ProtectedRoute><MatrixAssistant /></ProtectedRoute>} />
+
       <Route path="/protocol" element={<ProtectedRoute><ProtocolChat /></ProtectedRoute>} />
       <Route path="/protocol/:actNumber" element={<ProtectedRoute><ActProtocol /></ProtectedRoute>} />
+
       <Route path="/codex" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
       <Route path="/act/4" element={<ProtectedRoute><LockedAct /></ProtectedRoute>} />
       <Route path="/act/:actNumber" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
+
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
       <Route path="/activation" element={<Activation />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+
+      <Route path="*" element={<Navigate to="/acts" replace />} />
     </Routes>
   );
 }
 
-// 🔥 MAIN BACKGROUND + ACT LOGIC
 function AppWithBackground() {
   const location = useLocation();
-
   const path = location.pathname.toLowerCase();
+
   let act = "earth";
-  if (path.includes("/act/2") || path.includes("act_two")) act = "water";
-  if (path.includes("/act/3") || path.includes("act_three") || path.includes("reclamation") || path.includes("visualizer") || path.includes("/vma")) act = "fire";
-  if (path.includes("/act/4") || path.includes("act_four")) act = "air";
+
+  if (path.includes("/protocol/2") || path.includes("/act/2") || path.includes("act_two")) {
+    act = "water";
+  }
+
+  if (
+    path.includes("/protocol/3") ||
+    path.includes("/act/3") ||
+    path.includes("act_three") ||
+    path.includes("reclamation") ||
+    path.includes("visualizer") ||
+    path.includes("/vma")
+  ) {
+    act = "fire";
+  }
+
+  if (path.includes("/protocol/4") || path.includes("/act/4") || path.includes("act_four")) {
+    act = "air";
+  }
 
   return (
     <>
@@ -128,14 +150,11 @@ function AppWithBackground() {
   );
 }
 
-// 🚀 ROOT
 function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <Routes>
-          <Route path="*" element={<AppWithBackground />} />
-        </Routes>
+        <AppWithBackground />
       </BrowserRouter>
     </ErrorBoundary>
   );
