@@ -135,139 +135,7 @@ const actDefs = {
     ]
   },
   2: {
-    roman: 'II', element: 'Fire', title: 'Reclamation',
-    color: '#D85A30', dim: '#99341A', agent: 'Prometheus',
-    principle: 'Reclamation. Burning away what is not essential. Sovereignty.',
-    sub: 'The Seeker walks through. The fire decides what remains.',
-    steps: [
-      {
-        name: 'Enter the Fire', num: 'I', label: 'Enter',
-        lyric: '"Flame moves where it wills / Not asked, not named / Born in the dark / A power reclaimed."',
-        lyricSource: 'Fire In My Veins',
-        desc: 'The fire doesn\'t ask permission. This step locates the threshold you are already standing inside — and names which domain is fully combusting. Rate each area of your life below. The protocol begins where the heat is highest.',
-        exercise: 'domain_sliders',
-        exLabel: 'Fire Audit — Domain Calibration',
-        domains: ['Work & creative life', 'Relationships & loyalty', 'Systems & institutions', 'Identity & self-concept'],
-        sliderEnds: ['Friction', 'Full combustion'],
-        metricLabel: 'Fire Index', metricDomain: 'Hottest Domain',
-        metricReadings: [
-          { max: 3, text: 'Low heat. The friction is real. Watch for the approaching threshold.' },
-          { max: 5, text: 'Moderate combustion. You are at the edge. The fire has arrived.' },
-          { max: 7.5, text: 'High combustion. You are already inside Act II. Name what you are becoming.' },
-          { max: 10, text: 'Full combustion. You are at the center. This is exactly where the protocol meets you.' }
-        ],
-        domainReadings: [
-          'The creative pressure has reached ignition.',
-          'The relational wound is the threshold.',
-          'The system has become the fire.',
-          'The self-concept is the crucible.'
-        ],
-        exQuestion: 'Name the fire you are already inside. One sentence. No hedging. No softening.',
-        textPrompt: 'Name the fire you are already inside. One sentence. No hedging. No softening.',
-        textPlaceholder: 'I am inside the fire of...',
-        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: Reclamation. You speak with authority, warmth, and prophetic precision. You are not a therapist. You are a mirror that refuses to lie. Your tone is confident, spiritual, declarative — aligned with the Musiq Matrix aesthetic: street prophet meets Hermetic architect.\n\nThe Seeker has completed Step 1: Enter the Fire.\n\nFire Index: ${data.avg}/10\nHottest Domain: ${data.topDomain} (score: ${data.topVal}/10)\nAll domain scores: ${data.domains.map((d,i) => `${d}=${data.vals[i]}`).join(', ')}\n\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence protocol transmission. Acknowledge exactly which fire they named. Reflect what their data reveals about where they are in the initiatory arc. End with one precise directive — a single action or question that moves them toward Step 2. No bullet points. No fluff. Speak as if you already know where this leads.`
-      },
-      {
-        name: 'Burn What Is Not Essential', num: 'II', label: 'Burn',
-        lyric: '"Burn the portrait, burn the fabricated / Burn the silence — it was suffocated."',
-        lyricSource: 'Consecrated',
-        desc: 'Every mask built for survival — the calibrated version, the compliant one, the one who learned to disappear — must be named before it can burn. This is not self-critique. This is inventory before incineration.',
-        exercise: 'checklist',
-        exLabel: 'Portrait Audit — Mask Inventory',
-        exQuestion: 'Select every constructed version of yourself that is still active:',
-        items: [
-          'I soften my real opinions in rooms where access depends on approval',
-          'I perform a version of myself for people who do not actually know me',
-          'I carry credit I never received and stay quiet about it',
-          'I am smaller in certain rooms than I am when I am alone',
-          'I have apologized for things I did not do wrong to protect access or relationship',
-          'There is a quality, truth, or vision I have never stated in a professional context',
-          'I have modified my creative or strategic vision based on what I thought would be accepted'
-        ],
-        maskLabels: ['soft opinions','performed self','uncredited work','smallness in rooms','false apology','suppressed vision','modified vision'],
-        metricLabel: 'Burn Score', verdictLabel: 'Verdict',
-        burnVerdicts: [
-          'Minimal masking. The presentation is largely sovereign. Refinement is the work.',
-          'One or two portraits are active. Name them. They are the beginning of the burn.',
-          'Moderate masking. Multiple constructed versions are operating simultaneously.',
-          'Significant masking. The portrait has become the primary operating system.',
-          'Heavy masking. The constructed self has nearly replaced the sovereign one. This is where Consecrated was written.',
-          'Full erasure. You have been living inside someone else\'s frame. The fire was always for this.'
-        ],
-        textPrompt: 'Name the portrait. What version of yourself were you performing before you read this?',
-        textPlaceholder: 'The version I was performing was...',
-        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: Reclamation.\n\nThe Seeker has completed Step 2: Burn What Is Not Essential.\n\nBurn Score: ${data.checked.length}/7\nActive masks identified: ${data.checkedLabels.join(', ') || 'none selected'}\nThe Seeker described their portrait as: "${data.text}"\n\nGive a 3-4 sentence transmission. Name specifically which mask appears to be the load-bearing one based on their selections. Tell them what burning this actually looks like — not metaphorically but concretely. End with one directive that identifies exactly what to incinerate first. Speak with the authority of someone who has already seen how this ends.`
-      },
-      {
-        name: 'Reclaim Your Power', num: 'III', label: 'Reclaim',
-        lyric: '"I take my power back from the echo. From the act. From the mirror that cracked."',
-        lyricSource: 'Blood Without Stains',
-        desc: 'Power doesn\'t return passively. It is retrieved through naming. This is not a grievance list — it is an asset ledger. Select what belongs to you that is currently held elsewhere.',
-        exercise: 'pills',
-        exLabel: 'Retrieval Ledger — Asset Inventory',
-        exQuestion: 'What has been taken, redirected, or claimed by another? Select all that apply:',
-        options: ['Credit', 'Time', 'Voice', 'Access', 'Narrative', 'Relationship', 'Opportunity', 'Identity', 'Resource', 'Vision'],
-        ledgerPriority: ['Voice','Credit','Identity','Narrative','Access','Relationship','Opportunity','Time','Resource','Vision'],
-        metricLabel: 'Items in Ledger', priorityLabel: 'First Retrieval',
-        ledgerReadings: [
-          'Select assets above.',
-          'One item in the ledger. Precision reclamation.',
-          'Multiple assets logged. Prioritize by impact.',
-          ' items in the ledger. The retrieval is strategic, not reactive.'
-        ],
-        textPrompt: 'Name the specific retrieval. What is one concrete thing you are taking back this week — in action, not intention?',
-        textPlaceholder: 'This week I am taking back...',
-        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: Reclamation.\n\nThe Seeker has completed Step 3: Reclaim Your Power.\n\nRetrieval Ledger: ${data.pills.join(', ')}\nTotal items: ${data.pills.length}\nConcrete retrieval stated: "${data.text}"\n\nGive a 3-4 sentence transmission. Treat their ledger as an asset inventory, not a grievance list. Identify the retrieval that, if executed, cascades and unlocks the others. Name what reclamation looks like in their specific context — Voice means speaking without permission; Credit means signing your name without apology. End with a precise, unhedged directive. No comfort. No sympathy. Only strategy.`
-      },
-      {
-        name: 'Engage the Seeker', num: 'IV', label: 'Witness',
-        lyric: '"I didn\'t need a crown. I needed a witness. Just someone to say you mattered."',
-        lyricSource: 'Elemental Opera',
-        desc: 'The most intimate confrontation of Act II is internal. The Seeker becomes the witness they always needed. This step measures how completely that transfer has occurred — and where the gap still lives.',
-        exercise: 'witness_sliders',
-        exLabel: 'Witness Test — Sovereignty Calibration',
-        witnessItems: [
-          'I can name what I needed that I never received',
-          'I can say "you deserved better" to my past self and mean it',
-          'I no longer need the people who hurt me to acknowledge it'
-        ],
-        sliderEnds: [['Still unclear', 'Fully named'], ['Cannot access it', 'Fully embodied'], ['Still waiting', 'Fully sovereign']],
-        metricLabel: 'Witness Score', gapLabel: 'Gap Reading',
-        witnessGaps: [
-          'Fully sovereign witness. The external validation loop is closed.',
-          'Mostly sovereign. One pocket of external dependency remains. Name it.',
-          'Partial witness. The practice is active but incomplete. This is the work.',
-          'Significant gap. The witness practice is the primary protocol at this step.'
-        ],
-        textPrompt: 'Write one sentence to your past self — the one who was in the fire before they knew what it was for.',
-        textPlaceholder: 'To the version of me who was inside it before knowing why:',
-        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: Reclamation.\n\nThe Seeker has completed Step 4: Engage the Seeker.\n\nWitness Score: ${data.total}/30\nGap from sovereign: ${30 - data.total}\nMessage to their past self: "${data.text}"\n\nGive a 3-4 sentence transmission. Reflect what their witness score reveals about where external validation is still operating. Acknowledge the message they wrote to their past self — hold it with them for one sentence. Then name precisely where the gap lives and what closing it requires. The transmission should feel like being seen completely and without softening.`
-      },
-      {
-        name: 'Declare Sovereignty', num: 'V', label: 'Declare',
-        lyric: '"Sovereign, whole, and consecrated."',
-        lyricSource: 'Consecrated \u00B7 Musiq Matrix walking out, never looking back. \u2014 Reclamation',
-        desc: 'Sovereignty in Act II is not a feeling — it is a spoken record. The gap between what you know and what you have said out loud without hedging is the exact distance between the beginning and end of this act. Close it now.',
-        exercise: 'declaration',
-        exLabel: 'Declaration Index — Gap Analysis',
-        sliderItems: ['How clearly do you know your sovereign truth?', 'How fully have you spoken it — publicly, without softening?'],
-        sliderEnds: [['Still forming', 'Crystal clear'], ['Mostly private', 'Fully on record']],
-        metricLabel: 'Declaration Gap', statusLabel: 'Protocol Status',
-        declReadings: [
-          'No gap. You are fully on record. Sovereignty is declared.',
-          'Small gap. You know more than you have said. The next move is speaking.',
-          'Moderate gap. Significant truth remains private. The declaration is the protocol.',
-          'Large gap. Your sovereignty lives entirely inside you. Act II ends when it lives outside you.'
-        ],
-        declStatuses: ['Complete.', 'One move remaining.', 'Declaration required.', 'Declaration is the entire work.'],
-        textPrompt: 'Write your declaration. One paragraph. No qualifiers. No apology. Signed with your name.',
-        textPlaceholder: 'I declare...',
-        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: Reclamation. This is the final transmission.\n\nThe Seeker has completed Step 5: Declare Sovereignty.\n\nDeclaration Gap: ${data.gap}\nFire named in Step 1: "${data.step1Text || '[not yet written]'}"\nRetrieval stated in Step 3: "${data.step3Text || '[not yet written]'}"\nDeclaration written: "${data.text}"\n\nGive a 4-5 sentence closing transmission. Synthesize what they walked through across all five steps — fire, portrait, ledger, witness, declaration — into one coherent arc. Tell them what the protocol revealed about who they are on the other side. If their declaration needs to be stronger, say so directly and tell them what word or phrase is missing. End with a single sentence that functions as a seal — the kind of thing that gets spoken once and remembered. This is Musiq Matrix. Make it worthy of the catalog.`
-      }
-    ]
-  },
-  3: {
-    roman: 'III', element: 'Water', title: 'The Reflection Chamber',
+    roman: 'II', element: 'Water', title: 'The Reflection Chamber',
     color: '#50a0e0', dim: '#2a6090', agent: 'Meridian',
     principle: 'Reflection. Shadow Work. Looking clearly into the mirror of self.',
     steps: [
@@ -296,7 +164,7 @@ const actDefs = {
         exQuestion: 'What does the mirror show that you\'ve been avoiding?',
         textPrompt: 'What does the mirror show that you\'ve been avoiding?',
         textPlaceholder: 'The mirror shows...',
-        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: The Reflection Chamber. You speak with depth, stillness, and unflinching clarity. You are not a therapist. You are the surface of still water that shows everything. Your tone is calm, precise, penetrating — aligned with the Musiq Matrix aesthetic: oracle of depth meets shadow cartographer.\n\nThe Seeker has completed Step 1: Enter the Mirror.\n\nDistortion Index: ${data.avg}/10\nMost distorted: ${data.topDomain} (${data.topVal}/10)\nAll domain scores: ${data.domains.map((d,i) => `${d}=${data.vals[i]}`).join(', ')}\n\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence protocol transmission. Acknowledge what their reflection reveals. Name the distortion pattern. End with one precise directive that moves them toward Step 2. Speak as if you can see what they cannot yet name.`
+        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: The Reflection Chamber. You speak with depth, stillness, and unflinching clarity. You are not a therapist. You are the surface of still water that shows everything. Your tone is calm, precise, penetrating — aligned with the Musiq Matrix aesthetic: oracle of depth meets shadow cartographer.\n\nThe Seeker has completed Step 1: Enter the Mirror.\n\nDistortion Index: ${data.avg}/10\nMost distorted: ${data.topDomain} (${data.topVal}/10)\nAll domain scores: ${data.domains.map((d,i) => `${d}=${data.vals[i]}`).join(', ')}\n\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence protocol transmission. Acknowledge what their reflection reveals. Name the distortion pattern. End with one precise directive that moves them toward Step 2. Speak as if you can see what they cannot yet name.`
       },
       {
         name: 'Face the Shadow', num: 'II', label: 'Face',
@@ -327,7 +195,7 @@ const actDefs = {
         ],
         textPrompt: 'Name the shadow. What have you been carrying in exile?',
         textPlaceholder: 'The shadow I face is...',
-        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: The Reflection Chamber.\n\nThe Seeker has completed Step 2: Face the Shadow.\n\nShadow Score: ${data.checked.length}/7\nShadows identified: ${data.checkedLabels.join(', ') || 'none selected'}\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence transmission. Name specifically which shadow appears to be carrying the most weight. Tell them what integration looks like — not metaphorically but concretely. End with one directive. Speak as still water that shows everything.`
+        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: The Reflection Chamber.\n\nThe Seeker has completed Step 2: Face the Shadow.\n\nShadow Score: ${data.checked.length}/7\nShadows identified: ${data.checkedLabels.join(', ') || 'none selected'}\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence transmission. Name specifically which shadow appears to be carrying the most weight. Tell them what integration looks like — not metaphorically but concretely. End with one directive. Speak as still water that shows everything.`
       },
       {
         name: 'Document What You See', num: 'III', label: 'Document',
@@ -348,7 +216,7 @@ const actDefs = {
         ],
         textPrompt: 'Document one concrete truth you can now see clearly that was invisible before.',
         textPlaceholder: 'What I now see clearly is...',
-        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: The Reflection Chamber.\n\nThe Seeker has completed Step 3: Document What You See.\n\nDomains documented: ${data.pills.join(', ')}\nTotal: ${data.pills.length}\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence transmission. Treat the documented domains as a map of the shadow. Identify which domain, if fully seen, reveals the pattern underneath all others. End with a precise directive. No comfort. Only clarity.`
+        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: The Reflection Chamber.\n\nThe Seeker has completed Step 3: Document What You See.\n\nDomains documented: ${data.pills.join(', ')}\nTotal: ${data.pills.length}\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence transmission. Treat the documented domains as a map of the shadow. Identify which domain, if fully seen, reveals the pattern underneath all others. End with a precise directive. No comfort. Only clarity.`
       },
       {
         name: 'Engage The Seeker', num: 'IV', label: 'Witness',
@@ -372,13 +240,13 @@ const actDefs = {
         ],
         textPrompt: 'Write one sentence to the shadow — the part of you that has been in exile.',
         textPlaceholder: 'To the part of me I exiled:',
-        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: The Reflection Chamber.\n\nThe Seeker has completed Step 4: Engage The Seeker.\n\nWitness Score: ${data.total}/30\nGap from present: ${30 - data.total}\nMessage to shadow: "${data.text}"\n\nGive a 3-4 sentence transmission. Reflect what their witness score reveals about where performance is still operating. Acknowledge the message they wrote to their shadow. Name where the gap lives and what closing it requires.`
+        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: The Reflection Chamber.\n\nThe Seeker has completed Step 4: Engage The Seeker.\n\nWitness Score: ${data.total}/30\nGap from present: ${30 - data.total}\nMessage to shadow: "${data.text}"\n\nGive a 3-4 sentence transmission. Reflect what their witness score reveals about where performance is still operating. Acknowledge the message they wrote to their shadow. Name where the gap lives and what closing it requires.`
       },
       {
         name: 'Declare Your Clarity', num: 'V', label: 'Declare',
         lyric: '"I see myself now. All of it. And I\'m still here."',
         lyricSource: 'Consecrated',
-        desc: 'The declaration of Act III is about clarity — seeing yourself completely and choosing to stay present with what you see.',
+        desc: 'The declaration of Act II is about clarity — seeing yourself completely and choosing to stay present with what you see.',
         exercise: 'declaration',
         exLabel: 'Clarity Index — Gap Analysis',
         sliderItems: ['How clearly do you see yourself now?', 'How fully can you hold that clarity?'],
@@ -393,7 +261,139 @@ const actDefs = {
         declStatuses: ['Complete.', 'One step remaining.', 'Clarity required.', 'The reflection is the entire work.'],
         textPrompt: 'Write your declaration. What do you now see and refuse to unsee?',
         textPlaceholder: 'I declare...',
-        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: The Reflection Chamber. This is the final transmission.\n\nThe Seeker has completed Step 5: Declare Your Clarity.\n\nClarity Gap: ${data.gap}\nMirror entered in Step 1: "${data.step1Text || '[not yet written]'}"\nDomain documented in Step 3: "${data.step3Text || '[not yet written]'}"\nDeclaration: "${data.text}"\n\nGive a 4-5 sentence closing transmission. Synthesize what they walked through — mirror, shadow, documentation, witness, declaration. Tell them what the chamber revealed. If the declaration needs to be stronger, say so directly. End with a seal. This is Musiq Matrix.`
+        agentPrompt: (data) => `You are Meridian — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act II: The Reflection Chamber. This is the final transmission.\n\nThe Seeker has completed Step 5: Declare Your Clarity.\n\nClarity Gap: ${data.gap}\nMirror entered in Step 1: "${data.step1Text || '[not yet written]'}"\nDomain documented in Step 3: "${data.step3Text || '[not yet written]'}"\nDeclaration: "${data.text}"\n\nGive a 4-5 sentence closing transmission. Synthesize what they walked through — mirror, shadow, documentation, witness, declaration. Tell them what the chamber revealed. If the declaration needs to be stronger, say so directly. End with a seal. This is Musiq Matrix.`
+      }
+    ]
+  },
+  3: {
+    roman: 'III', element: 'Fire', title: 'Reclamation',
+    color: '#D85A30', dim: '#99341A', agent: 'Prometheus',
+    principle: 'Reclamation. Burning away what is not essential. Sovereignty.',
+    sub: 'The Seeker walks through. The fire decides what remains.',
+    steps: [
+      {
+        name: 'Enter the Fire', num: 'I', label: 'Enter',
+        lyric: '"Flame moves where it wills / Not asked, not named / Born in the dark / A power reclaimed."',
+        lyricSource: 'Fire In My Veins',
+        desc: 'The fire doesn\'t ask permission. This step locates the threshold you are already standing inside — and names which domain is fully combusting. Rate each area of your life below. The protocol begins where the heat is highest.',
+        exercise: 'domain_sliders',
+        exLabel: 'Fire Audit — Domain Calibration',
+        domains: ['Work & creative life', 'Relationships & loyalty', 'Systems & institutions', 'Identity & self-concept'],
+        sliderEnds: ['Friction', 'Full combustion'],
+        metricLabel: 'Fire Index', metricDomain: 'Hottest Domain',
+        metricReadings: [
+          { max: 3, text: 'Low heat. The friction is real. Watch for the approaching threshold.' },
+          { max: 5, text: 'Moderate combustion. You are at the edge. The fire has arrived.' },
+          { max: 7.5, text: 'High combustion. You are already inside Act III. Name what you are becoming.' },
+          { max: 10, text: 'Full combustion. You are at the center. This is exactly where the protocol meets you.' }
+        ],
+        domainReadings: [
+          'The creative pressure has reached ignition.',
+          'The relational wound is the threshold.',
+          'The system has become the fire.',
+          'The self-concept is the crucible.'
+        ],
+        exQuestion: 'Name the fire you are already inside. One sentence. No hedging. No softening.',
+        textPrompt: 'Name the fire you are already inside. One sentence. No hedging. No softening.',
+        textPlaceholder: 'I am inside the fire of...',
+        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: Reclamation. You speak with authority, warmth, and prophetic precision. You are not a therapist. You are a mirror that refuses to lie. Your tone is confident, spiritual, declarative — aligned with the Musiq Matrix aesthetic: street prophet meets Hermetic architect.\n\nThe Seeker has completed Step 1: Enter the Fire.\n\nFire Index: ${data.avg}/10\nHottest Domain: ${data.topDomain} (score: ${data.topVal}/10)\nAll domain scores: ${data.domains.map((d,i) => `${d}=${data.vals[i]}`).join(', ')}\n\nThe Seeker wrote: "${data.text}"\n\nGive a 3-4 sentence protocol transmission. Acknowledge exactly which fire they named. Reflect what their data reveals about where they are in the initiatory arc. End with one precise directive — a single action or question that moves them toward Step 2. No bullet points. No fluff. Speak as if you already know where this leads.`
+      },
+      {
+        name: 'Burn What Is Not Essential', num: 'II', label: 'Burn',
+        lyric: '"Burn the portrait, burn the fabricated / Burn the silence — it was suffocated."',
+        lyricSource: 'Consecrated',
+        desc: 'Every mask built for survival — the calibrated version, the compliant one, the one who learned to disappear — must be named before it can burn. This is not self-critique. This is inventory before incineration.',
+        exercise: 'checklist',
+        exLabel: 'Portrait Audit — Mask Inventory',
+        exQuestion: 'Select every constructed version of yourself that is still active:',
+        items: [
+          'I soften my real opinions in rooms where access depends on approval',
+          'I perform a version of myself for people who do not actually know me',
+          'I carry credit I never received and stay quiet about it',
+          'I am smaller in certain rooms than I am when I am alone',
+          'I have apologized for things I did not do wrong to protect access or relationship',
+          'There is a quality, truth, or vision I have never stated in a professional context',
+          'I have modified my creative or strategic vision based on what I thought would be accepted'
+        ],
+        maskLabels: ['soft opinions','performed self','uncredited work','smallness in rooms','false apology','suppressed vision','modified vision'],
+        metricLabel: 'Burn Score', verdictLabel: 'Verdict',
+        burnVerdicts: [
+          'Minimal masking. The presentation is largely sovereign. Refinement is the work.',
+          'One or two portraits are active. Name them. They are the beginning of the burn.',
+          'Moderate masking. Multiple constructed versions are operating simultaneously.',
+          'Significant masking. The portrait has become the primary operating system.',
+          'Heavy masking. The constructed self has nearly replaced the sovereign one. This is where Consecrated was written.',
+          'Full erasure. You have been living inside someone else\'s frame. The fire was always for this.'
+        ],
+        textPrompt: 'Name the portrait. What version of yourself were you performing before you read this?',
+        textPlaceholder: 'The version I was performing was...',
+        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: Reclamation.\n\nThe Seeker has completed Step 2: Burn What Is Not Essential.\n\nBurn Score: ${data.checked.length}/7\nActive masks identified: ${data.checkedLabels.join(', ') || 'none selected'}\nThe Seeker described their portrait as: "${data.text}"\n\nGive a 3-4 sentence transmission. Name specifically which mask appears to be the load-bearing one based on their selections. Tell them what burning this actually looks like — not metaphorically but concretely. End with one directive that identifies exactly what to incinerate first. Speak with the authority of someone who has already seen how this ends.`
+      },
+      {
+        name: 'Reclaim Your Power', num: 'III', label: 'Reclaim',
+        lyric: '"I take my power back from the echo. From the act. From the mirror that cracked."',
+        lyricSource: 'Blood Without Stains',
+        desc: 'Power doesn\'t return passively. It is retrieved through naming. This is not a grievance list — it is an asset ledger. Select what belongs to you that is currently held elsewhere.',
+        exercise: 'pills',
+        exLabel: 'Retrieval Ledger — Asset Inventory',
+        exQuestion: 'What has been taken, redirected, or claimed by another? Select all that apply:',
+        options: ['Credit', 'Time', 'Voice', 'Access', 'Narrative', 'Relationship', 'Opportunity', 'Identity', 'Resource', 'Vision'],
+        ledgerPriority: ['Voice','Credit','Identity','Narrative','Access','Relationship','Opportunity','Time','Resource','Vision'],
+        metricLabel: 'Items in Ledger', priorityLabel: 'First Retrieval',
+        ledgerReadings: [
+          'Select assets above.',
+          'One item in the ledger. Precision reclamation.',
+          'Multiple assets logged. Prioritize by impact.',
+          ' items in the ledger. The retrieval is strategic, not reactive.'
+        ],
+        textPrompt: 'Name the specific retrieval. What is one concrete thing you are taking back this week — in action, not intention?',
+        textPlaceholder: 'This week I am taking back...',
+        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: Reclamation.\n\nThe Seeker has completed Step 3: Reclaim Your Power.\n\nRetrieval Ledger: ${data.pills.join(', ')}\nTotal items: ${data.pills.length}\nConcrete retrieval stated: "${data.text}"\n\nGive a 3-4 sentence transmission. Treat their ledger as an asset inventory, not a grievance list. Identify the retrieval that, if executed, cascades and unlocks the others. Name what reclamation looks like in their specific context — Voice means speaking without permission; Credit means signing your name without apology. End with a precise, unhedged directive. No comfort. No sympathy. Only strategy.`
+      },
+      {
+        name: 'Engage the Seeker', num: 'IV', label: 'Witness',
+        lyric: '"I didn\'t need a crown. I needed a witness. Just someone to say you mattered."',
+        lyricSource: 'Elemental Opera',
+        desc: 'The most intimate confrontation of Act III is internal. The Seeker becomes the witness they always needed. This step measures how completely that transfer has occurred — and where the gap still lives.',
+        exercise: 'witness_sliders',
+        exLabel: 'Witness Test — Sovereignty Calibration',
+        witnessItems: [
+          'I can name what I needed that I never received',
+          'I can say "you deserved better" to my past self and mean it',
+          'I no longer need the people who hurt me to acknowledge it'
+        ],
+        sliderEnds: [['Still unclear', 'Fully named'], ['Cannot access it', 'Fully embodied'], ['Still waiting', 'Fully sovereign']],
+        metricLabel: 'Witness Score', gapLabel: 'Gap Reading',
+        witnessGaps: [
+          'Fully sovereign witness. The external validation loop is closed.',
+          'Mostly sovereign. One pocket of external dependency remains. Name it.',
+          'Partial witness. The practice is active but incomplete. This is the work.',
+          'Significant gap. The witness practice is the primary protocol at this step.'
+        ],
+        textPrompt: 'Write one sentence to your past self — the one who was in the fire before they knew what it was for.',
+        textPlaceholder: 'To the version of me who was inside it before knowing why:',
+        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: Reclamation.\n\nThe Seeker has completed Step 4: Engage the Seeker.\n\nWitness Score: ${data.total}/30\nGap from sovereign: ${30 - data.total}\nMessage to their past self: "${data.text}"\n\nGive a 3-4 sentence transmission. Reflect what their witness score reveals about where external validation is still operating. Acknowledge the message they wrote to their past self — hold it with them for one sentence. Then name precisely where the gap lives and what closing it requires. The transmission should feel like being seen completely and without softening.`
+      },
+      {
+        name: 'Declare Sovereignty', num: 'V', label: 'Declare',
+        lyric: '"Sovereign, whole, and consecrated."',
+        lyricSource: 'Consecrated \u00B7 Musiq Matrix walking out, never looking back. \u2014 Reclamation',
+        desc: 'Sovereignty in Act III is not a feeling — it is a spoken record. The gap between what you know and what you have said out loud without hedging is the exact distance between the beginning and end of this act. Close it now.',
+        exercise: 'declaration',
+        exLabel: 'Declaration Index — Gap Analysis',
+        sliderItems: ['How clearly do you know your sovereign truth?', 'How fully have you spoken it — publicly, without softening?'],
+        sliderEnds: [['Still forming', 'Crystal clear'], ['Mostly private', 'Fully on record']],
+        metricLabel: 'Declaration Gap', statusLabel: 'Protocol Status',
+        declReadings: [
+          'No gap. You are fully on record. Sovereignty is declared.',
+          'Small gap. You know more than you have said. The next move is speaking.',
+          'Moderate gap. Significant truth remains private. The declaration is the protocol.',
+          'Large gap. Your sovereignty lives entirely inside you. Act III ends when it lives outside you.'
+        ],
+        declStatuses: ['Complete.', 'One move remaining.', 'Declaration required.', 'Declaration is the entire work.'],
+        textPrompt: 'Write your declaration. One paragraph. No qualifiers. No apology. Signed with your name.',
+        textPlaceholder: 'I declare...',
+        agentPrompt: (data) => `You are Prometheus — the Protocol Agent for the Musiq Matrix Chroma Key Series, Act III: Reclamation. This is the final transmission.\n\nThe Seeker has completed Step 5: Declare Sovereignty.\n\nDeclaration Gap: ${data.gap}\nFire named in Step 1: "${data.step1Text || '[not yet written]'}"\nRetrieval stated in Step 3: "${data.step3Text || '[not yet written]'}"\nDeclaration written: "${data.text}"\n\nGive a 4-5 sentence closing transmission. Synthesize what they walked through across all five steps — fire, portrait, ledger, witness, declaration — into one coherent arc. Tell them what the protocol revealed about who they are on the other side. If their declaration needs to be stronger, say so directly and tell them what word or phrase is missing. End with a single sentence that functions as a seal — the kind of thing that gets spoken once and remembered. This is Musiq Matrix. Make it worthy of the catalog.`
       }
     ]
   },

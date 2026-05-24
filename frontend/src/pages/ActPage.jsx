@@ -67,6 +67,35 @@ const actConfigs = {
   },
   2: {
     number: 2,
+    title: 'The Reflection Chamber',
+    subtitle: 'Shadow Work & The Mirror',
+    element: 'Water',
+    color: 'water',
+    colorClass: 'text-chroma-water',
+    borderClass: 'border-chroma-water',
+    bgClass: 'bg-chroma-water/10',
+    icon: Drop,
+    quote: '"The mirror does not flatter. The mirror does not judge. The mirror only shows what is present — and the seeker who can remain in front of it long enough to see clearly has done the hardest work there is."',
+    description: 'The Reflection Chamber is the act of going deep into the self\'s waters — down into the depth where the shadow lives, where the wounds are stored, where the subconscious runs its programs beneath the threshold of ordinary awareness.',
+    reflectionProtocol: [
+      'What emotion do you consistently suppress, and whose voice told you to?',
+      'Where have you confused loyalty to others with betrayal of yourself?',
+      'What grief are you still carrying that you have never given a proper name?',
+      'What would change in your life if you stopped performing strength?'
+    ],
+    seekerEcho: 'The Seeker walked naked into every storm because he had stopped pretending the storms weren\'t real. His reflection showed him nothing at first — only the faces of those he\'d saved. Learning to find his own face in the mirror was the most dangerous work he ever did.',
+    keys: [
+      {
+        station: 'The Documenter',
+        title: 'Whodini in Your House of Cards',
+        type: 'shadow',
+        content: 'The Reflection Chamber\'s deepest shadow code — the full forensic account of manipulation, infiltration, and psychological warfare documented in real time.',
+        extract: 'Document everything. The mirror of Act II is not just internal reflection — it is the clear-eyed recording of what was actually done and by whom. The house of cards collapses the moment one person refuses to pretend it is a mansion.'
+      }
+    ]
+  },
+  3: {
+    number: 3,
     title: 'Reclamation',
     subtitle: 'The Burning & The Sovereign Return',
     element: 'Fire',
@@ -98,7 +127,7 @@ const actConfigs = {
       { station: 'The Summoned', title: 'This Is The Fire (Overture)', type: 'light', keyNum: 'I', content: 'Fire\'s overture does not introduce themes. It summons the frequency that will make everything else possible.', extract: 'You do not enter fire unprepared. The overture is the act of standing at the threshold, feeling the heat before you step through.' },
       { station: 'The Declared', title: 'Reclamation (The Day Musiq Matrix Came Back)', type: 'light', keyNum: 'II', content: 'The thesis and the timestamp simultaneously. Not Reclamation as concept but as event — a specific day, a documented arrival.', extract: 'Name the day of your return. That day is a coordinate in the record. Acknowledge it. Speak the date. Anchor the return.' },
       { station: 'The Named', title: 'Know Your Names', type: 'light', keyNum: 'III', content: 'In Hermetic tradition, knowing the true name of something grants authority over it. The plural — Names — is the code.', extract: 'Audit every name you carry in the fire\'s light. Release the assigned frequencies. Declare the earned ones.' },
-      { station: 'The Patient Root', title: 'Flowers', type: 'light', keyNum: 'IV', content: 'The bloom appearing in Act II is not coincidence with the fire. The fire is what made it visible.', extract: 'The flower does not exist despite the fire. It exists because of everything that came before it, now illuminated.' },
+      { station: 'The Patient Root', title: 'Flowers', type: 'light', keyNum: 'IV', content: 'The bloom appearing in Act III is not coincidence with the fire. The fire is what made it visible.', extract: 'The flower does not exist despite the fire. It exists because of everything that came before it, now illuminated.' },
       { station: 'The Consecrated', title: 'Consecrated', type: 'dual', keyNum: 'V', content: 'The shadow: the portrait of the false self. The light: what fire leaves when it burns the portrait.', extract: 'Burn the portrait in ceremony, not in anger. Honor the service of your constructed self. Then release it completely.' },
       { station: 'The Speaking Alchemist', title: 'Abracadabra (Bought Low)', type: 'dual', keyNum: 'VI', content: 'Abracadabra — from the Aramaic avra kadavra meaning I will create as I speak.', extract: 'Abracadabra is not a children\'s trick. It is ancient declaration of creative law. What you speak with conviction you create with consequence.' },
       { station: 'The Inverter', title: 'Flip It', type: 'light', keyNum: 'VII', content: 'What was obstacle becomes resource. What was weight becomes leverage.', extract: 'Name one force in your current circumstance that was designed to work against you. Now locate the inversion.' },
@@ -117,41 +146,13 @@ const actConfigs = {
       { station: 'The Witness of Cost', title: 'Remember The Price (When You Speak The Name)', type: 'light', keyNum: 'XX', content: 'The most human station in the entire arc — the acknowledgment that sovereignty was not free.', extract: 'Do not let the elevation make you forget what the elevation cost. Not as burden — as gratitude.' },
       { station: 'The Reclaimed', title: 'Blood Without Stains', type: 'dual', keyNum: 'XXI', content: 'The most complete power retrieval in the series.', extract: 'They never took your power. They borrowed your silence. The lease is up.' },
       { station: 'The Grateful Sovereign', title: 'Thank You For The Fire', type: 'light', keyNum: 'XXII', content: 'Gratitude at this station is not politeness — it is the final proof of transcendence.', extract: 'Find the thing that burned you hardest. Thank it. Not for the harm. For the refinement.' },
-      { station: 'The Strategist', title: 'Whodini in Your House of Cards', type: 'shadow', keyNum: 'XXIII', content: 'Act II\'s fire gives the Strategist the authority to name every card out loud.', extract: 'You do not need their destruction to prove what you survived. The catalog is the report.' },
+      { station: 'The Strategist', title: 'Whodini in Your House of Cards', type: 'shadow', keyNum: 'XXIII', content: 'Act III\'s fire gives the Strategist the authority to name every card out loud.', extract: 'You do not need their destruction to prove what you survived. The catalog is the report.' },
       { station: 'The Healed Child', title: 'Elemental Orchestra', type: 'light', keyNum: 'XXIV', content: 'The most vulnerable station — and the one that makes everything emotionally complete.', extract: 'The flowers you wanted from the hands that threw stones — plant them yourself.' },
       { station: 'The Sustained Fire', title: 'Fire In My Veins', type: 'dual', keyNum: 'XXV', content: 'Fire in My Veins is not the ignition. It is the confirmation of permanent internal temperature.', extract: 'The fire in your veins at this station is not temporary motivation. It is the permanent state.' },
       { station: 'The Teacher — Gate Closes', title: 'The Reclamation Spell', type: 'light', keyNum: 'XXVI', content: 'He forgot his name. He forgot his shape. But the code inside him never shut down.', extract: 'The spell is cast by living it. Not by performing sovereignty — by operating from it as the default frequency.' }
     ]
   },
-  3: {
-    number: 3,
-    title: 'The Reflection Chamber',
-    subtitle: 'Shadow Work & The Mirror',
-    element: 'Water',
-    color: 'water',
-    colorClass: 'text-chroma-water',
-    borderClass: 'border-chroma-water',
-    bgClass: 'bg-chroma-water/10',
-    icon: Drop,
-    quote: '"The mirror does not flatter. The mirror does not judge. The mirror only shows what is present — and the seeker who can remain in front of it long enough to see clearly has done the hardest work there is."',
-    description: 'The Reflection Chamber is the act of going deep into the self\'s waters — down into the depth where the shadow lives, where the wounds are stored, where the subconscious runs its programs beneath the threshold of ordinary awareness.',
-    reflectionProtocol: [
-      'What emotion do you consistently suppress, and whose voice told you to?',
-      'Where have you confused loyalty to others with betrayal of yourself?',
-      'What grief are you still carrying that you have never given a proper name?',
-      'What would change in your life if you stopped performing strength?'
-    ],
-    seekerEcho: 'The Seeker walked naked into every storm because he had stopped pretending the storms weren\'t real. His reflection showed him nothing at first — only the faces of those he\'d saved. Learning to find his own face in the mirror was the most dangerous work he ever did.',
-    keys: [
-      {
-        station: 'The Documenter',
-        title: 'Whodini in Your House of Cards',
-        type: 'shadow',
-        content: 'The Reflection Chamber\'s deepest shadow code — the full forensic account of manipulation, infiltration, and psychological warfare documented in real time.',
-        extract: 'Document everything. The mirror of Act III is not just internal reflection — it is the clear-eyed recording of what was actually done and by whom. The house of cards collapses the moment one person refuses to pretend it is a mansion.'
-      }
-    ]
-  }
+
 };
 
 const ActPage = () => {
@@ -178,7 +179,7 @@ const ActPage = () => {
       navigate('/act/4');
       return;
     }
-    // Block access to Act 3 (Reflection Chamber) if not unlocked (admins bypass)
+    // Block access to Act 3 if not unlocked (admins bypass)
     if (actNum === 3 && !user?.act3_unlocked && !user?.is_admin) {
       navigate('/dashboard');
       return;

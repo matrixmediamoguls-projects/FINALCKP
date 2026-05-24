@@ -29,8 +29,8 @@ import {
 
 const actOptions = [
   { value: '1', label: 'Act I - Fractured Veil', icon: Tree, color: 'text-chroma-earth' },
-  { value: '2', label: 'Act II - Reclamation', icon: Fire, color: 'text-chroma-fire' },
-  { value: '3', label: 'Act III - Reflection Chamber', icon: Drop, color: 'text-chroma-water' },
+  { value: '2', label: 'Act II - Reflection Chamber', icon: Drop, color: 'text-chroma-water' },
+  { value: '3', label: 'Act III - Reclamation', icon: Fire, color: 'text-chroma-fire' },
   { value: '4', label: 'Act IV - Crucible Code', icon: Wind, color: 'text-chroma-air' }
 ];
 
