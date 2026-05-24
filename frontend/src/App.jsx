@@ -30,6 +30,7 @@ const FinalVisualizerPage = lazy(() => import('./pages/FinalVisualizerPage'));
 const LaunchSequencePage = lazy(() => import('./pages/LaunchSequencePage'));
 const Activation = lazy(() => import('./pages/Activation'));
 const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistant'));
+const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -109,7 +110,7 @@ function AppRoutes() {
 
       <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
       <Route path="/activation" element={<Activation />} />
-
+      <Route path="/premium" element={<ChromaKeyProtocolPremium />} />
       <Route path="*" element={<Navigate to="/acts" replace />} />
     </Routes>
   );
