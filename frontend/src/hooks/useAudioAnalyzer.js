@@ -1,22 +1,37 @@
 import { useEffect, useState } from "react";
 
+const audioGraphs = new WeakMap();
+
 export default function useAudioAnalyzer(audioRef) {
   const [intensity, setIntensity] = useState(0);
 
   useEffect(() => {
     if (!audioRef.current || typeof AudioContext === "undefined") return;
 
-    const ctx = new AudioContext();
-    const analyser = ctx.createAnalyser();
+    const audioElement = audioRef.current;
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
-    const source = ctx.createMediaElementSource(audioRef.current);
+    if (!AudioContextClass) return;
 
-    source.connect(analyser);
-    analyser.connect(ctx.destination);
+    let graph = audioGraphs.get(audioElement);
+
+    if (!graph) {
+      const ctx = new AudioContextClass();
+      const source = ctx.createMediaElementSource(audioElement);
+
+      graph = { ctx, source };
+      audioGraphs.set(audioElement, graph);
+    }
+
+    const analyser = graph.ctx.createAnalyser();
+
+    graph.source.connect(analyser);
+    analyser.connect(graph.ctx.destination);
 
     analyser.fftSize = 256;
 
     const data = new Uint8Array(analyser.frequencyBinCount);
+    let frameId;
 
     const update = () => {
       analyser.getByteFrequencyData(data);
@@ -26,13 +41,14 @@ export default function useAudioAnalyzer(audioRef) {
 
       setIntensity(avg / 255);
 
-      requestAnimationFrame(update);
+      frameId = requestAnimationFrame(update);
     };
 
     update();
 
     return () => {
-      ctx.close();
+      if (frameId) cancelAnimationFrame(frameId);
+      analyser.disconnect();
     };
   }, [audioRef]);
 
