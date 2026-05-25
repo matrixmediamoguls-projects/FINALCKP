@@ -3,7 +3,7 @@ export default function MainframeCore({
   title = 'RECLAMATION CORE',
   subtitle = 'ACT III MAINFRAME',
   integrity = 64,
-  emblem = '/emblem/act_three_module_emblem.gif',
+  emblem = '/emblem/reclamation_module_emblem.gif',
 }) {
   return (
     <section className="mainframe-core" style={{ '--core-color': color }} aria-label={title}>
