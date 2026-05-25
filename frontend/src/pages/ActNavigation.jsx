@@ -11,7 +11,7 @@ const acts = [
     tags: ['Disrupt', 'Discover', 'Decode'],
     color: '#54ff9f',
     rgb: '84, 255, 159',
-    emblem: '/emblem/act_one_module_emblem.gif',
+    emblem: '/emblem/act_one_module_emblem.png',
     route: '/protocol/1',
   },
   {
@@ -23,7 +23,7 @@ const acts = [
     tags: ['Analyze', 'Reflect', 'Transcend'],
     color: '#5ab6ff',
     rgb: '90, 182, 255',
-    emblem: '/emblem/act_two_module_emblem.gif',
+    emblem: '/emblem/act_two_module_emblem.png',
     route: '/protocol/2',
   },
   {
@@ -35,7 +35,7 @@ const acts = [
     tags: ['Adapt', 'Ignite', 'Control'],
     color: '#ff4d4d',
     rgb: '255, 77, 77',
-    emblem: '/emblem/act_three_module_emblem.gif',
+    emblem: '/emblem/act_three_module_emblem.png',
     route: '/protocol/3',
   },
   {
@@ -47,7 +47,7 @@ const acts = [
     tags: ['Create', 'Engineer', 'Evolve'],
     color: '#ffc857',
     rgb: '255, 200, 87',
-    emblem: '/emblem/act_four_module_emblem.gif',
+    emblem: '/emblem/act_four_module_emblem.png',
     route: '/protocol/4',
   },
 ];
