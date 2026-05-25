@@ -3,8 +3,6 @@ import "../../styles/reclamation-codex.css";
 import MainframeCore from "../../mainframe/MainframeCore";
 import OrbitalSystem from "../../systems/OrbitalSystem";
 
-import VisualResonanceCore from "../../components/protocol/core/VisualResonanceCore";
-
 export default function ReclamationCodex() {
   return (
     <main className="reclamation-codex">
@@ -41,10 +39,6 @@ export default function ReclamationCodex() {
         <div className="reclamation-system-shell">
 
           <OrbitalSystem />
-
-          <div className="vrc-overlay">
-            <VisualResonanceCore />
-          </div>
 
         </div>
 

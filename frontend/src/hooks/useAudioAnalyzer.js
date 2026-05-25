@@ -48,6 +48,7 @@ export default function useAudioAnalyzer(audioRef) {
 
     return () => {
       if (frameId) cancelAnimationFrame(frameId);
+      graph.source.disconnect(analyser);
       analyser.disconnect();
     };
   }, [audioRef]);
