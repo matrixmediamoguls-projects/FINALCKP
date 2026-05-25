@@ -7,10 +7,13 @@ import {
   useSearchParams,
   useLocation
 } from 'react-router-dom';
+git p
 import ErrorBoundary from './components/ErrorBoundary';
 import { useAuth } from './context/AuthContext';
 
 import ElementalBackground from "./components/ElementalBackground";
+
+const ReclamationCodex = lazy(() => import("./acts/Reclamation/ReclamationCodex"));
 
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
@@ -41,9 +44,15 @@ const ProtectedRoute = ({ children, withShell = true }) => {
   const location = useLocation();
 
   if (loading) return null;
-  if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
 
-  if (withShell) return <AppShellWrapper>{children}</AppShellWrapper>;
+  if (!user) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  if (withShell) {
+    return <AppShellWrapper>{children}</AppShellWrapper>;
+  }
+
   return children;
 };
 
@@ -63,55 +72,255 @@ const AppShellWrapper = ({ children }) => {
   return (
     <AppShell>
       {children}
-      <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
+
+      <PaywallModal
+        isOpen={showPaywall}
+        onClose={() => setShowPaywall(false)}
+      />
     </AppShell>
   );
 };
 
 function AppRoutes() {
   const { user, loading } = useAuth();
+
   if (loading) return null;
 
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to="/acts" replace /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to="/acts" replace /> : <Register />} />
-      <Route path="/onboarding" element={<ProtectedRoute withShell={false}><Onboarding /></ProtectedRoute>} />
 
-      <Route path="/" element={user ? <Navigate to="/acts" replace /> : <Login />} />
+      {/* AUTH */}
 
-      {/* This is the corrected route */}
-      <Route path="/acts" element={<ProtectedRoute withShell={false}><ActNavigation /></ProtectedRoute>} />
+      <Route
+        path="/login"
+        element={user ? <Navigate to="/acts" replace /> : <Login />}
+      />
 
-      {/* Old names redirect here */}
-      <Route path="/dashboard" element={<Navigate to="/acts" replace />} />
+      <Route
+        path="/register"
+        element={user ? <Navigate to="/acts" replace /> : <Register />}
+      />
 
-      <Route path="/launchmodule" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
-      <Route path="/transmission" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
+      <Route
+        path="/onboarding"
+        element={
+          <ProtectedRoute withShell={false}>
+            <Onboarding />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/wheel" element={<ProtectedRoute><SpinWheel /></ProtectedRoute>} />
-      <Route path="/listen" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
-      <Route path="/listen/:actNumber" element={<ProtectedRoute><GuidedListen /></ProtectedRoute>} />
+      {/* ROOT */}
 
-      <Route path="/launch-sequence/:actNumber" element={<LaunchSequencePage />} />
+      <Route
+        path="/"
+        element={user ? <Navigate to="/acts" replace /> : <Login />}
+      />
 
-      <Route path="/visualizer" element={<ProtectedRoute withShell={false}><FinalVisualizerPage /></ProtectedRoute>} />
-      <Route path="/visualizer/:actId" element={<ProtectedRoute withShell={false}><FinalVisualizerPage /></ProtectedRoute>} />
+      {/* ACT NAVIGATION */}
 
-      <Route path="/seeker" element={<ProtectedRoute><SeekerPage /></ProtectedRoute>} />
-      <Route path="/vma" element={<ProtectedRoute><MatrixAssistant /></ProtectedRoute>} />
+      <Route
+        path="/acts"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ActNavigation />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/protocol" element={<ProtectedRoute><ProtocolChat /></ProtectedRoute>} />
-      <Route path="/protocol/:actNumber" element={<ProtectedRoute><ActProtocol /></ProtectedRoute>} />
+      {/* LEGACY REDIRECT */}
 
-      <Route path="/codex" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
-      <Route path="/act/4" element={<ProtectedRoute><LockedAct /></ProtectedRoute>} />
-      <Route path="/act/:actNumber" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
+      <Route
+        path="/dashboard"
+        element={<Navigate to="/acts" replace />}
+      />
 
-      <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
-      <Route path="/activation" element={<Activation />} />
-      <Route path="/premium" element={<ChromaKeyProtocolPremium />} />
-      <Route path="*" element={<Navigate to="/acts" replace />} />
+      {/* LAUNCH */}
+
+      <Route
+        path="/launchmodule"
+        element={
+          <ProtectedRoute withShell={false}>
+            <LaunchModule />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/transmission"
+        element={
+          <ProtectedRoute withShell={false}>
+            <LaunchModule />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* AUDIO */}
+
+      <Route
+        path="/wheel"
+        element={
+          <ProtectedRoute>
+            <SpinWheel />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/listen"
+        element={
+          <ProtectedRoute>
+            <GuidedListen />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/listen/:actNumber"
+        element={
+          <ProtectedRoute>
+            <GuidedListen />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/launch-sequence/:actNumber"
+        element={<LaunchSequencePage />}
+      />
+
+      {/* VISUALIZER */}
+
+      <Route
+        path="/visualizer"
+        element={
+          <ProtectedRoute withShell={false}>
+            <FinalVisualizerPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/visualizer/:actId"
+        element={
+          <ProtectedRoute withShell={false}>
+            <FinalVisualizerPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* SEEKER / VMA */}
+
+      <Route
+        path="/seeker"
+        element={
+          <ProtectedRoute>
+            <SeekerPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/vma"
+        element={
+          <ProtectedRoute>
+            <MatrixAssistant />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* PROTOCOL */}
+
+      <Route
+        path="/protocol"
+        element={
+          <ProtectedRoute>
+            <ProtocolChat />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ACT III MAINFRAME */}
+
+      <Route
+        path="/protocol/3"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ReclamationCodex />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* GENERIC ACT PROTOCOLS */}
+
+      <Route
+        path="/protocol/:actNumber"
+        element={
+          <ProtectedRoute>
+            <ActProtocol />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* CODEX */}
+
+      <Route
+        path="/codex"
+        element={
+          <ProtectedRoute>
+            <ActPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/act/4"
+        element={
+          <ProtectedRoute>
+            <LockedAct />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/act/:actNumber"
+        element={
+          <ProtectedRoute>
+            <ActPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* JOURNAL */}
+
+      <Route
+        path="/journal"
+        element={
+          <ProtectedRoute>
+            <Journal />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* OTHER */}
+
+      <Route
+        path="/activation"
+        element={<Activation />}
+      />
+
+      <Route
+        path="/premium"
+        element={<ChromaKeyProtocolPremium />}
+      />
+
+      {/* FALLBACK */}
+
+      <Route
+        path="*"
+        element={<Navigate to="/acts" replace />}
+      />
+
     </Routes>
   );
 }
@@ -122,7 +331,11 @@ function AppWithBackground() {
 
   let act = "earth";
 
-  if (path.includes("/protocol/2") || path.includes("/act/2") || path.includes("act_two")) {
+  if (
+    path.includes("/protocol/2") ||
+    path.includes("/act/2") ||
+    path.includes("act_two")
+  ) {
     act = "water";
   }
 
@@ -137,13 +350,18 @@ function AppWithBackground() {
     act = "fire";
   }
 
-  if (path.includes("/protocol/4") || path.includes("/act/4") || path.includes("act_four")) {
+  if (
+    path.includes("/protocol/4") ||
+    path.includes("/act/4") ||
+    path.includes("act_four")
+  ) {
     act = "air";
   }
 
   return (
     <>
       <ElementalBackground act={act} audioLevel={0} />
+
       <Suspense fallback={null}>
         <AppRoutes />
       </Suspense>

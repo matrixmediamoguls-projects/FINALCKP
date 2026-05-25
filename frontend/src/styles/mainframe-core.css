@@ -1,0 +1,147 @@
+.mainframe-core {
+  position:absolute;
+  left:50%;
+  top:50%;
+
+  width:360px;
+  height:360px;
+
+  transform:
+    translate(-50%, -50%);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  z-index:5;
+
+  animation:
+    coreFloat 8s ease-in-out infinite;
+}
+
+.mainframe-core__halo {
+  position:absolute;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(255,90,70,.22);
+}
+
+.mainframe-core__halo--outer {
+  width:520px;
+  height:520px;
+
+  animation:
+    coreSpin 32s linear infinite;
+}
+
+.mainframe-core__halo--inner {
+  width:420px;
+  height:420px;
+
+  border-style:dashed;
+
+  animation:
+    coreSpinReverse 20s linear infinite;
+}
+
+.mainframe-core__emblem-shell {
+  width:220px;
+  height:220px;
+
+  border-radius:50%;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    radial-gradient(circle, rgba(255,70,70,.2), rgba(0,0,0,.9));
+
+  border:
+    1px solid rgba(255,70,70,.3);
+
+  box-shadow:
+    0 0 80px rgba(255,70,70,.2);
+}
+
+.mainframe-core__emblem {
+  width:80%;
+
+  object-fit:contain;
+
+  filter:
+    drop-shadow(0 0 24px rgba(255,70,70,.8));
+
+  animation:
+    emblemBreath 4s ease-in-out infinite;
+}
+
+.mainframe-core__copy {
+  position:absolute;
+
+  bottom:-100px;
+
+  width:420px;
+
+  text-align:center;
+}
+
+.mainframe-core__copy h2 {
+  font-size:2.6rem;
+  letter-spacing:.2rem;
+}
+
+.mainframe-core__copy span {
+  letter-spacing:.3rem;
+  opacity:.6;
+}
+
+.mainframe-core__copy p {
+  opacity:.7;
+}
+
+@keyframes coreSpin {
+  from {
+    transform:rotate(0deg);
+  }
+
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+@keyframes coreSpinReverse {
+  from {
+    transform:rotate(360deg);
+  }
+
+  to {
+    transform:rotate(0deg);
+  }
+}
+
+@keyframes emblemBreath {
+  0%,100% {
+    transform:scale(1);
+  }
+
+  50% {
+    transform:scale(1.04);
+  }
+}
+
+@keyframes coreFloat {
+  0%,100% {
+    transform:
+      translate(-50%, -50%)
+      translateY(0px);
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      translateY(-10px);
+  }
+}

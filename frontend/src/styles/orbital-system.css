@@ -1,0 +1,189 @@
+.orbital-system {
+  position:relative;
+
+  width:1000px;
+  height:1000px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  perspective:1800px;
+
+  z-index:3;
+}
+
+.orbit-ring {
+  position:absolute;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(255,70,70,.14);
+}
+
+.orbit-ring-inner {
+  width:560px;
+  height:560px;
+
+  transform:
+    rotateX(72deg);
+
+  animation:
+    orbitSpin 20s linear infinite;
+}
+
+.orbit-ring-outer {
+  width:840px;
+  height:840px;
+
+  transform:
+    rotateX(76deg);
+
+  opacity:.5;
+
+  animation:
+    orbitSpinReverse 36s linear infinite;
+}
+
+.orbital-node {
+  position:absolute;
+
+  width:190px;
+  height:190px;
+
+  margin-left:-95px;
+  margin-top:-95px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:transparent;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  cursor:pointer;
+
+  transition:
+    transform .4s ease,
+    filter .4s ease;
+
+  animation:
+    orbitalFloat 6s ease-in-out infinite;
+}
+
+.orbital-node:hover {
+  filter:
+    drop-shadow(0 0 24px var(--node-color));
+}
+
+.orbital-node__halo {
+  position:absolute;
+  inset:0;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(255,255,255,.12);
+
+  background:
+    radial-gradient(circle, rgba(255,255,255,.04), rgba(0,0,0,.88));
+
+  backdrop-filter:
+    blur(12px);
+}
+
+.orbital-node__core {
+  width:88px;
+  height:88px;
+
+  border-radius:50%;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    radial-gradient(circle, rgba(255,255,255,.12), rgba(0,0,0,.95));
+
+  border:
+    1px solid var(--node-color);
+
+  box-shadow:
+    0 0 25px var(--node-color);
+}
+
+.orbital-node__icon {
+  color:var(--node-color);
+
+  font-size:30px;
+}
+
+.orbital-node__content {
+  position:absolute;
+
+  width:240px;
+
+  bottom:-72px;
+
+  text-align:center;
+}
+
+.orbital-node__content strong {
+  display:block;
+
+  font-size:18px;
+
+  letter-spacing:.08rem;
+}
+
+.orbital-node__content span {
+  opacity:.7;
+}
+
+.orbital-node__content small {
+  color:var(--node-color);
+
+  letter-spacing:.15rem;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform:
+      rotateX(72deg)
+      rotateZ(0deg);
+  }
+
+  to {
+    transform:
+      rotateX(72deg)
+      rotateZ(360deg);
+  }
+}
+
+@keyframes orbitSpinReverse {
+  from {
+    transform:
+      rotateX(76deg)
+      rotateZ(360deg);
+  }
+
+  to {
+    transform:
+      rotateX(76deg)
+      rotateZ(0deg);
+  }
+}
+
+@keyframes orbitalFloat {
+  0%,100% {
+    margin-top:-95px;
+  }
+
+  50% {
+    margin-top:-108px;
+  }
+}
