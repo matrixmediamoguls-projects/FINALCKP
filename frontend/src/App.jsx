@@ -7,14 +7,12 @@ import {
   useSearchParams,
   useLocation
 } from 'react-router-dom';
-git p
 import ErrorBoundary from './components/ErrorBoundary';
 import { useAuth } from './context/AuthContext';
 
 import ElementalBackground from "./components/ElementalBackground";
 
-const ReclamationCodex = lazy(() => import("./acts/Reclamation/ReclamationCodex"));
-
+const ReclamationCodex = lazy(() => import('./acts/Reclamation/ReclamationCodex'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));

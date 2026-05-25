@@ -7,82 +7,73 @@ const nodes = [
     title: "VISUAL RESONANCE CORE",
     subtitle: "Frequency Engine",
     angle: 270,
-    radius: 240,
+    radius: 245,
     orbit: "inner",
     color: "#ff4d4d",
     route: "/visualizer/3",
     status: "ACTIVE",
-    icon: "◉"
+    icon: "◉",
   },
-
   {
     id: "sonic-immersion",
     title: "SONIC IMMERSION ENGINE",
     subtitle: "Guided Transmission",
-    angle: 200,
-    radius: 340,
+    angle: 210,
+    radius: 360,
     orbit: "outer",
     color: "#28b8ff",
     route: "/listen/3",
     status: "READY",
-    icon: "◎"
+    icon: "◎",
   },
-
   {
     id: "sonic-artifacts",
     title: "SONIC ARTIFACTS",
     subtitle: "Recovered Signals",
-    angle: 340,
-    radius: 340,
+    angle: 330,
+    radius: 360,
     orbit: "outer",
     color: "#28ffd4",
     route: "/artifacts/3",
     status: "ARCHIVED",
-    icon: "✦"
+    icon: "✦",
   },
-
   {
     id: "lyrics-context",
     title: "LYRICS CONTEXT MATRIX",
     subtitle: "Transmission Layer",
-    angle: 145,
-    radius: 340,
+    angle: 150,
+    radius: 360,
     orbit: "outer",
     color: "#c55cff",
     route: "/lyrics/3",
     status: "ACTIVE",
-    icon: "◈"
+    icon: "◈",
   },
-
   {
     id: "vma",
     title: "VIRTUAL MATRIX ASSISTANT",
     subtitle: "Adaptive Intelligence",
-    angle: 35,
-    radius: 340,
+    angle: 30,
+    radius: 360,
     orbit: "outer",
     color: "#ff9b2f",
     route: "/vma",
     status: "ONLINE",
-    icon: "⬡"
-  }
+    icon: "⬡",
+  },
 ];
 
 export default function OrbitalSystem() {
   return (
-    <section className="orbital-system">
-
+    <section className="orbital-system" aria-label="Reclamation orbital operating system">
       <div className="orbit-ring orbit-ring-inner" />
-
       <div className="orbit-ring orbit-ring-outer" />
+      <div className="orbit-signal-field" />
 
       {nodes.map((node) => (
-        <OrbitalNode
-          key={node.id}
-          {...node}
-        />
+        <OrbitalNode key={node.id} {...node} />
       ))}
-
     </section>
   );
 }
