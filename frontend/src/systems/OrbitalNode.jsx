@@ -1,26 +1,35 @@
 export default function OrbitalNode({
   title,
-  angle
+  subtitle,
+  angle,
+  radius,
+  color,
+  status,
+  icon,
+  orbit,
 }) {
-  const radius = 340;
-
-  const x =
-    Math.cos((angle * Math.PI) / 180)
-    * radius;
-
-  const y =
-    Math.sin((angle * Math.PI) / 180)
-    * radius;
+  const x = Math.cos((angle * Math.PI) / 180) * radius;
+  const y = Math.sin((angle * Math.PI) / 180) * radius;
 
   return (
-    <div
-      className="orbital-node"
+    <button
+      className={`orbital-node orbital-node-${orbit}`}
       style={{
-        transform:
-          `translate(${x}px, ${y}px)`
+        '--node-color': color,
+        transform: `translate3d(${x}px, ${y}px, 0px)`,
       }}
     >
-      <span>{title}</span>
-    </div>
+      <div className="orbital-node__halo" />
+
+      <div className="orbital-node__core">
+        <span className="orbital-node__icon">{icon}</span>
+      </div>
+
+      <div className="orbital-node__content">
+        <small>{status}</small>
+        <strong>{title}</strong>
+        <span>{subtitle}</span>
+      </div>
+    </button>
   );
 }
