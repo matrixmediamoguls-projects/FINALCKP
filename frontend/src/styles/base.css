@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&display=swap");
+
+:root {
+  --void: #030303;
+  --surface: #080908;
+  --text-main: #f5efe1;
+  --text-muted: rgba(245, 239, 225, 0.68);
+
+  --act-one: #54ff9f;
+  --act-two: #5ab6ff;
+  --act-three: #ff4d4d;
+  --act-four: #ffc857;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--void);
+  color: var(--text-main);
+  font-family: "Rajdhani", sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
