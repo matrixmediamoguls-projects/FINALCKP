@@ -1,5 +1,7 @@
 import "../styles/orbital-system.css";
 import OrbitalNode from "./OrbitalNode";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import VisualResonanceCore from "../components/protocol/core/VisualResonanceCore";
 
@@ -36,7 +38,7 @@ const nodes = [
     radius: 560,
     orbit: "outer",
     color: "#28ffd4",
-    route: "/artifacts/3",
+    route: "/protocol/3?module=artifacts",
     status: "ARCHIVED",
     icon: "✦",
   },
@@ -48,7 +50,7 @@ const nodes = [
     radius: 560,
     orbit: "outer",
     color: "#c55cff",
-    route: "/lyrics/3",
+    route: "/protocol/3?module=lyrics",
     status: "ACTIVE",
     icon: "◈",
   },
@@ -67,10 +69,32 @@ const nodes = [
 ];
 
 export default function OrbitalSystem() {
+  const navigate = useNavigate();
+  const launchTimer = useRef(null);
+  const [launchTarget, setLaunchTarget] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      if (launchTimer.current) {
+        window.clearTimeout(launchTimer.current);
+      }
+    };
+  }, []);
+
+  const activateNode = (node) => {
+    if (!node?.route || launchTarget) return;
+
+    setLaunchTarget(node);
+    launchTimer.current = window.setTimeout(() => {
+      navigate(node.route);
+    }, 1150);
+  };
+
   return (
     <section
       className="orbital-system"
       aria-label="Reclamation orbital operating system"
+      data-launching={launchTarget ? "true" : "false"}
     >
       <div className="orbit-ring orbit-ring-inner" />
       <div className="orbit-ring orbit-ring-outer" />
@@ -81,8 +105,31 @@ export default function OrbitalSystem() {
       </div>
 
       {nodes.map((node) => (
-        <OrbitalNode key={node.id} {...node} />
+        <OrbitalNode
+          key={node.id}
+          {...node}
+          isLaunching={Boolean(launchTarget)}
+          onActivate={activateNode}
+        />
       ))}
+
+      {launchTarget && (
+        <div
+          className="orbital-launch"
+          style={{ "--launch-color": launchTarget.color }}
+          aria-live="polite"
+        >
+          <div className="orbital-launch__aperture" />
+          <div className="orbital-launch__ring orbital-launch__ring--outer" />
+          <div className="orbital-launch__ring orbital-launch__ring--inner" />
+          <div className="orbital-launch__beam" />
+          <div className="orbital-launch__copy">
+            <span>Module Transfer</span>
+            <strong>{launchTarget.title}</strong>
+            <em>{launchTarget.subtitle}</em>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

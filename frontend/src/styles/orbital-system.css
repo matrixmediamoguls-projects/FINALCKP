@@ -13,6 +13,14 @@
   z-index: 3;
 }
 
+.orbital-system[data-launching="true"] .orbital-core-viewport,
+.orbital-system[data-launching="true"] .orbit-ring {
+  filter:
+    brightness(1.4)
+    saturate(1.35)
+    drop-shadow(0 0 24px rgba(255, 70, 70, 0.42));
+}
+
 .orbit-ring {
   position: absolute;
 
@@ -73,11 +81,33 @@
 
   margin-left:-70px;
   margin-top:-70px;
+
+  padding:0;
+  color:inherit;
+  cursor:pointer;
+  border:0;
+  background:transparent;
+  transition:
+    filter .24s ease,
+    opacity .24s ease;
 }
 
 .orbital-node:hover {
   filter:
     drop-shadow(0 0 24px var(--node-color));
+}
+
+.orbital-node:focus-visible {
+  outline:1px solid var(--node-color);
+  outline-offset:12px;
+}
+
+.orbital-node:disabled {
+  cursor:default;
+}
+
+.orbital-node.is-launching {
+  opacity:.48;
 }
 
 .orbital-node__halo {
@@ -157,6 +187,122 @@
   letter-spacing: 0.15rem;
 }
 
+.orbital-launch {
+  position:absolute;
+  inset:0;
+  z-index:12;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  pointer-events:none;
+  color:#fff;
+  background:
+    radial-gradient(circle at center, color-mix(in srgb, var(--launch-color) 28%, transparent), transparent 30%),
+    radial-gradient(circle at center, rgba(255,255,255,.16), transparent 10%),
+    rgba(0,0,0,.24);
+
+  animation: orbitalLaunchFade 1.15s cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.orbital-launch__aperture,
+.orbital-launch__ring,
+.orbital-launch__beam {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+}
+
+.orbital-launch__aperture {
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  border:1px solid var(--launch-color);
+  box-shadow:
+    0 0 40px var(--launch-color),
+    inset 0 0 32px color-mix(in srgb, var(--launch-color) 42%, transparent);
+  animation: orbitalApertureOpen 1.15s cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.orbital-launch__ring {
+  border-radius:50%;
+  border:1px solid color-mix(in srgb, var(--launch-color) 76%, transparent);
+  box-shadow:0 0 32px color-mix(in srgb, var(--launch-color) 54%, transparent);
+}
+
+.orbital-launch__ring--outer {
+  width:360px;
+  height:360px;
+  animation: orbitalRingBlast 1.15s cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.orbital-launch__ring--inner {
+  width:230px;
+  height:230px;
+  border-style:dashed;
+  animation:
+    orbitalRingBlast 1.15s cubic-bezier(.16, 1, .3, 1) forwards,
+    orbitalLaunchSpin .7s linear infinite;
+}
+
+.orbital-launch__beam {
+  width:34px;
+  height:100%;
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      color-mix(in srgb, var(--launch-color) 10%, transparent) 18%,
+      rgba(255,255,255,.72) 50%,
+      color-mix(in srgb, var(--launch-color) 18%, transparent) 82%,
+      transparent
+    );
+  filter:blur(.4px) drop-shadow(0 0 18px var(--launch-color));
+  opacity:.8;
+  animation: orbitalBeamIgnite 1.15s ease forwards;
+}
+
+.orbital-launch__copy {
+  position:relative;
+  z-index:2;
+  min-width:min(520px, 70vw);
+  padding:22px 28px 24px;
+  text-align:center;
+  text-transform:uppercase;
+  background:linear-gradient(180deg, rgba(0,0,0,.72), rgba(0,0,0,.32));
+  border-top:1px solid color-mix(in srgb, var(--launch-color) 72%, transparent);
+  border-bottom:1px solid color-mix(in srgb, var(--launch-color) 72%, transparent);
+  box-shadow:
+    0 0 40px color-mix(in srgb, var(--launch-color) 30%, transparent),
+    inset 0 0 24px rgba(255,255,255,.05);
+  animation: orbitalCopyLift 1.15s cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.orbital-launch__copy span,
+.orbital-launch__copy em {
+  display:block;
+  font-family:"Share Tech Mono", monospace;
+  font-style:normal;
+  font-size:11px;
+  letter-spacing:.28em;
+  color:color-mix(in srgb, var(--launch-color) 84%, white);
+}
+
+.orbital-launch__copy strong {
+  display:block;
+  margin:10px 0 8px;
+  font-family:"Cinzel", serif;
+  font-size:clamp(24px, 4vw, 54px);
+  font-weight:700;
+  letter-spacing:.13em;
+  line-height:1;
+  text-shadow:
+    0 0 14px var(--launch-color),
+    0 0 36px color-mix(in srgb, var(--launch-color) 58%, transparent);
+}
+
 @keyframes orbitSpin {
   from {
     transform:
@@ -192,5 +338,92 @@
 
   50% {
     margin-top: -108px;
+  }
+}
+
+@keyframes orbitalLaunchFade {
+  0% {
+    opacity:0;
+  }
+
+  16% {
+    opacity:1;
+  }
+
+  100% {
+    opacity:1;
+  }
+}
+
+@keyframes orbitalApertureOpen {
+  0% {
+    opacity:0;
+    transform:translate(-50%, -50%) scale(.42);
+  }
+
+  52% {
+    opacity:1;
+    transform:translate(-50%, -50%) scale(1.2);
+  }
+
+  100% {
+    opacity:.38;
+    transform:translate(-50%, -50%) scale(7.4);
+  }
+}
+
+@keyframes orbitalRingBlast {
+  0% {
+    opacity:0;
+    transform:translate(-50%, -50%) scale(.42);
+  }
+
+  36% {
+    opacity:1;
+  }
+
+  100% {
+    opacity:0;
+    transform:translate(-50%, -50%) scale(3.2);
+  }
+}
+
+@keyframes orbitalLaunchSpin {
+  to {
+    rotate:360deg;
+  }
+}
+
+@keyframes orbitalBeamIgnite {
+  0% {
+    opacity:0;
+    transform:translate(-50%, -50%) scaleY(.16) scaleX(.35);
+  }
+
+  42% {
+    opacity:.95;
+  }
+
+  100% {
+    opacity:.22;
+    transform:translate(-50%, -50%) scaleY(1.2) scaleX(9);
+  }
+}
+
+@keyframes orbitalCopyLift {
+  0% {
+    opacity:0;
+    transform:translateY(18px) scale(.96);
+    filter:blur(8px);
+  }
+
+  34% {
+    opacity:1;
+    filter:blur(0);
+  }
+
+  100% {
+    opacity:.98;
+    transform:translateY(-8px) scale(1.02);
   }
 }
