@@ -1,0 +1,131 @@
+.vrc-shell {
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:220px;
+  overflow:hidden;
+
+  border:1px solid rgba(255,77,77,.28);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,0,60,.16), transparent 54%),
+    linear-gradient(180deg, rgba(8,0,0,.42), rgba(0,0,0,.72));
+
+  box-shadow:
+    inset 0 0 42px rgba(255,0,60,.1),
+    0 0 34px rgba(255,0,60,.12);
+}
+
+.vrc-background-glow,
+.vrc-grid-overlay,
+.vrc-scanlines,
+.vrc-vignette,
+.vrc-frame {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.vrc-background-glow {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255,255,255,.12), transparent 18%),
+    radial-gradient(circle at 50% 54%, rgba(255,0,60,.28), transparent 44%);
+
+  mix-blend-mode:screen;
+  animation:vrcGlow 4s ease-in-out infinite alternate;
+}
+
+.vrc-grid-overlay {
+  background-image:
+    linear-gradient(rgba(255,77,77,.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,77,77,.1) 1px, transparent 1px);
+  background-size:28px 28px;
+  opacity:.22;
+}
+
+.vrc-frame-container,
+.vrc-viewport {
+  position:absolute;
+  inset:0;
+}
+
+.vrc-viewport canvas {
+  display:block;
+}
+
+.vrc-scanlines {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.06),
+      rgba(255,255,255,.06) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  opacity:.14;
+}
+
+.vrc-vignette {
+  box-shadow:inset 0 0 80px rgba(0,0,0,.8);
+}
+
+.vrc-frame {
+  width:100%;
+  height:100%;
+  opacity:.42;
+}
+
+.vrc-red-frame {
+  stroke-dasharray:26 18;
+  animation:vrcFramePulse 5s linear infinite;
+}
+
+.vrc-top-left,
+.vrc-top-right,
+.vrc-title {
+  position:absolute;
+  z-index:2;
+
+  font-family:"Share Tech Mono", monospace;
+  font-size:9px;
+  letter-spacing:.16em;
+  color:rgba(255,235,220,.72);
+  text-transform:uppercase;
+  text-shadow:0 0 12px rgba(255,0,60,.75);
+}
+
+.vrc-top-left {
+  top:14px;
+  left:16px;
+}
+
+.vrc-top-right {
+  top:14px;
+  right:16px;
+  text-align:right;
+}
+
+.vrc-title {
+  left:50%;
+  bottom:16px;
+  transform:translateX(-50%);
+
+  color:#ff4d4d;
+  font-size:10px;
+  white-space:nowrap;
+}
+
+@keyframes vrcGlow {
+  from {
+    opacity:.62;
+  }
+
+  to {
+    opacity:1;
+  }
+}
+
+@keyframes vrcFramePulse {
+  to {
+    stroke-dashoffset:-88;
+  }
+}

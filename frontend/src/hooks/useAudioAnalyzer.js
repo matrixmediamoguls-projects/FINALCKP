@@ -4,6 +4,8 @@ export default function useAudioAnalyzer(audioRef) {
   const [intensity, setIntensity] = useState(0);
 
   useEffect(() => {
+    if (!audioRef.current || typeof AudioContext === "undefined") return;
+
     const ctx = new AudioContext();
     const analyser = ctx.createAnalyser();
 
@@ -28,7 +30,11 @@ export default function useAudioAnalyzer(audioRef) {
     };
 
     update();
-  }, []);
+
+    return () => {
+      ctx.close();
+    };
+  }, [audioRef]);
 
   return intensity;
 }
