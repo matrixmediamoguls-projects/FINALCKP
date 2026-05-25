@@ -52,6 +52,23 @@
   display:block;
 }
 
+.vrc-core-emblem {
+  position:absolute;
+  top:50%;
+  left:50%;
+  z-index:1;
+  width:clamp(86px, 18vw, 190px);
+  height:clamp(86px, 18vw, 190px);
+  object-fit:contain;
+  transform:translate(-50%, -50%);
+  pointer-events:none;
+  filter:
+    drop-shadow(0 0 10px rgba(255,255,255,.58))
+    drop-shadow(0 0 24px rgba(255,0,60,.72))
+    drop-shadow(0 0 48px rgba(255,77,77,.38));
+  mix-blend-mode:screen;
+}
+
 .vrc-scanlines {
   background:
     repeating-linear-gradient(

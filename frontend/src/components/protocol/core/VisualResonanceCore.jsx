@@ -7,6 +7,8 @@ import useAudioAnalyzer from "@/hooks/useAudioAnalyzer";
 
 import "./visualResonanceCore.css";
 
+const RECLAMATION_CORE_EMBLEM = "/emblem/reclamation_core_emblem.png";
+
 export default function VisualResonanceCore() {
 
   const audioRef = useRef(null);
@@ -36,6 +38,12 @@ export default function VisualResonanceCore() {
             <pointLight position={[10, 10, 10]} intensity={4} />
             <CoreEnergyField />
           </Canvas>
+
+          <img
+            className="vrc-core-emblem"
+            src={RECLAMATION_CORE_EMBLEM}
+            alt="Reclamation core emblem"
+          />
 
           <div className="vrc-scanlines" />
           <div className="vrc-vignette" />
