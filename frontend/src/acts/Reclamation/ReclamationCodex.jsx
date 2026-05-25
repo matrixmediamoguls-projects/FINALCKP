@@ -7,6 +7,13 @@ export default function ReclamationCodex() {
   return (
     <main className="reclamation-codex">
       <div className="reclamation-background" />
+      <div className="reclamation-flames" aria-hidden="true">
+        <span className="reclamation-flame flame-one" />
+        <span className="reclamation-flame flame-two" />
+        <span className="reclamation-flame flame-three" />
+        <span className="reclamation-flame flame-four" />
+        <span className="reclamation-flame flame-five" />
+      </div>
       <div className="reclamation-overlay" />
 
       <div className="codex-header">
