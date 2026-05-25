@@ -12,6 +12,7 @@ import { useAuth } from './context/AuthContext';
 
 import ElementalBackground from "./components/ElementalBackground";
 
+const ReclamationCodex = lazy(() => import('./acts/Reclamation/ReclamationCodex'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));
@@ -80,10 +81,7 @@ function AppRoutes() {
 
       <Route path="/" element={user ? <Navigate to="/acts" replace /> : <Login />} />
 
-      {/* This is the corrected route */}
       <Route path="/acts" element={<ProtectedRoute withShell={false}><ActNavigation /></ProtectedRoute>} />
-
-      {/* Old names redirect here */}
       <Route path="/dashboard" element={<Navigate to="/acts" replace />} />
 
       <Route path="/launchmodule" element={<ProtectedRoute withShell={false}><LaunchModule /></ProtectedRoute>} />
@@ -102,6 +100,7 @@ function AppRoutes() {
       <Route path="/vma" element={<ProtectedRoute><MatrixAssistant /></ProtectedRoute>} />
 
       <Route path="/protocol" element={<ProtectedRoute><ProtocolChat /></ProtectedRoute>} />
+      <Route path="/protocol/3" element={<ProtectedRoute withShell={false}><ReclamationCodex /></ProtectedRoute>} />
       <Route path="/protocol/:actNumber" element={<ProtectedRoute><ActProtocol /></ProtectedRoute>} />
 
       <Route path="/codex" element={<ProtectedRoute><ActPage /></ProtectedRoute>} />
