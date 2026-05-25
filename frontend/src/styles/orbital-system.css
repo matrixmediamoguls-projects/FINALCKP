@@ -1,8 +1,8 @@
 .orbital-system {
   position: relative;
 
-  width: 1000px;
-  height: 1000px;
+  width: 1400px;
+  height: 1400px;
 
   display: flex;
   justify-content: center;
@@ -66,34 +66,13 @@
 }
 
 .orbital-node {
-  position: absolute;
+  position:absolute;
 
-  width: 190px;
-  height: 190px;
+  width:140px;
+  height:140px;
 
-  margin-left: -95px;
-  margin-top: -95px;
-
-  border: none;
-
-  border-radius: 50%;
-
-  background: transparent;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
-
-  transition:
-    transform 0.4s ease,
-    filter 0.4s ease;
-
-  animation:
-    orbitalFloat 6s ease-in-out infinite;
-
-  z-index: 4;
+  margin-left:-70px;
+  margin-top:-70px;
 }
 
 .orbital-node:hover {
@@ -121,8 +100,8 @@
 }
 
 .orbital-node__core {
-  width: 88px;
-  height: 88px;
+  width: 64px;
+  height: 64px;
 
   border-radius: 50%;
 
