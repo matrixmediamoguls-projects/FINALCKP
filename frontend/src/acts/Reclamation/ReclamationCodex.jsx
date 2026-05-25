@@ -15,9 +15,10 @@ export default function ReclamationCodex() {
         <p>POWER RECLAMATION · PROTOCOL ACTIVE</p>
       </div>
 
-      <MainframeCore color="#ff4d4d" />
-
-      <OrbitalSystem />
+      <div className="reclamation-stage">
+        <MainframeCore color="#ff4d4d" />
+        <OrbitalSystem />
+      </div>
     </main>
   );
 }
