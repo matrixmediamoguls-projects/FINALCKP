@@ -34,7 +34,10 @@ export default function ReclamationCodex() {
 
       <div className="reclamation-stage">
 
-        <MainframeCore color="#ff4d4d" />
+        <MainframeCore
+          color="#ff4d4d"
+          emblem="/emblem/reclamation_core_emblem.png"
+        />
 
         <div className="reclamation-system-shell">
 

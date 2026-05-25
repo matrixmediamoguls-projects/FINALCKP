@@ -50,8 +50,8 @@
 }
 
 .mainframe-core__emblem-shell {
-  width:220px;
-  height:220px;
+  width:260px;
+  height:260px;
 
   border-radius:50%;
 
@@ -66,16 +66,18 @@
     1px solid rgba(255,70,70,.3);
 
   box-shadow:
-    0 0 80px rgba(255,70,70,.2);
+    0 0 60px rgba(255,70,70,.24),
+    inset 0 0 34px rgba(255,70,70,.16);
 }
 
 .mainframe-core__emblem {
-  width:100%;
-  height:100%;
+  width:82%;
+  height:82%;
 
   object-fit:contain;
 
   filter:
+    drop-shadow(0 0 10px rgba(255,255,255,.62))
     drop-shadow(0 0 24px rgba(255,70,70,.8));
 
   animation:
