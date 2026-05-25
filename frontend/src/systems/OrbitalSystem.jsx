@@ -1,6 +1,8 @@
 import "../styles/orbital-system.css";
 import OrbitalNode from "./OrbitalNode";
 
+import VisualResonanceCore from "../components/protocol/core/VisualResonanceCore";
+
 const nodes = [
   {
     id: "visual-resonance",
@@ -66,10 +68,17 @@ const nodes = [
 
 export default function OrbitalSystem() {
   return (
-    <section className="orbital-system" aria-label="Reclamation orbital operating system">
+    <section
+      className="orbital-system"
+      aria-label="Reclamation orbital operating system"
+    >
       <div className="orbit-ring orbit-ring-inner" />
       <div className="orbit-ring orbit-ring-outer" />
       <div className="orbit-signal-field" />
+
+      <div className="orbital-core-viewport">
+        <VisualResonanceCore />
+      </div>
 
       {nodes.map((node) => (
         <OrbitalNode key={node.id} {...node} />
