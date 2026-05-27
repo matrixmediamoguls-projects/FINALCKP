@@ -34,6 +34,17 @@
     reclamationDrift 18s ease-in-out infinite alternate;
 }
 
+.reclamation-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 42px 42px;
+  opacity: .26;
+  mask-image: radial-gradient(circle at center, black 36%, transparent 100%);
+}
+
 .reclamation-flames {
   position:absolute;
   inset:auto -6vw -18vh -6vw;
@@ -176,6 +187,27 @@
   z-index:20;
 }
 
+.reclamation-telemetry-panel {
+  position: relative;
+  width: min(1120px, 100%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  z-index: 20;
+}
+
+.telemetry-chip {
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 118, 104, .4);
+  background: linear-gradient(135deg, rgba(255, 78, 78, .22), rgba(20, 7, 7, .5));
+  color: rgba(255, 228, 221, .9);
+  border-radius: 999px;
+  font-size: .68rem;
+  letter-spacing: .14rem;
+  text-transform: uppercase;
+  box-shadow: 0 0 18px rgba(255, 66, 66, .24);
+}
+
 .codex-header span {
   display:block;
   margin-bottom:clamp(6px, 1vh, 10px);
@@ -242,6 +274,38 @@
 
 .reclamation-system-shell .orbital-system {
   z-index:3;
+}
+
+.reclamation-briefing {
+  width: min(1120px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  z-index: 20;
+}
+
+.reclamation-briefing article {
+  padding: clamp(14px, 2vw, 20px);
+  border: 1px solid rgba(255, 120, 120, .3);
+  border-radius: 14px;
+  background:
+    linear-gradient(150deg, rgba(255, 86, 86, .16), rgba(8, 4, 4, .8));
+  backdrop-filter: blur(2px);
+}
+
+.reclamation-briefing h2 {
+  margin: 0 0 10px;
+  font-size: .8rem;
+  letter-spacing: .16rem;
+  text-transform: uppercase;
+  color: rgba(255, 202, 193, .92);
+}
+
+.reclamation-briefing p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: .88rem;
+  color: rgba(255, 241, 238, .86);
 }
 
 .vrc-overlay {
@@ -350,6 +414,15 @@
     text-align:center;
   }
 
+  .reclamation-telemetry-panel {
+    justify-content: center;
+  }
+
+  .telemetry-chip {
+    font-size: .62rem;
+    letter-spacing: .11rem;
+  }
+
   .codex-header span,
   .codex-header p {
     letter-spacing:.18rem;
@@ -387,6 +460,10 @@
     inset:auto -22vw -13vh -22vw;
     height:min(50vh, 430px);
     opacity:.34;
+  }
+
+  .reclamation-briefing {
+    grid-template-columns: 1fr;
   }
 }
 
