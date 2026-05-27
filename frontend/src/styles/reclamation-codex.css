@@ -232,6 +232,46 @@
   gap: 12px;
 }
 
+.ckp-tracklist {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ckp-tracklist li {
+  display: grid;
+  grid-template-columns: 28px 1fr 48px;
+  gap: 8px;
+  align-items: center;
+  color: rgba(255, 255, 255, .68);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 13px;
+  letter-spacing: .04em;
+}
+
+.ckp-tracklist strong,
+.ckp-tracklist em {
+  font: inherit;
+  text-transform: uppercase;
+}
+
+.ckp-tracklist em {
+  text-align: right;
+  font-style: normal;
+}
+
+.ckp-tracklist li.is-active {
+  color: #ff1730;
+  text-shadow: 0 0 10px rgba(255, 0, 36, .7);
+}
+
+.ckp-tracklist li.is-active span::before {
+  content: ">";
+  margin-right: 5px;
+}
+
 .ckp-module-card,
 .ckp-transmission-card,
 .ckp-lore-module,

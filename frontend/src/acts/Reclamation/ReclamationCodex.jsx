@@ -4,39 +4,17 @@ import { Link } from "react-router-dom";
 import MainframeCore from "../../mainframe/MainframeCore";
 import OrbitalSystem from "../../systems/OrbitalSystem";
 
-const primaryModules = [
-  {
-    id: "visualizer",
-    index: "01",
-    title: "Visual Resonance",
-    subtitle: "Open Act III final visualizer",
-    status: "Live",
-    route: "/visualizer/3",
-  },
-  {
-    id: "listen",
-    index: "02",
-    title: "Sonic Immersion",
-    subtitle: "Enter guided listening mode",
-    status: "Ready",
-    route: "/listen/3",
-  },
-  {
-    id: "activation",
-    index: "03",
-    title: "Activation Protocol",
-    subtitle: "Run the Reclamation steps",
-    status: "Active",
-    route: "/activation?act=3",
-  },
-  {
-    id: "journal",
-    index: "04",
-    title: "Journal",
-    subtitle: "Capture Act III field notes",
-    status: "Open",
-    route: "/journal?act=3",
-  },
+const reclamationTracks = [
+  ["01", "System Override", "03:47"],
+  ["02", "Digital Ghost", "03:21"],
+  ["03", "Break The Code", "01:24"],
+  ["04", "Wasteland", "03:56"],
+  ["05", "Blackout Protocol", "04:28"],
+  ["06", "No Gatekeepers", "03:09"],
+  ["07", "Glitch In The Plan", "04:11"],
+  ["08", "Rewrite Reality", "03:58"],
+  ["09", "Data Rebellion", "04:44"],
+  ["10", "Reclamation", "05:02"],
 ];
 
 const supportModules = [
@@ -139,12 +117,16 @@ export default function ReclamationCodex() {
 
       <div className="reclamation-console">
         <aside className="ckp-side-rail ckp-side-rail--left">
-          <ConsolePanel title="Core Modules">
-            <div className="ckp-module-list">
-              {primaryModules.map((module) => (
-                <ModuleCard key={module.id} module={module} />
+          <ConsolePanel title="Reclamation Tracklist">
+            <ol className="ckp-tracklist">
+              {reclamationTracks.map(([number, title, time]) => (
+                <li key={number} className={number === "03" ? "is-active" : ""}>
+                  <span>{number}</span>
+                  <strong>{title}</strong>
+                  <em>{time}</em>
+                </li>
               ))}
-            </div>
+            </ol>
           </ConsolePanel>
 
           <ConsolePanel title="Active Transmission" className="ckp-now-playing">
