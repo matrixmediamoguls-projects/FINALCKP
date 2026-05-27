@@ -2,7 +2,6 @@ import "../styles/orbital-system.css";
 import OrbitalNode from "./OrbitalNode";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import VisualResonanceCore from "../components/protocol/core/VisualResonanceCore";
 
 const nodes = [
@@ -10,61 +9,61 @@ const nodes = [
     id: "visual-resonance",
     title: "VISUAL RESONANCE CORE",
     subtitle: "Frequency Engine",
-    angle: 270,
-    radius: 245,
+    angle: 0,
+    radius: 360,
     orbit: "inner",
     color: "#ff4d4d",
     route: "/visualizer/3",
     status: "ACTIVE",
-    icon: "◉",
+    icon: "VR",
   },
   {
     id: "sonic-immersion",
     title: "SONIC IMMERSION ENGINE",
     subtitle: "Guided Transmission",
-    angle: 210,
-    radius: 560,
+    angle: 220,
+    radius: 430,
     orbit: "outer",
     color: "#28b8ff",
     route: "/listen/3",
     status: "READY",
-    icon: "◎",
+    icon: "SI",
   },
   {
     id: "sonic-artifacts",
     title: "SONIC ARTIFACTS",
     subtitle: "Recovered Signals",
-    angle: 330,
-    radius: 560,
+    angle: 320,
+    radius: 430,
     orbit: "outer",
     color: "#28ffd4",
     route: "/protocol/3?module=artifacts",
     status: "ARCHIVED",
-    icon: "✦",
+    icon: "SA",
   },
   {
     id: "lyrics-context",
     title: "LYRICS CONTEXT MATRIX",
     subtitle: "Transmission Layer",
-    angle: 150,
-    radius: 560,
+    angle: 140,
+    radius: 430,
     orbit: "outer",
     color: "#c55cff",
     route: "/protocol/3?module=lyrics",
     status: "ACTIVE",
-    icon: "◈",
+    icon: "LC",
   },
   {
     id: "vma",
     title: "VIRTUAL MATRIX ASSISTANT",
     subtitle: "Adaptive Intelligence",
-    angle: 30,
-    radius: 560,
+    angle: 40,
+    radius: 430,
     orbit: "outer",
     color: "#ff9b2f",
     route: "/vma",
     status: "ONLINE",
-    icon: "⬡",
+    icon: "AI",
   },
 ];
 
@@ -85,6 +84,7 @@ export default function OrbitalSystem() {
     if (!node?.route || launchTarget) return;
 
     setLaunchTarget(node);
+
     launchTimer.current = window.setTimeout(() => {
       navigate(node.route);
     }, 1150);
@@ -116,13 +116,16 @@ export default function OrbitalSystem() {
       {launchTarget && (
         <div
           className="orbital-launch"
-          style={{ "--launch-color": launchTarget.color }}
+          style={{
+            "--launch-color": launchTarget.color,
+          }}
           aria-live="polite"
         >
           <div className="orbital-launch__aperture" />
           <div className="orbital-launch__ring orbital-launch__ring--outer" />
           <div className="orbital-launch__ring orbital-launch__ring--inner" />
           <div className="orbital-launch__beam" />
+
           <div className="orbital-launch__copy">
             <span>Module Transfer</span>
             <strong>{launchTarget.title}</strong>
