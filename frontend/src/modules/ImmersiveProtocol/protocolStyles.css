@@ -231,6 +231,17 @@
 
 @keyframes av-spin { to { transform: rotate(360deg); } }
 
+.av-pulse {
+  position: absolute;
+  inset: 42px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--av-color, #5ab038) 22%, transparent), transparent 58%),
+    radial-gradient(circle, rgba(255,255,255,0.08), transparent 62%);
+  filter: blur(4px);
+  opacity: 0.78;
+}
+
 .av-bars {
   position: absolute;
   inset: 0;
@@ -449,6 +460,12 @@
   border-color: var(--accent, #5ab038);
   color: var(--accent, #5ab038);
   min-width: 82px;
+}
+
+.ip-play:disabled {
+  cursor: not-allowed;
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(245,240,230,0.36);
 }
 
 .ip-progress {

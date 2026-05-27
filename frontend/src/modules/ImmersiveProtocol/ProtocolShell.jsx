@@ -5,6 +5,7 @@ import LyricsProtocol from './modules/LyricsProtocol';
 import SonicArtifact from './modules/SonicArtifact';
 import ActKeysModule from './ActKeysModule';
 import MechPanel from '../../components/ui/MechPanel';
+import AudioVisualizer from './AudioVisualizer';
 
 export default function ProtocolShell({ children }) {
   const { currentTrack, error } = useProtocol();
@@ -19,6 +20,8 @@ export default function ProtocolShell({ children }) {
       </div>
 
       <div className="protocol-content">
+        <AudioVisualizer />
+
         <MechPanel className="left-module">
           <SonicArtifact />
         </MechPanel>

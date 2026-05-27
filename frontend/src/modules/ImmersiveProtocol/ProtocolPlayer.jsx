@@ -21,6 +21,7 @@ export default function ProtocolPlayer() {
     handleTimeUpdate,
     handleLoadedMetadata,
   } = useProtocol();
+  const canPlay = Boolean(currentTrack?.audio_url);
 
   return (
     <footer className="ip-player">
@@ -32,7 +33,9 @@ export default function ProtocolPlayer() {
         onEnded={nextTrack}
       />
       <button onClick={prevTrack} className="ip-control" type="button">PREV</button>
-      <button onClick={togglePlay} className="ip-play" type="button">{isPlaying ? 'PAUSE' : 'PLAY'}</button>
+      <button onClick={togglePlay} className="ip-play" type="button" disabled={!canPlay}>
+        {canPlay ? (isPlaying ? 'PAUSE' : 'PLAY') : 'NO AUDIO'}
+      </button>
       <button onClick={nextTrack} className="ip-control" type="button">NEXT</button>
       <div
         className="ip-progress"
