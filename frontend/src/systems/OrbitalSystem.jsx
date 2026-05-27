@@ -67,7 +67,7 @@ const nodes = [
   },
 ];
 
-export default function OrbitalSystem() {
+export default function OrbitalSystem({ currentTrack = null }) {
   const navigate = useNavigate();
   const launchTimer = useRef(null);
   const [launchTarget, setLaunchTarget] = useState(null);
@@ -101,7 +101,7 @@ export default function OrbitalSystem() {
       <div className="orbit-signal-field" />
 
       <div className="orbital-core-viewport">
-        <VisualResonanceCore />
+        <VisualResonanceCore track={currentTrack} />
       </div>
 
       {nodes.map((node) => (

@@ -1,5 +1,6 @@
 import "../../styles/reclamation-codex.css";
 import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 
 import MainframeCore from "../../mainframe/MainframeCore";
 import OrbitalSystem from "../../systems/OrbitalSystem";
@@ -89,6 +90,26 @@ export default function ReclamationCodex() {
     loading: tracksLoading,
     error: tracksError,
   } = useReclamationTracks();
+  const [activeTrackIndex, setActiveTrackIndex] = useState(0);
+
+  useEffect(() => {
+    if (activeTrackIndex >= reclamationTracks.length) {
+      setActiveTrackIndex(0);
+    }
+  }, [activeTrackIndex, reclamationTracks.length]);
+
+  const activeTrack = reclamationTracks[activeTrackIndex] || reclamationTracks[0];
+  const activeLyricLines = useMemo(() => {
+    const source = activeTrack?.display_text || activeTrack?.lyrics;
+    if (!source) return lyricLines;
+
+    const lines = source
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    return lines.length ? lines.slice(0, 4) : lyricLines;
+  }, [activeTrack]);
 
   return (
     <main className="reclamation-codex">
@@ -139,12 +160,19 @@ export default function ReclamationCodex() {
                 reclamationTracks.map((track, index) => {
                   const number = String(track.sort_order ?? index + 1).padStart(2, "0");
                   const title = track.title || track.name || `Track ${number}`;
+                  const isActive = index === activeTrackIndex;
 
                   return (
-                    <li key={track.id || track.track_id || number} className={index === 0 ? "is-active" : ""}>
-                      <span>{number}</span>
-                      <strong>{title}</strong>
-                      <em>{formatTrackDuration(track)}</em>
+                    <li key={track.id || track.track_id || number} className={isActive ? "is-active" : ""}>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTrackIndex(index)}
+                        aria-current={isActive ? "true" : undefined}
+                      >
+                        <span>{number}</span>
+                        <strong>{title}</strong>
+                        <em>{formatTrackDuration(track)}</em>
+                      </button>
                     </li>
                   );
                 })
@@ -154,10 +182,10 @@ export default function ReclamationCodex() {
 
           <ConsolePanel title="Active Transmission" className="ckp-now-playing">
             <Link className="ckp-transmission-card" to="/listen/3">
-              <span>Break The Code</span>
-              <strong>Guided Listen</strong>
+              <span>{activeTrack?.act || "ACT III"}</span>
+              <strong>{activeTrack?.title || activeTrack?.name || "Guided Listen"}</strong>
               <div className="ckp-mini-wave" />
-              <small>Resume Act III audio chamber</small>
+              <small>{activeTrack?.audio_url ? "Synced to Supabase transmission" : "Resume Act III audio chamber"}</small>
             </Link>
           </ConsolePanel>
 
@@ -199,7 +227,7 @@ export default function ReclamationCodex() {
               />
 
               <div className="reclamation-system-shell">
-                <OrbitalSystem />
+                <OrbitalSystem currentTrack={activeTrack} />
               </div>
             </div>
           </section>
@@ -212,7 +240,7 @@ export default function ReclamationCodex() {
             </div>
             <div className="ckp-lyrics-copy">
               <strong>LYRICS PROTOCOL</strong>
-              {lyricLines.map((line) => (
+              {activeLyricLines.map((line) => (
                 <p key={line}>{line}</p>
               ))}
               <div className="ckp-progress">

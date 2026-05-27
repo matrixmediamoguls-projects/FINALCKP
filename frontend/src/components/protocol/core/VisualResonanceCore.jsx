@@ -9,18 +9,19 @@ import "./visualResonanceCore.css";
 
 const RECLAMATION_CORE_EMBLEM = "/emblem/reclamation_core_emblem.png";
 
-export default function VisualResonanceCore() {
-
+export default function VisualResonanceCore({ track = null }) {
   const audioRef = useRef(null);
-
   const intensity = useAudioAnalyzer(audioRef);
+  const audioSrc = track?.audio_url || track?.src || "/audio/reclamation.mp3";
+  const title = track?.title || track?.name || "DECRYPTION ACTIVE";
 
   return (
     <div className="vrc-shell">
 
       <audio
         ref={audioRef}
-        src="/audio/reclamation.mp3"
+        src={audioSrc}
+        crossOrigin="anonymous"
         autoPlay
         controls
         style={{ display: "none" }}
@@ -189,7 +190,7 @@ export default function VisualResonanceCore() {
             repeat: Infinity
           }}
         >
-          DECRYPTION ACTIVE
+          {title}
         </motion.div>
 
       </div>

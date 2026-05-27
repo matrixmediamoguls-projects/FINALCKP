@@ -241,20 +241,47 @@
 }
 
 .ckp-tracklist li {
-  display: grid;
-  grid-template-columns: 28px 1fr 48px;
-  gap: 8px;
-  align-items: center;
   color: rgba(255, 255, 255, .68);
   font-family: "Share Tech Mono", monospace;
   font-size: 13px;
   letter-spacing: .04em;
 }
 
+.ckp-tracklist button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 48px;
+  gap: 8px;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ckp-tracklist button:focus-visible {
+  outline: 1px solid rgba(255, 23, 48, .72);
+  outline-offset: 4px;
+}
+
+.ckp-tracklist button:hover {
+  color: rgba(255, 255, 255, .9);
+}
+
 .ckp-tracklist strong,
 .ckp-tracklist em {
   font: inherit;
   text-transform: uppercase;
+}
+
+.ckp-tracklist strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ckp-tracklist em {
@@ -273,6 +300,10 @@
 }
 
 .ckp-tracklist li.is-loading {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 48px;
+  gap: 8px;
+  align-items: center;
   color: rgba(255, 255, 255, .48);
 }
 
