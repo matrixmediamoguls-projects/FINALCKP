@@ -3,19 +3,7 @@ import { Link } from "react-router-dom";
 
 import MainframeCore from "../../mainframe/MainframeCore";
 import OrbitalSystem from "../../systems/OrbitalSystem";
-
-const reclamationTracks = [
-  ["01", "System Override", "03:47"],
-  ["02", "Digital Ghost", "03:21"],
-  ["03", "Break The Code", "01:24"],
-  ["04", "Wasteland", "03:56"],
-  ["05", "Blackout Protocol", "04:28"],
-  ["06", "No Gatekeepers", "03:09"],
-  ["07", "Glitch In The Plan", "04:11"],
-  ["08", "Rewrite Reality", "03:58"],
-  ["09", "Data Rebellion", "04:44"],
-  ["10", "Reclamation", "05:02"],
-];
+import useReclamationTracks from "../../modules/ImmersiveProtocol/useReclamationTracks";
 
 const supportModules = [
   {
@@ -84,7 +72,24 @@ function ModuleCard({ module, compact = false }) {
   );
 }
 
+function formatTrackDuration(track) {
+  if (track.duration) return track.duration;
+
+  const seconds = Number(track.duration_seconds ?? track.duration_in_seconds);
+  if (!Number.isFinite(seconds) || seconds <= 0) return "--:--";
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}
+
 export default function ReclamationCodex() {
+  const {
+    tracks: reclamationTracks,
+    loading: tracksLoading,
+    error: tracksError,
+  } = useReclamationTracks();
+
   return (
     <main className="reclamation-codex">
       <div className="reclamation-background" />
@@ -118,14 +123,32 @@ export default function ReclamationCodex() {
       <div className="reclamation-console">
         <aside className="ckp-side-rail ckp-side-rail--left">
           <ConsolePanel title="Reclamation Tracklist">
+            {tracksError && (
+              <p className="ckp-tracklist-status">
+                {tracksError}
+              </p>
+            )}
             <ol className="ckp-tracklist">
-              {reclamationTracks.map(([number, title, time]) => (
-                <li key={number} className={number === "03" ? "is-active" : ""}>
-                  <span>{number}</span>
-                  <strong>{title}</strong>
-                  <em>{time}</em>
+              {tracksLoading ? (
+                <li className="is-loading">
+                  <span>--</span>
+                  <strong>Loading Supabase tracks</strong>
+                  <em>--:--</em>
                 </li>
-              ))}
+              ) : (
+                reclamationTracks.map((track, index) => {
+                  const number = String(track.sort_order ?? index + 1).padStart(2, "0");
+                  const title = track.title || track.name || `Track ${number}`;
+
+                  return (
+                    <li key={track.id || track.track_id || number} className={index === 0 ? "is-active" : ""}>
+                      <span>{number}</span>
+                      <strong>{title}</strong>
+                      <em>{formatTrackDuration(track)}</em>
+                    </li>
+                  );
+                })
+              )}
             </ol>
           </ConsolePanel>
 

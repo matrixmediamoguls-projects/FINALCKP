@@ -272,6 +272,20 @@
   margin-right: 5px;
 }
 
+.ckp-tracklist li.is-loading {
+  color: rgba(255, 255, 255, .48);
+}
+
+.ckp-tracklist-status {
+  margin: -8px 0 14px;
+  color: rgba(255, 132, 132, .72);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
 .ckp-module-card,
 .ckp-transmission-card,
 .ckp-lore-module,

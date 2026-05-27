@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseClient } from '../../services/supabase/client';
 import { fallbackTrack } from './fallbackTrack';
 
 const safeArray = (value) => {
@@ -55,22 +55,21 @@ export default function useReclamationTracks() {
   const [error, setError] = useState('');
 
   const config = useMemo(() => {
-    const supabaseUrl = import.meta.env.VITE_APP_SUPABASE_URL || '';
-    const supabaseAnonKey = import.meta.env.VITE_APP_SUPABASE_ANON_KEY || '';
     const r2BaseUrl = import.meta.env.VITE_APP_R2_PUBLIC_BASE_URL || '';
-    return { supabaseUrl, supabaseAnonKey, r2BaseUrl };
+    return { r2BaseUrl };
   }, []);
 
   useEffect(() => {
     const loadTracks = async () => {
-      if (!config.supabaseUrl || !config.supabaseAnonKey) {
+      const supabase = getSupabaseClient();
+
+      if (!supabase) {
         setLoading(false);
         setError('Supabase credentials missing. Using fallback track.');
         return;
       }
 
       try {
-        const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
         const { data, error: fetchError } = await supabase
           .from('reclamation_tracks')
           .select('*')
