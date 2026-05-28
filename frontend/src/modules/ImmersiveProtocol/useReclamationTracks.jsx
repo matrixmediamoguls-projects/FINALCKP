@@ -157,7 +157,7 @@ const hydrateDurations = async (tracks) => Promise.all(
 );
 
 const normalizeTrack = (raw, r2BaseUrl) => {
-  const lyricSource = raw.lyrics || raw.display_text || '';
+  const lyricSource = raw.lyrics || '';
   const lyric_lines = parseLyricLines(lyricSource);
   const actLabel = raw.act || raw.act_id || 'ACT THREE';
   const audio_url = resolveAudioUrl(raw, r2BaseUrl);
@@ -173,8 +173,9 @@ const normalizeTrack = (raw, r2BaseUrl) => {
     audio_cross_origin: raw.audio_cross_origin || undefined,
     ...visualMedia,
     has_audio: Boolean(audio_url),
+    lyrics_text: lyricSource,
     lyric_lines,
-    lyric_source: raw.lyrics ? 'lyrics' : raw.display_text ? 'display_text' : '',
+    lyric_source: raw.lyrics ? 'reclamation_tracks.lyrics' : '',
     context_points: [
       raw.artist ? `Artist: ${raw.artist}` : '',
       `Signal: ${raw.release_status || 'unpublished'}`,

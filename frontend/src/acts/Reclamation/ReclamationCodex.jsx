@@ -140,7 +140,7 @@ export default function ReclamationCodex() {
 
   const activeLyricLines = useMemo(() => {
     const source =
-      activeTrack?.display_text || activeTrack?.lyrics;
+      activeTrack?.lyrics || activeTrack?.display_text;
 
     if (!source) return lyricLines;
 
