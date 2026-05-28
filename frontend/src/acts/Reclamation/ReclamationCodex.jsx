@@ -212,9 +212,9 @@ export default function ReclamationCodex() {
     if (!activeLyricLines.length) return [];
 
     const start = Math.max(0, activeLyricIndex - 1);
-    const end = Math.min(activeLyricLines.length, start + 5);
+    const end = Math.min(activeLyricLines.length, start + 4);
 
-    return activeLyricLines.slice(Math.max(0, end - 5), end);
+    return activeLyricLines.slice(Math.max(0, end - 4), end);
   }, [activeLyricIndex, activeLyricLines]);
 
   const playReclamationTrack = (track, index) => {
