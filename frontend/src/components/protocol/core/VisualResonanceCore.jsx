@@ -25,7 +25,12 @@ export default function VisualResonanceCore({ track = null }) {
   const lastSnareRef = useRef(-1);
   const lastHatRef = useRef(-1);
   const lastBassDropRef = useRef(-1);
+  const mediaVideoRef = useRef(null);
   const title = track?.title || track?.name || "DECRYPTION ACTIVE";
+  const visualMediaUrl = track?.visual_media_url || track?.background_image_url || track?.act_background_image || "";
+  const visualMediaType =
+    track?.visual_media_type ||
+    (/\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(visualMediaUrl) ? "video" : "image");
   const audioElement = audio?.audioElement;
   const isTrackActive =
     audio?.currentTrack?.id === track?.id ||
@@ -106,6 +111,18 @@ export default function VisualResonanceCore({ track = null }) {
     };
   }, [audio?.currentTime, audio?.duration, audioElement, isReactive, track?.duration_seconds]);
 
+  useEffect(() => {
+    const video = mediaVideoRef.current;
+    if (!video) return;
+
+    if (isReactive) {
+      video.play().catch(() => {});
+      return;
+    }
+
+    video.pause();
+  }, [isReactive, visualMediaUrl]);
+
   return (
     <div
       className="vrc-shell"
@@ -120,6 +137,26 @@ export default function VisualResonanceCore({ track = null }) {
       }}
     >
       <div className="vrc-background-glow" />
+      {visualMediaUrl && (
+        <div
+          className="vrc-media-frame"
+          data-media-type={visualMediaType}
+          aria-hidden="true"
+        >
+          {visualMediaType === "video" ? (
+            <video
+              ref={mediaVideoRef}
+              src={visualMediaUrl}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            <img src={visualMediaUrl} alt="" />
+          )}
+        </div>
+      )}
       <div className="vrc-grid-overlay" />
       <div className="vrc-shockwave" />
       <div className="vrc-particle-field" aria-hidden="true">

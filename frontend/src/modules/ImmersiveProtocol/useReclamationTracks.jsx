@@ -64,6 +64,40 @@ const resolveAudioUrl = (raw, r2BaseUrl) => {
   return `${(r2BaseUrl || '').replace(/\/$/, '')}/audio/reclamation/${fileName}`;
 };
 
+const isVideoAsset = (url) => /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url || '');
+
+const resolveVisualMedia = (raw, r2BaseUrl) => {
+  const video = resolveR2Url(
+    r2BaseUrl,
+    raw.visual_video ||
+      raw.background_video ||
+      raw.video_url ||
+      raw.visual_media_video ||
+      ''
+  );
+  const image = resolveR2Url(
+    r2BaseUrl,
+    raw.visual_image ||
+      raw.background_image ||
+      raw.visual_media_image ||
+      raw.shell_image ||
+      raw.act_logo_image ||
+      ''
+  );
+  const media = resolveR2Url(r2BaseUrl, raw.visual_media_url || raw.media_url || '');
+
+  if (video) return { visual_media_url: video, visual_media_type: 'video' };
+  if (media) {
+    return {
+      visual_media_url: media,
+      visual_media_type: raw.visual_media_type || (isVideoAsset(media) ? 'video' : 'image'),
+    };
+  }
+  if (image) return { visual_media_url: image, visual_media_type: 'image' };
+
+  return { visual_media_url: '', visual_media_type: '' };
+};
+
 const formatDuration = (seconds) => {
   if (!Number.isFinite(seconds) || seconds <= 0) return '';
 
@@ -127,6 +161,7 @@ const normalizeTrack = (raw, r2BaseUrl) => {
   const lyric_lines = parseLyricLines(lyricSource);
   const actLabel = raw.act || raw.act_id || 'ACT THREE';
   const audio_url = resolveAudioUrl(raw, r2BaseUrl);
+  const visualMedia = resolveVisualMedia(raw, r2BaseUrl);
 
   return {
     ...raw,
@@ -136,6 +171,7 @@ const normalizeTrack = (raw, r2BaseUrl) => {
     act_keys: safeArray(raw.act_keys),
     audio_url,
     audio_cross_origin: raw.audio_cross_origin || undefined,
+    ...visualMedia,
     has_audio: Boolean(audio_url),
     lyric_lines,
     lyric_source: raw.lyrics ? 'lyrics' : raw.display_text ? 'display_text' : '',
