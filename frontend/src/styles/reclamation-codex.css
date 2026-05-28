@@ -1530,3 +1530,193 @@
     width: clamp(450px, 44vw, 620px);
   }
 }
+
+.reclamation-codex {
+  padding: clamp(12px, 1.25vw, 20px);
+}
+
+.ckp-topbar {
+  min-height: 76px;
+  grid-template-columns: minmax(300px, 440px) minmax(520px, 1fr) minmax(320px, 440px);
+  margin-bottom: 10px;
+}
+
+.ckp-status-cluster a,
+.ckp-status-cluster button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ckp-status-cluster a {
+  gap: 10px;
+}
+
+.ckp-status-cluster button span {
+  display: none;
+}
+
+.reclamation-console {
+  grid-template-columns: minmax(390px, 445px) minmax(690px, 1fr) minmax(320px, 380px);
+  gap: clamp(12px, 1.25vw, 18px);
+  min-height: calc(100dvh - 92px);
+}
+
+.ckp-console-panel,
+.ckp-analyzer-frame,
+.ckp-lyrics-frame {
+  border-color: rgba(255, 7, 24, .88);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .085) 0 5%, transparent 5% 89%, rgba(255, 255, 255, .065) 89%),
+    linear-gradient(90deg, rgba(255, 7, 24, .16), transparent 11% 89%, rgba(255, 7, 24, .14)),
+    linear-gradient(180deg, rgba(17, 17, 19, .98), rgba(0, 0, 0, .9));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .1) inset,
+    0 0 0 2px rgba(255, 7, 24, .5) inset,
+    0 0 0 12px rgba(0, 0, 0, .54) inset,
+    0 0 0 5px rgba(255, 7, 24, .07),
+    0 0 34px rgba(255, 7, 24, .27),
+    inset 0 0 48px rgba(255, 7, 24, .12);
+}
+
+.ckp-console-panel::after,
+.ckp-analyzer-frame::after,
+.ckp-lyrics-frame::after {
+  background:
+    linear-gradient(90deg, transparent 12px, #ff0718 12px 54px, transparent 54px calc(100% - 54px), #ff0718 calc(100% - 54px) calc(100% - 12px), transparent calc(100% - 12px)),
+    linear-gradient(180deg, transparent 15px, rgba(255, 255, 255, .34) 15px 16px, transparent 16px calc(100% - 16px), rgba(255, 255, 255, .26) calc(100% - 16px) calc(100% - 15px), transparent calc(100% - 15px)),
+    repeating-linear-gradient(90deg, transparent 0 28px, rgba(255, 7, 24, .56) 28px 33px, transparent 33px 62px);
+}
+
+.ckp-panel-chassis {
+  z-index: 0;
+}
+
+.ckp-panel-title,
+.ckp-tracklist,
+.ckp-audio-player,
+.ckp-lore-module,
+.ckp-analysis-module,
+.ckp-frequency-module,
+.ckp-lyrics-meter,
+.ckp-lyrics-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.ckp-side-rail--left .ckp-console-panel:first-child {
+  flex-basis: 76%;
+  min-height: 610px;
+}
+
+.ckp-side-rail--left .ckp-audio-player-panel {
+  min-height: 170px;
+}
+
+.ckp-tracklist {
+  gap: clamp(16px, 1.35vh, 22px);
+}
+
+.ckp-tracklist li {
+  font-size: clamp(14px, .9vw, 16px);
+}
+
+.ckp-tracklist li.is-active {
+  padding: 12px 0;
+}
+
+.ckp-tracklist li.is-active::before {
+  left: -18px;
+  top: 12px;
+  width: 10px;
+  height: 18px;
+}
+
+.ckp-tracklist li.is-active::after {
+  height: 30px;
+}
+
+.ckp-audio-player__status strong {
+  font-size: 15px;
+}
+
+.ckp-audio-controls {
+  justify-content: center;
+  gap: 12px;
+}
+
+.ckp-audio-controls button {
+  flex: 0 0 42px;
+  width: 42px;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: rgba(255, 255, 255, .82);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 7, 24, .06)),
+    rgba(0, 0, 0, .54);
+}
+
+.ckp-audio-controls button.is-main {
+  flex: 0 0 62px;
+  width: 62px;
+  min-height: 62px;
+  border-radius: 50%;
+  clip-path: none;
+}
+
+.ckp-audio-controls button:disabled {
+  opacity: .62;
+}
+
+.ckp-analyzer-frame {
+  min-height: 650px;
+}
+
+.reclamation-stage {
+  min-height: 650px;
+}
+
+.ckp-core-shell {
+  width: clamp(560px, 49vw, 760px);
+}
+
+.ckp-core-assembly {
+  width: 84%;
+}
+
+.ckp-lyrics-frame {
+  min-height: 176px;
+}
+
+.ckp-side-rail--right .ckp-console-panel:first-child {
+  min-height: 350px;
+}
+
+.ckp-frequency-module {
+  overflow: hidden;
+}
+
+.ckp-frequency-link-icon {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  color: rgba(255, 7, 24, .8);
+  filter: drop-shadow(0 0 8px rgba(255, 7, 24, .75));
+}
+
+@media (max-width: 1620px) {
+  .reclamation-console {
+    grid-template-columns: minmax(350px, 400px) minmax(600px, 1fr) minmax(296px, 340px);
+  }
+
+  .ckp-core-shell {
+    width: clamp(470px, 46vw, 650px);
+  }
+
+  .ckp-analyzer-frame,
+  .reclamation-stage {
+    min-height: 590px;
+  }
+}
