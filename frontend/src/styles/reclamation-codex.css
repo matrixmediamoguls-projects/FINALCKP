@@ -623,15 +623,27 @@
   z-index: 1;
   width: 38%;
   height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   opacity: .9;
   background:
-    linear-gradient(90deg, transparent 0 4%, rgba(255, 0, 36, .84) 5%, transparent 6% 100%),
-    repeating-linear-gradient(90deg, transparent 0 8px, rgba(255, 23, 48, .92) 8px 10px, transparent 10px 15px);
+    linear-gradient(90deg, transparent 0 4%, rgba(255, 0, 36, .5) 5%, transparent 6% 100%);
   mask-image:
     linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
     linear-gradient(0deg, transparent 12%, #000 42%, #000 58%, transparent 86%);
   filter: drop-shadow(0 0 12px rgba(255, 0, 36, .72));
   animation: ckpWavePulse .62s steps(2, end) infinite;
+}
+
+.ckp-waveform span {
+  width: 3px;
+  height: var(--bar);
+  min-height: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .78), #ff1728 52%, rgba(255, 0, 20, .42));
+  box-shadow: 0 0 10px rgba(255, 0, 36, .62);
+  transition: height .08s linear;
 }
 
 .ckp-waveform--left {
@@ -1172,8 +1184,7 @@
   mix-blend-mode: normal;
   background:
     linear-gradient(90deg, transparent 18px, var(--ckp-red) 18px 70px, transparent 70px calc(100% - 70px), var(--ckp-red) calc(100% - 70px) calc(100% - 18px), transparent calc(100% - 18px)),
-    linear-gradient(180deg, transparent 18px, rgba(255, 255, 255, .32) 18px 19px, transparent 19px calc(100% - 19px), rgba(255, 255, 255, .28) calc(100% - 19px) calc(100% - 18px), transparent calc(100% - 18px)),
-    repeating-linear-gradient(90deg, transparent 0 30px, rgba(255, 7, 24, .58) 30px 36px, transparent 36px 70px);
+    linear-gradient(180deg, transparent 18px, rgba(255, 255, 255, .32) 18px 19px, transparent 19px calc(100% - 19px), rgba(255, 255, 255, .28) calc(100% - 19px) calc(100% - 18px), transparent calc(100% - 18px));
   filter: drop-shadow(0 0 9px rgba(255, 0, 24, .95));
 }
 
@@ -1582,11 +1593,10 @@
 .ckp-console-panel::after,
 .ckp-analyzer-frame::after,
 .ckp-lyrics-frame::after {
-  opacity: .5;
+  opacity: .42;
   background:
     linear-gradient(90deg, transparent 14px, rgba(255, 7, 24, .9) 14px 17px, transparent 17px calc(100% - 17px), rgba(255, 7, 24, .9) calc(100% - 17px) calc(100% - 14px), transparent calc(100% - 14px)),
-    linear-gradient(180deg, transparent 15px, rgba(255, 255, 255, .22) 15px 16px, transparent 16px calc(100% - 16px), rgba(255, 255, 255, .18) calc(100% - 16px) calc(100% - 15px), transparent calc(100% - 15px)),
-    repeating-linear-gradient(90deg, transparent 0 28px, rgba(255, 7, 24, .22) 28px 30px, transparent 30px 62px);
+    linear-gradient(180deg, transparent 15px, rgba(255, 255, 255, .22) 15px 16px, transparent 16px calc(100% - 16px), rgba(255, 255, 255, .18) calc(100% - 16px) calc(100% - 15px), transparent calc(100% - 15px));
 }
 
 .ckp-panel-chassis {

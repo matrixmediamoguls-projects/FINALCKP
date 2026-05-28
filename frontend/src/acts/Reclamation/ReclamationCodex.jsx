@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
 import VisualResonanceCore from "../../components/protocol/core/VisualResonanceCore";
+import useAudioAnalyzer from "../../hooks/useAudioAnalyzer";
 import useReclamationTracks from "../../modules/ImmersiveProtocol/useReclamationTracks";
 import { useAudio } from "../../context/audioprovider";
 
@@ -148,6 +149,45 @@ export default function ReclamationCodex() {
     playerDuration > 0
       ? Math.min(100, (playerCurrentTime / playerDuration) * 100)
       : 0;
+  const analysis = useAudioAnalyzer(audio?.audioElement, isActiveTrackPlaying);
+
+  const frequencyBars = useMemo(
+    () =>
+      Array.from({ length: 80 }).map((_, index) => {
+        const frequencyIndex = Math.min(
+          analysis.frequencies.length - 1,
+          Math.floor((index / 80) * analysis.frequencies.length)
+        );
+        const reactiveValue =
+          frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] / 255 : 0;
+        const idleValue = (12 + ((index * 37) % 84)) / 100;
+        const value = isActiveTrackPlaying
+          ? Math.max(0.08, reactiveValue)
+          : idleValue;
+
+        return `${Math.round(value * 100)}%`;
+      }),
+    [analysis.frequencies, isActiveTrackPlaying]
+  );
+
+  const waveformBars = useMemo(
+    () =>
+      Array.from({ length: 46 }).map((_, index) => {
+        const frequencyIndex = Math.min(
+          analysis.frequencies.length - 1,
+          Math.floor((index / 46) * analysis.frequencies.length)
+        );
+        const reactiveValue =
+          frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] / 255 : 0;
+        const idleValue = (18 + ((index * 23) % 72)) / 100;
+        const value = isActiveTrackPlaying
+          ? Math.max(0.06, reactiveValue)
+          : idleValue;
+
+        return `${Math.round(value * 100)}%`;
+      }),
+    [analysis.frequencies, isActiveTrackPlaying]
+  );
 
   const activeLyricLines = useMemo(
     () => buildTimedLyrics(activeTrack, playerDuration),
@@ -461,8 +501,16 @@ export default function ReclamationCodex() {
               </span>
             </div>
 
-            <div className="ckp-waveform ckp-waveform--left" />
-            <div className="ckp-waveform ckp-waveform--right" />
+            <div className="ckp-waveform ckp-waveform--left">
+              {waveformBars.map((height, index) => (
+                <span key={`left-wave-${index}`} style={{ "--bar": height }} />
+              ))}
+            </div>
+            <div className="ckp-waveform ckp-waveform--right">
+              {waveformBars.map((height, index) => (
+                <span key={`right-wave-${index}`} style={{ "--bar": height }} />
+              ))}
+            </div>
             <div className="ckp-crosshair" />
 
             <div className="reclamation-stage">
@@ -569,14 +617,18 @@ export default function ReclamationCodex() {
               <div className="ckp-intensity-ring">
                 <span>Intensity</span>
                 <strong>
-                  {Math.round(activeTrack?.intensity || 78)}%
+                  {Math.round(
+                    isActiveTrackPlaying
+                      ? analysis.intensity * 100
+                      : activeTrack?.intensity || 78
+                  )}%
                 </strong>
               </div>
 
               <div className="ckp-analysis-bars">
-                <span style={{ "--value": "82%" }}>Bass</span>
-                <span style={{ "--value": "64%" }}>Mids</span>
-                <span style={{ "--value": "71%" }}>Treble</span>
+                <span style={{ "--value": `${Math.round((isActiveTrackPlaying ? analysis.bass : 0.82) * 100)}%` }}>Bass</span>
+                <span style={{ "--value": `${Math.round((isActiveTrackPlaying ? analysis.mid : 0.64) * 100)}%` }}>Mids</span>
+                <span style={{ "--value": `${Math.round((isActiveTrackPlaying ? analysis.treble : 0.71) * 100)}%` }}>Treble</span>
               </div>
             </div>
           </ConsolePanel>
@@ -596,9 +648,7 @@ export default function ReclamationCodex() {
                     <span
                       key={index}
                       style={{
-                        "--bar": `${
-                          12 + ((index * 37) % 84)
-                        }%`,
+                        "--bar": frequencyBars[index],
                       }}
                     />
                   )

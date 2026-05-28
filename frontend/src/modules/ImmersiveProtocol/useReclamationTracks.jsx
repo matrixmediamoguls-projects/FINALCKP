@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { getSupabaseClient } from '../../services/supabase/client';
+import { enrichTrackWithVisualResonance } from '../../data/visualResonanceManifest';
 import { fallbackTrack } from './fallbackTrack';
 
 const safeArray = (value) => {
@@ -190,7 +191,7 @@ const normalizeTrack = (raw, r2BaseUrl) => {
 };
 
 export default function useReclamationTracks() {
-  const [tracks, setTracks] = useState([fallbackTrack]);
+  const [tracks, setTracks] = useState([enrichTrackWithVisualResonance(fallbackTrack)]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -219,10 +220,12 @@ export default function useReclamationTracks() {
         if (fetchError) throw fetchError;
 
         const normalized = await hydrateDurations(
-          (data || []).map((row) => normalizeTrack(row, config.r2BaseUrl))
+          (data || []).map((row) =>
+            enrichTrackWithVisualResonance(normalizeTrack(row, config.r2BaseUrl))
+          )
         );
         if (!normalized.length) {
-          setTracks([fallbackTrack]);
+          setTracks([enrichTrackWithVisualResonance(fallbackTrack)]);
           setError('No active tracks found. Using fallback track.');
         } else {
           setTracks(normalized);
@@ -230,7 +233,7 @@ export default function useReclamationTracks() {
         }
       } catch (loadError) {
         setError(loadError?.message || 'Unable to load track metadata from Supabase.');
-        setTracks([fallbackTrack]);
+        setTracks([enrichTrackWithVisualResonance(fallbackTrack)]);
       } finally {
         setLoading(false);
       }
