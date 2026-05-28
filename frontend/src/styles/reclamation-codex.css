@@ -628,6 +628,11 @@
   min-height: 560px;
   padding: 0;
   overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(255, 0, 36, .08), transparent 22%, transparent 78%, rgba(255, 0, 36, .08)),
+    radial-gradient(circle at 50% 47%, rgba(255, 0, 36, .2), transparent 36%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .04), transparent 20%),
+    rgba(0, 0, 0, .78);
 }
 
 .ckp-analyzer-frame .ckp-crosshair::after {
@@ -669,22 +674,28 @@
 
 .ckp-waveform {
   position: absolute;
-  top: 46%;
+  top: 43%;
   z-index: 1;
-  width: 35%;
-  height: 120px;
+  width: 38%;
+  height: 170px;
   opacity: .9;
+  background:
+    linear-gradient(90deg, transparent 0 4%, rgba(255, 0, 36, .84) 5%, transparent 6% 100%),
+    repeating-linear-gradient(90deg, transparent 0 8px, rgba(255, 23, 48, .92) 8px 10px, transparent 10px 15px);
   mask-image:
     linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
-    linear-gradient(0deg, transparent 15%, #000 48%, transparent 82%);
+    linear-gradient(0deg, transparent 12%, #000 42%, #000 58%, transparent 86%);
+  filter: drop-shadow(0 0 12px rgba(255, 0, 36, .72));
+  animation: ckpWavePulse .62s steps(2, end) infinite;
 }
 
 .ckp-waveform--left {
-  left: 20px;
+  left: 18px;
 }
 
 .ckp-waveform--right {
-  right: 20px;
+  right: 18px;
+  transform: scaleX(-1);
 }
 
 .ckp-crosshair {
@@ -729,24 +740,118 @@
   z-index: 3;
 }
 
-.reclamation-system-shell {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-}
-
-.reclamation-codex .orbital-system {
+.ckp-core-shell {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(980px, 100%);
-  height: min(760px, 100%);
-  transform: translate(-50%, -50%) scale(.94);
-  transform-origin: center;
+  z-index: 5;
+  width: clamp(440px, 46vw, 650px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 0, 36, .12) 0 42%, transparent 43%),
+    conic-gradient(from 0deg, rgba(255, 23, 48, .1), rgba(255, 255, 255, .12), rgba(255, 23, 48, .1), transparent, rgba(255, 23, 48, .1));
+  box-shadow:
+    0 0 34px rgba(255, 0, 36, .3),
+    0 0 110px rgba(255, 0, 36, .18),
+    inset 0 0 56px rgba(255, 0, 36, .18);
 }
 
-.reclamation-codex .orbital-node__content {
-  display: none;
+.ckp-core-shell::before,
+.ckp-core-shell::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ckp-core-shell::before {
+  inset: -22px;
+  border: 16px solid rgba(18, 18, 20, .98);
+  background:
+    conic-gradient(
+      from 9deg,
+      rgba(255, 23, 48, .92) 0 2deg,
+      transparent 2deg 26deg,
+      rgba(180, 180, 180, .18) 26deg 33deg,
+      transparent 33deg 45deg
+    );
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, .14),
+    0 0 0 8px rgba(0, 0, 0, .72),
+    0 0 38px rgba(255, 0, 36, .34),
+    inset 0 0 34px rgba(255, 0, 36, .2);
+  animation: ckpCoreRotate 36s linear infinite;
+}
+
+.ckp-core-shell::after {
+  inset: 24px;
+  border: 1px solid rgba(255, 23, 48, .42);
+  background:
+    repeating-conic-gradient(from 0deg, rgba(255, 23, 48, .48) 0 1deg, transparent 1deg 6deg);
+  mask-image: radial-gradient(circle, transparent 0 64%, #000 65% 67%, transparent 68%);
+  opacity: .74;
+  animation: ckpCoreRotate 18s linear reverse infinite;
+}
+
+.ckp-core-assembly {
+  position: relative;
+  z-index: 2;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: visible;
+}
+
+.ckp-core-plaque {
+  position: absolute;
+  left: 50%;
+  z-index: 7;
+  min-width: min(360px, 72%);
+  padding: 8px 22px;
+  color: rgba(255, 255, 255, .88);
+  font-family: "Share Tech Mono", monospace;
+  font-size: clamp(12px, 1.35vw, 20px);
+  letter-spacing: .14em;
+  text-align: center;
+  text-transform: uppercase;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, .14) 10%, rgba(8, 8, 9, .96) 22% 78%, rgba(255, 255, 255, .14) 90%, transparent),
+    linear-gradient(180deg, rgba(255, 23, 48, .32), rgba(0, 0, 0, .92));
+  border-top: 1px solid rgba(255, 255, 255, .38);
+  border-bottom: 1px solid rgba(255, 23, 48, .62);
+  box-shadow:
+    0 0 18px rgba(255, 0, 36, .42),
+    inset 0 0 12px rgba(255, 255, 255, .08);
+  transform: translateX(-50%);
+}
+
+.ckp-core-plaque--top {
+  top: 11%;
+}
+
+.ckp-core-plaque--bottom {
+  bottom: 11%;
+}
+
+.ckp-core-lens {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  z-index: 8;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #fff 0 4%, #ff1730 5% 14%, rgba(0, 0, 0, .98) 15% 48%, rgba(255, 23, 48, .35) 49% 52%, transparent 53%),
+    conic-gradient(rgba(255, 23, 48, .86), rgba(255, 255, 255, .12), rgba(255, 23, 48, .86));
+  box-shadow:
+    0 0 18px rgba(255, 0, 36, .84),
+    inset 0 0 18px rgba(255, 0, 36, .42);
+  transform: translateX(-50%);
 }
 
 .ckp-lyrics-frame {
@@ -1018,5 +1123,18 @@
 @keyframes reclamationGridDrift {
   to {
     background-position: 42px 42px, 42px 42px, center;
+  }
+}
+
+@keyframes ckpCoreRotate {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes ckpWavePulse {
+  50% {
+    opacity: .64;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 36, .9));
   }
 }

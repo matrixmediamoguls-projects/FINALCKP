@@ -2,7 +2,7 @@ import "../../styles/reclamation-codex.css";
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import OrbitalSystem from "../../systems/OrbitalSystem";
+import VisualResonanceCore from "../../components/protocol/core/VisualResonanceCore";
 import useReclamationTracks from "../../modules/ImmersiveProtocol/useReclamationTracks";
 import { useAudio } from "../../context/audioprovider";
 
@@ -453,10 +453,22 @@ export default function ReclamationCodex() {
             <div className="ckp-crosshair" />
 
             <div className="reclamation-stage">
-              <div className="reclamation-system-shell">
-                <OrbitalSystem
-                  currentTrack={activeTrack}
-                />
+              <div className="ckp-core-shell">
+                <div className="ckp-core-plaque ckp-core-plaque--top">
+                  ACT 3: RECLAMATION
+                </div>
+
+                <div className="ckp-core-assembly">
+                  <VisualResonanceCore
+                    track={activeTrack}
+                  />
+                </div>
+
+                <div className="ckp-core-plaque ckp-core-plaque--bottom">
+                  SPECTRUM ANALYZER
+                </div>
+
+                <div className="ckp-core-lens" />
               </div>
             </div>
           </section>
