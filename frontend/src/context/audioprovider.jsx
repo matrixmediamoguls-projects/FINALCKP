@@ -121,6 +121,7 @@ export function AudioProvider({ children }) {
         currentTrack,
         currentTrackIndex,
         queue,
+        audioElement: audioRef.current,
         isPlaying,
         currentTime,
         duration,
