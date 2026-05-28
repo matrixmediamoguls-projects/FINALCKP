@@ -1,4 +1,15 @@
 import "../../styles/reclamation-codex.css";
+import {
+  AudioWaveform,
+  List,
+  Menu,
+  Pause,
+  Play,
+  Repeat2,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
@@ -16,6 +27,12 @@ const lyricLines = [
 function ConsolePanel({ title, children, className = "" }) {
   return (
     <section className={`ckp-console-panel ${className}`}>
+      <div className="ckp-panel-chassis" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
       <div className="ckp-panel-title">
         {title}
         <span />
@@ -240,6 +257,7 @@ export default function ReclamationCodex() {
           <span>CKP MAINFRAME: ONLINE</span>
 
           <Link to="/vma">
+            <AudioWaveform size={18} strokeWidth={1.8} />
             VMA MODULE
           </Link>
 
@@ -247,9 +265,7 @@ export default function ReclamationCodex() {
             type="button"
             aria-label="Open protocol menu"
           >
-            <span />
-            <span />
-            <span />
+            <Menu size={21} strokeWidth={1.7} />
           </button>
         </div>
       </header>
@@ -338,22 +354,13 @@ export default function ReclamationCodex() {
             className="ckp-audio-player-panel"
           >
             <div className="ckp-audio-player">
-              <div className="ckp-audio-player__meta">
-                <span>
-                  {isActiveTrackPlaying ? "Transmitting" : "Ready"}
-                </span>
-
+              <div className="ckp-audio-player__status">
+                <span>{isActiveTrackPlaying ? "Live Signal" : "Signal Armed"}</span>
                 <strong>
                   {activeTrack?.title ||
                     activeTrack?.name ||
                     "Select a track"}
                 </strong>
-
-                <em>
-                  {activeTrack?.artist ||
-                    activeTrack?.act ||
-                    "Act III Reclamation"}
-                </em>
               </div>
 
               <div
@@ -375,10 +382,18 @@ export default function ReclamationCodex() {
               <div className="ckp-audio-controls">
                 <button
                   type="button"
+                  aria-label="Shuffle"
+                  disabled
+                >
+                  <Shuffle size={18} strokeWidth={1.8} />
+                </button>
+
+                <button
+                  type="button"
                   onClick={playPreviousTrack}
                   aria-label="Previous track"
                 >
-                  PREV
+                  <SkipBack size={21} fill="currentColor" strokeWidth={1.5} />
                 </button>
 
                 <button
@@ -386,8 +401,13 @@ export default function ReclamationCodex() {
                   onClick={toggleActiveTrackPlayback}
                   className="is-main"
                   disabled={!activeTrack?.audio_url}
+                  aria-label={isActiveTrackPlaying ? "Pause" : "Play"}
                 >
-                  {isActiveTrackPlaying ? "PAUSE" : "PLAY"}
+                  {isActiveTrackPlaying ? (
+                    <Pause size={26} fill="currentColor" strokeWidth={1.5} />
+                  ) : (
+                    <Play size={26} fill="currentColor" strokeWidth={1.5} />
+                  )}
                 </button>
 
                 <button
@@ -395,7 +415,15 @@ export default function ReclamationCodex() {
                   onClick={playNextTrack}
                   aria-label="Next track"
                 >
-                  NEXT
+                  <SkipForward size={21} fill="currentColor" strokeWidth={1.5} />
+                </button>
+
+                <button
+                  type="button"
+                  aria-label="Repeat"
+                  disabled
+                >
+                  <Repeat2 size={18} strokeWidth={1.8} />
                 </button>
               </div>
             </div>
@@ -407,6 +435,14 @@ export default function ReclamationCodex() {
           aria-label="Act Three spectrum analyzer"
         >
           <section className="ckp-analyzer-frame">
+            <div className="ckp-analyzer-chassis" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
             <div className="ckp-analyzer-topline">
               <span>
                 FREQ: 44.1 KHZ
@@ -451,6 +487,12 @@ export default function ReclamationCodex() {
           </section>
 
           <section className="ckp-lyrics-frame">
+            <div className="ckp-panel-chassis" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
             <div
               className="ckp-lyrics-meter"
               aria-hidden="true"
@@ -544,6 +586,7 @@ export default function ReclamationCodex() {
               className="ckp-frequency-module"
               to="/visualizer/3"
             >
+              <List className="ckp-frequency-link-icon" size={16} strokeWidth={1.7} />
               <div
                 className="ckp-frequency-bars"
                 aria-hidden="true"
