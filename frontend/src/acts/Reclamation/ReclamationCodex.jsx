@@ -1,11 +1,15 @@
 import "../../styles/reclamation-codex.css";
+import "../../styles/reclamation-codex-refit.css";
 import {
   AudioWaveform,
-  List,
+  Gauge,
   Menu,
   Pause,
   Play,
+  ScanLine,
+  Settings2,
   Repeat2,
+  Radio,
   Shuffle,
   SkipBack,
   SkipForward,
@@ -150,25 +154,29 @@ export default function ReclamationCodex() {
       ? Math.min(100, (playerCurrentTime / playerDuration) * 100)
       : 0;
   const analysis = useAudioAnalyzer(audio?.audioElement, isActiveTrackPlaying);
-
-  const frequencyBars = useMemo(
-    () =>
-      Array.from({ length: 80 }).map((_, index) => {
-        const frequencyIndex = Math.min(
-          analysis.frequencies.length - 1,
-          Math.floor((index / 80) * analysis.frequencies.length)
-        );
-        const reactiveValue =
-          frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] / 255 : 0;
-        const idleValue = (12 + ((index * 37) % 84)) / 100;
-        const value = isActiveTrackPlaying
-          ? Math.max(0.08, reactiveValue)
-          : idleValue;
-
-        return `${Math.round(value * 100)}%`;
-      }),
-    [analysis.frequencies, isActiveTrackPlaying]
+  const fallbackDuration = formatTrackDuration(activeTrack);
+  const albumArtwork =
+    activeTrack?.cover_url ||
+    activeTrack?.artwork_url ||
+    activeTrack?.image_url ||
+    "/emblem/reclamation_module_emblem.gif";
+  const trackArtist =
+    activeTrack?.artist ||
+    activeTrack?.artist_name ||
+    activeTrack?.creator ||
+    "CHROMA KEY";
+  const trackAlbum =
+    activeTrack?.album ||
+    activeTrack?.collection ||
+    "RECLAMATION: ACT THREE";
+  const intensityPercent = Math.round(
+    isActiveTrackPlaying
+      ? analysis.intensity * 100
+      : activeTrack?.intensity || 78
   );
+  const bassPercent = Math.round((isActiveTrackPlaying ? analysis.bass : 0.82) * 100);
+  const midPercent = Math.round((isActiveTrackPlaying ? analysis.mid : 0.64) * 100);
+  const treblePercent = Math.round((isActiveTrackPlaying ? analysis.treble : 0.71) * 100);
 
   const waveformBars = useMemo(
     () =>
@@ -270,7 +278,7 @@ export default function ReclamationCodex() {
   };
 
   return (
-    <main className="reclamation-codex">
+    <main className="reclamation-codex ckp-reference-mirror">
       <div className="reclamation-background" />
       <div className="reclamation-grid" />
       <div className="reclamation-overlay" />
@@ -312,7 +320,24 @@ export default function ReclamationCodex() {
 
       <div className="reclamation-console">
         <aside className="ckp-side-rail ckp-side-rail--left">
-          <ConsolePanel title="Tracklist">
+          <ConsolePanel title="Act Three">
+            <div className="ckp-act-three-module">
+              <div className="ckp-act-three-poster">
+                <img
+                  src={albumArtwork}
+                  alt={activeTrack?.title || activeTrack?.name || "Reclamation cover"}
+                />
+              </div>
+              <div className="ckp-act-three-meta">
+                <strong>RECLAMATION</strong>
+                <span>CHROMA KEY ACT THREE</span>
+              </div>
+            </div>
+
+            <div className="ckp-subhead">
+              TRACKLIST
+            </div>
+
             {tracksError && (
               <p className="ckp-tracklist-status">
                 {tracksError}
@@ -419,6 +444,29 @@ export default function ReclamationCodex() {
                 <span>{formatPlaybackTime(playerDuration)}</span>
               </div>
 
+              <div className="ckp-audio-player__now">
+                NOW PLAYING
+              </div>
+
+              <div className="ckp-mini-waveform" aria-hidden="true">
+                {Array.from({ length: 42 }).map((_, index) => {
+                  const frequencyIndex = Math.min(
+                    analysis.frequencies.length - 1,
+                    Math.floor((index / 42) * analysis.frequencies.length)
+                  );
+                  const reactiveValue =
+                    frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] / 255 : 0;
+                  const idleValue = (14 + ((index * 29) % 66)) / 100;
+                  const value = isActiveTrackPlaying
+                    ? Math.max(0.12, reactiveValue)
+                    : idleValue;
+
+                  return (
+                    <span key={`mini-wave-${index}`} style={{ "--bar": `${Math.round(value * 100)}%` }} />
+                  );
+                })}
+              </div>
+
               <div className="ckp-audio-controls">
                 <button
                   type="button"
@@ -466,6 +514,12 @@ export default function ReclamationCodex() {
                   <Repeat2 size={18} strokeWidth={1.8} />
                 </button>
               </div>
+
+              <div className="ckp-volume-row">
+                <span>VOLUME</span>
+                <i />
+                <strong>{isCurrentReclamationTrack ? `${Math.round((audio?.volume ?? 0.78) * 100)}%` : "78%"}</strong>
+              </div>
             </div>
           </ConsolePanel>
         </aside>
@@ -499,6 +553,23 @@ export default function ReclamationCodex() {
                 <br />
                 SOURCE: CKP CORE
               </span>
+            </div>
+
+            <div className="ckp-analyzer-telemetry ckp-analyzer-telemetry--left">
+              <span>AUDIO REACTIVITY</span>
+              <strong>{isActiveTrackPlaying ? "HIGH" : "ARMED"}</strong>
+              <i />
+              <div>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <span key={`telemetry-left-${index}`} />
+                ))}
+              </div>
+            </div>
+
+            <div className="ckp-analyzer-telemetry ckp-analyzer-telemetry--right">
+              <span>VISUAL MODE</span>
+              <strong>CINEMATIC</strong>
+              <small>CAMERA: SUBTLE</small>
             </div>
 
             <div className="ckp-waveform ckp-waveform--left">
@@ -589,81 +660,83 @@ export default function ReclamationCodex() {
               </div>
             </div>
           </section>
+
+          <section className="ckp-control-deck" aria-label="Protocol controls">
+            <button type="button">
+              <Radio size={16} strokeWidth={1.8} />
+              <span>Reactive</span>
+              <strong>{isActiveTrackPlaying ? "HIGH" : "READY"}</strong>
+            </button>
+            <button type="button">
+              <ScanLine size={16} strokeWidth={1.8} />
+              <span>Particles</span>
+              <strong>ENABLED</strong>
+            </button>
+            <button type="button" className="is-core">
+              <img src="/emblem/reclamation_core_emblem.png" alt="" />
+            </button>
+            <button type="button">
+              <Gauge size={16} strokeWidth={1.8} />
+              <span>Light React</span>
+              <strong>ENABLED</strong>
+            </button>
+            <button type="button">
+              <Settings2 size={16} strokeWidth={1.8} />
+              <span>Theme</span>
+              <strong>RED PROTOCOL</strong>
+            </button>
+          </section>
         </section>
 
         <aside className="ckp-side-rail ckp-side-rail--right">
-          <ConsolePanel
-            title="Context Module"
-            className="ckp-context-card"
-          >
-            <Link
-              className="ckp-lore-module"
-              to="/codex"
-            >
-              <span className="ckp-lore-glyph" />
-              <strong>
-                Reclamation Codex
-              </strong>
-
-              <span>
-                Open the archive layer for Act III language,
-                symbols, and protocol context.
-              </span>
-            </Link>
-          </ConsolePanel>
-
-          <ConsolePanel title="Audio Analysis">
-            <div className="ckp-analysis-module">
-              <div className="ckp-intensity-ring">
-                <span>Intensity</span>
-                <strong>
-                  {Math.round(
-                    isActiveTrackPlaying
-                      ? analysis.intensity * 100
-                      : activeTrack?.intensity || 78
-                  )}%
-                </strong>
-              </div>
-
-              <div className="ckp-analysis-bars">
-                <span style={{ "--value": `${Math.round((isActiveTrackPlaying ? analysis.bass : 0.82) * 100)}%` }}>Bass</span>
-                <span style={{ "--value": `${Math.round((isActiveTrackPlaying ? analysis.mid : 0.64) * 100)}%` }}>Mids</span>
-                <span style={{ "--value": `${Math.round((isActiveTrackPlaying ? analysis.treble : 0.71) * 100)}%` }}>Treble</span>
+          <ConsolePanel title="Track Info" className="ckp-track-info-panel">
+            <div className="ckp-track-info-body">
+              <strong>{activeTrack?.title || activeTrack?.name || "BREAK THE CODE"}</strong>
+              <dl>
+                <div>
+                  <dt>ARTIST</dt>
+                  <dd>{trackArtist}</dd>
+                </div>
+                <div>
+                  <dt>ALBUM</dt>
+                  <dd>{trackAlbum}</dd>
+                </div>
+                <div>
+                  <dt>TIME</dt>
+                  <dd>
+                    {formatPlaybackTime(playerCurrentTime)} / {playerDuration ? formatPlaybackTime(playerDuration) : fallbackDuration}
+                  </dd>
+                </div>
+              </dl>
+              <div className="ckp-track-info-wave" aria-hidden="true">
+                {Array.from({ length: 46 }).map((_, index) => (
+                  <span key={`track-info-wave-${index}`} style={{ "--bar": waveformBars[index % waveformBars.length] }} />
+                ))}
               </div>
             </div>
           </ConsolePanel>
 
-          <ConsolePanel title="Frequency Bands">
-            <Link
-              className="ckp-frequency-module"
-              to="/visualizer/3"
-            >
-              <List className="ckp-frequency-link-icon" size={16} strokeWidth={1.7} />
-              <div
-                className="ckp-frequency-bars"
-                aria-hidden="true"
-              >
-                {Array.from({ length: 80 }).map(
-                  (_, index) => (
-                    <span
-                      key={index}
-                      style={{
-                        "--bar": frequencyBars[index],
-                      }}
-                    />
-                  )
-                )}
+          <ConsolePanel title="Protocol Emblem" className="ckp-emblem-panel">
+            <Link className="ckp-lore-module" to="/codex">
+              <img src="/emblem/reclamation_core_emblem.png" alt="" />
+              <strong>CHROMA KEY PROTOCOL</strong>
+              <span>TRUST NONE. VERIFY ALL. ACT THREE.</span>
+            </Link>
+          </ConsolePanel>
+
+          <ConsolePanel title="Audio Analysis">
+            <div className="ckp-analysis-module ckp-analysis-module--clean">
+              <div className="ckp-intensity-ring" style={{ "--ring-fill": `${intensityPercent}%` }}>
+                <span>INTENSITY</span>
+                <strong>{intensityPercent}%</strong>
               </div>
 
-              <div className="ckp-band-labels">
-                <span>20</span>
-                <span>80</span>
-                <span>320</span>
-                <span>1.2K</span>
-                <span>5K</span>
-                <span>20K</span>
+              <div className="ckp-analysis-bars">
+                <span style={{ "--value": `${bassPercent}%` }}>Bass</span>
+                <span style={{ "--value": `${midPercent}%` }}>Mids</span>
+                <span style={{ "--value": `${treblePercent}%` }}>Treble</span>
               </div>
-            </Link>
+            </div>
           </ConsolePanel>
         </aside>
       </div>
