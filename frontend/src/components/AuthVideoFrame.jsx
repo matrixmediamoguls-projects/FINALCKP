@@ -18,6 +18,7 @@ const stopVideo = (video) => {
 const AuthVideoFrame = () => {
   const videoRef = useRef(null);
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [playbackBlocked, setPlaybackBlocked] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -30,9 +31,7 @@ const AuthVideoFrame = () => {
     if (playAttempt?.catch) {
       playAttempt.catch(() => {
         video.muted = true;
-        video.play().catch(() => {
-          stopVideo(video);
-        });
+        video.play().catch(() => setPlaybackBlocked(true));
       });
     }
 
@@ -49,14 +48,35 @@ const AuthVideoFrame = () => {
     video.volume = 1;
     try {
       await video.play();
+      setPlaybackBlocked(false);
       setSoundEnabled(true);
     } catch {
       setSoundEnabled(false);
+      setPlaybackBlocked(true);
+    }
+  };
+
+  const playMuted = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.volume = 0;
+    try {
+      await video.play();
+      setPlaybackBlocked(false);
+    } catch {
+      setPlaybackBlocked(true);
     }
   };
 
   return (
     <div className="relative min-h-[42vh] overflow-hidden bg-[#050505] lg:min-h-screen">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-90"
+        style={{ backgroundImage: "url('/media/act-gateway-scene.jpg')" }}
+        aria-hidden="true"
+      />
       <video
         ref={videoRef}
         data-testid="auth-initiation-video"
@@ -66,15 +86,26 @@ const AuthVideoFrame = () => {
         muted={!soundEnabled}
         playsInline
         preload="auto"
+        poster="/media/act-gateway-scene.jpg"
+        onCanPlay={() => setPlaybackBlocked(false)}
         aria-label="Chroma Key Protocol Launch Sequence"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover opacity-95"
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,3,3,0.08)_0%,rgba(3,3,3,0.18)_46%,#030303_100%)] lg:bg-[linear-gradient(90deg,rgba(3,3,3,0.02)_38%,rgba(3,3,3,0.66)_78%,#030303_100%)]" />
       <div className="absolute inset-4 border border-chroma-gold/40 shadow-[0_0_28px_rgba(205,164,52,0.16)] lg:inset-8" />
       <div className="absolute left-6 top-6 h-10 w-10 border-l border-t border-chroma-gold/70 lg:left-12 lg:top-12" />
       <div className="absolute bottom-6 right-6 h-10 w-10 border-b border-r border-[#7ab829]/70 lg:bottom-12 lg:right-12" />
 
-      {!soundEnabled && (
+      {playbackBlocked ? (
+        <button
+          type="button"
+          data-testid="auth-play-video"
+          onClick={playMuted}
+          className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 border border-chroma-gold bg-black/70 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-chroma-gold shadow-[0_0_24px_rgba(205,164,52,0.22)] backdrop-blur-md transition-colors hover:bg-chroma-gold hover:text-black"
+        >
+          Play Video
+        </button>
+      ) : !soundEnabled ? (
         <button
           type="button"
           data-testid="auth-enable-sound"
@@ -83,7 +114,7 @@ const AuthVideoFrame = () => {
         >
           Enable Sound
         </button>
-      )}
+      ) : null}
 
       <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between border border-white/10 bg-black/45 px-4 py-3 backdrop-blur-md lg:bottom-12 lg:left-12 lg:right-12">
         <div>
