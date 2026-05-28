@@ -1582,10 +1582,11 @@
 .ckp-console-panel::after,
 .ckp-analyzer-frame::after,
 .ckp-lyrics-frame::after {
+  opacity: .5;
   background:
-    linear-gradient(90deg, transparent 12px, #ff0718 12px 54px, transparent 54px calc(100% - 54px), #ff0718 calc(100% - 54px) calc(100% - 12px), transparent calc(100% - 12px)),
-    linear-gradient(180deg, transparent 15px, rgba(255, 255, 255, .34) 15px 16px, transparent 16px calc(100% - 16px), rgba(255, 255, 255, .26) calc(100% - 16px) calc(100% - 15px), transparent calc(100% - 15px)),
-    repeating-linear-gradient(90deg, transparent 0 28px, rgba(255, 7, 24, .56) 28px 33px, transparent 33px 62px);
+    linear-gradient(90deg, transparent 14px, rgba(255, 7, 24, .9) 14px 17px, transparent 17px calc(100% - 17px), rgba(255, 7, 24, .9) calc(100% - 17px) calc(100% - 14px), transparent calc(100% - 14px)),
+    linear-gradient(180deg, transparent 15px, rgba(255, 255, 255, .22) 15px 16px, transparent 16px calc(100% - 16px), rgba(255, 255, 255, .18) calc(100% - 16px) calc(100% - 15px), transparent calc(100% - 15px)),
+    repeating-linear-gradient(90deg, transparent 0 28px, rgba(255, 7, 24, .22) 28px 30px, transparent 30px 62px);
 }
 
 .ckp-panel-chassis {
@@ -1637,18 +1638,18 @@
 }
 
 .ckp-audio-player__status strong {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .ckp-audio-controls {
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .ckp-audio-controls button {
-  flex: 0 0 42px;
-  width: 42px;
-  min-height: 42px;
+  flex: 0 0 38px;
+  width: 38px;
+  min-height: 38px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -1659,9 +1660,9 @@
 }
 
 .ckp-audio-controls button.is-main {
-  flex: 0 0 62px;
-  width: 62px;
-  min-height: 62px;
+  flex: 0 0 54px;
+  width: 54px;
+  min-height: 54px;
   border-radius: 50%;
   clip-path: none;
 }
@@ -1718,5 +1719,170 @@
   .ckp-analyzer-frame,
   .reclamation-stage {
     min-height: 590px;
+  }
+}
+
+@media (min-width: 1241px) {
+  .reclamation-codex {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .reclamation-console {
+    height: calc(100dvh - 96px);
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  .ckp-side-rail,
+  .ckp-center-stack {
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .ckp-side-rail--left {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) 178px;
+  }
+
+  .ckp-center-stack {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .ckp-side-rail--right {
+    display: grid;
+    grid-template-rows: minmax(0, 1.2fr) minmax(0, .74fr) minmax(0, .86fr);
+  }
+
+  .ckp-side-rail--left .ckp-console-panel:first-child,
+  .ckp-side-rail--right .ckp-console-panel:first-child,
+  .ckp-console-panel,
+  .ckp-analyzer-frame,
+  .ckp-lyrics-frame {
+    min-height: 0;
+  }
+
+  .ckp-console-panel,
+  .ckp-analyzer-frame,
+  .ckp-lyrics-frame {
+    overflow: hidden;
+  }
+
+  .ckp-panel-chassis,
+  .ckp-analyzer-chassis {
+    z-index: 0;
+    opacity: .72;
+  }
+
+  .ckp-panel-chassis span,
+  .ckp-analyzer-chassis span {
+    background:
+      linear-gradient(180deg, rgba(80, 82, 86, .92), rgba(7, 7, 8, .94) 56%, rgba(31, 31, 34, .98));
+  }
+
+  .ckp-analyzer-frame > .ckp-analyzer-topline {
+    position: absolute;
+  }
+
+  .ckp-analyzer-frame > .ckp-waveform,
+  .ckp-analyzer-frame > .ckp-crosshair {
+    position: absolute;
+  }
+
+  .ckp-analyzer-frame > .reclamation-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  .ckp-side-rail--left .ckp-console-panel:first-child {
+    padding: 34px 30px 28px;
+  }
+
+  .ckp-side-rail--left .ckp-audio-player-panel {
+    min-height: 0;
+    height: 178px;
+    padding: 24px 28px 22px;
+  }
+
+  .ckp-tracklist {
+    gap: clamp(9px, 1.05vh, 16px);
+  }
+
+  .ckp-tracklist li {
+    font-size: clamp(12px, .76vw, 15px);
+  }
+
+  .ckp-tracklist li.is-active {
+    padding: 8px 0;
+  }
+
+  .ckp-tracklist__active-meta {
+    margin-top: 6px;
+  }
+
+  .ckp-analyzer-frame,
+  .reclamation-stage {
+    height: auto;
+    min-height: 0;
+  }
+
+  .reclamation-stage {
+    height: 100%;
+  }
+
+  .ckp-core-shell {
+    width: min(72%, calc(100dvh - 290px));
+    min-width: 340px;
+    max-width: 680px;
+  }
+
+  .ckp-core-plaque {
+    min-width: min(370px, 76%);
+    font-size: clamp(11px, 1vw, 18px);
+  }
+
+  .ckp-waveform {
+    height: min(164px, 27vh);
+  }
+
+  .ckp-lyrics-frame {
+    min-height: 136px;
+    grid-template-columns: 74px 1fr;
+    padding: 18px 30px 16px;
+  }
+
+  .ckp-lyrics-copy p {
+    margin-bottom: 4px;
+    font-size: clamp(11px, .8vw, 14px);
+    line-height: 1.18;
+  }
+
+  .ckp-lore-module {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .ckp-analysis-module {
+    min-height: 0;
+    grid-template-columns: 112px 1fr;
+  }
+
+  .ckp-intensity-ring {
+    width: 104px;
+    height: 104px;
+  }
+
+  .ckp-frequency-module {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .ckp-frequency-bars {
+    height: 100%;
+    min-height: 96px;
   }
 }
