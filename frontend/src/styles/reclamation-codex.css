@@ -1096,10 +1096,6 @@
     min-height: 520px;
   }
 
-  .reclamation-codex .orbital-system {
-    transform: translate(-50%, -50%) scale(.58);
-  }
-
   .ckp-analyzer-topline {
     top: 28px;
     grid-template-columns: 1fr;
