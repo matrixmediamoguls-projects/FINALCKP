@@ -2,25 +2,43 @@ import { useEffect, useRef, useState } from 'react';
 
 const AUTH_VIDEO_URL = 'https://media.chromakeyprotocol.com/video/chroma_key_protocol_launch_sequence.mp4';
 
+const stopVideo = (video) => {
+  if (!video) return;
+
+  video.pause();
+  video.muted = true;
+  video.volume = 0;
+  try {
+    video.currentTime = 0;
+  } catch {
+    // Ignore seek failures while the browser is tearing down the route.
+  }
+};
+
 const AuthVideoFrame = () => {
   const videoRef = useRef(null);
-  const [soundBlocked, setSoundBlocked] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    video.muted = false;
-    video.volume = 1;
+    video.muted = true;
+    video.volume = 0;
     const playAttempt = video.play();
 
     if (playAttempt?.catch) {
       playAttempt.catch(() => {
         video.muted = true;
-        video.play().catch(() => {});
-        setSoundBlocked(true);
+        video.play().catch(() => {
+          stopVideo(video);
+        });
       });
     }
+
+    return () => {
+      stopVideo(video);
+    };
   }, []);
 
   const enableSound = async () => {
@@ -31,9 +49,9 @@ const AuthVideoFrame = () => {
     video.volume = 1;
     try {
       await video.play();
-      setSoundBlocked(false);
+      setSoundEnabled(true);
     } catch {
-      setSoundBlocked(true);
+      setSoundEnabled(false);
     }
   };
 
@@ -45,6 +63,7 @@ const AuthVideoFrame = () => {
         src={AUTH_VIDEO_URL}
         autoPlay
         loop
+        muted={!soundEnabled}
         playsInline
         preload="auto"
         aria-label="Chroma Key Protocol Launch Sequence"
@@ -55,7 +74,7 @@ const AuthVideoFrame = () => {
       <div className="absolute left-6 top-6 h-10 w-10 border-l border-t border-chroma-gold/70 lg:left-12 lg:top-12" />
       <div className="absolute bottom-6 right-6 h-10 w-10 border-b border-r border-[#7ab829]/70 lg:bottom-12 lg:right-12" />
 
-      {soundBlocked && (
+      {!soundEnabled && (
         <button
           type="button"
           data-testid="auth-enable-sound"
