@@ -324,6 +324,18 @@
   font-style: italic;
   color: rgba(245,240,230,0.88);
   line-height: 1.55;
+  max-height: 132px;
+  overflow: hidden;
+}
+
+.sa-status {
+  display: block;
+  margin-top: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--accent, #5ab038);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 /* ── Act keys module ─────────────────────────────────────────── */
@@ -348,6 +360,22 @@
   letter-spacing: 0.18em;
   color: var(--accent, #5ab038);
   font-size: 8px;
+}
+
+.ak-status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.ak-status-grid span {
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  color: rgba(245,240,230,0.58);
+  font-size: 8px;
+  letter-spacing: 0.1em;
 }
 
 .act-keys-module ul {
@@ -389,9 +417,30 @@
   margin: 0;
   font-family: 'IM Fell English', serif;
   font-style: italic;
-  color: rgba(245,240,230,0.88);
+  color: rgba(245,240,230,0.45);
   line-height: 1.55;
-  font-size: clamp(18px, 2.2vw, 32px);
+  font-size: clamp(14px, 1.5vw, 20px);
+  transition: color 0.16s ease, transform 0.16s ease;
+}
+
+.lyrics-text.is-active {
+  color: rgba(245,240,230,0.94);
+  transform: scale(1.02);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--accent, #5ab038) 36%, transparent);
+}
+
+.lyrics-stack {
+  display: grid;
+  gap: 3px;
+}
+
+.lyrics-index {
+  display: block;
+  margin-top: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  color: rgba(245,240,230,0.46);
+  letter-spacing: 0.16em;
+  font-size: 8px;
 }
 
 /* ── Track audio info module ─────────────────────────────────── */
@@ -445,6 +494,31 @@
   font-size: 9px;
 }
 
+.ip-player-meta {
+  width: min(300px, 24vw);
+  min-width: 160px;
+  overflow: hidden;
+}
+
+.ip-player-meta strong,
+.ip-player-meta span {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ip-player-meta strong {
+  color: rgba(245,240,230,0.86);
+  font-size: 10px;
+}
+
+.ip-player-meta span {
+  color: rgba(245,240,230,0.42);
+  font-size: 8px;
+  margin-top: 3px;
+}
+
 .ip-control,
 .ip-play {
   font-family: 'Share Tech Mono', monospace;
@@ -481,6 +555,14 @@
   box-shadow: 0 0 14px var(--accent, #5ab038);
 }
 
+.ip-player-error {
+  color: #ff5b5b;
+  max-width: 220px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .ip-root { flex-direction: column; }
@@ -496,5 +578,6 @@
   .av-bars { transform: translate(110px, 110px); }
   .av-bars span { transform-origin: center 88px; }
   .lyrics-protocol { width: auto; left: 24px; right: 24px; transform: none; bottom: 88px; }
-  .ip-player { left: 12px; right: 12px; bottom: 14px; }
+  .ip-player { left: 12px; right: 12px; bottom: 14px; gap: 8px; }
+  .ip-player-meta { display: none; }
 }

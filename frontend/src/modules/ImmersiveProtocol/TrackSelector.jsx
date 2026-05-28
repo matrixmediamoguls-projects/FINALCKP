@@ -2,7 +2,7 @@ import React from 'react';
 import { useProtocol } from './context/ProtocolContext';
 
 export default function TrackSelector() {
-  const { tracks, currentIndex, selectTrack } = useProtocol();
+  const { tracks, currentIndex, selectTrack, isPlaying } = useProtocol();
 
   return (
     <aside className="ip-track-selector">
@@ -11,12 +11,12 @@ export default function TrackSelector() {
         <button
           key={track.id}
           className={index === currentIndex ? 'active' : ''}
-          onClick={() => selectTrack(index)}
+          onClick={() => selectTrack(index, { autoplay: isPlaying })}
           type="button"
         >
           <span>{String(index + 1).padStart(2, '0')}</span>
           <strong>{track.title}</strong>
-          <small>{track.act} · {track.release_status}</small>
+          <small>{track.act} / {index === currentIndex && isPlaying ? 'playing' : track.release_status}</small>
         </button>
       ))}
     </aside>

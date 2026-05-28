@@ -13,7 +13,7 @@ const getFrequencyValue = (frequencyData, index) => {
 };
 
 export default function AudioVisualizer() {
-  const { audioData, currentTrack, isPlaying } = useProtocol();
+  const { audioData, currentTrack, isPlaying, activeLyric } = useProtocol();
   const color = currentTrack?.primary_color || '#ff1a2d';
   const volume = audioData?.averageVolume || 0;
   const pulse = isPlaying ? 1 + Math.min(volume * 0.16, 0.1) : 1;
@@ -56,7 +56,7 @@ export default function AudioVisualizer() {
         ) : (
           <span className="av-logo-text">ACT III</span>
         )}
-        <span className="av-logo-subtitle">{currentTrack?.title || 'Reclamation'}</span>
+        <span className="av-logo-subtitle">{activeLyric?.text || currentTrack?.title || 'Reclamation'}</span>
       </div>
     </div>
   );

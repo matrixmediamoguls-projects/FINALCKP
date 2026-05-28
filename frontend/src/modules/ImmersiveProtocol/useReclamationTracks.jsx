@@ -20,6 +20,33 @@ const safeArray = (value) => {
   return [];
 };
 
+const parseLyricLines = (value) => {
+  if (!value || typeof value !== 'string') return [];
+
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line, index) => {
+      const timestampMatch = line.match(/^\[(\d{1,2}):(\d{2})(?:[.:](\d{1,3}))?\]\s*(.*)$/);
+
+      if (!timestampMatch) {
+        return { id: `line-${index}`, time: null, text: line };
+      }
+
+      const minutes = Number(timestampMatch[1]);
+      const seconds = Number(timestampMatch[2]);
+      const fraction = Number(`0.${timestampMatch[3] || 0}`);
+
+      return {
+        id: `line-${index}`,
+        time: minutes * 60 + seconds + fraction,
+        text: timestampMatch[4] || line,
+      };
+    })
+    .filter((line) => line.text);
+};
+
 const resolveR2Url = (base, path) => {
   if (!path) return '';
   if (/^https?:\/\//i.test(path)) return path;
@@ -37,17 +64,35 @@ const resolveAudioUrl = (raw, r2BaseUrl) => {
   return `${(r2BaseUrl || '').replace(/\/$/, '')}/audio/reclamation/${fileName}`;
 };
 
-const normalizeTrack = (raw, r2BaseUrl) => ({
-  ...raw,
-  sort_order: Number(raw.sort_order ?? 999),
-  intensity: Number(raw.intensity ?? 50),
-  act_keys: safeArray(raw.act_keys),
-  audio_url: resolveAudioUrl(raw, r2BaseUrl),
-  shell_image_url: resolveR2Url(r2BaseUrl, raw.shell_image),
-  act_background_image: resolveR2Url(r2BaseUrl, raw.shell_image || raw.background_image || ''),
-  act_logo_asset: resolveR2Url(r2BaseUrl, raw.act_logo_asset || raw.act_logo_image || ''),
-  background_image_url: resolveR2Url(r2BaseUrl, raw.background_image),
-});
+const normalizeTrack = (raw, r2BaseUrl) => {
+  const lyricSource = raw.lyrics || raw.display_text || '';
+  const lyric_lines = parseLyricLines(lyricSource);
+  const actLabel = raw.act || raw.act_id || 'ACT THREE';
+  const audio_url = resolveAudioUrl(raw, r2BaseUrl);
+
+  return {
+    ...raw,
+    sort_order: Number(raw.sort_order ?? 999),
+    intensity: Number(raw.intensity ?? 50),
+    act: actLabel,
+    act_keys: safeArray(raw.act_keys),
+    audio_url,
+    audio_cross_origin: raw.audio_cross_origin || '',
+    has_audio: Boolean(audio_url),
+    lyric_lines,
+    lyric_source: raw.lyrics ? 'lyrics' : raw.display_text ? 'display_text' : '',
+    context_points: [
+      raw.artist ? `Artist: ${raw.artist}` : '',
+      `Signal: ${raw.release_status || 'unpublished'}`,
+      audio_url ? 'Audio source: Cloudflare media endpoint' : 'Audio source: unavailable',
+      lyric_lines.length ? `${lyric_lines.length} lyric lines indexed` : 'No lyric lines indexed',
+    ].filter(Boolean),
+    shell_image_url: resolveR2Url(r2BaseUrl, raw.shell_image),
+    act_background_image: resolveR2Url(r2BaseUrl, raw.shell_image || raw.background_image || ''),
+    act_logo_asset: resolveR2Url(r2BaseUrl, raw.act_logo_asset || raw.act_logo_image || ''),
+    background_image_url: resolveR2Url(r2BaseUrl, raw.background_image),
+  };
+};
 
 export default function useReclamationTracks() {
   const [tracks, setTracks] = useState([fallbackTrack]);
