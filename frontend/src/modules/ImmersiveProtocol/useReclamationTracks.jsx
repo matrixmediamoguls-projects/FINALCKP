@@ -135,7 +135,7 @@ const normalizeTrack = (raw, r2BaseUrl) => {
     act: actLabel,
     act_keys: safeArray(raw.act_keys),
     audio_url,
-    audio_cross_origin: raw.audio_cross_origin || '',
+    audio_cross_origin: raw.audio_cross_origin || undefined,
     has_audio: Boolean(audio_url),
     lyric_lines,
     lyric_source: raw.lyrics ? 'lyrics' : raw.display_text ? 'display_text' : '',

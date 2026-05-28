@@ -464,7 +464,8 @@
   gap: 10px;
 }
 
-.ckp-control-row a {
+.ckp-control-row a,
+.ckp-control-row button {
   width: 38px;
   height: 38px;
   display: grid;
@@ -479,7 +480,12 @@
   cursor: pointer;
 }
 
-.ckp-control-row a.is-primary {
+.ckp-control-row button {
+  padding: 0;
+}
+
+.ckp-control-row a.is-primary,
+.ckp-control-row button.is-primary {
   width: 58px;
   height: 58px;
   color: #fff;

@@ -106,6 +106,7 @@ export default function ReclamationCodex() {
     loading: tracksLoading,
     error: tracksError,
   } = useReclamationTracks();
+  const audio = useAudio();
 
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
 
@@ -118,6 +119,12 @@ export default function ReclamationCodex() {
   const activeTrack =
     reclamationTracks[activeTrackIndex] ||
     reclamationTracks[0];
+  const currentAudioTrack = audio?.currentTrack;
+  const isCurrentReclamationTrack =
+    currentAudioTrack?.id === activeTrack?.id ||
+    currentAudioTrack?.track_id === activeTrack?.track_id;
+  const isActiveTrackPlaying =
+    Boolean(isCurrentReclamationTrack && audio?.isPlaying);
 
   const activeLyricLines = useMemo(() => {
     const source =
@@ -134,6 +141,22 @@ export default function ReclamationCodex() {
       ? lines.slice(0, 4)
       : lyricLines;
   }, [activeTrack]);
+
+  const playReclamationTrack = (track, index) => {
+    setActiveTrackIndex(index);
+    audio?.playTrack?.(track, index, reclamationTracks);
+  };
+
+  const toggleActiveTrackPlayback = () => {
+    if (!activeTrack) return;
+
+    if (isCurrentReclamationTrack) {
+      audio?.togglePlayback?.();
+      return;
+    }
+
+    playReclamationTrack(activeTrack, activeTrackIndex);
+  };
 
   return (
     <main className="reclamation-codex">
@@ -220,7 +243,7 @@ export default function ReclamationCodex() {
                       <button
                         type="button"
                         onClick={() =>
-                          setActiveTrackIndex(index)
+                          playReclamationTrack(track, index)
                         }
                         aria-current={
                           isActive
@@ -264,9 +287,11 @@ export default function ReclamationCodex() {
               <div className="ckp-mini-wave" />
 
               <small>
-                {activeTrack?.audio_url
-                  ? "Synced to Supabase transmission"
-                  : "Resume Act III audio chamber"}
+                {isActiveTrackPlaying
+                  ? "Playing from Supabase transmission"
+                  : activeTrack?.audio_url
+                    ? "Ready from Supabase transmission"
+                    : "Resume Act III audio chamber"}
               </small>
             </Link>
           </ConsolePanel>
@@ -276,6 +301,14 @@ export default function ReclamationCodex() {
               className="ckp-control-row"
               aria-label="Module shortcuts"
             >
+              <button
+                type="button"
+                onClick={toggleActiveTrackPlayback}
+                className={isActiveTrackPlaying ? "is-primary" : ""}
+              >
+                {isActiveTrackPlaying ? "II" : "PLAY"}
+              </button>
+
               <Link to="/activation?act=3">
                 ACT
               </Link>
@@ -301,13 +334,34 @@ export default function ReclamationCodex() {
             </div>
 
             <div className="ckp-volume">
-              <span>SYNC</span>
+              <span>{audio?.isPlaying ? "PLAY" : "SYNC"}</span>
 
               <div>
-                <i />
+                <i
+                  style={{
+                    width: `${
+                      audio?.duration
+                        ? Math.min(
+                            100,
+                            (audio.currentTime /
+                              audio.duration) *
+                              100
+                          )
+                        : 0
+                    }%`,
+                  }}
+                />
               </div>
 
-              <strong>78%</strong>
+              <strong>
+                {audio?.duration
+                  ? formatTrackDuration({
+                      duration_seconds:
+                        audio.duration -
+                        audio.currentTime,
+                    })
+                  : "READY"}
+              </strong>
             </div>
           </ConsolePanel>
         </aside>

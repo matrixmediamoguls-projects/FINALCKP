@@ -35,7 +35,7 @@ export default function ProtocolPlayer() {
       <AudioEngine
         ref={audioRef}
         src={currentTrack?.audio_url || ''}
-        crossOrigin={currentTrack?.audio_cross_origin}
+        crossOrigin={currentTrack?.audio_cross_origin || undefined}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onCanPlay={handleCanPlay}
