@@ -64,6 +64,64 @@ const resolveAudioUrl = (raw, r2BaseUrl) => {
   return `${(r2BaseUrl || '').replace(/\/$/, '')}/audio/reclamation/${fileName}`;
 };
 
+const formatDuration = (seconds) => {
+  if (!Number.isFinite(seconds) || seconds <= 0) return '';
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+};
+
+const loadAudioDuration = (url) => new Promise((resolve) => {
+  if (!url || typeof Audio === 'undefined') {
+    resolve(0);
+    return;
+  }
+
+  const audio = new Audio();
+  let settled = false;
+  const timeout = window.setTimeout(() => finish(0), 8000);
+
+  const finish = (seconds) => {
+    if (settled) return;
+    settled = true;
+    window.clearTimeout(timeout);
+    audio.removeAttribute('src');
+    audio.load();
+    resolve(Number.isFinite(seconds) ? seconds : 0);
+  };
+
+  audio.preload = 'metadata';
+  audio.onloadedmetadata = () => finish(audio.duration || 0);
+  audio.onerror = () => finish(0);
+  audio.src = url;
+});
+
+const hydrateDurations = async (tracks) => Promise.all(
+  tracks.map(async (track) => {
+    const storedSeconds = Number(track.duration_seconds ?? track.duration_in_seconds);
+
+    if (Number.isFinite(storedSeconds) && storedSeconds > 0) {
+      return {
+        ...track,
+        duration_seconds: storedSeconds,
+        duration: track.duration || formatDuration(storedSeconds),
+      };
+    }
+
+    const loadedSeconds = await loadAudioDuration(track.audio_url);
+
+    if (!loadedSeconds) return track;
+
+    return {
+      ...track,
+      duration_seconds: loadedSeconds,
+      duration: formatDuration(loadedSeconds),
+    };
+  })
+);
+
 const normalizeTrack = (raw, r2BaseUrl) => {
   const lyricSource = raw.lyrics || raw.display_text || '';
   const lyric_lines = parseLyricLines(lyricSource);
@@ -123,7 +181,9 @@ export default function useReclamationTracks() {
 
         if (fetchError) throw fetchError;
 
-        const normalized = (data || []).map((row) => normalizeTrack(row, config.r2BaseUrl));
+        const normalized = await hydrateDurations(
+          (data || []).map((row) => normalizeTrack(row, config.r2BaseUrl))
+        );
         if (!normalized.length) {
           setTracks([fallbackTrack]);
           setError('No active tracks found. Using fallback track.');
