@@ -314,46 +314,23 @@ export default function ReclamationCodex() {
                           {formatTrackDuration(track)}
                         </em>
                       </button>
+
+                      {isActive && (
+                        <div className="ckp-tracklist__active-meta">
+                          <span>
+                            {isActiveTrackPlaying ? "Transmitting" : "Ready"}
+                          </span>
+                          <i />
+                          <small>
+                            {formatPlaybackTime(playerCurrentTime)} / {formatPlaybackTime(playerDuration)}
+                          </small>
+                        </div>
+                      )}
                     </li>
                   );
                 })
               )}
             </ol>
-          </ConsolePanel>
-
-          <ConsolePanel
-            title="Now Playing"
-            className="ckp-now-playing"
-          >
-            <Link
-              className="ckp-transmission-card"
-              to="/listen/3"
-            >
-              <img
-                src="/emblem/reclamation_core_emblem.png"
-                alt=""
-              />
-
-              <span>
-                {activeTrack?.act || "ACT III"}
-              </span>
-
-              <strong>
-                {activeTrack?.title ||
-                  activeTrack?.name ||
-                  "Guided Listen"}
-              </strong>
-
-              <div className="ckp-mini-wave" />
-
-              <small>
-                {isActiveTrackPlaying
-                  ? "Playing from Supabase transmission"
-                  : activeTrack?.audio_url
-                    ? "Ready from Supabase transmission"
-                    : "Resume Act III audio chamber"}
-              </small>
-            </Link>
           </ConsolePanel>
 
           <ConsolePanel
@@ -363,7 +340,7 @@ export default function ReclamationCodex() {
             <div className="ckp-audio-player">
               <div className="ckp-audio-player__meta">
                 <span>
-                  {isActiveTrackPlaying ? "Now Playing" : "Ready"}
+                  {isActiveTrackPlaying ? "Transmitting" : "Ready"}
                 </span>
 
                 <strong>
