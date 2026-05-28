@@ -4,6 +4,18 @@ import useReclamationTracks from '../useReclamationTracks';
 
 const ProtocolContext = createContext(null);
 
+const shouldUseAudioAnalyser = (track) => {
+  if (!track?.audio_url) return false;
+
+  if (track.audio_cross_origin) return true;
+
+  try {
+    return new URL(track.audio_url, window.location.origin).origin === window.location.origin;
+  } catch {
+    return false;
+  }
+};
+
 export function ProtocolProvider({ children }) {
   const { tracks, loading, error } = useReclamationTracks();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -73,15 +85,22 @@ export function ProtocolProvider({ children }) {
     if (!audio || !track?.audio_url) return;
     setMediaStatus('buffering');
     setAudioError('');
-    try {
-      await connectAudioElement(audio);
-    } catch {
-      setAudioError('Audio active; analyzer requires CORS-enabled Cloudflare media.');
+
+    if (shouldUseAudioAnalyser(track)) {
+      try {
+        await connectAudioElement(audio);
+      } catch {
+        stopAudioAnalyser();
+        setAudioError('Audio active; analyzer requires CORS-enabled Cloudflare media.');
+      }
+    } else {
+      stopAudioAnalyser();
     }
+
     await audio.play();
     setIsPlaying(true);
     setMediaStatus('playing');
-  }, [connectAudioElement]);
+  }, [connectAudioElement, stopAudioAnalyser]);
 
   useEffect(() => {
     const audio = audioRef.current;
