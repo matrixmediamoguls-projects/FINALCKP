@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import { AuthProvider } from "@/context/AuthContext";
-import { AudioProvider } from "@/context/AudioProvider";
+import { AudioProvider } from "@/context/audioprovider";
 
 import "@/index.css";
 import App from "@/App";

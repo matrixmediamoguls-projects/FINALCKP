@@ -51,6 +51,7 @@ export function AudioProvider({ children }) {
 
     if (!currentTrack?.audio_url) return;
 
+    audio.crossOrigin = currentTrack.audio_cross_origin || "anonymous";
     audio.src = currentTrack.audio_url;
 
     if (isPlaying) {
@@ -68,6 +69,7 @@ export function AudioProvider({ children }) {
     setCurrentTrackIndex(index);
 
     if (track?.audio_url) {
+      audio.crossOrigin = track.audio_cross_origin || "anonymous";
       audio.src = track.audio_url;
 
       try {

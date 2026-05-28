@@ -4,42 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import OrbitalSystem from "../../systems/OrbitalSystem";
 import useReclamationTracks from "../../modules/ImmersiveProtocol/useReclamationTracks";
-import { useAudio } from "../../context/AudioProvider";
-
-const supportModules = [
-  {
-    id: "vma",
-    title: "VMA Module",
-    subtitle: "Ask the assistant for signal interpretation",
-    status: "Online",
-    route: "/vma",
-    telemetry: "AI",
-  },
-  {
-    id: "seeker",
-    title: "Seeker Profile",
-    subtitle: "Review identity, tier, and act progress",
-    status: "Synced",
-    route: "/seeker",
-    telemetry: "ID",
-  },
-  {
-    id: "codex",
-    title: "Codex Archive",
-    subtitle: "Read the Reclamation lore layer",
-    status: "Indexed",
-    route: "/codex",
-    telemetry: "CX",
-  },
-  {
-    id: "artifacts",
-    title: "Sonic Artifacts",
-    subtitle: "Inspect recovered Act III signals",
-    status: "Cached",
-    route: "/protocol/3?module=artifacts",
-    telemetry: "SA",
-  },
-];
+import { useAudio } from "../../context/audioprovider";
 
 const lyricLines = [
   "I'm breaking the code, I'm rewriting the system",
@@ -57,28 +22,6 @@ function ConsolePanel({ title, children, className = "" }) {
       </div>
       {children}
     </section>
-  );
-}
-
-function ModuleCard({ module, compact = false }) {
-  return (
-    <Link
-      className={`ckp-module-card${compact ? " is-compact" : ""}`}
-      to={module.route}
-    >
-      <span className="ckp-module-card__index">
-        {module.index || module.telemetry}
-      </span>
-
-      <span className="ckp-module-card__copy">
-        <strong>{module.title}</strong>
-        <em>{module.subtitle}</em>
-      </span>
-
-      <span className="ckp-module-card__status">
-        {module.status}
-      </span>
-    </Link>
   );
 }
 
@@ -272,6 +215,7 @@ export default function ReclamationCodex() {
   return (
     <main className="reclamation-codex">
       <div className="reclamation-background" />
+      <div className="reclamation-grid" />
       <div className="reclamation-overlay" />
 
       <header className="ckp-topbar">
@@ -312,7 +256,7 @@ export default function ReclamationCodex() {
 
       <div className="reclamation-console">
         <aside className="ckp-side-rail ckp-side-rail--left">
-          <ConsolePanel title="Reclamation Tracklist">
+          <ConsolePanel title="Tracklist">
             {tracksError && (
               <p className="ckp-tracklist-status">
                 {tracksError}
@@ -378,13 +322,18 @@ export default function ReclamationCodex() {
           </ConsolePanel>
 
           <ConsolePanel
-            title="Active Transmission"
+            title="Now Playing"
             className="ckp-now-playing"
           >
             <Link
               className="ckp-transmission-card"
               to="/listen/3"
             >
+              <img
+                src="/emblem/reclamation_core_emblem.png"
+                alt=""
+              />
+
               <span>
                 {activeTrack?.act || "ACT III"}
               </span>
@@ -408,7 +357,7 @@ export default function ReclamationCodex() {
           </ConsolePanel>
 
           <ConsolePanel
-            title="Audio Player"
+            title="Quick Controls"
             className="ckp-audio-player-panel"
           >
             <div className="ckp-audio-player">
@@ -442,17 +391,8 @@ export default function ReclamationCodex() {
               </div>
 
               <div className="ckp-audio-time">
-                <span>
-                  {formatTrackDuration({
-                    duration_seconds: playerCurrentTime,
-                  })}
-                </span>
-
-                <span>
-                  {formatTrackDuration({
-                    duration_seconds: playerDuration,
-                  })}
-                </span>
+                <span>{formatPlaybackTime(playerCurrentTime)}</span>
+                <span>{formatPlaybackTime(playerDuration)}</span>
               </div>
 
               <div className="ckp-audio-controls">
@@ -481,75 +421,6 @@ export default function ReclamationCodex() {
                   NEXT
                 </button>
               </div>
-            </div>
-          </ConsolePanel>
-
-          <ConsolePanel title="Module Controls">
-            <div
-              className="ckp-control-row"
-              aria-label="Module shortcuts"
-            >
-              <button
-                type="button"
-                onClick={toggleActiveTrackPlayback}
-                className={isActiveTrackPlaying ? "is-primary" : ""}
-              >
-                {isActiveTrackPlaying ? "II" : "PLAY"}
-              </button>
-
-              <Link to="/activation?act=3">
-                ACT
-              </Link>
-
-              <Link to="/journal?act=3">
-                JRN
-              </Link>
-
-              <Link
-                to="/visualizer/3"
-                className="is-primary"
-              >
-                VIZ
-              </Link>
-
-              <Link to="/vma">
-                VMA
-              </Link>
-
-              <Link to="/seeker">
-                ID
-              </Link>
-            </div>
-
-            <div className="ckp-volume">
-              <span>{audio?.isPlaying ? "PLAY" : "SYNC"}</span>
-
-              <div>
-                <i
-                  style={{
-                    width: `${
-                      audio?.duration
-                        ? Math.min(
-                            100,
-                            (audio.currentTime /
-                              audio.duration) *
-                              100
-                          )
-                        : 0
-                    }%`,
-                  }}
-                />
-              </div>
-
-              <strong>
-                {audio?.duration
-                  ? formatTrackDuration({
-                      duration_seconds:
-                        audio.duration -
-                        audio.currentTime,
-                    })
-                  : "READY"}
-              </strong>
             </div>
           </ConsolePanel>
         </aside>
@@ -643,38 +514,43 @@ export default function ReclamationCodex() {
 
         <aside className="ckp-side-rail ckp-side-rail--right">
           <ConsolePanel
-            title="Support Modules"
+            title="Context Module"
             className="ckp-context-card"
           >
-            <div className="ckp-module-grid">
-              {supportModules.map((module) => (
-                <ModuleCard
-                  key={module.id}
-                  module={module}
-                  compact
-                />
-              ))}
-            </div>
-          </ConsolePanel>
-
-          <ConsolePanel title="Context Module">
             <Link
               className="ckp-lore-module"
               to="/codex"
             >
+              <span className="ckp-lore-glyph" />
               <strong>
                 Reclamation Codex
               </strong>
 
               <span>
-                Open the archive layer for
-                Act III language, symbols,
-                and protocol context.
+                Open the archive layer for Act III language,
+                symbols, and protocol context.
               </span>
             </Link>
           </ConsolePanel>
 
-          <ConsolePanel title="Frequency Module">
+          <ConsolePanel title="Audio Analysis">
+            <div className="ckp-analysis-module">
+              <div className="ckp-intensity-ring">
+                <span>Intensity</span>
+                <strong>
+                  {Math.round(activeTrack?.intensity || 78)}%
+                </strong>
+              </div>
+
+              <div className="ckp-analysis-bars">
+                <span style={{ "--value": "82%" }}>Bass</span>
+                <span style={{ "--value": "64%" }}>Mids</span>
+                <span style={{ "--value": "71%" }}>Treble</span>
+              </div>
+            </div>
+          </ConsolePanel>
+
+          <ConsolePanel title="Frequency Bands">
             <Link
               className="ckp-frequency-module"
               to="/visualizer/3"

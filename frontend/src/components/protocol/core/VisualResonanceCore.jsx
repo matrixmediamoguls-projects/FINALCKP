@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import CoreEnergyField from "./CoreEnergyField";
-import { useAudio } from "@/context/AudioProvider";
+import { useAudio } from "@/context/audioprovider";
+import useAudioAnalyzer from "@/hooks/useAudioAnalyzer";
 
 import "./visualResonanceCore.css";
 
@@ -18,7 +19,6 @@ const createPulse = (setter, duration = 360) => {
 
 export default function VisualResonanceCore({ track = null }) {
   const audio = useAudio();
-  const [bands, setBands] = useState({ bass: 0, mid: 0, hat: 0, emotionalIntensity: 0 });
   const [borderFlash, setBorderFlash] = useState(0);
   const [shockwave, setShockwave] = useState(0);
   const [particles, setParticles] = useState([]);
@@ -45,6 +45,16 @@ export default function VisualResonanceCore({ track = null }) {
     audio?.currentTrack?.id === track?.id ||
     audio?.currentTrack?.track_id === track?.track_id;
   const isReactive = Boolean(audio?.isPlaying && isTrackActive);
+  const analysis = useAudioAnalyzer(audioElement, isReactive);
+  const time = audioElement?.currentTime || audio?.currentTime || 0;
+  const duration = audio?.duration || track?.duration_seconds || 1;
+  const progress = duration ? time / duration : 0;
+  const bands = {
+    bass: analysis.bass,
+    mid: analysis.mid,
+    hat: analysis.treble,
+    emotionalIntensity: clamp01(analysis.intensity * 0.68 + Math.sin(progress * Math.PI) * 0.32),
+  };
 
   const intensity = clamp01(
     bands.bass * 0.45 +
@@ -55,12 +65,21 @@ export default function VisualResonanceCore({ track = null }) {
 
   const particleNodes = useMemo(() => particles, [particles]);
   const scopeBars = useMemo(
-    () => Array.from({ length: 36 }, (_, index) => ({
-      id: `scope-${index}`,
-      height: 18 + ((index * 23) % 76),
-      delay: `${index * -0.045}s`,
-    })),
-    []
+    () => Array.from({ length: 36 }, (_, index) => {
+      const frequencyIndex = Math.min(
+        analysis.frequencies.length - 1,
+        Math.floor((index / 36) * analysis.frequencies.length)
+      );
+      const frequencyValue =
+        frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] : 0;
+
+      return {
+        id: `scope-${index}`,
+        height: 14 + (frequencyValue / 255) * 82,
+        delay: `${index * -0.045}s`,
+      };
+    }),
+    [analysis.frequencies]
   );
 
   const flashBorder = () => createPulse(setBorderFlash, 220);
@@ -84,49 +103,26 @@ export default function VisualResonanceCore({ track = null }) {
   const triggerShockwave = () => createPulse(setShockwave, 520);
 
   useEffect(() => {
-    let frameId;
+    if (!isReactive) return;
 
-    const tick = () => {
-      const time = audioElement?.currentTime || audio?.currentTime || 0;
-      const duration = audio?.duration || track?.duration_seconds || 1;
-      const progress = duration ? time / duration : 0;
-      const energy = isReactive ? 1 : 0.18;
+    const snareBucket = Math.floor(time * 2);
+    if (snareBucket !== lastSnareRef.current && snareBucket % 4 === 2) {
+      lastSnareRef.current = snareBucket;
+      flashBorder();
+    }
 
-      const beat = time * 2.05;
-      const bass = clamp01(Math.pow(Math.max(0, Math.sin(beat * Math.PI * 2)), 2.4) * energy);
-      const mid = clamp01((0.35 + Math.max(0, Math.sin(time * Math.PI * 3.1)) * 0.65) * energy);
-      const hat = clamp01(Math.pow(Math.max(0, Math.sin(time * Math.PI * 16)), 9) * energy);
-      const emotionalIntensity = clamp01((0.32 + Math.sin(progress * Math.PI) * 0.68) * energy);
+    const hatBucket = Math.floor(time * 8);
+    if (hatBucket !== lastHatRef.current && bands.hat > 0.62) {
+      lastHatRef.current = hatBucket;
+      emitParticles();
+    }
 
-      setBands({ bass, mid, hat, emotionalIntensity });
-
-      const snareBucket = Math.floor(time * 2);
-      if (isReactive && snareBucket !== lastSnareRef.current && snareBucket % 4 === 2) {
-        lastSnareRef.current = snareBucket;
-        flashBorder();
-      }
-
-      const hatBucket = Math.floor(time * 8);
-      if (isReactive && hatBucket !== lastHatRef.current && hat > 0.74) {
-        lastHatRef.current = hatBucket;
-        emitParticles();
-      }
-
-      const bassBucket = Math.floor(time * 1.025);
-      if (isReactive && bassBucket !== lastBassDropRef.current && bass > 0.86) {
-        lastBassDropRef.current = bassBucket;
-        triggerShockwave();
-      }
-
-      frameId = window.requestAnimationFrame(tick);
-    };
-
-    tick();
-
-    return () => {
-      if (frameId) window.cancelAnimationFrame(frameId);
-    };
-  }, [audio?.currentTime, audio?.duration, audioElement, isReactive, track?.duration_seconds]);
+    const bassBucket = Math.floor(time * 1.025);
+    if (bassBucket !== lastBassDropRef.current && bands.bass > 0.72) {
+      lastBassDropRef.current = bassBucket;
+      triggerShockwave();
+    }
+  }, [bands.bass, bands.hat, isReactive, time]);
 
   useEffect(() => {
     const video = mediaVideoRef.current;
