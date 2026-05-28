@@ -32,7 +32,6 @@
 .vrc-grid-overlay,
 .vrc-scanlines,
 .vrc-vignette,
-.vrc-frame,
 .vrc-shockwave,
 .vrc-particle-field,
 .vrc-reactive-sweep,
@@ -238,18 +237,6 @@
   box-shadow:inset 0 0 80px rgba(0,0,0,.8);
 }
 
-.vrc-frame {
-  width:100%;
-  height:100%;
-  opacity:calc(.42 + var(--vrc-flash) * .42);
-}
-
-.vrc-red-frame {
-  stroke-dasharray:26 18;
-  stroke-width:calc(6px + var(--vrc-flash) * 9px);
-  animation:vrcFramePulse calc(5s - var(--vrc-mid) * 2s) linear infinite;
-}
-
 .vrc-shockwave {
   z-index:2;
   border:1px solid rgba(255, 23, 48, .72);
@@ -322,12 +309,6 @@
 
   to {
     opacity:1;
-  }
-}
-
-@keyframes vrcFramePulse {
-  to {
-    stroke-dashoffset:-88;
   }
 }
 
