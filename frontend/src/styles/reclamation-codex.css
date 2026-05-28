@@ -742,34 +742,10 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 760px;
-  height: 760px;
-  transform: translate(-50%, -50%) scale(.82);
+  width: min(980px, 100%);
+  height: min(760px, 100%);
+  transform: translate(-50%, -50%) scale(.94);
   transform-origin: center;
-}
-
-.reclamation-codex .mainframe-core {
-  z-index: 5;
-  --core-scale: .82;
-}
-
-.reclamation-codex .mainframe-core__copy {
-  bottom: -72px;
-}
-
-.reclamation-codex .mainframe-core__copy h2 {
-  padding: 8px 22px;
-  border: 1px solid rgba(255, 255, 255, .18);
-  background: linear-gradient(180deg, rgba(40, 40, 40, .9), rgba(4, 4, 4, .86));
-  color: rgba(255, 255, 255, .84);
-  font-size: 20px;
-  letter-spacing: .16em;
-}
-
-.reclamation-codex .mainframe-core__copy span,
-.reclamation-codex .mainframe-core__copy p {
-  color: #ff1730;
-  font-family: "Share Tech Mono", monospace;
 }
 
 .reclamation-codex .orbital-node__content {
@@ -811,16 +787,45 @@
 }
 
 .ckp-lyrics-copy p {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
   margin: 0 0 8px;
   color: rgba(255, 255, 255, .7);
   font-family: "Share Tech Mono", monospace;
   font-size: clamp(14px, 1.22vw, 20px);
   letter-spacing: .12em;
   text-transform: uppercase;
+  transition:
+    color .16s ease,
+    opacity .16s ease,
+    transform .16s ease,
+    text-shadow .16s ease;
 }
 
-.ckp-lyrics-copy p:first-of-type {
+.ckp-lyrics-copy p span {
+  color: rgba(255, 255, 255, .38);
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+.ckp-lyrics-copy p.is-current {
   color: #ff1730;
+  text-shadow: 0 0 16px rgba(255, 0, 36, .78);
+  transform: translateX(6px);
+}
+
+.ckp-lyrics-copy p.is-current span {
+  color: rgba(255, 92, 92, .86);
+}
+
+.ckp-lyrics-copy p.is-past {
+  opacity: .48;
+}
+
+.ckp-lyrics-copy p.is-upcoming {
+  opacity: .72;
 }
 
 .ckp-frequency-bars {
@@ -888,10 +893,6 @@
 
   .reclamation-codex .orbital-system {
     transform: translate(-50%, -50%) scale(.58);
-  }
-
-  .reclamation-codex .mainframe-core {
-    --core-scale: .66;
   }
 
   .ckp-analyzer-topline {

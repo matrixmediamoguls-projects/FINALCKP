@@ -22,12 +22,21 @@ export default function VisualResonanceCore({ track = null }) {
   const [borderFlash, setBorderFlash] = useState(0);
   const [shockwave, setShockwave] = useState(0);
   const [particles, setParticles] = useState([]);
+  const [mediaReady, setMediaReady] = useState(false);
+  const [mediaFailed, setMediaFailed] = useState(false);
   const lastSnareRef = useRef(-1);
   const lastHatRef = useRef(-1);
   const lastBassDropRef = useRef(-1);
   const mediaVideoRef = useRef(null);
   const title = track?.title || track?.name || "DECRYPTION ACTIVE";
-  const visualMediaUrl = track?.visual_media_url || track?.background_image_url || track?.act_background_image || "";
+  const visualMediaUrl =
+    track?.visual_media_url ||
+    track?.background_video ||
+    track?.visual_video ||
+    track?.video_url ||
+    track?.background_image_url ||
+    track?.act_background_image ||
+    "";
   const visualMediaType =
     track?.visual_media_type ||
     (/\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(visualMediaUrl) ? "video" : "image");
@@ -45,17 +54,25 @@ export default function VisualResonanceCore({ track = null }) {
   );
 
   const particleNodes = useMemo(() => particles, [particles]);
+  const scopeBars = useMemo(
+    () => Array.from({ length: 36 }, (_, index) => ({
+      id: `scope-${index}`,
+      height: 18 + ((index * 23) % 76),
+      delay: `${index * -0.045}s`,
+    })),
+    []
+  );
 
   const flashBorder = () => createPulse(setBorderFlash, 220);
 
   const emitParticles = () => {
     const createdAt = Date.now();
     setParticles((current) => [
-      ...current.slice(-26),
-      ...Array.from({ length: 6 }, (_, index) => ({
+      ...current.slice(-42),
+      ...Array.from({ length: 12 }, (_, index) => ({
         id: `${createdAt}-${index}`,
         angle: Math.random() * 360,
-        distance: 42 + Math.random() * 42,
+        distance: 58 + Math.random() * 74,
         size: 2 + Math.random() * 4,
       })),
     ]);
@@ -115,6 +132,12 @@ export default function VisualResonanceCore({ track = null }) {
     const video = mediaVideoRef.current;
     if (!video) return;
 
+    setMediaReady(false);
+    setMediaFailed(false);
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+
     if (isReactive) {
       video.play().catch(() => {});
       return;
@@ -122,6 +145,13 @@ export default function VisualResonanceCore({ track = null }) {
 
     video.pause();
   }, [isReactive, visualMediaUrl]);
+
+  useEffect(() => {
+    const video = mediaVideoRef.current;
+    if (!video || !visualMediaUrl || visualMediaType !== "video") return;
+
+    video.load();
+  }, [visualMediaType, visualMediaUrl]);
 
   return (
     <div
@@ -137,27 +167,60 @@ export default function VisualResonanceCore({ track = null }) {
       }}
     >
       <div className="vrc-background-glow" />
-      {visualMediaUrl && (
+      {visualMediaUrl && !mediaFailed && (
         <div
           className="vrc-media-frame"
           data-media-type={visualMediaType}
+          data-ready={mediaReady ? "true" : "false"}
           aria-hidden="true"
         >
           {visualMediaType === "video" ? (
             <video
+              key={visualMediaUrl}
               ref={mediaVideoRef}
               src={visualMediaUrl}
+              autoPlay={isReactive}
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="auto"
+              onCanPlay={() => setMediaReady(true)}
+              onPlaying={() => setMediaReady(true)}
+              onError={() => setMediaFailed(true)}
             />
           ) : (
-            <img src={visualMediaUrl} alt="" />
+            <img
+              src={visualMediaUrl}
+              alt=""
+              onLoad={() => setMediaReady(true)}
+              onError={() => setMediaFailed(true)}
+            />
           )}
         </div>
       )}
+      {visualMediaUrl && mediaFailed && (
+        <div className="vrc-media-status" aria-hidden="true">
+          Media signal unavailable
+        </div>
+      )}
       <div className="vrc-grid-overlay" />
+      <div className="vrc-reactive-sweep" />
+      <div className="vrc-reactor-rings" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="vrc-scope-bars" aria-hidden="true">
+        {scopeBars.map((bar) => (
+          <span
+            key={bar.id}
+            style={{
+              "--scope-height": `${bar.height}%`,
+              "--scope-delay": bar.delay,
+            }}
+          />
+        ))}
+      </div>
       <div className="vrc-shockwave" />
       <div className="vrc-particle-field" aria-hidden="true">
         {particleNodes.map((particle) => (

@@ -2,7 +2,6 @@ import "../../styles/reclamation-codex.css";
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import MainframeCore from "../../mainframe/MainframeCore";
 import OrbitalSystem from "../../systems/OrbitalSystem";
 import useReclamationTracks from "../../modules/ImmersiveProtocol/useReclamationTracks";
 import { useAudio } from "../../context/AudioProvider";
@@ -100,6 +99,58 @@ function formatTrackDuration(track) {
   return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 
+function formatPlaybackTime(seconds) {
+  const value = Number(seconds);
+
+  if (!Number.isFinite(value) || value <= 0) {
+    return "0:00";
+  }
+
+  const minutes = Math.floor(value / 60);
+  const remainingSeconds = Math.floor(value % 60);
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}
+
+function buildTimedLyrics(track, duration) {
+  const parsedLines = Array.isArray(track?.lyric_lines)
+    ? track.lyric_lines.filter((line) => line?.text)
+    : [];
+
+  if (parsedLines.length) {
+    const hasTiming = parsedLines.some((line) => Number.isFinite(Number(line.time)));
+    const estimatedStep = duration && parsedLines.length
+      ? duration / Math.max(parsedLines.length, 1)
+      : 8;
+
+    return parsedLines.map((line, index) => ({
+      id: line.id || `${track?.id || "track"}-lyric-${index}`,
+      text: line.text,
+      time: hasTiming && Number.isFinite(Number(line.time))
+        ? Number(line.time)
+        : index * estimatedStep,
+    }));
+  }
+
+  const source = track?.lyrics || track?.display_text;
+  const rawLines = source
+    ? source
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+    : lyricLines;
+
+  const step = duration && rawLines.length
+    ? duration / Math.max(rawLines.length, 1)
+    : 8;
+
+  return rawLines.map((line, index) => ({
+    id: `${track?.id || "fallback"}-lyric-${index}`,
+    text: line,
+    time: index * step,
+  }));
+}
+
 export default function ReclamationCodex() {
   const {
     tracks: reclamationTracks,
@@ -138,21 +189,33 @@ export default function ReclamationCodex() {
       ? Math.min(100, (playerCurrentTime / playerDuration) * 100)
       : 0;
 
-  const activeLyricLines = useMemo(() => {
-    const source =
-      activeTrack?.lyrics || activeTrack?.display_text;
+  const activeLyricLines = useMemo(
+    () => buildTimedLyrics(activeTrack, playerDuration),
+    [activeTrack, playerDuration]
+  );
 
-    if (!source) return lyricLines;
+  const activeLyricIndex = useMemo(() => {
+    if (!activeLyricLines.length) return -1;
 
-    const lines = source
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter(Boolean);
+    let currentIndex = 0;
 
-    return lines.length
-      ? lines.slice(0, 4)
-      : lyricLines;
-  }, [activeTrack]);
+    activeLyricLines.forEach((line, index) => {
+      if (playerCurrentTime >= Number(line.time || 0)) {
+        currentIndex = index;
+      }
+    });
+
+    return currentIndex;
+  }, [activeLyricLines, playerCurrentTime]);
+
+  const lyricWindow = useMemo(() => {
+    if (!activeLyricLines.length) return [];
+
+    const start = Math.max(0, activeLyricIndex - 1);
+    const end = Math.min(activeLyricLines.length, start + 5);
+
+    return activeLyricLines.slice(Math.max(0, end - 5), end);
+  }, [activeLyricIndex, activeLyricLines]);
 
   const playReclamationTrack = (track, index) => {
     setActiveTrackIndex(index);
@@ -519,14 +582,6 @@ export default function ReclamationCodex() {
             <div className="ckp-crosshair" />
 
             <div className="reclamation-stage">
-              <MainframeCore
-                color="#ff4d4d"
-                title="SPECTRUM ANALYZER"
-                subtitle="ACT 3: RECLAMATION"
-                integrity={78}
-                emblem="/emblem/reclamation_core_emblem.png"
-              />
-
               <div className="reclamation-system-shell">
                 <OrbitalSystem
                   currentTrack={activeTrack}
@@ -557,18 +612,30 @@ export default function ReclamationCodex() {
             <div className="ckp-lyrics-copy">
               <strong>LYRICS PROTOCOL</strong>
 
-              {activeLyricLines.map((line) => (
-                <p key={line}>{line}</p>
+              {lyricWindow.map((line) => (
+                <p
+                  key={line.id}
+                  className={
+                    activeLyricLines[activeLyricIndex]?.id === line.id
+                      ? "is-current"
+                      : playerCurrentTime > Number(line.time || 0)
+                        ? "is-past"
+                        : "is-upcoming"
+                  }
+                >
+                  <span>{formatPlaybackTime(line.time)}</span>
+                  {line.text}
+                </p>
               ))}
 
               <div className="ckp-progress">
-                <span>01:24</span>
+                <span>{formatPlaybackTime(playerCurrentTime)}</span>
 
                 <div>
-                  <i />
+                  <i style={{ width: `${playerProgress}%` }} />
                 </div>
 
-                <span>03:47</span>
+                <span>{formatPlaybackTime(playerDuration)}</span>
               </div>
             </div>
           </section>
