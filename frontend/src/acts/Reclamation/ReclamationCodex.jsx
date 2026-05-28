@@ -125,6 +125,18 @@ export default function ReclamationCodex() {
     currentAudioTrack?.track_id === activeTrack?.track_id;
   const isActiveTrackPlaying =
     Boolean(isCurrentReclamationTrack && audio?.isPlaying);
+  const playerDuration =
+    isCurrentReclamationTrack && audio?.duration
+      ? audio.duration
+      : Number(activeTrack?.duration_seconds ?? activeTrack?.duration_in_seconds) || 0;
+  const playerCurrentTime =
+    isCurrentReclamationTrack && audio?.currentTime
+      ? audio.currentTime
+      : 0;
+  const playerProgress =
+    playerDuration > 0
+      ? Math.min(100, (playerCurrentTime / playerDuration) * 100)
+      : 0;
 
   const activeLyricLines = useMemo(() => {
     const source =
@@ -156,6 +168,42 @@ export default function ReclamationCodex() {
     }
 
     playReclamationTrack(activeTrack, activeTrackIndex);
+  };
+
+  const playPreviousTrack = () => {
+    if (!reclamationTracks.length) return;
+    const previousIndex =
+      activeTrackIndex === 0
+        ? reclamationTracks.length - 1
+        : activeTrackIndex - 1;
+
+    playReclamationTrack(
+      reclamationTracks[previousIndex],
+      previousIndex
+    );
+  };
+
+  const playNextTrack = () => {
+    if (!reclamationTracks.length) return;
+    const nextIndex =
+      (activeTrackIndex + 1) % reclamationTracks.length;
+
+    playReclamationTrack(
+      reclamationTracks[nextIndex],
+      nextIndex
+    );
+  };
+
+  const seekActiveTrack = (event) => {
+    if (!isCurrentReclamationTrack || !playerDuration) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(
+      0,
+      Math.min(1, (event.clientX - rect.left) / rect.width)
+    );
+
+    audio?.seek?.(ratio * playerDuration);
   };
 
   return (
@@ -294,6 +342,83 @@ export default function ReclamationCodex() {
                     : "Resume Act III audio chamber"}
               </small>
             </Link>
+          </ConsolePanel>
+
+          <ConsolePanel
+            title="Audio Player"
+            className="ckp-audio-player-panel"
+          >
+            <div className="ckp-audio-player">
+              <div className="ckp-audio-player__meta">
+                <span>
+                  {isActiveTrackPlaying ? "Now Playing" : "Ready"}
+                </span>
+
+                <strong>
+                  {activeTrack?.title ||
+                    activeTrack?.name ||
+                    "Select a track"}
+                </strong>
+
+                <em>
+                  {activeTrack?.artist ||
+                    activeTrack?.act ||
+                    "Act III Reclamation"}
+                </em>
+              </div>
+
+              <div
+                className="ckp-audio-progress"
+                onClick={seekActiveTrack}
+                role="button"
+                tabIndex={0}
+                onKeyDown={() => {}}
+                aria-label="Seek current track"
+              >
+                <i style={{ width: `${playerProgress}%` }} />
+              </div>
+
+              <div className="ckp-audio-time">
+                <span>
+                  {formatTrackDuration({
+                    duration_seconds: playerCurrentTime,
+                  })}
+                </span>
+
+                <span>
+                  {formatTrackDuration({
+                    duration_seconds: playerDuration,
+                  })}
+                </span>
+              </div>
+
+              <div className="ckp-audio-controls">
+                <button
+                  type="button"
+                  onClick={playPreviousTrack}
+                  aria-label="Previous track"
+                >
+                  PREV
+                </button>
+
+                <button
+                  type="button"
+                  onClick={toggleActiveTrackPlayback}
+                  className="is-main"
+                  disabled={!activeTrack?.audio_url}
+                >
+                  {isActiveTrackPlaying ? "PAUSE" : "PLAY"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={playNextTrack}
+                  aria-label="Next track"
+                >
+                  NEXT
+                </button>
+              </div>
+            </div>
           </ConsolePanel>
 
           <ConsolePanel title="Module Controls">
