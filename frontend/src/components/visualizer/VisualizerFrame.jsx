@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
+
+import "./VisualizerFrame.css";
 
 export default function VisualizerFrame({ act_id, track, audioData, error, playback }) {
   const {
@@ -14,42 +17,127 @@ export default function VisualizerFrame({ act_id, track, audioData, error, playb
     handleLoadedMetadata,
     handleSeek,
   } = playback || {};
+  const title = track?.title || track?.name || "Signal awaiting track";
+  const artist = track?.artist || track?.act_title || act_id || "Chroma Key Protocol";
+  const progressPercent = Math.max(0, Math.min(100, Number(progress) || 0));
+  const mediaUrl =
+    track?.visual_media_url ||
+    track?.background_image_url ||
+    track?.act_background_image ||
+    "/media/act-gateway-scene.jpg";
+  const spectrumBars = useMemo(
+    () =>
+      Array.from({ length: 54 }, (_, index) => {
+        const audioValue = Array.isArray(audioData)
+          ? Number(audioData[index % audioData.length]) / 255
+          : 0;
+        const idleValue = (18 + ((index * 29) % 74)) / 100;
+        const value = isPlaying ? Math.max(0.12, audioValue || idleValue) : idleValue;
+
+        return `${Math.round(value * 100)}%`;
+      }),
+    [audioData, isPlaying]
+  );
 
   if (error) {
     return (
-      <div style={{ color: "#fff", padding: "2rem", textAlign: "center" }}>
-        {error}
+      <div className="vf-shell vf-shell--error">
+        <div className="vf-error">{error}</div>
       </div>
     );
   }
 
   return (
-    <div className="vf-shell" style={{ position: "relative", width: "100%", height: "100vh", background: "#0a0a0f", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+    <div className="vf-shell">
       <audio
         ref={audioRef}
         src={track?.src}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
       />
-      <div style={{ color: "#fff", textAlign: "center", marginBottom: "1.5rem" }}>
-        <h2 style={{ margin: 0, fontSize: "1.5rem" }}>{track?.title || "—"}</h2>
-        <p style={{ margin: "0.25rem 0 0", opacity: 0.6, fontSize: "0.9rem" }}>{track?.artist || ""}</p>
+
+      <div className="vf-backdrop" aria-hidden="true">
+        <img src={mediaUrl} alt="" />
       </div>
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <button onClick={prevTrack} style={btnStyle}>Prev</button>
-        <button onClick={togglePlay} style={btnStyle}>{isPlaying ? "Pause" : "Play"}</button>
-        <button onClick={nextTrack} style={btnStyle}>Next</button>
-      </div>
+
+      <section className="vf-console" aria-label="Final visualizer">
+        <div className="vf-stage">
+          <div className="vf-orbital" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+          <img
+            className="vf-emblem"
+            src="/emblem/reclamation_core_emblem.png"
+            alt=""
+          />
+          <div className="vf-spectrum" aria-hidden="true">
+            {spectrumBars.map((height, index) => (
+              <span key={index} style={{ "--bar": height }} />
+            ))}
+          </div>
+        </div>
+
+        <div className="vf-deck">
+          <div className="vf-track">
+            <span>{String(act_id || "act_three").replace(/_/g, " ")}</span>
+            <h1>{title}</h1>
+            <p>{artist}</p>
+          </div>
+
+          <div
+            className="vf-progress"
+            onClick={handleSeek}
+            role="button"
+            tabIndex={0}
+            onKeyDown={() => {}}
+            aria-label="Seek track"
+          >
+            <i style={{ width: `${progressPercent}%` }} />
+          </div>
+
+          <div className="vf-time">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+
+          <div className="vf-controls">
+            <button type="button" onClick={prevTrack} aria-label="Previous track">
+              <SkipBack size={20} fill="currentColor" strokeWidth={1.6} />
+            </button>
+            <button
+              type="button"
+              className="vf-controls__main"
+              onClick={togglePlay}
+              disabled={!track?.src}
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? (
+                <Pause size={28} fill="currentColor" strokeWidth={1.5} />
+              ) : (
+                <Play size={28} fill="currentColor" strokeWidth={1.5} />
+              )}
+            </button>
+            <button type="button" onClick={nextTrack} aria-label="Next track">
+              <SkipForward size={20} fill="currentColor" strokeWidth={1.6} />
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
 
-const btnStyle = {
-  background: "rgba(255,255,255,0.1)",
-  border: "1px solid rgba(255,255,255,0.2)",
-  color: "#fff",
-  padding: "0.5rem 1.25rem",
-  borderRadius: "4px",
-  cursor: "pointer",
-  fontSize: "0.85rem",
-};
+function formatTime(seconds) {
+  const value = Number(seconds);
+
+  if (!Number.isFinite(value) || value <= 0) {
+    return "0:00";
+  }
+
+  const minutes = Math.floor(value / 60);
+  const remainingSeconds = Math.floor(value % 60);
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}

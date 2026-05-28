@@ -5,6 +5,13 @@
   --vrc-emotional: 0;
   --vrc-flash: 0;
   --vrc-shockwave: 0;
+  --vrc-signal: #51f6ff;
+  --vrc-signal-rgb: 81, 246, 255;
+  --vrc-depth: #091116;
+  --vrc-amber: #f3bd55;
+  --vrc-amber-rgb: 243, 189, 85;
+  --vrc-violet: #8c6cff;
+  --vrc-violet-rgb: 140, 108, 255;
 
   position: relative;
   width: 100%;
@@ -12,15 +19,17 @@
   min-height: 0;
   overflow: hidden;
   border-radius: 50%;
-  border: 1px solid rgba(255, 77, 77, .5);
+  border: 1px solid rgba(var(--vrc-signal-rgb), .58);
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .09), transparent 8%),
-    radial-gradient(circle at 50% 50%, rgba(255, 0, 60, .34), transparent 34%),
-    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, .22), rgba(0, 0, 0, .96) 68%),
-    #020202;
+    radial-gradient(circle at 42% 38%, rgba(255, 255, 255, .14), transparent 9%),
+    radial-gradient(circle at 48% 48%, rgba(var(--vrc-signal-rgb), .28), transparent 30%),
+    radial-gradient(circle at 62% 58%, rgba(var(--vrc-amber-rgb), .13), transparent 34%),
+    radial-gradient(circle at 50% 50%, rgba(2, 10, 14, .24), rgba(0, 0, 0, .97) 70%),
+    var(--vrc-depth);
   box-shadow:
-    0 0 calc(32px + var(--vrc-flash) * 38px) rgba(255, 0, 60, calc(.28 + var(--vrc-flash) * .42)),
-    inset 0 0 28px rgba(255, 0, 60, .2),
+    0 0 calc(34px + var(--vrc-flash) * 34px) rgba(var(--vrc-signal-rgb), calc(.22 + var(--vrc-flash) * .3)),
+    0 0 86px rgba(var(--vrc-violet-rgb), .14),
+    inset 0 0 28px rgba(var(--vrc-signal-rgb), .16),
     inset 0 0 92px rgba(0, 0, 0, .8);
   transform: scale(calc(1 + var(--vrc-bass) * .035));
   transition: border-color .08s linear, box-shadow .08s linear;
@@ -56,8 +65,8 @@
 
 .vrc-shell::before {
   background:
-    repeating-conic-gradient(from 0deg, rgba(255, 23, 48, .42) 0 1deg, transparent 1deg 5deg),
-    radial-gradient(circle, transparent 0 58%, rgba(255, 23, 48, .22) 59% 60%, transparent 61%);
+    repeating-conic-gradient(from 0deg, rgba(var(--vrc-signal-rgb), .4) 0 1deg, transparent 1deg 5deg),
+    radial-gradient(circle, transparent 0 58%, rgba(var(--vrc-amber-rgb), .24) 59% 60%, transparent 61%);
   mask-image: radial-gradient(circle, transparent 0 54%, #000 55% 64%, transparent 65%);
   opacity: calc(.44 + var(--vrc-mid) * .32);
   animation: vrcRingSpin 24s linear infinite;
@@ -65,10 +74,10 @@
 
 .vrc-shell::after {
   box-shadow:
-    inset 0 0 0 1px rgba(255, 23, 48, .34),
+    inset 0 0 0 1px rgba(var(--vrc-signal-rgb), .38),
     inset 0 0 0 14px rgba(0, 0, 0, .38),
     inset 0 0 0 16px rgba(255, 255, 255, .06),
-    inset 0 0 0 34px rgba(255, 0, 36, .08);
+    inset 0 0 0 34px rgba(var(--vrc-violet-rgb), .08);
 }
 
 .vrc-media-frame {
@@ -77,9 +86,9 @@
   border-radius: 50%;
   opacity: calc(.24 + var(--vrc-emotional) * .24 + var(--vrc-flash) * .16);
   filter:
-    saturate(calc(1.18 + var(--vrc-bass) * .75))
-    contrast(calc(1.16 + var(--vrc-mid) * .2))
-    brightness(calc(.74 + var(--vrc-flash) * .24));
+    saturate(calc(1.34 + var(--vrc-bass) * .62))
+    contrast(calc(1.22 + var(--vrc-mid) * .18))
+    brightness(calc(.82 + var(--vrc-flash) * .2));
   transform: scale(calc(1.06 + var(--vrc-bass) * .065));
   transition: opacity .18s linear, filter .18s linear;
 }
@@ -94,8 +103,8 @@
   inset: 0;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 50% 45%, transparent 0 28%, rgba(0, 0, 0, .36) 58%, rgba(0, 0, 0, .9) 100%),
-    linear-gradient(90deg, rgba(255, 0, 60, .18), transparent 32%, transparent 68%, rgba(255, 0, 60, .18));
+    radial-gradient(circle at 50% 45%, transparent 0 28%, rgba(0, 0, 0, .34) 58%, rgba(0, 0, 0, .9) 100%),
+    linear-gradient(90deg, rgba(var(--vrc-signal-rgb), .16), transparent 32%, transparent 68%, rgba(var(--vrc-amber-rgb), .15));
 }
 
 .vrc-media-frame img,
@@ -109,7 +118,7 @@
   z-index: 2;
   display: grid;
   place-content: center;
-  color: rgba(255, 77, 77, .52);
+  color: rgba(var(--vrc-signal-rgb), .58);
   font-family: "Share Tech Mono", monospace;
   font-size: 10px;
   letter-spacing: .2em;
@@ -121,7 +130,8 @@
   border-radius: 50%;
   background:
     radial-gradient(circle at 50% 40%, rgba(255, 255, 255, .16), transparent 17%),
-    radial-gradient(circle at 50% 54%, rgba(255, 0, 60, .42), transparent 45%);
+    radial-gradient(circle at 44% 54%, rgba(var(--vrc-signal-rgb), .36), transparent 43%),
+    radial-gradient(circle at 64% 58%, rgba(var(--vrc-amber-rgb), .18), transparent 42%);
   mix-blend-mode: screen;
   opacity: calc(.58 + var(--vrc-bass) * .34 + var(--vrc-flash) * .18);
 }
@@ -130,8 +140,8 @@
   z-index: 1;
   border-radius: 50%;
   background-image:
-    linear-gradient(rgba(255, 77, 77, .12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 77, 77, .12) 1px, transparent 1px);
+    linear-gradient(rgba(var(--vrc-signal-rgb), .11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--vrc-signal-rgb), .09) 1px, transparent 1px);
   background-size: 28px 28px;
   opacity: calc(.14 + var(--vrc-hat) * .2);
   transform: translateX(calc(var(--vrc-mid) * 8px));
@@ -145,7 +155,7 @@
       105deg,
       transparent 0 34%,
       rgba(255, 255, 255, calc(.03 + var(--vrc-hat) * .14)) 46%,
-      rgba(255, 0, 60, calc(.1 + var(--vrc-flash) * .28)) 50%,
+      rgba(var(--vrc-amber-rgb), calc(.1 + var(--vrc-flash) * .22)) 50%,
       transparent 64% 100%
     );
   mix-blend-mode: screen;
@@ -161,11 +171,11 @@
 
 .vrc-reactor-rings span {
   position: absolute;
-  border: 1px solid rgba(255, 33, 52, calc(.24 + var(--vrc-bass) * .32));
+  border: 1px solid rgba(var(--vrc-signal-rgb), calc(.22 + var(--vrc-bass) * .28));
   border-radius: 50%;
   box-shadow:
-    0 0 calc(16px + var(--vrc-bass) * 28px) rgba(255, 0, 36, .2),
-    inset 0 0 calc(14px + var(--vrc-mid) * 18px) rgba(255, 0, 36, .16);
+    0 0 calc(16px + var(--vrc-bass) * 28px) rgba(var(--vrc-signal-rgb), .18),
+    inset 0 0 calc(14px + var(--vrc-mid) * 18px) rgba(var(--vrc-violet-rgb), .13);
   transform: scale(calc(1 + var(--vrc-bass) * .08 + var(--vrc-shockwave) * .18));
   animation: vrcRingSpin 10s linear infinite;
 }
@@ -202,8 +212,8 @@
 .vrc-scope-bars span {
   width: 4px;
   height: var(--scope-height);
-  background: linear-gradient(180deg, rgba(255, 255, 255, .86), #ff1730 48%, rgba(255, 0, 0, .42));
-  box-shadow: 0 0 calc(8px + var(--vrc-hat) * 16px) rgba(255, 23, 48, .64);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .9), var(--vrc-signal) 46%, rgba(var(--vrc-amber-rgb), .54));
+  box-shadow: 0 0 calc(8px + var(--vrc-hat) * 16px) rgba(var(--vrc-signal-rgb), .56);
   animation: vrcScopeJump .42s ease-in-out infinite alternate;
   animation-delay: var(--scope-delay);
   transform-origin: bottom;
@@ -237,8 +247,8 @@
   pointer-events: none;
   filter:
     drop-shadow(0 0 8px rgba(255, 255, 255, .72))
-    drop-shadow(0 0 calc(20px + var(--vrc-bass) * 42px) rgba(255, 0, 60, .92))
-    drop-shadow(0 0 calc(52px + var(--vrc-flash) * 44px) rgba(255, 77, 77, .56));
+    drop-shadow(0 0 calc(18px + var(--vrc-bass) * 38px) rgba(var(--vrc-signal-rgb), .82))
+    drop-shadow(0 0 calc(48px + var(--vrc-flash) * 38px) rgba(var(--vrc-amber-rgb), .38));
   scale: calc(1 + var(--vrc-bass) * .11 + var(--vrc-shockwave) * .08);
 }
 
@@ -264,11 +274,11 @@
 
 .vrc-shockwave {
   z-index: 6;
-  border: 1px solid rgba(255, 23, 48, .72);
+  border: 1px solid rgba(var(--vrc-amber-rgb), .74);
   border-radius: 50%;
   opacity: var(--vrc-shockwave);
   transform: scale(calc(.28 + var(--vrc-shockwave) * 1.18));
-  filter: drop-shadow(0 0 22px rgba(255, 23, 48, .84));
+  filter: drop-shadow(0 0 22px rgba(var(--vrc-amber-rgb), .72));
   mask-image: radial-gradient(circle, transparent 0 34%, #000 35% 37%, transparent 39%);
 }
 
@@ -285,8 +295,8 @@
   width: var(--particle-size);
   height: var(--particle-size);
   border-radius: 50%;
-  background: #ffb3bd;
-  box-shadow: 0 0 12px rgba(255, 23, 48, .94);
+  background: #eaffff;
+  box-shadow: 0 0 12px rgba(var(--vrc-signal-rgb), .9);
   animation: vrcParticleBurst .62s ease-out forwards;
   transform:
     translate(-50%, -50%)
@@ -302,9 +312,9 @@
   font-family: "Share Tech Mono", monospace;
   font-size: 9px;
   letter-spacing: .16em;
-  color: rgba(255, 235, 220, .72);
+  color: rgba(220, 253, 255, .72);
   text-transform: uppercase;
-  text-shadow: 0 0 12px rgba(255, 0, 60, .75);
+  text-shadow: 0 0 12px rgba(var(--vrc-signal-rgb), .58);
 }
 
 .vrc-top-left,

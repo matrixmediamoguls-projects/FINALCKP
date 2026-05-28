@@ -59,9 +59,9 @@ export default function CoreEnergyField({
       <mesh ref={mesh}>
         <sphereGeometry args={[1.28, 128, 128]} />
         <meshStandardMaterial
-          color="#ff003c"
-          emissive="#ff003c"
-          emissiveIntensity={3.2 + bass * 7 + shockwave * 10}
+          color="#49f5ff"
+          emissive="#04d9ff"
+          emissiveIntensity={2.7 + bass * 6.2 + shockwave * 8.4}
           roughness={0.18}
           metalness={0.44}
           wireframe
@@ -71,11 +71,11 @@ export default function CoreEnergyField({
       <mesh ref={spikeField}>
         <icosahedronGeometry args={[1.72, 2]} />
         <meshStandardMaterial
-          color="#ff7a7a"
-          emissive="#ff1834"
-          emissiveIntensity={1.6 + emotionalIntensity * 4 + shockwave * 4}
+          color="#f4c35f"
+          emissive="#ffb13b"
+          emissiveIntensity={1.25 + emotionalIntensity * 3.2 + shockwave * 3.4}
           transparent
-          opacity={0.22 + mid * 0.24 + shockwave * 0.22}
+          opacity={0.2 + mid * 0.22 + shockwave * 0.18}
           wireframe
         />
       </mesh>
@@ -84,21 +84,21 @@ export default function CoreEnergyField({
         <torusGeometry args={[1.72, 0.018 + bass * 0.02, 12, 160]} />
         <meshStandardMaterial
           color="#ffffff"
-          emissive="#ff003c"
-          emissiveIntensity={2.4 + bass * 5 + shockwave * 7}
+          emissive="#7cf8ff"
+          emissiveIntensity={2 + bass * 4.2 + shockwave * 5.8}
           transparent
-          opacity={0.62 + bass * 0.28}
+          opacity={0.58 + bass * 0.24}
         />
       </mesh>
 
       <mesh ref={outerRing} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[2.12, 0.012 + mid * 0.018, 10, 192]} />
         <meshStandardMaterial
-          color="#ff263e"
-          emissive="#ff003c"
-          emissiveIntensity={1.7 + mid * 4 + emotionalIntensity * 2}
+          color="#a06bff"
+          emissive="#7c3dff"
+          emissiveIntensity={1.25 + mid * 3.4 + emotionalIntensity * 1.8}
           transparent
-          opacity={0.46 + emotionalIntensity * 0.24}
+          opacity={0.42 + emotionalIntensity * 0.2}
         />
       </mesh>
     </group>
