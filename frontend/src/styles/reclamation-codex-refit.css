@@ -56,15 +56,14 @@
 }
 
 .ckp-reference-mirror .reclamation-console {
-  grid-template-columns: minmax(280px, 320px) minmax(640px, 1fr);
+  grid-template-columns: minmax(270px, 304px) minmax(600px, 1fr) minmax(270px, 304px);
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .ckp-reference-mirror .ckp-side-rail,
 .ckp-reference-mirror .ckp-center-stack {
   gap: 14px;
-  grid-template-rows: auto auto;
 }
 
 .ckp-reference-mirror .ckp-console-panel,
@@ -198,15 +197,6 @@
   min-height: clamp(380px, 54vh, 590px);
   padding-top: 58px;
   overflow: hidden;
-}
-
-.ckp-reference-mirror .ckp-media-status-line {
-  margin-top: 10px;
-  font-size: 0.62rem;
-  letter-spacing: 0.09em;
-  color: var(--ckp-muted);
-  text-transform: uppercase;
-  word-break: break-word;
 }
 
 .ckp-reference-mirror .ckp-analyzer-frame::before {
@@ -567,7 +557,7 @@
 
 /* Stability pass: prevent distortion on resize and enforce usable modules. */
 .ckp-reference-mirror .reclamation-console {
-  grid-template-columns: minmax(280px, 320px) minmax(640px, 1fr) !important;
+  grid-template-columns: minmax(280px, 320px) minmax(640px, 1fr) minmax(280px, 320px) !important;
   align-items: start !important;
 }
 
