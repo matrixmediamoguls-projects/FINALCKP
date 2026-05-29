@@ -2,16 +2,11 @@ import "../../styles/reclamation-codex.css";
 import "../../styles/reclamation-codex-refit.css";
 import {
   AudioWaveform,
-  X,
-  Menu,
   Pause,
   Play,
-  Repeat2,
-  Shuffle,
   SkipBack,
   SkipForward,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
 import VisualResonanceCore from "../../components/protocol/core/VisualResonanceCore";
@@ -122,21 +117,12 @@ export default function ReclamationCodex() {
   const audio = useAudio();
 
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
-  const [isProtocolMenuOpen, setIsProtocolMenuOpen] = useState(false);
 
   useEffect(() => {
     if (activeTrackIndex >= reclamationTracks.length) {
       setActiveTrackIndex(0);
     }
   }, [activeTrackIndex, reclamationTracks.length]);
-  useEffect(() => {
-    if (!isProtocolMenuOpen) return undefined;
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = overflow;
-    };
-  }, [isProtocolMenuOpen]);
 
   const activeTrack = reclamationTracks[activeTrackIndex] ?? null;
   const currentAudioTrack = audio?.currentTrack;
@@ -167,7 +153,6 @@ export default function ReclamationCodex() {
         : (audio?.volume ?? 0.78)
     ) * 100
   );
-  const fallbackDuration = formatTrackDuration(activeTrack);
   const mediaUrl = activeTrack?.visual_media_url || activeTrack?.background_image_url || activeTrack?.act_background_image || "";
   const mediaType = activeTrack?.visual_media_type || (/\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(mediaUrl) ? "video" : "image");
   const albumArtwork =
@@ -175,24 +160,6 @@ export default function ReclamationCodex() {
     activeTrack?.artwork_url ||
     activeTrack?.image_url ||
     "/emblem/reclamation_module_emblem.gif";
-  const trackArtist =
-    activeTrack?.artist ||
-    activeTrack?.artist_name ||
-    activeTrack?.creator ||
-    "CHROMA KEY";
-  const trackAlbum =
-    activeTrack?.album ||
-    activeTrack?.collection ||
-    "RECLAMATION: ACT THREE";
-  const intensityPercent = Math.round(
-    isActiveTrackPlaying
-      ? analysis.intensity * 100
-      : activeTrack?.intensity || 78
-  );
-  const bassPercent = Math.round((isActiveTrackPlaying ? analysis.bass : 0.82) * 100);
-  const midPercent = Math.round((isActiveTrackPlaying ? analysis.mid : 0.64) * 100);
-  const treblePercent = Math.round((isActiveTrackPlaying ? analysis.treble : 0.71) * 100);
-
   const waveformBars = useMemo(
     () =>
       Array.from({ length: 46 }).map((_, index) => {
@@ -315,9 +282,6 @@ export default function ReclamationCodex() {
     const nextTime = Math.max(0, Math.min(playerDuration, playerCurrentTime + delta));
     audio?.seek?.(nextTime);
   };
-  const closeProtocolMenu = () => {
-    setIsProtocolMenuOpen(false);
-  };
   const updateVolume = (event) => {
     const value = Number(event.target.value);
     audio?.setVolume?.(value / 100);
@@ -349,20 +313,10 @@ export default function ReclamationCodex() {
 
         <div className="ckp-status-cluster">
           <span>CKP MAINFRAME: ONLINE</span>
-
-          <Link to="/vma">
+          <span>
             <AudioWaveform size={18} strokeWidth={1.8} />
-            VMA MODULE
-          </Link>
-
-          <button
-            type="button"
-            aria-label="Open protocol menu"
-            aria-expanded={isProtocolMenuOpen}
-            onClick={() => setIsProtocolMenuOpen((current) => !current)}
-          >
-            <Menu size={21} strokeWidth={1.7} />
-          </button>
+            LIVE ENGINE
+          </span>
         </div>
       </header>
 
@@ -517,14 +471,6 @@ export default function ReclamationCodex() {
               <div className="ckp-audio-controls">
                 <button
                   type="button"
-                  aria-label="Shuffle"
-                  disabled
-                >
-                  <Shuffle size={18} strokeWidth={1.8} />
-                </button>
-
-                <button
-                  type="button"
                   onClick={playPreviousTrack}
                   aria-label="Previous track"
                 >
@@ -553,13 +499,6 @@ export default function ReclamationCodex() {
                   <SkipForward size={21} fill="currentColor" strokeWidth={1.5} />
                 </button>
 
-                <button
-                  type="button"
-                  aria-label="Repeat"
-                  disabled
-                >
-                  <Repeat2 size={18} strokeWidth={1.8} />
-                </button>
               </div>
 
               <div className="ckp-volume-row">
@@ -659,6 +598,11 @@ export default function ReclamationCodex() {
                     track={activeTrack}
                   />
                 </div>
+                <div className="ckp-media-status-line">
+                  {mediaUrl
+                    ? `MEDIA ${mediaType.toUpperCase()}: ${mediaUrl}`
+                    : "MEDIA: no visual URL resolved from this track"}
+                </div>
 
                 <div className="ckp-core-plaque ckp-core-plaque--bottom">
                   SPECTRUM ANALYZER
@@ -691,21 +635,25 @@ export default function ReclamationCodex() {
             <div className="ckp-lyrics-copy">
               <strong>LYRICS PROTOCOL</strong>
 
-              {lyricWindow.map((line) => (
-                <p
-                  key={line.id}
-                  className={
-                    activeLyricLines[activeLyricIndex]?.id === line.id
-                      ? "is-current"
-                      : playerCurrentTime > Number(line.time || 0)
-                        ? "is-past"
-                        : "is-upcoming"
-                  }
-                >
-                  <span>{formatPlaybackTime(line.time)}</span>
-                  {line.text}
-                </p>
-              ))}
+              {lyricWindow.length ? (
+                lyricWindow.map((line) => (
+                  <p
+                    key={line.id}
+                    className={
+                      activeLyricLines[activeLyricIndex]?.id === line.id
+                        ? "is-current"
+                        : playerCurrentTime > Number(line.time || 0)
+                          ? "is-past"
+                          : "is-upcoming"
+                    }
+                  >
+                    <span>{formatPlaybackTime(line.time)}</span>
+                    {line.text}
+                  </p>
+                ))
+              ) : (
+                <p className="ckp-lyrics-empty">No lyrics found for this track.</p>
+              )}
 
               <div className="ckp-progress">
                 <span>{formatPlaybackTime(playerCurrentTime)}</span>
@@ -718,102 +666,8 @@ export default function ReclamationCodex() {
               </div>
             </div>
           </section>
-
         </section>
-
-        <aside className="ckp-side-rail ckp-side-rail--right">
-          <ConsolePanel title="Track Info" className="ckp-track-info-panel">
-            <div className="ckp-track-info-body">
-              <strong>{activeTrack?.title || activeTrack?.name || "BREAK THE CODE"}</strong>
-              <dl>
-                <div>
-                  <dt>ARTIST</dt>
-                  <dd>{trackArtist}</dd>
-                </div>
-                <div>
-                  <dt>ALBUM</dt>
-                  <dd>{trackAlbum}</dd>
-                </div>
-                <div>
-                  <dt>TIME</dt>
-                  <dd>
-                    {formatPlaybackTime(playerCurrentTime)} / {playerDuration ? formatPlaybackTime(playerDuration) : fallbackDuration}
-                  </dd>
-                </div>
-              </dl>
-              <div className="ckp-track-info-wave" aria-hidden="true">
-                {Array.from({ length: 46 }).map((_, index) => (
-                  <span key={`track-info-wave-${index}`} style={{ "--bar": waveformBars[index % waveformBars.length] }} />
-                ))}
-              </div>
-            </div>
-          </ConsolePanel>
-
-          <ConsolePanel title="Media Source" className="ckp-emblem-panel">
-            <div className="ckp-lore-module">
-              {mediaType === "image" && mediaUrl ? (
-                <img src={mediaUrl} alt="Track background asset" />
-              ) : (
-                <img src="/emblem/reclamation_core_emblem.png" alt="" />
-              )}
-              <strong>{mediaType.toUpperCase()} BACKDROP</strong>
-              <span>{mediaUrl || "No media URL resolved from track fields."}</span>
-              {mediaUrl && (
-                <a href={mediaUrl} target="_blank" rel="noreferrer">
-                  Open Raw Media
-                </a>
-              )}
-            </div>
-          </ConsolePanel>
-
-          <ConsolePanel title="Audio Analysis">
-            <div className="ckp-analysis-module ckp-analysis-module--clean">
-              <div className="ckp-intensity-ring" style={{ "--ring-fill": `${intensityPercent}%` }}>
-                <span>INTENSITY</span>
-                <strong>{intensityPercent}%</strong>
-              </div>
-
-              <div className="ckp-analysis-bars">
-                <span style={{ "--value": `${bassPercent}%` }}>Bass</span>
-                <span style={{ "--value": `${midPercent}%` }}>Mids</span>
-                <span style={{ "--value": `${treblePercent}%` }}>Treble</span>
-              </div>
-            </div>
-          </ConsolePanel>
-        </aside>
       </div>
-
-      {isProtocolMenuOpen && (
-        <div className="ckp-protocol-menu-backdrop" onClick={closeProtocolMenu}>
-          <aside
-            className="ckp-protocol-menu-drawer"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Protocol menu"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <header>
-              <strong>Protocol Menu</strong>
-              <button type="button" onClick={closeProtocolMenu} aria-label="Close protocol menu">
-                <X size={18} strokeWidth={2} />
-              </button>
-            </header>
-            <nav>
-              <Link to="/protocol/3" onClick={closeProtocolMenu}>Act Three Console</Link>
-              <Link to="/visualizer/3" onClick={closeProtocolMenu}>Visualizer Surface</Link>
-              <Link to="/codex" onClick={closeProtocolMenu}>Codex Archive</Link>
-              <Link to="/vma" onClick={closeProtocolMenu}>VMA Module</Link>
-            </nav>
-            <div className="ckp-protocol-menu-stats">
-              <span>Signal</span>
-              <strong>{isActiveTrackPlaying ? "ACTIVE" : "STANDBY"}</strong>
-              <small>
-                {formatPlaybackTime(playerCurrentTime)} / {playerDuration ? formatPlaybackTime(playerDuration) : fallbackDuration}
-              </small>
-            </div>
-          </aside>
-        </div>
-      )}
     </main>
   );
 }

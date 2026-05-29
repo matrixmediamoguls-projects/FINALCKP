@@ -198,7 +198,12 @@ export default function VisualResonanceCore({ track = null }) {
       )}
       {visualMediaUrl && mediaFailed && (
         <div className="vrc-media-status" aria-hidden="true">
-          Media signal unavailable
+          MEDIA LOAD FAILED: {visualMediaUrl}
+        </div>
+      )}
+      {!visualMediaUrl && (
+        <div className="vrc-media-status" aria-hidden="true">
+          MEDIA URL MISSING ON TRACK
         </div>
       )}
       <div className="vrc-grid-overlay" />
