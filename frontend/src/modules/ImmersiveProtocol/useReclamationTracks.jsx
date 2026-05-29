@@ -58,6 +58,59 @@ const resolveR2Url = (base, path) => {
   return `${baseClean}${pathClean}`;
 };
 
+const isAbsoluteHttpUrl = (value) => /^https?:\/\//i.test(value || '');
+const isLikelyStoragePath = (value) =>
+  Boolean(value) &&
+  typeof value === 'string' &&
+  !value.startsWith('/') &&
+  !isAbsoluteHttpUrl(value);
+
+const toSupabasePublicObjectUrl = (supabaseUrl, bucket, objectPath) => {
+  const base = (supabaseUrl || '').replace(/\/$/, '');
+  const safeBucket = (bucket || '').replace(/^\/|\/$/g, '');
+  const safePath = (objectPath || '').replace(/^\/+/, '');
+  if (!base || !safeBucket || !safePath) return '';
+  return `${base}/storage/v1/object/public/${safeBucket}/${safePath}`;
+};
+
+const resolveStorageUrlFromSupabase = async (supabase, supabaseUrl, raw, inputPath) => {
+  if (!isLikelyStoragePath(inputPath)) return '';
+
+  const directPublicUrl = toSupabasePublicObjectUrl(
+    supabaseUrl,
+    raw.visual_media_bucket || raw.media_bucket || raw.bucket || raw.storage_bucket || '',
+    inputPath
+  );
+  if (directPublicUrl) return directPublicUrl;
+
+  const bucketCandidates = [
+    raw.visual_media_bucket,
+    raw.media_bucket,
+    raw.bucket,
+    raw.storage_bucket,
+    'reclamation',
+    'reclamation-media',
+    'media',
+    'assets',
+  ].filter(Boolean);
+
+  for (const bucket of bucketCandidates) {
+    try {
+      const { data, error } = await supabase
+        .storage
+        .from(bucket)
+        .createSignedUrl(inputPath, 60 * 60);
+      if (!error && data?.signedUrl) {
+        return data.signedUrl;
+      }
+    } catch {
+      // Try next candidate bucket.
+    }
+  }
+
+  return '';
+};
+
 const resolveAudioUrl = (raw, r2BaseUrl) => {
   if (raw.audio_url) return raw.audio_url;
   if (!raw.audio_file_name) return '';
@@ -130,6 +183,57 @@ const resolveVisualMedia = (raw, r2BaseUrl) => {
   return { visual_media_url: '', visual_media_type: '', visual_media_fallback_image: '' };
 };
 
+const resolveVisualMediaAsync = async (raw, r2BaseUrl, supabase, supabaseUrl) => {
+  const media = resolveVisualMedia(raw, r2BaseUrl);
+
+  const shouldTryStorage =
+    !media.visual_media_url ||
+    (!isAbsoluteHttpUrl(media.visual_media_url) && !media.visual_media_url.startsWith('/'));
+
+  if (!shouldTryStorage) return media;
+
+  const sourceCandidates = [
+    raw.visual_media_url,
+    raw.media_url,
+    raw.visual_video,
+    raw.background_video,
+    raw.background_video_url,
+    raw.video_url,
+    raw.visual_media_video,
+    raw.visual_video_url,
+    raw.media_video_url,
+    raw.bg_video,
+    raw.visual_image,
+    raw.background_image,
+    raw.background_image_url,
+    raw.visual_media_image,
+    raw.visual_image_url,
+    raw.media_image_url,
+    raw.bg_image,
+    raw.shell_image,
+  ].filter(Boolean);
+
+  for (const candidate of sourceCandidates) {
+    const resolved = await resolveStorageUrlFromSupabase(
+      supabase,
+      supabaseUrl,
+      raw,
+      candidate
+    );
+    if (resolved) {
+      return {
+        visual_media_url: resolved,
+        visual_media_type: isVideoAsset(resolved)
+          ? 'video'
+          : (media.visual_media_type || 'image'),
+        visual_media_fallback_image: media.visual_media_fallback_image || '',
+      };
+    }
+  }
+
+  return media;
+};
+
 const formatDuration = (seconds) => {
   if (!Number.isFinite(seconds) || seconds <= 0) return '';
 
@@ -188,12 +292,12 @@ const hydrateDurations = async (tracks) => Promise.all(
   })
 );
 
-const normalizeTrack = (raw, r2BaseUrl) => {
+const normalizeTrack = async (raw, r2BaseUrl, supabase, supabaseUrl) => {
   const lyricSource = raw.lyrics || '';
   const lyric_lines = parseLyricLines(lyricSource);
   const actLabel = raw.act || raw.act_id || 'ACT THREE';
   const audio_url = resolveAudioUrl(raw, r2BaseUrl);
-  const visualMedia = resolveVisualMedia(raw, r2BaseUrl);
+  const visualMedia = await resolveVisualMediaAsync(raw, r2BaseUrl, supabase, supabaseUrl);
 
   return {
     ...raw,
@@ -228,7 +332,8 @@ export default function useReclamationTracks() {
 
   const config = useMemo(() => {
     const r2BaseUrl = import.meta.env.VITE_APP_R2_PUBLIC_BASE_URL || '';
-    return { r2BaseUrl };
+    const supabaseUrl = import.meta.env.VITE_APP_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || '';
+    return { r2BaseUrl, supabaseUrl };
   }, []);
 
   useEffect(() => {
@@ -250,11 +355,19 @@ export default function useReclamationTracks() {
 
         if (fetchError) throw fetchError;
 
-        const normalized = await hydrateDurations(
-          (data || []).map((row) =>
-            enrichTrackWithVisualResonance(normalizeTrack(row, config.r2BaseUrl))
-          )
+        const normalizedInput = await Promise.all(
+          (data || []).map(async (row) => {
+            const normalizedTrack = await normalizeTrack(
+              row,
+              config.r2BaseUrl,
+              supabase,
+              config.supabaseUrl
+            );
+            return enrichTrackWithVisualResonance(normalizedTrack);
+          })
         );
+
+        const normalized = await hydrateDurations(normalizedInput);
         if (!normalized.length) {
           setTracks([enrichTrackWithVisualResonance(fallbackTrack)]);
           setError('No active tracks found. Using fallback track.');
