@@ -3,14 +3,10 @@ import "../../styles/reclamation-codex-refit.css";
 import {
   AudioWaveform,
   X,
-  Gauge,
   Menu,
   Pause,
   Play,
-  ScanLine,
-  Settings2,
   Repeat2,
-  Radio,
   Shuffle,
   SkipBack,
   SkipForward,
@@ -172,6 +168,8 @@ export default function ReclamationCodex() {
     ) * 100
   );
   const fallbackDuration = formatTrackDuration(activeTrack);
+  const mediaUrl = activeTrack?.visual_media_url || activeTrack?.background_image_url || activeTrack?.act_background_image || "";
+  const mediaType = activeTrack?.visual_media_type || (/\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(mediaUrl) ? "video" : "image");
   const albumArtwork =
     activeTrack?.cover_url ||
     activeTrack?.artwork_url ||
@@ -319,6 +317,10 @@ export default function ReclamationCodex() {
   };
   const closeProtocolMenu = () => {
     setIsProtocolMenuOpen(false);
+  };
+  const updateVolume = (event) => {
+    const value = Number(event.target.value);
+    audio?.setVolume?.(value / 100);
   };
 
   return (
@@ -570,6 +572,18 @@ export default function ReclamationCodex() {
                 <i style={{ "--sync-fill": `${volumePercent}%` }} />
                 <strong>{volumePercent}%</strong>
               </div>
+              <label className="ckp-volume-slider">
+                <span>LEVEL</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={volumePercent}
+                  onChange={updateVolume}
+                  aria-label="Volume"
+                />
+              </label>
             </div>
           </ConsolePanel>
         </aside>
@@ -705,31 +719,6 @@ export default function ReclamationCodex() {
             </div>
           </section>
 
-          <section className="ckp-control-deck" aria-label="Protocol controls">
-            <button type="button">
-              <Radio size={16} strokeWidth={1.8} />
-              <span>Reactive</span>
-              <strong>{isActiveTrackPlaying ? "HIGH" : "READY"}</strong>
-            </button>
-            <button type="button">
-              <ScanLine size={16} strokeWidth={1.8} />
-              <span>Particles</span>
-              <strong>ENABLED</strong>
-            </button>
-            <button type="button" className="is-core">
-              <img src="/emblem/reclamation_core_emblem.png" alt="" />
-            </button>
-            <button type="button">
-              <Gauge size={16} strokeWidth={1.8} />
-              <span>Light React</span>
-              <strong>ENABLED</strong>
-            </button>
-            <button type="button">
-              <Settings2 size={16} strokeWidth={1.8} />
-              <span>Theme</span>
-              <strong>RED PROTOCOL</strong>
-            </button>
-          </section>
         </section>
 
         <aside className="ckp-side-rail ckp-side-rail--right">
@@ -760,12 +749,21 @@ export default function ReclamationCodex() {
             </div>
           </ConsolePanel>
 
-          <ConsolePanel title="Protocol Emblem" className="ckp-emblem-panel">
-            <Link className="ckp-lore-module" to="/codex">
-              <img src="/emblem/reclamation_core_emblem.png" alt="" />
-              <strong>CHROMA KEY PROTOCOL</strong>
-              <span>TRUST NONE. VERIFY ALL. ACT THREE.</span>
-            </Link>
+          <ConsolePanel title="Media Source" className="ckp-emblem-panel">
+            <div className="ckp-lore-module">
+              {mediaType === "image" && mediaUrl ? (
+                <img src={mediaUrl} alt="Track background asset" />
+              ) : (
+                <img src="/emblem/reclamation_core_emblem.png" alt="" />
+              )}
+              <strong>{mediaType.toUpperCase()} BACKDROP</strong>
+              <span>{mediaUrl || "No media URL resolved from track fields."}</span>
+              {mediaUrl && (
+                <a href={mediaUrl} target="_blank" rel="noreferrer">
+                  Open Raw Media
+                </a>
+              )}
+            </div>
           </ConsolePanel>
 
           <ConsolePanel title="Audio Analysis">

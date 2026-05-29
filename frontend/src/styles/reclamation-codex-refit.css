@@ -174,6 +174,25 @@
   box-shadow: 0 0 9px rgba(255, 70, 36, 0.35);
 }
 
+.ckp-reference-mirror .ckp-volume-slider {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ckp-reference-mirror .ckp-volume-slider span {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--ckp-muted);
+}
+
+.ckp-reference-mirror .ckp-volume-slider input {
+  width: 100%;
+  accent-color: var(--ckp-red-strong);
+}
+
 .ckp-reference-mirror .ckp-analyzer-frame {
   min-height: clamp(380px, 54vh, 590px);
   padding-top: 58px;
@@ -362,6 +381,17 @@
   font-size: 0.63rem;
   letter-spacing: 0.16em;
   line-height: 1.4;
+  word-break: break-word;
+}
+
+.ckp-reference-mirror .ckp-emblem-panel .ckp-lore-module a {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ckp-red-strong);
+  text-decoration: none;
+  border: 1px solid rgba(255, 54, 34, 0.45);
+  padding: 6px 10px;
 }
 
 .ckp-reference-mirror .ckp-analysis-module--clean {
@@ -522,5 +552,56 @@
 
   .ckp-reference-mirror .ckp-track-info-body strong {
     font-size: 1.2rem;
+  }
+}
+
+/* Stability pass: prevent distortion on resize and enforce usable modules. */
+.ckp-reference-mirror .reclamation-console {
+  grid-template-columns: minmax(280px, 320px) minmax(640px, 1fr) minmax(280px, 320px) !important;
+  align-items: start !important;
+}
+
+.ckp-reference-mirror .ckp-center-stack {
+  grid-template-rows: auto auto !important;
+}
+
+.ckp-reference-mirror .ckp-analyzer-frame {
+  min-height: 560px !important;
+}
+
+.ckp-reference-mirror .reclamation-stage {
+  display: grid;
+  place-items: center;
+}
+
+.ckp-reference-mirror .ckp-core-shell {
+  width: min(760px, 96%) !important;
+  max-width: 760px !important;
+  min-width: 320px !important;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+}
+
+.ckp-reference-mirror .ckp-core-assembly {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1240px) {
+  .ckp-reference-mirror .reclamation-console {
+    grid-template-columns: 1fr !important;
+  }
+
+  .ckp-reference-mirror .ckp-side-rail--left,
+  .ckp-reference-mirror .ckp-side-rail--right {
+    order: 2;
+  }
+
+  .ckp-reference-mirror .ckp-center-stack {
+    order: 1;
+  }
+
+  .ckp-reference-mirror .ckp-analyzer-frame {
+    min-height: 460px !important;
   }
 }
