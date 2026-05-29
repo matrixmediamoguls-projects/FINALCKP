@@ -68,16 +68,12 @@
     repeating-conic-gradient(from 0deg, rgba(var(--vrc-signal-rgb), .4) 0 1deg, transparent 1deg 5deg),
     radial-gradient(circle, transparent 0 58%, rgba(var(--vrc-amber-rgb), .24) 59% 60%, transparent 61%);
   mask-image: radial-gradient(circle, transparent 0 54%, #000 55% 64%, transparent 65%);
-  opacity: calc(.44 + var(--vrc-mid) * .32);
-  animation: vrcRingSpin 24s linear infinite;
+  opacity: .2;
+  animation: none;
 }
 
 .vrc-shell::after {
-  box-shadow:
-    inset 0 0 0 1px rgba(var(--vrc-signal-rgb), .38),
-    inset 0 0 0 14px rgba(0, 0, 0, .38),
-    inset 0 0 0 16px rgba(255, 255, 255, .06),
-    inset 0 0 0 34px rgba(var(--vrc-violet-rgb), .08);
+  box-shadow: inset 0 0 0 1px rgba(var(--vrc-signal-rgb), .3);
 }
 
 .vrc-media-frame {
@@ -126,41 +122,15 @@
 }
 
 .vrc-background-glow {
-  z-index: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, .16), transparent 17%),
-    radial-gradient(circle at 44% 54%, rgba(var(--vrc-signal-rgb), .36), transparent 43%),
-    radial-gradient(circle at 64% 58%, rgba(var(--vrc-amber-rgb), .18), transparent 42%);
-  mix-blend-mode: screen;
-  opacity: calc(.58 + var(--vrc-bass) * .34 + var(--vrc-flash) * .18);
+  display: none;
 }
 
 .vrc-grid-overlay {
-  z-index: 1;
-  border-radius: 50%;
-  background-image:
-    linear-gradient(rgba(var(--vrc-signal-rgb), .11) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--vrc-signal-rgb), .09) 1px, transparent 1px);
-  background-size: 28px 28px;
-  opacity: calc(.14 + var(--vrc-hat) * .2);
-  transform: translateX(calc(var(--vrc-mid) * 8px));
+  display: none;
 }
 
 .vrc-reactive-sweep {
-  z-index: 5;
-  border-radius: 50%;
-  background:
-    linear-gradient(
-      105deg,
-      transparent 0 34%,
-      rgba(255, 255, 255, calc(.03 + var(--vrc-hat) * .14)) 46%,
-      rgba(var(--vrc-amber-rgb), calc(.1 + var(--vrc-flash) * .22)) 50%,
-      transparent 64% 100%
-    );
-  mix-blend-mode: screen;
-  opacity: calc(.24 + var(--vrc-hat) * .42 + var(--vrc-flash) * .34);
-  animation: vrcSweep calc(4.8s - var(--vrc-mid) * 2.2s) linear infinite;
+  display: none;
 }
 
 .vrc-reactor-rings {
@@ -253,23 +223,11 @@
 }
 
 .vrc-scanlines {
-  z-index: 8;
-  border-radius: 50%;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, .055),
-      rgba(255, 255, 255, .055) 1px,
-      transparent 1px,
-      transparent 4px
-    );
-  opacity: .12;
+  display: none;
 }
 
 .vrc-vignette {
-  z-index: 9;
-  border-radius: 50%;
-  box-shadow: inset 0 0 90px rgba(0, 0, 0, .78);
+  display: none;
 }
 
 .vrc-shockwave {
