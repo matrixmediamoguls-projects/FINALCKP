@@ -61,10 +61,18 @@ export default function ReclamationCodex() {
   const { tracks, loading, error } = useReclamationTracks();
   const audio = useAudio();
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
+  const [visualMode, setVisualMode] = useState("cinematic");
 
   useEffect(() => {
     if (activeTrackIndex >= tracks.length) setActiveTrackIndex(0);
   }, [activeTrackIndex, tracks.length]);
+  useEffect(() => {
+    if (!tracks.length) return;
+    const target = tracks.findIndex(
+      (track) => track?.track_id === "act_three_welcome_to_the_fire"
+    );
+    if (target >= 0) setActiveTrackIndex(target);
+  }, [tracks]);
 
   const activeTrack = tracks[activeTrackIndex] ?? null;
   const currentAudioTrack = audio?.currentTrack;
@@ -143,7 +151,7 @@ export default function ReclamationCodex() {
 
   return (
     <main className="pva-root">
-      <ProtocolHeader />
+      <ProtocolHeader visualMode={visualMode} onVisualModeChange={setVisualMode} />
 
       <div className="pva-main-grid">
         <aside className="pva-left">
@@ -175,6 +183,7 @@ export default function ReclamationCodex() {
             currentTime={fmt(currentTime)}
             duration={fmt(duration)}
             progress={progress}
+            visualMode={visualMode}
           />
           <LyricsProtocolPanel
             lines={lyricWindow}
@@ -191,7 +200,7 @@ export default function ReclamationCodex() {
         </section>
 
         <aside className="pva-right">
-          <VisualDisplayPanel track={activeTrack} />
+          <VisualDisplayPanel track={activeTrack} visualMode={visualMode} onVisualModeChange={setVisualMode} />
           <AudioAnalysisPanel
             intensity={intensity}
             bass={Math.round((isPlaying ? analysis.bass : 0.82) * 100)}

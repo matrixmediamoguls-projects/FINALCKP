@@ -1,6 +1,8 @@
 import { Menu, Settings2 } from "lucide-react";
 
-export default function ProtocolHeader() {
+const modes = ["cinematic", "artifact", "performance", "immersive", "diagnostic"];
+
+export default function ProtocolHeader({ visualMode, onVisualModeChange }) {
   return (
     <header className="pva-header">
       <div className="pva-header-act">
@@ -15,6 +17,16 @@ export default function ProtocolHeader() {
 
       <div className="pva-header-status">
         <span>PROTOCOL STATUS: ONLINE</span>
+        <label className="pva-mode-chip">
+          <span>MODE</span>
+          <select value={visualMode} onChange={(e) => onVisualModeChange?.(e.target.value)}>
+            {modes.map((mode) => (
+              <option key={mode} value={mode}>
+                {mode.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </label>
         <button type="button" aria-label="VRA module">
           VRA MODULE
         </button>
