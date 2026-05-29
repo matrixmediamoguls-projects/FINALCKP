@@ -40,6 +40,11 @@ export default function VisualResonanceCore({ track = null }) {
   const visualMediaType =
     track?.visual_media_type ||
     (/\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(visualMediaUrl) ? "video" : "image");
+  const fallbackImageUrl =
+    track?.visual_media_fallback_image ||
+    track?.background_image_url ||
+    track?.act_background_image ||
+    "";
   const audioElement = audio?.audioElement;
   const isTrackActive =
     audio?.currentTrack?.id === track?.id ||
@@ -126,21 +131,18 @@ export default function VisualResonanceCore({ track = null }) {
 
   useEffect(() => {
     const video = mediaVideoRef.current;
-    if (!video) return;
+    if (!video || visualMediaType !== "video") return;
 
     setMediaReady(false);
     setMediaFailed(false);
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
+    video.autoplay = true;
 
-    if (isReactive) {
-      video.play().catch(() => {});
-      return;
-    }
-
-    video.pause();
-  }, [isReactive, visualMediaUrl]);
+    // Keep background media alive even when audio is idle.
+    video.play().catch(() => {});
+  }, [visualMediaType, visualMediaUrl]);
 
   useEffect(() => {
     const video = mediaVideoRef.current;
@@ -163,19 +165,19 @@ export default function VisualResonanceCore({ track = null }) {
       }}
     >
       <div className="vrc-background-glow" />
-      {visualMediaUrl && !mediaFailed && (
+      {visualMediaUrl && (!mediaFailed || (mediaFailed && fallbackImageUrl)) && (
         <div
           className="vrc-media-frame"
           data-media-type={visualMediaType}
           data-ready={mediaReady ? "true" : "false"}
           aria-hidden="true"
         >
-          {visualMediaType === "video" ? (
+          {visualMediaType === "video" && !mediaFailed ? (
             <video
               key={visualMediaUrl}
               ref={mediaVideoRef}
               src={visualMediaUrl}
-              autoPlay={isReactive}
+              autoPlay
               muted
               loop
               playsInline
@@ -186,7 +188,7 @@ export default function VisualResonanceCore({ track = null }) {
             />
           ) : (
             <img
-              src={visualMediaUrl}
+              src={mediaFailed && fallbackImageUrl ? fallbackImageUrl : visualMediaUrl}
               alt=""
               onLoad={() => setMediaReady(true)}
               onError={() => setMediaFailed(true)}

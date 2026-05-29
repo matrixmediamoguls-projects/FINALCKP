@@ -51,8 +51,10 @@ const parseLyricLines = (value) => {
 const resolveR2Url = (base, path) => {
   if (!path) return '';
   if (/^https?:\/\//i.test(path)) return path;
+  if (/^\/\//.test(path)) return `https:${path}`;
   const baseClean = (base || '').replace(/\/$/, '');
   const pathClean = path.startsWith('/') ? path : `/${path}`;
+  if (!baseClean) return pathClean;
   return `${baseClean}${pathClean}`;
 };
 
@@ -68,35 +70,64 @@ const resolveAudioUrl = (raw, r2BaseUrl) => {
 const isVideoAsset = (url) => /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url || '');
 
 const resolveVisualMedia = (raw, r2BaseUrl) => {
+  const videoSource =
+    raw.visual_video ||
+    raw.background_video ||
+    raw.background_video_url ||
+    raw.video_url ||
+    raw.visual_media_video ||
+    raw.visual_video_url ||
+    raw.media_video_url ||
+    raw.bg_video ||
+    '';
+
+  const imageSource =
+    raw.visual_image ||
+    raw.background_image ||
+    raw.background_image_url ||
+    raw.visual_media_image ||
+    raw.visual_image_url ||
+    raw.media_image_url ||
+    raw.shell_image ||
+    raw.act_logo_image ||
+    raw.bg_image ||
+    '';
+
+  const mediaSource =
+    raw.visual_media_url ||
+    raw.media_url ||
+    raw.visual_url ||
+    raw.background_media_url ||
+    raw.backdrop_url ||
+    '';
+
   const video = resolveR2Url(
     r2BaseUrl,
-    raw.visual_video ||
-      raw.background_video ||
-      raw.video_url ||
-      raw.visual_media_video ||
-      ''
+    videoSource
   );
   const image = resolveR2Url(
     r2BaseUrl,
-    raw.visual_image ||
-      raw.background_image ||
-      raw.visual_media_image ||
-      raw.shell_image ||
-      raw.act_logo_image ||
-      ''
+    imageSource
   );
-  const media = resolveR2Url(r2BaseUrl, raw.visual_media_url || raw.media_url || '');
+  const media = resolveR2Url(r2BaseUrl, mediaSource);
 
-  if (video) return { visual_media_url: video, visual_media_type: 'video' };
+  if (video) {
+    return {
+      visual_media_url: video,
+      visual_media_type: 'video',
+      visual_media_fallback_image: image || '',
+    };
+  }
   if (media) {
     return {
       visual_media_url: media,
       visual_media_type: raw.visual_media_type || (isVideoAsset(media) ? 'video' : 'image'),
+      visual_media_fallback_image: image || '',
     };
   }
-  if (image) return { visual_media_url: image, visual_media_type: 'image' };
+  if (image) return { visual_media_url: image, visual_media_type: 'image', visual_media_fallback_image: '' };
 
-  return { visual_media_url: '', visual_media_type: '' };
+  return { visual_media_url: '', visual_media_type: '', visual_media_fallback_image: '' };
 };
 
 const formatDuration = (seconds) => {
