@@ -17,11 +17,13 @@ export function AudioProvider({ children }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [volume, setVolumeState] = useState(0.78);
 
   const currentTrack = queue[currentTrackIndex];
 
   useEffect(() => {
     const audio = audioRef.current;
+    audio.volume = 0.78;
 
     const updateTime = () => {
       setCurrentTime(audio.currentTime);
@@ -31,20 +33,32 @@ export function AudioProvider({ children }) {
       setDuration(audio.duration || 0);
     };
 
+    const updateVolume = () => {
+      setVolumeState(audio.volume);
+    };
+
     const onEnded = () => {
       nextTrack();
     };
 
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
+    audio.addEventListener("volumechange", updateVolume);
     audio.addEventListener("ended", onEnded);
 
     return () => {
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
+      audio.removeEventListener("volumechange", updateVolume);
       audio.removeEventListener("ended", onEnded);
     };
   }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    const normalized = Math.max(0, Math.min(1, Number(volume) || 0));
+    audio.volume = normalized;
+  }, [volume]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -97,6 +111,11 @@ export function AudioProvider({ children }) {
     audioRef.current.currentTime = time;
   }
 
+  function setVolume(nextVolume) {
+    const normalized = Math.max(0, Math.min(1, Number(nextVolume) || 0));
+    setVolumeState(normalized);
+  }
+
   function nextTrack() {
     if (!queue.length) return;
 
@@ -127,9 +146,11 @@ export function AudioProvider({ children }) {
         isPlaying,
         currentTime,
         duration,
+        volume,
         playTrack,
         togglePlayback,
         seek,
+        setVolume,
         nextTrack,
         previousTrack,
       }}

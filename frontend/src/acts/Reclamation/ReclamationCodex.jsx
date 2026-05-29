@@ -2,6 +2,7 @@ import "../../styles/reclamation-codex.css";
 import "../../styles/reclamation-codex-refit.css";
 import {
   AudioWaveform,
+  X,
   Gauge,
   Menu,
   Pause,
@@ -125,16 +126,23 @@ export default function ReclamationCodex() {
   const audio = useAudio();
 
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
+  const [isProtocolMenuOpen, setIsProtocolMenuOpen] = useState(false);
 
   useEffect(() => {
     if (activeTrackIndex >= reclamationTracks.length) {
       setActiveTrackIndex(0);
     }
   }, [activeTrackIndex, reclamationTracks.length]);
+  useEffect(() => {
+    if (!isProtocolMenuOpen) return undefined;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [isProtocolMenuOpen]);
 
-  const activeTrack =
-    reclamationTracks[activeTrackIndex] ||
-    reclamationTracks[0];
+  const activeTrack = reclamationTracks[activeTrackIndex] ?? null;
   const currentAudioTrack = audio?.currentTrack;
   const isCurrentReclamationTrack =
     currentAudioTrack?.id === activeTrack?.id ||
@@ -154,6 +162,15 @@ export default function ReclamationCodex() {
       ? Math.min(100, (playerCurrentTime / playerDuration) * 100)
       : 0;
   const analysis = useAudioAnalyzer(audio?.audioElement, isActiveTrackPlaying);
+  const volumePercent = Math.round((audio?.volume ?? 0.78) * 100);
+  const syncPercent = Math.round(
+    Math.max(
+      0.08,
+      isActiveTrackPlaying
+        ? analysis.intensity * 0.6 + (playerProgress / 100) * 0.4
+        : (audio?.volume ?? 0.78)
+    ) * 100
+  );
   const fallbackDuration = formatTrackDuration(activeTrack);
   const albumArtwork =
     activeTrack?.cover_url ||
@@ -187,10 +204,26 @@ export default function ReclamationCodex() {
         );
         const reactiveValue =
           frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] / 255 : 0;
-        const idleValue = (18 + ((index * 23) % 72)) / 100;
         const value = isActiveTrackPlaying
           ? Math.max(0.06, reactiveValue)
-          : idleValue;
+          : Math.max(0.04, reactiveValue * 0.5);
+
+        return `${Math.round(value * 100)}%`;
+      }),
+    [analysis.frequencies, isActiveTrackPlaying]
+  );
+  const lyricMeterBars = useMemo(
+    () =>
+      Array.from({ length: 28 }).map((_, index) => {
+        const frequencyIndex = Math.min(
+          analysis.frequencies.length - 1,
+          Math.floor((index / 28) * analysis.frequencies.length)
+        );
+        const reactiveValue =
+          frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] / 255 : 0;
+        const value = isActiveTrackPlaying
+          ? Math.max(0.12, reactiveValue)
+          : Math.max(0.08, reactiveValue * 0.6);
 
         return `${Math.round(value * 100)}%`;
       }),
@@ -276,6 +309,17 @@ export default function ReclamationCodex() {
 
     audio?.seek?.(ratio * playerDuration);
   };
+  const seekActiveTrackByKeyboard = (event) => {
+    if (!isCurrentReclamationTrack || !playerDuration) return;
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    const delta = event.key === "ArrowRight" ? 5 : -5;
+    const nextTime = Math.max(0, Math.min(playerDuration, playerCurrentTime + delta));
+    audio?.seek?.(nextTime);
+  };
+  const closeProtocolMenu = () => {
+    setIsProtocolMenuOpen(false);
+  };
 
   return (
     <main className="reclamation-codex ckp-reference-mirror">
@@ -312,6 +356,8 @@ export default function ReclamationCodex() {
           <button
             type="button"
             aria-label="Open protocol menu"
+            aria-expanded={isProtocolMenuOpen}
+            onClick={() => setIsProtocolMenuOpen((current) => !current)}
           >
             <Menu size={21} strokeWidth={1.7} />
           </button>
@@ -433,7 +479,7 @@ export default function ReclamationCodex() {
                 onClick={seekActiveTrack}
                 role="button"
                 tabIndex={0}
-                onKeyDown={() => {}}
+                onKeyDown={seekActiveTrackByKeyboard}
                 aria-label="Seek current track"
               >
                 <i style={{ width: `${playerProgress}%` }} />
@@ -456,10 +502,9 @@ export default function ReclamationCodex() {
                   );
                   const reactiveValue =
                     frequencyIndex >= 0 ? analysis.frequencies[frequencyIndex] / 255 : 0;
-                  const idleValue = (14 + ((index * 29) % 66)) / 100;
                   const value = isActiveTrackPlaying
                     ? Math.max(0.12, reactiveValue)
-                    : idleValue;
+                    : Math.max(0.07, reactiveValue * 0.5);
 
                   return (
                     <span key={`mini-wave-${index}`} style={{ "--bar": `${Math.round(value * 100)}%` }} />
@@ -516,9 +561,14 @@ export default function ReclamationCodex() {
               </div>
 
               <div className="ckp-volume-row">
+                <span>SYNC</span>
+                <i style={{ "--sync-fill": `${syncPercent}%` }} />
+                <strong>{syncPercent}%</strong>
+              </div>
+              <div className="ckp-volume-row">
                 <span>VOLUME</span>
-                <i />
-                <strong>{isCurrentReclamationTrack ? `${Math.round((audio?.volume ?? 0.78) * 100)}%` : "78%"}</strong>
+                <i style={{ "--sync-fill": `${volumePercent}%` }} />
+                <strong>{volumePercent}%</strong>
               </div>
             </div>
           </ConsolePanel>
@@ -616,18 +666,12 @@ export default function ReclamationCodex() {
               className="ckp-lyrics-meter"
               aria-hidden="true"
             >
-              {Array.from({ length: 28 }).map(
-                (_, index) => (
-                  <span
-                    key={index}
-                    style={{
-                      "--bar": `${
-                        18 + ((index * 19) % 74)
-                      }%`,
-                    }}
-                  />
-                )
-              )}
+              {lyricMeterBars.map((barHeight, index) => (
+                <span
+                  key={`lyric-meter-${index}`}
+                  style={{ "--bar": barHeight }}
+                />
+              ))}
             </div>
 
             <div className="ckp-lyrics-copy">
@@ -740,6 +784,38 @@ export default function ReclamationCodex() {
           </ConsolePanel>
         </aside>
       </div>
+
+      {isProtocolMenuOpen && (
+        <div className="ckp-protocol-menu-backdrop" onClick={closeProtocolMenu}>
+          <aside
+            className="ckp-protocol-menu-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Protocol menu"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header>
+              <strong>Protocol Menu</strong>
+              <button type="button" onClick={closeProtocolMenu} aria-label="Close protocol menu">
+                <X size={18} strokeWidth={2} />
+              </button>
+            </header>
+            <nav>
+              <Link to="/protocol/3" onClick={closeProtocolMenu}>Act Three Console</Link>
+              <Link to="/visualizer/3" onClick={closeProtocolMenu}>Visualizer Surface</Link>
+              <Link to="/codex" onClick={closeProtocolMenu}>Codex Archive</Link>
+              <Link to="/vma" onClick={closeProtocolMenu}>VMA Module</Link>
+            </nav>
+            <div className="ckp-protocol-menu-stats">
+              <span>Signal</span>
+              <strong>{isActiveTrackPlaying ? "ACTIVE" : "STANDBY"}</strong>
+              <small>
+                {formatPlaybackTime(playerCurrentTime)} / {playerDuration ? formatPlaybackTime(playerDuration) : fallbackDuration}
+              </small>
+            </div>
+          </aside>
+        </div>
+      )}
     </main>
   );
 }
