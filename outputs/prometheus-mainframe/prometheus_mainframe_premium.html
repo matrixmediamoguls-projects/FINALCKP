@@ -293,8 +293,8 @@ button {
   position: absolute;
   left: calc(var(--x) * 1%);
   top: calc(var(--y) * 1%);
-  width: 56px;
-  height: 56px;
+  width: 28px;
+  height: 28px;
   transform: translate3d(-50%, -50%, 34px);
   display: grid;
   place-items: center;
@@ -305,11 +305,11 @@ button {
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.3), transparent 13%),
     radial-gradient(circle, rgba(255, 102, 32, 0.3), rgba(2, 4, 8, 0.86) 62%);
   box-shadow:
-    inset 0 0 0 7px rgba(0, 0, 0, 0.48),
-    inset 0 0 18px color-mix(in srgb, var(--tone), transparent 28%),
-    0 0 14px color-mix(in srgb, var(--tone), transparent 16%),
-    0 0 42px color-mix(in srgb, var(--tone), transparent 54%);
-  text-shadow: 0 0 16px currentColor;
+    inset 0 0 0 3px rgba(0, 0, 0, 0.54),
+    inset 0 0 9px color-mix(in srgb, var(--tone), transparent 34%),
+    0 0 8px color-mix(in srgb, var(--tone), transparent 18%),
+    0 0 22px color-mix(in srgb, var(--tone), transparent 62%);
+  text-shadow: 0 0 9px currentColor;
   cursor: pointer;
   pointer-events: auto;
   transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
@@ -324,14 +324,14 @@ button {
 .node::after {
   content: "";
   position: absolute;
-  inset: -8px;
+  inset: -4px;
   border-radius: inherit;
   border: 1px solid color-mix(in srgb, var(--tone), transparent 25%);
   opacity: 0.58;
 }
 
 .node::after {
-  inset: 9px;
+  inset: 4px;
   border-color: rgba(255, 23, 72, 0.48);
 }
 
@@ -339,7 +339,7 @@ button {
   position: relative;
   z-index: 1;
   font-family: "Segoe UI Semibold", "Trebuchet MS", sans-serif;
-  font-size: 18px;
+  font-size: 10px;
   line-height: 1;
   letter-spacing: 1px;
 }
@@ -421,18 +421,18 @@ button {
 .node:hover,
 .node.active,
 .node.hover-preview {
-  transform: translate3d(-50%, -50%, 86px) scale(1.13);
+  transform: translate3d(-50%, -50%, 86px) scale(1.22);
   filter: brightness(1.35);
   box-shadow:
-    inset 0 0 0 7px rgba(0, 0, 0, 0.48),
-    inset 0 0 24px color-mix(in srgb, var(--tone), transparent 8%),
-    0 0 18px color-mix(in srgb, var(--tone), transparent 0%),
-    0 0 72px color-mix(in srgb, var(--tone), transparent 28%);
+    inset 0 0 0 3px rgba(0, 0, 0, 0.48),
+    inset 0 0 14px color-mix(in srgb, var(--tone), transparent 8%),
+    0 0 12px color-mix(in srgb, var(--tone), transparent 0%),
+    0 0 38px color-mix(in srgb, var(--tone), transparent 36%);
 }
 
 .node.hover-preview:not(.active) {
   outline: 1px solid rgba(255, 244, 220, 0.42);
-  outline-offset: 7px;
+  outline-offset: 4px;
 }
 
 .node.visited {
@@ -1521,8 +1521,8 @@ button {
   .stage { inset: 88px 42px 116px; }
   .side-hud { display: none; }
   .hud-bottom { grid-template-columns: 130px 1fr 130px; }
-  .node { width: 46px; height: 46px; }
-  .node span { font-size: 15px; }
+  .node { width: 24px; height: 24px; }
+  .node span { font-size: 9px; }
   .core-fire { width: 238px; height: 298px; }
   .core-sigil { width: 136px; height: 166px; }
   .core-plate { width: 92vw; height: 78vw; }
@@ -1560,12 +1560,12 @@ button {
     inset: 112px 18px 190px;
   }
   .node {
-    width: 38px;
-    height: 38px;
+    width: 22px;
+    height: 22px;
   }
-  .node::before { inset: -5px; }
+  .node::before { inset: -3px; }
   .node span {
-    font-size: 12px;
+    font-size: 8px;
   }
   .core-fire {
     width: 188px;
@@ -1899,36 +1899,36 @@ const powerData = {
 };
 
 const nodes = [
-  { n: 1, x: 17, y: 16, tier: "outer", power: "E", title: "Welcome To The Fire", meaning: "The ignition point. Fire activated. Transformation begins." },
-  { n: 2, x: 8, y: 50, tier: "outer", power: "W", title: "Reclamation", meaning: "The return. Active reclamation. Movement from victimhood into agency." },
-  { n: 3, x: 17, y: 84, tier: "outer", power: "O", title: "Know Your Names", meaning: "Pattern recognition. Naming corruption. Bringing hidden structures into order." },
-  { n: 4, x: 50, y: 92, tier: "outer", power: "P", title: "Hold On Through The Burial", meaning: "Endurance under pressure." },
-  { n: 5, x: 83, y: 84, tier: "outer", power: "P", title: "Demonic Schemes", meaning: "Persistent commitment to truth despite emotional and spiritual interference." },
-  { n: 6, x: 92, y: 50, tier: "outer", power: "W", title: "Second Edition", meaning: "Conscious self-reconstruction." },
-  { n: 7, x: 83, y: 16, tier: "outer", power: "O", title: "Thought Form", meaning: "Mental architecture and operational law." },
-  { n: 8, x: 50, y: 8, tier: "outer", power: "R", title: "Remember The Price", meaning: "Teacher archetype. Stewardship of hard-earned wisdom." },
-  { n: 9, x: 26, y: 22, tier: "mid", power: "O", title: "Blueprint Of The Divine", meaning: "Universal structure. Divine order." },
-  { n: 10, x: 18, y: 50, tier: "mid", power: "O", title: "Hostile Rewrite", meaning: "Correction of distorted narratives." },
-  { n: 11, x: 26, y: 78, tier: "mid", power: "O", title: "The Witness Don't Talk", meaning: "Observation before reaction. Internal governance." },
-  { n: 12, x: 50, y: 84, tier: "mid", power: "E", title: "Consecrated", meaning: "Burning away the false self." },
-  { n: 13, x: 74, y: 78, tier: "mid", power: "P", title: "Through The Fog", meaning: "Maintaining course despite uncertainty." },
-  { n: 14, x: 82, y: 50, tier: "mid", power: "W", title: "Code Red", meaning: "Emergency intervention. Immediate action." },
-  { n: 15, x: 74, y: 22, tier: "mid", power: "E", title: "Shadow Chains", meaning: "Transformation through confrontation with bondage." },
-  { n: 16, x: 50, y: 16, tier: "mid", power: "P", title: "Don't Hang That Word", meaning: "Moral endurance and responsible language." },
-  { n: 17, x: 31, y: 30, tier: "inner", power: "W", title: "I Create As I Speak", meaning: "Manifestation through deliberate action." },
-  { n: 18, x: 25, y: 50, tier: "inner", power: "R", title: "Weapons Grade Transmission", meaning: "Broadcasting guidance during collective transition." },
-  { n: 19, x: 31, y: 70, tier: "inner", power: "E", title: "Blood Without Stains", meaning: "Transmuting trauma into power." },
+  { n: 1, x: 14, y: 13, tier: "outer", power: "E", title: "Welcome To The Fire", meaning: "The ignition point. Fire activated. Transformation begins." },
+  { n: 2, x: 6, y: 50, tier: "outer", power: "W", title: "Reclamation", meaning: "The return. Active reclamation. Movement from victimhood into agency." },
+  { n: 3, x: 14, y: 87, tier: "outer", power: "O", title: "Know Your Names", meaning: "Pattern recognition. Naming corruption. Bringing hidden structures into order." },
+  { n: 4, x: 50, y: 94, tier: "outer", power: "P", title: "Hold On Through The Burial", meaning: "Endurance under pressure." },
+  { n: 5, x: 86, y: 87, tier: "outer", power: "P", title: "Demonic Schemes", meaning: "Persistent commitment to truth despite emotional and spiritual interference." },
+  { n: 6, x: 94, y: 50, tier: "outer", power: "W", title: "Second Edition", meaning: "Conscious self-reconstruction." },
+  { n: 7, x: 86, y: 13, tier: "outer", power: "O", title: "Thought Form", meaning: "Mental architecture and operational law." },
+  { n: 8, x: 50, y: 6, tier: "outer", power: "R", title: "Remember The Price", meaning: "Teacher archetype. Stewardship of hard-earned wisdom." },
+  { n: 9, x: 28, y: 18, tier: "mid", power: "O", title: "Blueprint Of The Divine", meaning: "Universal structure. Divine order." },
+  { n: 10, x: 16, y: 50, tier: "mid", power: "O", title: "Hostile Rewrite", meaning: "Correction of distorted narratives." },
+  { n: 11, x: 28, y: 82, tier: "mid", power: "O", title: "The Witness Don't Talk", meaning: "Observation before reaction. Internal governance." },
+  { n: 12, x: 50, y: 87, tier: "mid", power: "E", title: "Consecrated", meaning: "Burning away the false self." },
+  { n: 13, x: 72, y: 82, tier: "mid", power: "P", title: "Through The Fog", meaning: "Maintaining course despite uncertainty." },
+  { n: 14, x: 84, y: 50, tier: "mid", power: "W", title: "Code Red", meaning: "Emergency intervention. Immediate action." },
+  { n: 15, x: 72, y: 18, tier: "mid", power: "E", title: "Shadow Chains", meaning: "Transformation through confrontation with bondage." },
+  { n: 16, x: 50, y: 13, tier: "mid", power: "P", title: "Don't Hang That Word", meaning: "Moral endurance and responsible language." },
+  { n: 17, x: 35, y: 30, tier: "inner", power: "W", title: "I Create As I Speak", meaning: "Manifestation through deliberate action." },
+  { n: 18, x: 29, y: 50, tier: "inner", power: "R", title: "Weapons Grade Transmission", meaning: "Broadcasting guidance during collective transition." },
+  { n: 19, x: 35, y: 70, tier: "inner", power: "E", title: "Blood Without Stains", meaning: "Transmuting trauma into power." },
   { n: 20, x: 50, y: 76, tier: "inner", power: "O", title: "Red Flag Parade", meaning: "Recognition of patterns and warning systems." },
-  { n: 21, x: 69, y: 70, tier: "inner", power: "W", title: "Seer Broke Chains", meaning: "Liberation through decisive action." },
-  { n: 22, x: 75, y: 50, tier: "inner", power: "R", title: "Slumlord Fundamentalist", meaning: "Standing against injustice." },
-  { n: 23, x: 69, y: 30, tier: "inner", power: "O", title: "Misguided Priorities", meaning: "Reordering values." },
+  { n: 21, x: 65, y: 70, tier: "inner", power: "W", title: "Seer Broke Chains", meaning: "Liberation through decisive action." },
+  { n: 22, x: 71, y: 50, tier: "inner", power: "R", title: "Slumlord Fundamentalist", meaning: "Standing against injustice." },
+  { n: 23, x: 65, y: 30, tier: "inner", power: "O", title: "Misguided Priorities", meaning: "Reordering values." },
   { n: 24, x: 50, y: 24, tier: "inner", power: "W", title: "Emerald Mode, Online", meaning: "Embodied action state." },
-  { n: 25, x: 36, y: 50, tier: "core", power: "E", title: "As Above, So Below", meaning: "Hermetic transmutation and correspondence." },
-  { n: 26, x: 50, y: 65, tier: "core", power: "R", title: "Chosen Ones", meaning: "Calling others into remembrance and responsibility." },
-  { n: 27, x: 64, y: 50, tier: "core", power: "R", title: "Elemental Orchestra", meaning: "Integration and mentorship." },
+  { n: 25, x: 39, y: 50, tier: "core", power: "E", title: "As Above, So Below", meaning: "Hermetic transmutation and correspondence." },
+  { n: 26, x: 50, y: 66, tier: "core", power: "R", title: "Chosen Ones", meaning: "Calling others into remembrance and responsibility." },
+  { n: 27, x: 61, y: 50, tier: "core", power: "R", title: "Elemental Orchestra", meaning: "Integration and mentorship." },
   { n: 28, x: 58, y: 38, tier: "core", power: "O", title: "The Hierophant", meaning: "Examination of corrupted authority and authentic wisdom." },
-  { n: 29, x: 50, y: 48, tier: "core", power: "R", title: "Architect Of The Aftermath", meaning: "Builder archetype. Leadership after collapse." },
-  { n: 30, x: 50, y: 34, tier: "core", power: "E", title: "Fire In My Veins", meaning: "Final embodiment of transformed power." }
+  { n: 29, x: 50, y: 47, tier: "core", power: "R", title: "Architect Of The Aftermath", meaning: "Builder archetype. Leadership after collapse." },
+  { n: 30, x: 50, y: 33, tier: "core", power: "E", title: "Fire In My Veins", meaning: "Final embodiment of transformed power." }
 ];
 
 nodes.forEach((node) => {
