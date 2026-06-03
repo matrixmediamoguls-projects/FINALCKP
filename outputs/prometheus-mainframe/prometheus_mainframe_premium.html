@@ -300,10 +300,34 @@ button {
   border-color: rgba(255, 228, 177, 0.82);
 }
 
-.node.outer { --tone: var(--blue); opacity: 0.86; }
-.node.mid { --tone: var(--violet); }
-.node.inner { --tone: var(--teal); }
-.node.core { --tone: var(--ember-hot); }
+.node.power-p { --tone: #7C3AED; }
+.node.power-o { --tone: #FBBF24; }
+.node.power-w { --tone: #60A5FA; }
+.node.power-e { --tone: #FB923C; }
+.node.power-r { --tone: #4ADE80; }
+
+.power-legend {
+  display: grid;
+  gap: 7px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 232, 200, 0.74);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--legend-color);
+  box-shadow: 0 0 14px var(--legend-color);
+}
 
 .core-fire {
   position: absolute;
@@ -572,11 +596,12 @@ button {
 .panel-title {
   margin-top: 4px;
   color: #fff1d8;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.12;
   letter-spacing: 1px;
   text-shadow: 0 0 22px rgba(255, 73, 18, 0.68);
+  overflow-wrap: anywhere;
 }
 
 .close {
@@ -625,6 +650,7 @@ button {
   color: #ffb36d;
   font-size: 16px;
   line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .bars {
@@ -785,7 +811,14 @@ button {
   <aside class="side-hud left" aria-hidden="true">
     <div class="metric"><label>Core Temp</label><strong id="temp-readout">INF K</strong></div>
     <div class="metric"><label>Visited</label><strong id="visited-readout">00 / 30</strong></div>
-    <div class="metric"><label>Thermal Bias</label><strong>EMBER</strong></div>
+    <div class="metric power-legend">
+      <label>P.O.W.E.R.</label>
+      <div class="legend-row"><span class="legend-dot" style="--legend-color:#7C3AED"></span><span>P Persistent Will</span></div>
+      <div class="legend-row"><span class="legend-dot" style="--legend-color:#FBBF24"></span><span>O Purification Order</span></div>
+      <div class="legend-row"><span class="legend-dot" style="--legend-color:#60A5FA"></span><span>W Willful Action</span></div>
+      <div class="legend-row"><span class="legend-dot" style="--legend-color:#FB923C"></span><span>E Energetic Transmutation</span></div>
+      <div class="legend-row"><span class="legend-dot" style="--legend-color:#4ADE80"></span><span>R Righteous Leadership</span></div>
+    </div>
   </aside>
 
   <aside class="side-hud right" aria-hidden="true">
@@ -821,63 +854,51 @@ const visited = new Set();
 let currentNode = null;
 let barFrame = 0;
 
-const tierNames = {
-  outer: "Outer perimeter",
-  mid: "Mid grid",
-  inner: "Inner grid",
-  core: "Core proximity"
-};
-
-const nodeDescriptions = {
-  1: "Cold frontier relay. The Promethean signal is still a distant flicker.",
-  2: "Perimeter junction carrying first contact across the western trace.",
-  3: "Boundary anchor with a low-frequency pulse under the surface plating.",
-  4: "Southern stabilizer. Structural readings are clean but heat is rising.",
-  5: "Edge transmitter with dormant potential and strong return signal.",
-  6: "Eastern perimeter relay crossing a blue-shifted plasma channel.",
-  7: "Fringe relay node approaching the mid-grid thermal threshold.",
-  8: "Northern gateway. Outer ring completes and the descent begins.",
-  9: "Mid-grid entry. Heat blooms across adjacent conduits.",
-  10: "Circuit nexus. Dual-polarity traces converge and harden.",
-  11: "Thermal gate with signal pressure rising above nominal tolerance.",
-  12: "Grid crossroads. Flame resonance bleeds into the lower array.",
-  13: "Mid-field relay carrying stressed but usable integrity.",
-  14: "Deep mid-grid node. The surrounding silence is a pressure field.",
-  15: "Convergence node where outer pathways terminate in high flux.",
-  16: "Mid-ring apex. Last stable point before the inner sanctum.",
-  17: "Inner threshold. Thermal bloom is visible across the shell.",
-  18: "Heat boundary node with measurable signal distortion.",
-  19: "Sanctum approach. Time-stamp integrity begins to fracture.",
-  20: "Inner circuit nexus receiving full-range core resonance.",
-  21: "Deep inner grid. Shielding is under sustained thermal load.",
-  22: "Core adjacency relay with bright electromagnetic bleed.",
-  23: "Proximity alert. Every packet carries the Flame signature.",
-  24: "Inner ring final. Last node before pure Promethean proximity.",
-  25: "Core proximity achieved. Flame resonance is critical but contained.",
-  26: "Every trace glows here. Signal has become near-thermal plasma.",
-  27: "Sanctum lock node. Structural collapse thresholds are close.",
-  28: "Core orbit node. The Flame breathes through the grid shell.",
-  29: "One node from source. The mainframe remembers the whole route.",
-  30: "Promethean Flame node. Maximum proximity and direct core speech."
+const powerData = {
+  P: { label: "Persistent Will", color: "#7C3AED", short: "Stabilizer" },
+  O: { label: "Purification Through Order", color: "#FBBF24", short: "Governing Force" },
+  W: { label: "Willful Action", color: "#60A5FA", short: "Engine" },
+  E: { label: "Energetic Transmutation", color: "#FB923C", short: "Transformative Axis" },
+  R: { label: "Righteous Leadership", color: "#4ADE80", short: "Leadership Axis" }
 };
 
 const nodes = [
-  { n: 1, x: 17, y: 16, tier: "outer" }, { n: 2, x: 8, y: 50, tier: "outer" },
-  { n: 3, x: 17, y: 84, tier: "outer" }, { n: 4, x: 50, y: 92, tier: "outer" },
-  { n: 5, x: 83, y: 84, tier: "outer" }, { n: 6, x: 92, y: 50, tier: "outer" },
-  { n: 7, x: 83, y: 16, tier: "outer" }, { n: 8, x: 50, y: 8, tier: "outer" },
-  { n: 9, x: 26, y: 22, tier: "mid" }, { n: 10, x: 18, y: 50, tier: "mid" },
-  { n: 11, x: 26, y: 78, tier: "mid" }, { n: 12, x: 50, y: 84, tier: "mid" },
-  { n: 13, x: 74, y: 78, tier: "mid" }, { n: 14, x: 82, y: 50, tier: "mid" },
-  { n: 15, x: 74, y: 22, tier: "mid" }, { n: 16, x: 50, y: 16, tier: "mid" },
-  { n: 17, x: 31, y: 30, tier: "inner" }, { n: 18, x: 25, y: 50, tier: "inner" },
-  { n: 19, x: 31, y: 70, tier: "inner" }, { n: 20, x: 50, y: 76, tier: "inner" },
-  { n: 21, x: 69, y: 70, tier: "inner" }, { n: 22, x: 75, y: 50, tier: "inner" },
-  { n: 23, x: 69, y: 30, tier: "inner" }, { n: 24, x: 50, y: 24, tier: "inner" },
-  { n: 25, x: 36, y: 50, tier: "core" }, { n: 26, x: 50, y: 65, tier: "core" },
-  { n: 27, x: 64, y: 50, tier: "core" }, { n: 28, x: 58, y: 38, tier: "core" },
-  { n: 29, x: 50, y: 48, tier: "core" }, { n: 30, x: 50, y: 34, tier: "core" }
+  { n: 1, x: 17, y: 16, tier: "outer", power: "E", title: "Welcome To The Fire", meaning: "The ignition point. Fire activated. Transformation begins." },
+  { n: 2, x: 8, y: 50, tier: "outer", power: "W", title: "Reclamation (The Day Musiq Matrix Came Back)", meaning: "The return. Active reclamation. Movement from victimhood into agency." },
+  { n: 3, x: 17, y: 84, tier: "outer", power: "O", title: "Know Your Names", meaning: "Pattern recognition. Naming corruption. Bringing hidden structures into order." },
+  { n: 4, x: 50, y: 92, tier: "outer", power: "P", title: "Hold On", meaning: "Endurance under pressure." },
+  { n: 5, x: 83, y: 84, tier: "outer", power: "P", title: "Demonic Schemes", meaning: "Persistent commitment to truth despite emotional and spiritual interference." },
+  { n: 6, x: 92, y: 50, tier: "outer", power: "W", title: "Second Edition", meaning: "Conscious self-reconstruction." },
+  { n: 7, x: 83, y: 16, tier: "outer", power: "O", title: "Thought Form", meaning: "Mental architecture and operational law." },
+  { n: 8, x: 50, y: 8, tier: "outer", power: "R", title: "Remember The Price (When You Speak The Name)", meaning: "Teacher archetype. Stewardship of hard-earned wisdom." },
+  { n: 9, x: 26, y: 22, tier: "mid", power: "O", title: "Blueprint of the Divine", meaning: "Universal structure. Divine order." },
+  { n: 10, x: 18, y: 50, tier: "mid", power: "O", title: "Hostile Rewrite", meaning: "Correction of distorted narratives." },
+  { n: 11, x: 26, y: 78, tier: "mid", power: "O", title: "The Witness Don't Talk", meaning: "Observation before reaction. Internal governance." },
+  { n: 12, x: 50, y: 84, tier: "mid", power: "E", title: "Consecrated", meaning: "Burning away the false self." },
+  { n: 13, x: 74, y: 78, tier: "mid", power: "P", title: "Through The Fog", meaning: "Maintaining course despite uncertainty." },
+  { n: 14, x: 82, y: 50, tier: "mid", power: "W", title: "Code Red", meaning: "Emergency intervention. Immediate action." },
+  { n: 15, x: 74, y: 22, tier: "mid", power: "E", title: "Shadow Chains", meaning: "Transformation through confrontation with bondage." },
+  { n: 16, x: 50, y: 16, tier: "mid", power: "R", title: "Don't Hang That Word", meaning: "Moral correction and responsible language." },
+  { n: 17, x: 31, y: 30, tier: "inner", power: "W", title: "I Create As I Speak", meaning: "Manifestation through deliberate action." },
+  { n: 18, x: 25, y: 50, tier: "inner", power: "R", title: "Weapons Grade Transmission", meaning: "Broadcasting guidance during collective transition." },
+  { n: 19, x: 31, y: 70, tier: "inner", power: "E", title: "Blood Without Stains", meaning: "Transmuting trauma into power." },
+  { n: 20, x: 50, y: 76, tier: "inner", power: "O", title: "Red Flag Parade", meaning: "Recognition of patterns and warning systems." },
+  { n: 21, x: 69, y: 70, tier: "inner", power: "W", title: "Seer Broke Chains", meaning: "Liberation through decisive action." },
+  { n: 22, x: 75, y: 50, tier: "inner", power: "R", title: "Slumlord Fundamentalist", meaning: "Standing against injustice." },
+  { n: 23, x: 69, y: 30, tier: "inner", power: "O", title: "Misguided Priorities", meaning: "Reordering values." },
+  { n: 24, x: 50, y: 24, tier: "inner", power: "R", title: "Emerald Mode, Online", meaning: "Embodied leadership state." },
+  { n: 25, x: 36, y: 50, tier: "core", power: "E", title: "As Above, So Below", meaning: "Hermetic transmutation and correspondence." },
+  { n: 26, x: 50, y: 65, tier: "core", power: "R", title: "Chosen Ones", meaning: "Calling others into remembrance and responsibility." },
+  { n: 27, x: 64, y: 50, tier: "core", power: "R", title: "Elemental Orchestra", meaning: "Integration and mentorship." },
+  { n: 28, x: 58, y: 38, tier: "core", power: "O", title: "The Hierophant", meaning: "Examination of corrupted authority and authentic wisdom." },
+  { n: 29, x: 50, y: 48, tier: "core", power: "R", title: "Architect of the Aftermath", meaning: "Builder archetype. Leadership after collapse." },
+  { n: 30, x: 50, y: 34, tier: "core", power: "E", title: "Fire In My Veins", meaning: "Final embodiment of transformed power." }
 ];
+
+const powerDistribution = nodes.reduce((counts, node) => {
+  counts[node.power] = (counts[node.power] || 0) + 1;
+  return counts;
+}, {});
 
 const nodesEl = document.getElementById("nodes");
 const tooltip = document.getElementById("tooltip");
@@ -887,12 +908,14 @@ const barsEl = document.getElementById("bars");
 nodes.forEach((node) => {
   const button = document.createElement("button");
   button.type = "button";
-  button.className = `node ${node.tier}`;
+  button.className = `node power-${node.power.toLowerCase()}`;
   button.style.setProperty("--x", node.x);
   button.style.setProperty("--y", node.y);
+  button.style.setProperty("--tone", powerData[node.power].color);
   button.dataset.node = String(node.n);
   button.dataset.tier = node.tier;
-  button.setAttribute("aria-label", `Activate node ${node.n}`);
+  button.dataset.power = node.power;
+  button.setAttribute("aria-label", `Activate track ${node.n}: ${node.title}, ${node.power} ${powerData[node.power].label}`);
   button.innerHTML = `<span>${String(node.n).padStart(2, "0")}</span>`;
   button.addEventListener("click", () => activateNode(node.n));
   button.addEventListener("mouseenter", (event) => showTooltip(event, node));
@@ -946,10 +969,14 @@ function activateNode(nodeNumber) {
   document.getElementById("progress-fill").style.width = `${(visited.size / 30) * 100}%`;
   document.getElementById("temp-readout").textContent = nodeNumber >= 25 ? "CRIT" : `${Math.round(920 + nodeNumber * 74)} K`;
 
-  document.getElementById("panel-kicker").textContent = `${tierNames[node.tier]} // ring ${getRing(nodeNumber)}`;
-  document.getElementById("panel-title").textContent = `Node ${String(nodeNumber).padStart(2, "0")}`;
-  document.getElementById("panel-copy").textContent = nodeDescriptions[nodeNumber];
+  const power = powerData[node.power];
+  document.getElementById("panel-kicker").textContent = `${node.power} - ${power.label} // Ring ${getRing(nodeNumber)} // ${power.short}`;
+  document.getElementById("panel-title").textContent = `${String(nodeNumber).padStart(2, "0")} // ${node.title}`;
+  document.getElementById("panel-copy").textContent = node.meaning;
   document.getElementById("stat-grid").innerHTML = [
+    ["Power", node.power],
+    ["Mode", power.short],
+    ["Count", powerDistribution[node.power]],
     ["Thermal", `${stats.thermal}%`],
     ["Proximity", `${stats.proximity}m`],
     ["Signal", `${stats.signal}Hz`],
@@ -975,7 +1002,7 @@ function animateBars(thermal) {
 }
 
 function showTooltip(event, node) {
-  tooltip.textContent = `Node ${String(node.n).padStart(2, "0")} // ${tierNames[node.tier]}`;
+  tooltip.textContent = `${String(node.n).padStart(2, "0")} // ${node.power} // ${node.title}`;
   tooltip.style.opacity = "1";
   moveTooltip(event);
 }
