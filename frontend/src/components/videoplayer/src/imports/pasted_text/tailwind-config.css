@@ -1,0 +1,1504 @@
+<div
+  class="export-wrapper"
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <style>
+        /*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */
+        @layer theme, base, components, utilities;
+        @layer theme {
+          :root,
+          :root {
+            --font-sans:
+              ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+              "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-mono:
+              ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+              "Liberation Mono", "Courier New", monospace;
+            --spacing: 0.25rem;
+            --text-xs: 11px;
+            --text-xs--line-height: calc(1 / 0.75);
+            --text-sm: 13px;
+            --text-sm--line-height: calc(1.25 / 0.875);
+            --radius-sm: 4px;
+            --default-font-family: var(--font-sans);
+            --default-mono-font-family: var(--font-mono);
+            --color-foreground: #f0f0f0;
+            --color-muted-foreground: #7a5555;
+            --font-body: Space Grotesk;
+          }
+        }
+        @layer base {
+          *,
+          ::after,
+          ::before,
+          ::backdrop,
+          ::file-selector-button {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border: 0 solid;
+          }
+          html,
+          :root {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            tab-size: 4;
+            font-family: var(
+              --default-font-family,
+              ui-sans-serif,
+              system-ui,
+              sans-serif,
+              "Apple Color Emoji",
+              "Segoe UI Emoji",
+              "Segoe UI Symbol",
+              "Noto Color Emoji"
+            );
+            font-feature-settings: var(--default-font-feature-settings, normal);
+            font-variation-settings: var(
+              --default-font-variation-settings,
+              normal
+            );
+            -webkit-tap-highlight-color: transparent;
+          }
+          hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px;
+          }
+          abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted;
+          }
+          h1,
+          h2,
+          h3,
+          h4,
+          h5,
+          h6 {
+            font-size: inherit;
+            font-weight: inherit;
+          }
+          a {
+            color: inherit;
+            -webkit-text-decoration: inherit;
+            text-decoration: inherit;
+          }
+          b,
+          strong {
+            font-weight: bolder;
+          }
+          code,
+          kbd,
+          samp,
+          pre {
+            font-family: var(
+              --default-mono-font-family,
+              ui-monospace,
+              SFMono-Regular,
+              Menlo,
+              Monaco,
+              Consolas,
+              "Liberation Mono",
+              "Courier New",
+              monospace
+            );
+            font-feature-settings: var(
+              --default-mono-font-feature-settings,
+              normal
+            );
+            font-variation-settings: var(
+              --default-mono-font-variation-settings,
+              normal
+            );
+            font-size: 1em;
+          }
+          small {
+            font-size: 80%;
+          }
+          sub,
+          sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+          }
+          sub {
+            bottom: -0.25em;
+          }
+          sup {
+            top: -0.5em;
+          }
+          table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse;
+          }
+          :-moz-focusring {
+            outline: auto;
+          }
+          progress {
+            vertical-align: baseline;
+          }
+          summary {
+            display: list-item;
+          }
+          ol,
+          ul,
+          menu {
+            list-style: none;
+          }
+          img,
+          svg,
+          video,
+          canvas,
+          audio,
+          iframe,
+          embed,
+          object {
+            display: block;
+            vertical-align: middle;
+          }
+          img,
+          video {
+            max-width: 100%;
+            height: auto;
+          }
+          button,
+          input,
+          select,
+          optgroup,
+          textarea,
+          ::file-selector-button {
+            font: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            letter-spacing: inherit;
+            color: inherit;
+            border-radius: 0;
+            background-color: transparent;
+            opacity: 1;
+          }
+          :where(select:is([multiple], [size])) optgroup {
+            font-weight: bolder;
+          }
+          :where(select:is([multiple], [size])) optgroup option {
+            padding-inline-start: 20px;
+          }
+          ::file-selector-button {
+            margin-inline-end: 4px;
+          }
+          ::placeholder {
+            opacity: 1;
+          }
+          @supports (not (-webkit-appearance: -apple-pay-button)) or
+            (contain-intrinsic-size: 1px) {
+            ::placeholder {
+              color: currentcolor;
+              @supports (color: color-mix(in lab, red, red)) {
+                color: color-mix(in oklab, currentcolor 50%, transparent);
+              }
+            }
+          }
+          textarea {
+            resize: vertical;
+          }
+          ::-webkit-search-decoration {
+            -webkit-appearance: none;
+          }
+          ::-webkit-date-and-time-value {
+            min-height: 1lh;
+            text-align: inherit;
+          }
+          ::-webkit-datetime-edit {
+            display: inline-flex;
+          }
+          ::-webkit-datetime-edit-fields-wrapper {
+            padding: 0;
+          }
+          ::-webkit-datetime-edit,
+          ::-webkit-datetime-edit-year-field,
+          ::-webkit-datetime-edit-month-field,
+          ::-webkit-datetime-edit-day-field,
+          ::-webkit-datetime-edit-hour-field,
+          ::-webkit-datetime-edit-minute-field,
+          ::-webkit-datetime-edit-second-field,
+          ::-webkit-datetime-edit-millisecond-field,
+          ::-webkit-datetime-edit-meridiem-field {
+            padding-block: 0;
+          }
+          ::-webkit-calendar-picker-indicator {
+            line-height: 1;
+          }
+          :-moz-ui-invalid {
+            box-shadow: none;
+          }
+          button,
+          input:where([type="button"], [type="reset"], [type="submit"]),
+          ::file-selector-button {
+            appearance: button;
+          }
+          ::-webkit-inner-spin-button,
+          ::-webkit-outer-spin-button {
+            height: auto;
+          }
+          [hidden]:where(:not([hidden="until-found"])) {
+            display: none !important;
+          }
+        }
+        @layer utilities {
+          .absolute {
+            position: absolute;
+          }
+          .top-0 {
+            top: calc(var(--spacing) * 0);
+          }
+          .right-0 {
+            right: calc(var(--spacing) * 0);
+          }
+          .bottom-0 {
+            bottom: calc(var(--spacing) * 0);
+          }
+          .left-0 {
+            left: calc(var(--spacing) * 0);
+          }
+          .h-20 {
+            height: calc(var(--spacing) * 20);
+          }
+          .h-24 {
+            height: calc(var(--spacing) * 24);
+          }
+          .w-20 {
+            width: calc(var(--spacing) * 20);
+          }
+          .w-24 {
+            width: calc(var(--spacing) * 24);
+          }
+          .font-body {
+            font-family: var(--font-body);
+          }
+          .text-sm {
+            font-size: var(--text-sm);
+            line-height: var(--tw-leading, var(--text-sm--line-height));
+          }
+          .text-xs {
+            font-size: var(--text-xs);
+            line-height: var(--tw-leading, var(--text-xs--line-height));
+          }
+          .text-foreground {
+            color: var(--color-foreground);
+          }
+          .text-muted-foreground {
+            color: var(--color-muted-foreground);
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div
+        class="font-body"
+        style="
+          width: 100%;
+          min-height: 960px;
+          background: #060405;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 80px 40px;
+          position: relative;
+          overflow: hidden;
+        "
+        data-component="@components/VideoFrame3DPolished.jsx"
+      >
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+              ellipse 80% 60% at 50% 48%,
+              #220508 0%,
+              #100204 40%,
+              #060405 100%
+            );
+            pointer-events: none;
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            top: 10%;
+            left: 18%;
+            width: 64%;
+            height: 55%;
+            background: radial-gradient(
+              ellipse,
+              rgba(160, 8, 8, 0.09) 0%,
+              transparent 70%
+            );
+            pointer-events: none;
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 140px;
+            background: radial-gradient(
+              ellipse,
+              rgba(160, 6, 6, 0.14) 0%,
+              transparent 70%
+            );
+            pointer-events: none;
+          "
+        ></div>
+        <div style="perspective: 1300px; perspective-origin: 52% 46%">
+          <div
+            style="
+              transform: rotateX(12deg) rotateY(-16deg) rotateZ(1.5deg);
+              transform-style: preserve-3d;
+              display: inline-block;
+              filter: drop-shadow(0 70px 120px rgba(160, 8, 8, 0.65))
+                drop-shadow(0 20px 50px rgba(0, 0, 0, 0.98))
+                drop-shadow(0 0 60px rgba(140, 6, 6, 0.25));
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: 20px;
+                right: -44px;
+                width: 46px;
+                height: calc(100% - 40px);
+                transform-origin: left center;
+                transform: rotateY(90deg);
+                background: linear-gradient(
+                  180deg,
+                  #2c0808 0%,
+                  #160404 35%,
+                  #0e0202 70%,
+                  #1a0505 100%
+                );
+                border-top-right-radius: 16px;
+                border-bottom-right-radius: 16px;
+              "
+            >
+              <div
+                style="
+                  position: absolute;
+                  right: 10px;
+                  top: 28px;
+                  width: 18px;
+                  height: 2px;
+                  background: rgba(0, 0, 0, 0.75);
+                  border-radius: 1px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  right: 10px;
+                  top: 44px;
+                  width: 18px;
+                  height: 2px;
+                  background: rgba(0, 0, 0, 0.75);
+                  border-radius: 1px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  right: 10px;
+                  top: 60px;
+                  width: 18px;
+                  height: 2px;
+                  background: rgba(0, 0, 0, 0.75);
+                  border-radius: 1px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  right: 10px;
+                  top: 76px;
+                  width: 18px;
+                  height: 2px;
+                  background: rgba(0, 0, 0, 0.75);
+                  border-radius: 1px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  right: 10px;
+                  top: 92px;
+                  width: 18px;
+                  height: 2px;
+                  background: rgba(0, 0, 0, 0.75);
+                  border-radius: 1px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  right: 10px;
+                  top: 108px;
+                  width: 18px;
+                  height: 2px;
+                  background: rgba(0, 0, 0, 0.75);
+                  border-radius: 1px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  left: 6px;
+                  top: 30%;
+                  bottom: 30%;
+                  width: 2px;
+                  background: linear-gradient(
+                    180deg,
+                    transparent,
+                    rgba(200, 20, 20, 0.6),
+                    rgba(200, 20, 20, 0.9),
+                    rgba(200, 20, 20, 0.6),
+                    transparent
+                  );
+                  border-radius: 1px;
+                  box-shadow: 0 0 8px rgba(220, 20, 20, 0.7);
+                "
+              ></div>
+            </div>
+            <div
+              style="
+                position: absolute;
+                bottom: -38px;
+                left: 18px;
+                height: 40px;
+                width: calc(100% - 36px);
+                transform-origin: top center;
+                transform: rotateX(-90deg);
+                background: linear-gradient(
+                  90deg,
+                  #1e0505 0%,
+                  #120303 50%,
+                  #0e0202 100%
+                );
+                border-bottom-left-radius: 16px;
+                border-bottom-right-radius: 16px;
+              "
+            >
+              <div
+                style="
+                  position: absolute;
+                  top: 40%;
+                  left: 15%;
+                  right: 15%;
+                  height: 1px;
+                  background: rgba(180, 20, 20, 0.2);
+                "
+              ></div>
+            </div>
+            <div
+              style="
+                width: 830px;
+                border-radius: 28px;
+                padding: 11px;
+                position: relative;
+                background: linear-gradient(
+                  160deg,
+                  #6e1616 0%,
+                  #3c0b0b 12%,
+                  #1e0505 30%,
+                  #140303 55%,
+                  #1a0404 75%,
+                  #3a0c0c 90%,
+                  #581414 100%
+                );
+                border: 1.5px solid #7a2020;
+                box-shadow:
+                  inset 0 3px 6px rgba(255, 120, 120, 0.14),
+                  inset 0 -4px 10px rgba(0, 0, 0, 0.95),
+                  inset 4px 0 8px rgba(255, 80, 80, 0.06),
+                  inset -2px 0 6px rgba(0, 0, 0, 0.6);
+              "
+            >
+              <div
+                class="absolute top-0 left-0 w-24 h-24"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    #a02828 0%,
+                    transparent 52%
+                  );
+                  border-radius: 28px 0 0 0;
+                "
+              ></div>
+              <div
+                class="absolute top-0 right-0 w-24 h-24"
+                style="
+                  background: linear-gradient(
+                    225deg,
+                    #a02828 0%,
+                    transparent 52%
+                  );
+                  border-radius: 0 28px 0 0;
+                "
+              ></div>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24"
+                style="
+                  background: linear-gradient(
+                    45deg,
+                    #a02828 0%,
+                    transparent 52%
+                  );
+                  border-radius: 0 0 0 28px;
+                "
+              ></div>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24"
+                style="
+                  background: linear-gradient(
+                    315deg,
+                    #a02828 0%,
+                    transparent 52%
+                  );
+                  border-radius: 0 0 28px 0;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 36px;
+                  right: 36px;
+                  height: 2px;
+                  background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 140, 140, 0.28),
+                    rgba(255, 210, 210, 0.55),
+                    rgba(255, 140, 140, 0.28),
+                    transparent
+                  );
+                  border-radius: 1px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  bottom: 0;
+                  left: 36px;
+                  right: 36px;
+                  height: 2px;
+                  background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(0, 0, 0, 0.7),
+                    transparent
+                  );
+                "
+              ></div>
+              <div
+                style="
+                  border-radius: 20px;
+                  background: #040101;
+                  padding: 14px 14px 11px;
+                  border: 1px solid #3e1414;
+                  box-shadow:
+                    inset 0 0 40px rgba(0, 0, 0, 0.98),
+                    inset 0 2px 4px rgba(180, 20, 20, 0.08);
+                "
+              >
+                <div
+                  style="
+                    border-radius: 12px;
+                    overflow: hidden;
+                    aspect-ratio: 16/9;
+                    position: relative;
+                    background: #000;
+                    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.9);
+                  "
+                >
+                  <div
+                    style="
+                      position: absolute;
+                      inset: 0;
+                      background: radial-gradient(
+                        ellipse 90% 80% at 50% 50%,
+                        #170303 0%,
+                        #0d0101 55%,
+                        #060101 100%
+                      );
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      inset: 0;
+                      z-index: 3;
+                      background-image: repeating-linear-gradient(
+                        0deg,
+                        transparent,
+                        transparent 2px,
+                        rgba(255, 255, 255, 0.016) 2px,
+                        rgba(255, 255, 255, 0.016) 3px
+                      );
+                      pointer-events: none;
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      inset: 0;
+                      z-index: 4;
+                      background: linear-gradient(
+                        160deg,
+                        rgba(255, 255, 255, 0.055) 0%,
+                        transparent 38%
+                      );
+                      pointer-events: none;
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      inset: 0;
+                      z-index: 2;
+                      background: radial-gradient(
+                        ellipse 75% 70% at 50% 50%,
+                        transparent 50%,
+                        rgba(0, 0, 0, 0.65) 100%
+                      );
+                      pointer-events: none;
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      inset: 0;
+                      z-index: 1;
+                      background: radial-gradient(
+                        ellipse 55% 50% at 50% 50%,
+                        rgba(180, 12, 12, 0.22) 0%,
+                        rgba(130, 8, 8, 0.08) 45%,
+                        transparent 65%
+                      );
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      z-index: 2;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      width: 280px;
+                      height: 280px;
+                      border-radius: 50%;
+                      border: 1px solid rgba(200, 18, 18, 0.28);
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      z-index: 2;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      width: 220px;
+                      height: 220px;
+                      border-radius: 50%;
+                      border: 1px solid rgba(200, 18, 18, 0.2);
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      z-index: 2;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      width: 165px;
+                      height: 165px;
+                      border-radius: 50%;
+                      border: 1px solid rgba(200, 18, 18, 0.12000000000000002);
+                    "
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      top: 15px;
+                      left: 15px;
+                      z-index: 5;
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      background: rgba(4, 0, 0, 0.82);
+                      border: 1px solid rgba(180, 20, 20, 0.45);
+                      border-radius: 6px;
+                      padding: 5px 11px;
+                      backdrop-filter: blur(4px);
+                    "
+                  >
+                    <div
+                      style="
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background: #d01a1a;
+                        box-shadow: 0 0 7px #ff3535;
+                      "
+                    ></div>
+                    <span
+                      style="
+                        font-size: 10px;
+                        color: #b03030;
+                        letter-spacing: 0.12em;
+                        font-weight: 700;
+                      "
+                      ><span
+                        data-file="/components/VideoFrame3DPolished.jsx"
+                        data-idx="0"
+                        >R2 LIVE</span
+                      ></span
+                    >
+                  </div>
+                  <div
+                    style="
+                      position: absolute;
+                      top: 15px;
+                      right: 15px;
+                      z-index: 5;
+                      background: rgba(4, 0, 0, 0.82);
+                      border: 1px solid rgba(180, 18, 18, 0.4);
+                      border-radius: 6px;
+                      padding: 5px 11px;
+                    "
+                  >
+                    <span
+                      style="
+                        font-size: 10px;
+                        color: #c42020;
+                        letter-spacing: 0.14em;
+                        font-weight: 800;
+                      "
+                      ><span
+                        data-file="/components/VideoFrame3DPolished.jsx"
+                        data-idx="1"
+                        >4K</span
+                      ></span
+                    >
+                  </div>
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: 56px;
+                      left: 50%;
+                      transform: translateX(-50%);
+                      display: flex;
+                      align-items: flex-end;
+                      gap: 3px;
+                      z-index: 3;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 4px;
+                        height: 10px;
+                        background: rgba(210, 22, 22, 0.5);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 18px;
+                        background: rgba(210, 22, 22, 0.545);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 30px;
+                        background: rgba(210, 22, 22, 0.59);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 16px;
+                        background: rgba(210, 22, 22, 0.635);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 42px;
+                        background: rgba(210, 22, 22, 0.6799999999999999);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 26px;
+                        background: rgba(210, 22, 22, 0.725);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 14px;
+                        background: rgba(210, 22, 22, 0.77);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 36px;
+                        background: rgba(210, 22, 22, 0.815);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 22px;
+                        background: rgba(210, 22, 22, 0.86);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 28px;
+                        background: rgba(210, 22, 22, 0.905);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 10px;
+                        background: rgba(210, 22, 22, 0.95);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: 0 0 5px rgba(220, 28, 28, 0.45);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 40px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 24px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 14px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 34px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 18px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 12px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 26px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 38px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 16px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 30px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 20px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 10px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 32px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 16px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 4px;
+                        height: 20px;
+                        background: rgba(180, 22, 22, 0.22);
+                        border-radius: 2px 2px 0 0;
+                        box-shadow: none;
+                      "
+                    ></div>
+                  </div>
+                  <div
+                    style="
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -60%);
+                      z-index: 5;
+                    "
+                  >
+                    <div
+                      style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 120px;
+                        height: 120px;
+                        border-radius: 50%;
+                        background: radial-gradient(
+                          circle,
+                          rgba(200, 20, 20, 0.2) 0%,
+                          transparent 70%
+                        );
+                        box-shadow: 0 0 50px rgba(180, 14, 14, 0.4);
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 76px;
+                        height: 76px;
+                        border-radius: 50%;
+                        background: radial-gradient(
+                          circle at 38% 36%,
+                          rgba(240, 50, 50, 0.3) 0%,
+                          rgba(160, 14, 14, 0.18) 60%,
+                          transparent 80%
+                        );
+                        border: 1.5px solid rgba(220, 36, 36, 0.6);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow:
+                          0 0 36px rgba(200, 18, 18, 0.55),
+                          inset 0 1px 2px rgba(255, 100, 100, 0.2);
+                        position: relative;
+                      "
+                    >
+                      <div
+                        style="
+                          width: 0;
+                          height: 0;
+                          border-top: 14px solid transparent;
+                          border-bottom: 14px solid transparent;
+                          border-left: 24px solid rgba(255, 70, 70, 0.95);
+                          margin-left: 7px;
+                          filter: drop-shadow(0 0 10px rgba(255, 50, 50, 0.85));
+                        "
+                      ></div>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: 13px;
+                      right: 14px;
+                      z-index: 5;
+                      display: flex;
+                      align-items: center;
+                      gap: 5px;
+                    "
+                  >
+                    <span
+                      style="
+                        font-size: 10px;
+                        color: rgba(160, 50, 50, 0.5);
+                        letter-spacing: 0.09em;
+                      "
+                      ><span
+                        data-file="/components/VideoFrame3DPolished.jsx"
+                        data-idx="2"
+                        >SUPABASE · R2</span
+                      ></span
+                    >
+                  </div>
+                </div>
+                <div
+                  style="
+                    margin-top: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 14px;
+                    padding: 2px 4px;
+                  "
+                >
+                  <button
+                    style="
+                      background: none;
+                      border: none;
+                      color: #622020;
+                      padding: 2px;
+                    "
+                    data-media-type="banani-button"
+                  >
+                    <span
+                      class=""
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        width: 16px;
+                        height: 16px;
+                      "
+                      data-icon="skip-back"
+                      data-component="@globalComponents/Icon.jsx"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16px"
+                        height="16px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="3"
+                          d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432zM3 20V4"
+                        ></path></svg
+                    ></span></button
+                  ><button
+                    style="
+                      width: 38px;
+                      height: 38px;
+                      border-radius: 50%;
+                      background: linear-gradient(
+                        145deg,
+                        #c21818 0%,
+                        #780c0c 100%
+                      );
+                      border: 1.5px solid rgba(220, 48, 48, 0.75);
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      box-shadow:
+                        0 0 18px rgba(200, 18, 18, 0.55),
+                        inset 0 1px 2px rgba(255, 80, 80, 0.25);
+                      flex-shrink: 0;
+                    "
+                    data-media-type="banani-button"
+                  >
+                    <div
+                      style="
+                        width: 0;
+                        height: 0;
+                        border-top: 7px solid transparent;
+                        border-bottom: 7px solid transparent;
+                        border-left: 12px solid #fff;
+                        margin-left: 4px;
+                        opacity: 0.95;
+                      "
+                    ></div></button
+                  ><button
+                    style="
+                      background: none;
+                      border: none;
+                      color: #622020;
+                      padding: 2px;
+                    "
+                    data-media-type="banani-button"
+                  >
+                    <span
+                      class=""
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        width: 16px;
+                        height: 16px;
+                      "
+                      data-icon="skip-forward"
+                      data-component="@globalComponents/Icon.jsx"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16px"
+                        height="16px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="3"
+                          d="M21 4v16M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z"
+                        ></path></svg
+                    ></span></button
+                  ><span
+                    style="
+                      font-size: 12px;
+                      color: #6e3232;
+                      font-variant-numeric: tabular-nums;
+                      min-width: 34px;
+                      font-weight: 500;
+                    "
+                    >4:21</span
+                  >
+                  <div
+                    style="
+                      flex: 1;
+                      height: 3px;
+                      background: #2a0808;
+                      border-radius: 2px;
+                      position: relative;
+                    "
+                  >
+                    <div
+                      style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 58%;
+                        height: 100%;
+                        background: rgba(180, 20, 20, 0.18);
+                        border-radius: 2px;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        width: 35%;
+                        height: 100%;
+                        background: linear-gradient(90deg, #991212, #ee3030);
+                        border-radius: 2px;
+                        box-shadow: 0 0 10px rgba(200, 18, 18, 0.7);
+                        position: relative;
+                      "
+                    ></div>
+                    <div
+                      style="
+                        position: absolute;
+                        top: 50%;
+                        left: 35%;
+                        transform: translate(-50%, -50%);
+                        width: 11px;
+                        height: 11px;
+                        border-radius: 50%;
+                        background: radial-gradient(
+                          circle at 35% 35%,
+                          #ff6060,
+                          #cc2020
+                        );
+                        box-shadow: 0 0 12px rgba(255, 44, 44, 0.9);
+                      "
+                    ></div>
+                  </div>
+                  <span
+                    style="
+                      font-size: 12px;
+                      color: #6e3232;
+                      font-variant-numeric: tabular-nums;
+                      min-width: 34px;
+                      font-weight: 500;
+                      text-align: right;
+                    "
+                    >12:34</span
+                  ><button
+                    style="
+                      background: none;
+                      border: none;
+                      color: #4e2020;
+                      padding: 2px;
+                    "
+                    data-media-type="banani-button"
+                  >
+                    <span
+                      class=""
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        width: 15px;
+                        height: 15px;
+                      "
+                      data-icon="volume-2"
+                      data-component="@globalComponents/Icon.jsx"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15px"
+                        height="15px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="3.2"
+                          d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298zM16 9a5 5 0 0 1 0 6m3.364 3.364a9 9 0 0 0 0-12.728"
+                        ></path></svg
+                    ></span></button
+                  ><button
+                    style="
+                      background: none;
+                      border: none;
+                      color: #4e2020;
+                      padding: 2px;
+                    "
+                    data-media-type="banani-button"
+                  >
+                    <span
+                      class=""
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        width: 15px;
+                        height: 15px;
+                      "
+                      data-icon="maximize-2"
+                      data-component="@globalComponents/Icon.jsx"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15px"
+                        height="15px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="3.2"
+                          d="M15 3h6v6m0-6l-7 7M3 21l7-7m-1 7H3v-6"
+                        ></path></svg
+                    ></span>
+                  </button>
+                </div>
+                <div
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 9px 14px;
+                    background: rgba(255, 255, 255, 0.022);
+                    border-radius: 10px;
+                    border: 1px solid rgba(110, 18, 18, 0.28);
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 10px">
+                    <span
+                      style="
+                        font-size: 11px;
+                        color: #c22020;
+                        letter-spacing: 0.12em;
+                        font-weight: 700;
+                      "
+                      >VID-00421</span
+                    >
+                    <div
+                      style="width: 1px; height: 12px; background: #3e1010"
+                    ></div>
+                    <span
+                      style="
+                        font-size: 11px;
+                        color: #5a2e2e;
+                        letter-spacing: 0.05em;
+                      "
+                      >Sector 7 — Exterior Feed</span
+                    >
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 9px">
+                    <div
+                      style="
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background: #22c55e;
+                        box-shadow: 0 0 6px #22c55e;
+                      "
+                    ></div>
+                    <span
+                      style="
+                        font-size: 10px;
+                        color: #2e4e2e;
+                        letter-spacing: 0.07em;
+                      "
+                      ><span
+                        data-file="/components/VideoFrame3DPolished.jsx"
+                        data-idx="3"
+                        >Supabase</span
+                      ></span
+                    >
+                    <div
+                      style="width: 1px; height: 10px; background: #2e0e0e"
+                    ></div>
+                    <span
+                      class=""
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        width: 11px;
+                        height: 11px;
+                      "
+                      data-icon="cloud"
+                      data-component="@globalComponents/Icon.jsx"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="11px"
+                        height="11px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="4.363636363636363"
+                          d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9"
+                        ></path></svg></span
+                    ><span
+                      style="
+                        font-size: 10px;
+                        color: #4e2424;
+                        letter-spacing: 0.07em;
+                      "
+                      ><span
+                        data-file="/components/VideoFrame3DPolished.jsx"
+                        data-idx="4"
+                        >Cloudflare R2</span
+                      ></span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+</div>
