@@ -707,17 +707,21 @@ button {
 
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-bottom: 16px;
 }
 
 .stat {
-  min-height: 56px;
+  min-height: 64px;
   padding: 8px;
   border: 1px solid rgba(255, 115, 50, 0.28);
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.035);
+}
+
+.stat.wide {
+  grid-column: 1 / -1;
 }
 
 .stat small {
@@ -732,9 +736,14 @@ button {
   display: block;
   margin-top: 5px;
   color: #ffb36d;
-  font-size: 16px;
-  line-height: 1.1;
+  font-size: 14px;
+  line-height: 1.28;
   overflow-wrap: anywhere;
+}
+
+.stat.wide b {
+  font-size: 13px;
+  color: rgba(255, 232, 202, 0.84);
 }
 
 .bars {
@@ -754,6 +763,174 @@ button {
   background: linear-gradient(180deg, #ffe0a8, #ff6a19);
   box-shadow: 0 0 10px rgba(255, 82, 20, 0.65);
   transition: height 80ms linear;
+}
+
+.transmission-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 66, 10, 0.18), transparent 30%),
+    radial-gradient(circle at 50% 50%, transparent 0 38%, rgba(0, 0, 0, 0.72) 74%, rgba(0, 0, 0, 0.94) 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.transmission-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.transmission-window {
+  position: relative;
+  width: min(680px, calc(100vw - 42px));
+  min-height: 300px;
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--transmission-color, #ff6f2a), white 18%);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(6, 8, 14, 0.95), rgba(1, 3, 7, 0.97)),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 68%), transparent 52%);
+  box-shadow:
+    inset 0 0 46px color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 86%),
+    0 0 60px color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 48%),
+    0 26px 110px rgba(0, 0, 0, 0.86);
+  overflow: hidden;
+  transform: translateY(18px) scale(0.98);
+  transition: transform 220ms ease;
+}
+
+.transmission-overlay.open .transmission-window {
+  transform: translateY(0) scale(1);
+}
+
+.transmission-window.self-destructing {
+  animation: terminal-collapse 620ms ease-in forwards;
+}
+
+@keyframes terminal-collapse {
+  0% { transform: translateY(0) scale(1); filter: brightness(1); opacity: 1; }
+  45% { transform: translateY(0) scaleX(1.03) scaleY(0.72); filter: brightness(1.8); opacity: 0.92; }
+  100% { transform: translateY(12px) scaleX(0.06) scaleY(0.01); filter: brightness(3); opacity: 0; }
+}
+
+.transmission-window::before,
+.transmission-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.transmission-window::before {
+  background:
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 68%), transparent),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 8px);
+  mix-blend-mode: screen;
+  opacity: 0.18;
+  animation: transmission-scan 1.2s linear infinite;
+}
+
+.transmission-window::after {
+  border: 1px solid rgba(255, 238, 212, 0.12);
+  clip-path: polygon(0 0, 100% 0, 100% 12px, calc(100% - 34px) 12px, calc(100% - 34px) 100%, 100% 100%, 100% 100%, 0 100%, 0 calc(100% - 12px), 34px calc(100% - 12px), 34px 12px, 0 12px);
+}
+
+@keyframes transmission-scan {
+  from { transform: translateY(-18px); }
+  to { transform: translateY(18px); }
+}
+
+.transmission-kicker {
+  color: rgba(255, 224, 190, 0.58);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.transmission-title {
+  margin-top: 8px;
+  color: #fff2de;
+  font-size: clamp(24px, 4vw, 44px);
+  font-weight: 900;
+  line-height: 1.03;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 18%);
+}
+
+.transmission-caption {
+  min-height: 74px;
+  margin-top: 18px;
+  color: rgba(255, 232, 202, 0.88);
+  font-size: clamp(15px, 2vw, 20px);
+  line-height: 1.55;
+  text-shadow: 0 0 14px rgba(255, 98, 28, 0.34);
+}
+
+.transmission-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.transmission-chip {
+  padding: 7px 9px;
+  border: 1px solid color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 36%);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 88%);
+  color: rgba(255, 241, 220, 0.78);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.transmission-countdown {
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid color-mix(in srgb, var(--transmission-color, #ff6f2a), white 16%);
+  border-radius: 50%;
+  color: #fff2dc;
+  font-size: 24px;
+  font-weight: 900;
+  box-shadow: inset 0 0 18px color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 72%), 0 0 24px color-mix(in srgb, var(--transmission-color, #ff6f2a), transparent 52%);
+}
+
+.transmission-progress {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 18px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.transmission-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--transmission-color, #ff6f2a), #fff1c8);
+  box-shadow: 0 0 18px var(--transmission-color, #ff6f2a);
+  transform-origin: left;
+}
+
+.transmission-overlay.open .transmission-progress span {
+  animation: burn-down 8s linear forwards;
+}
+
+@keyframes burn-down {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
 }
 
 .track-table-shell {
@@ -1117,9 +1294,20 @@ button {
       </div>
       <button class="close" id="close-panel" type="button" aria-label="Close diagnostics panel">X</button>
     </div>
-    <p class="panel-copy" id="panel-copy">Select a node on the mainframe to expose its signal stream, thermal posture, and core proximity.</p>
+    <p class="panel-copy" id="panel-copy">Select a node on the mainframe to receive its title, caption, POWER classification, and archetype metadata.</p>
     <div class="stat-grid" id="stat-grid"></div>
     <div class="bars" id="bars" aria-hidden="true"></div>
+  </section>
+
+  <section id="transmission-overlay" class="transmission-overlay" aria-live="assertive" aria-hidden="true">
+    <div id="transmission-window" class="transmission-window">
+      <div id="transmission-countdown" class="transmission-countdown">8</div>
+      <div id="transmission-kicker" class="transmission-kicker">Transmission armed</div>
+      <div id="transmission-title" class="transmission-title">Node --</div>
+      <div id="transmission-caption" class="transmission-caption"></div>
+      <div id="transmission-meta" class="transmission-meta"></div>
+      <div class="transmission-progress"><span></span></div>
+    </div>
   </section>
 
   <section class="track-table-shell" aria-label="Interactive Reclamation track map">
@@ -1156,13 +1344,14 @@ button {
 const visited = new Set();
 let currentNode = null;
 let barFrame = 0;
+let transmissionTimers = [];
 
 const powerData = {
-  P: { label: "Persistent Will", color: "#7C3AED", short: "Stabilizer", artifact: "Violet Will Anchor" },
-  O: { label: "Purification Through Order", color: "#FBBF24", short: "Governing Force", artifact: "Amber Order Lens" },
-  W: { label: "Willful Action", color: "#60A5FA", short: "Engine", artifact: "Blue Action Drive" },
-  E: { label: "Energetic Transmutation", color: "#FB923C", short: "Transformative Axis", artifact: "Orange Crucible Flame" },
-  R: { label: "Righteous Leadership", color: "#4ADE80", short: "Leadership Axis", artifact: "Emerald Steward Beacon" }
+  P: { label: "Persistent Will", color: "#7C3AED", artifact: "Violet Will Anchor", archetypes: ["Survivor", "Devotee", "Burial Witness"] },
+  O: { label: "Purification Through Order", color: "#FBBF24", artifact: "Amber Order Lens", archetypes: ["Witness", "Architect", "Pattern Keeper"] },
+  W: { label: "Willful Action", color: "#60A5FA", artifact: "Blue Action Drive", archetypes: ["Liberator", "Creator", "Chain Breaker"] },
+  E: { label: "Energetic Transmutation", color: "#FB923C", artifact: "Orange Crucible Flame", archetypes: ["Alchemist", "Flame Bearer", "Shadow Integrator"] },
+  R: { label: "Righteous Leadership", color: "#4ADE80", artifact: "Emerald Steward Beacon", archetypes: ["Steward", "Teacher", "Aftermath Architect"] }
 };
 
 const nodes = [
@@ -1201,18 +1390,23 @@ const nodes = [
 nodes.forEach((node) => {
   const power = powerData[node.power];
   node.artifact = `${power.artifact} // ${node.title}`;
+  node.caption = node.meaning;
+  node.powerClassification = power.label;
+  node.archetypes = power.archetypes;
 });
-
-const powerDistribution = nodes.reduce((counts, node) => {
-  counts[node.power] = (counts[node.power] || 0) + 1;
-  return counts;
-}, {});
 
 const nodesEl = document.getElementById("nodes");
 const tooltip = document.getElementById("tooltip");
 const panel = document.getElementById("panel");
 const barsEl = document.getElementById("bars");
 const trackTableBody = document.getElementById("track-table-body");
+const transmissionOverlay = document.getElementById("transmission-overlay");
+const transmissionWindow = document.getElementById("transmission-window");
+const transmissionCountdown = document.getElementById("transmission-countdown");
+const transmissionKicker = document.getElementById("transmission-kicker");
+const transmissionTitle = document.getElementById("transmission-title");
+const transmissionCaption = document.getElementById("transmission-caption");
+const transmissionMeta = document.getElementById("transmission-meta");
 
 nodes.forEach((node) => {
   const button = document.createElement("button");
@@ -1235,7 +1429,7 @@ nodes.forEach((node) => {
       <div class="node-popover-foot">Click node to activate visualizer for this track</div>
     </div>
   `;
-  button.addEventListener("click", () => activateNode(node.n));
+  button.addEventListener("click", () => launchTransmission(node.n));
   button.addEventListener("mouseenter", (event) => showTooltip(event, node));
   button.addEventListener("mousemove", (event) => moveTooltip(event));
   button.addEventListener("mouseleave", hideTooltip);
@@ -1256,7 +1450,7 @@ nodes.forEach((node) => {
   `;
   row.addEventListener("mouseenter", () => setTableHover(node.n, true));
   row.addEventListener("mouseleave", () => setTableHover(node.n, false));
-  row.addEventListener("click", () => activateNode(node.n));
+  row.addEventListener("click", () => launchTransmission(node.n));
   trackTableBody.appendChild(row);
 });
 
@@ -1280,10 +1474,94 @@ function getRing(nodeNumber) {
 
 function getStats(nodeNumber) {
   const thermal = Math.min(99, Math.round(18 + nodeNumber * 2.65));
-  const proximity = Math.round(440 - nodeNumber * 13.5);
-  const signal = Math.round(260 + nodeNumber * 23);
-  const integrity = Math.max(4, Math.round(100 - nodeNumber * 2.9));
-  return { thermal, proximity, signal, integrity };
+  return { thermal };
+}
+
+function clearTransmissionTimers() {
+  transmissionTimers.forEach((timer) => clearTimeout(timer));
+  transmissionTimers = [];
+}
+
+function setTransmissionTimer(callback, delay) {
+  const timer = setTimeout(callback, delay);
+  transmissionTimers.push(timer);
+  return timer;
+}
+
+function scrambleText(text, progress) {
+  const glyphs = "▓▒░/\\<>[]{}01#*+-=:_";
+  return text.split("").map((char, index) => {
+    if (char === " ") return " ";
+    const threshold = index / Math.max(1, text.length);
+    if (progress > threshold + 0.08) return char;
+    if (progress > threshold - 0.18) return glyphs[(index + Math.floor(progress * 80)) % glyphs.length];
+    return " ";
+  }).join("");
+}
+
+function revealCaption(text) {
+  const startedAt = performance.now();
+  const duration = 5600;
+
+  function tick(now) {
+    const progress = Math.min(1, (now - startedAt) / duration);
+    transmissionCaption.textContent = scrambleText(text, progress);
+    if (progress < 1 && transmissionOverlay.classList.contains("open")) {
+      requestAnimationFrame(tick);
+    } else {
+      transmissionCaption.textContent = text;
+    }
+  }
+
+  requestAnimationFrame(tick);
+}
+
+function launchTransmission(nodeNumber) {
+  const node = nodes.find((item) => item.n === nodeNumber);
+  if (!node) return;
+
+  const power = powerData[node.power];
+  clearTransmissionTimers();
+  cancelAnimationFrame(barFrame);
+  panel.classList.remove("open");
+
+  transmissionOverlay.classList.remove("open");
+  transmissionWindow.classList.remove("self-destructing");
+  transmissionWindow.style.setProperty("--transmission-color", power.color);
+  transmissionKicker.textContent = `Node ${String(node.n).padStart(2, "0")} // ${power.label}`;
+  transmissionTitle.textContent = node.title;
+  transmissionCaption.textContent = "";
+  transmissionCountdown.textContent = "8";
+  transmissionMeta.innerHTML = [
+    `POWER: ${power.label}`,
+    `ARCHETYPES: ${node.archetypes.join(" / ")}`,
+    `CAPTION LOCK: ACTIVE`
+  ].map((item) => `<span class="transmission-chip">${item}</span>`).join("");
+
+  // Force a style flush so the progress animation restarts on repeated clicks.
+  void transmissionOverlay.offsetWidth;
+  transmissionOverlay.classList.add("open");
+  transmissionOverlay.setAttribute("aria-hidden", "false");
+  revealCaption(node.caption);
+
+  for (let remaining = 7; remaining >= 1; remaining -= 1) {
+    setTransmissionTimer(() => {
+      transmissionCountdown.textContent = String(remaining);
+    }, (8 - remaining) * 1000);
+  }
+
+  setTransmissionTimer(() => {
+    transmissionKicker.textContent = "SELF DESTRUCT // VISUALIZER HANDOFF";
+    transmissionCountdown.textContent = "0";
+    transmissionWindow.classList.add("self-destructing");
+  }, 8000);
+
+  setTransmissionTimer(() => {
+    transmissionOverlay.classList.remove("open");
+    transmissionOverlay.setAttribute("aria-hidden", "true");
+    transmissionWindow.classList.remove("self-destructing");
+    activateNode(nodeNumber);
+  }, 8620);
 }
 
 function activateNode(nodeNumber) {
@@ -1309,19 +1587,15 @@ function activateNode(nodeNumber) {
   document.getElementById("temp-readout").textContent = nodeNumber >= 25 ? "CRIT" : `${Math.round(920 + nodeNumber * 74)} K`;
 
   const power = powerData[node.power];
-  document.getElementById("panel-kicker").textContent = `${node.power} - ${power.label} // Ring ${getRing(nodeNumber)} // ${power.short}`;
+  document.getElementById("panel-kicker").textContent = `Visualizer track open // Ring ${getRing(nodeNumber)}`;
   document.getElementById("panel-title").textContent = `${String(nodeNumber).padStart(2, "0")} // ${node.title}`;
-  document.getElementById("panel-copy").textContent = node.meaning;
+  document.getElementById("panel-copy").textContent = node.caption;
   document.getElementById("stat-grid").innerHTML = [
-    ["Power", node.power],
-    ["Mode", power.short],
-    ["Artifact", power.artifact],
-    ["Count", powerDistribution[node.power]],
-    ["Thermal", `${stats.thermal}%`],
-    ["Proximity", `${stats.proximity}m`],
-    ["Signal", `${stats.signal}Hz`],
-    ["Integrity", `${stats.integrity}%`]
-  ].map(([label, value]) => `<div class="stat"><small>${label}</small><b>${value}</b></div>`).join("");
+    ["Title Metadata", node.title, "wide"],
+    ["Caption", node.caption, "wide"],
+    ["Power Classification", power.label, ""],
+    ["Archetypes", node.archetypes.join(" / "), ""]
+  ].map(([label, value, span]) => `<div class="stat ${span}"><small>${label}</small><b>${value}</b></div>`).join("");
 
   panel.classList.add("open");
   cancelAnimationFrame(barFrame);
