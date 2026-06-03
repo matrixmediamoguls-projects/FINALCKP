@@ -19,6 +19,23 @@
   --text: #ffe8c8;
   --muted: rgba(255, 211, 171, 0.62);
   --shadow: 0 0 18px rgba(255, 65, 18, 0.75), 0 0 56px rgba(117, 42, 255, 0.36);
+  --pulse-color: #ff3b10;
+  --camera-x: 0px;
+  --camera-y: 0px;
+  --plate-x: 0px;
+  --plate-y: 0px;
+  --plate-tilt-x: 0deg;
+  --plate-tilt-y: 0deg;
+  --core-x: 0px;
+  --core-y: 0px;
+  --core-tilt-x: 0deg;
+  --core-tilt-y: 0deg;
+  --stage-x: 0px;
+  --stage-y: 0px;
+  --stage-tilt-x: 0deg;
+  --stage-tilt-y: 0deg;
+  --overlay-x: 0px;
+  --overlay-y: 0px;
 }
 
 *,
@@ -49,7 +66,13 @@ button {
   min-height: 560px;
   overflow: hidden;
   isolation: isolate;
-  background: #020306;
+  perspective: 1200px;
+  perspective-origin: calc(50% + var(--camera-x)) calc(48% + var(--camera-y));
+  background:
+    radial-gradient(circle at 50% 52%, rgba(255, 72, 16, 0.15), transparent 20%),
+    radial-gradient(circle at 24% 18%, rgba(54, 113, 255, 0.12), transparent 27%),
+    radial-gradient(circle at 76% 74%, rgba(51, 255, 213, 0.1), transparent 24%),
+    #020306;
 }
 
 .plate,
@@ -67,8 +90,10 @@ button {
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.78)),
     url("assets/circuit-grid-reference.png") center / cover no-repeat;
-  filter: contrast(1.16) saturate(1.22) brightness(0.74);
-  transform: scale(1.035);
+  filter: contrast(1.28) saturate(1.62) brightness(0.78);
+  transform: translate3d(var(--plate-x), var(--plate-y), -120px) rotateX(var(--plate-tilt-x)) rotateY(var(--plate-tilt-y)) scale(1.075);
+  transform-origin: center;
+  will-change: transform;
 }
 
 .plate::before {
@@ -97,15 +122,17 @@ button {
   width: min(64vw, 860px);
   height: min(62vw, 700px);
   inset: 50% auto auto 50%;
-  transform: translate(-50%, -49%);
+  transform: translate3d(calc(-50% + var(--core-x)), calc(-49% + var(--core-y)), 46px) rotateX(var(--core-tilt-x)) rotateY(var(--core-tilt-y));
   background:
     radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.9) 72%),
     url("assets/core-ring-reference.png") center / cover no-repeat;
   border-radius: 50%;
   opacity: 0.78;
-  filter: contrast(1.18) saturate(1.35) brightness(0.88);
+  filter: contrast(1.3) saturate(1.72) brightness(0.95);
   mix-blend-mode: screen;
   mask-image: radial-gradient(circle at 50% 50%, black 0 42%, rgba(0, 0, 0, 0.78) 54%, transparent 72%);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .core-plate::before {
@@ -179,6 +206,27 @@ button {
   height: 100%;
   pointer-events: none;
   mix-blend-mode: screen;
+  transform: translate3d(var(--overlay-x), var(--overlay-y), 72px);
+  will-change: transform;
+}
+
+.color-grade {
+  position: absolute;
+  inset: -12%;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--pulse-color), transparent 70%), transparent 21%),
+    conic-gradient(from 190deg at 50% 52%, rgba(255, 54, 12, 0.18), rgba(116, 58, 255, 0.15), rgba(45, 181, 255, 0.14), rgba(31, 255, 210, 0.11), rgba(255, 116, 18, 0.18));
+  mix-blend-mode: screen;
+  opacity: 0.64;
+  filter: saturate(1.35) contrast(1.12);
+  animation: grade-drift 11s ease-in-out infinite alternate;
+}
+
+@keyframes grade-drift {
+  from { transform: rotate(-1deg) scale(1.02); opacity: 0.5; }
+  to { transform: rotate(1.6deg) scale(1.08); opacity: 0.72; }
 }
 
 .trace-backbone,
@@ -230,6 +278,9 @@ button {
   inset: 72px 88px 92px;
   z-index: 5;
   pointer-events: none;
+  transform: translate3d(var(--stage-x), var(--stage-y), 118px) rotateX(var(--stage-tilt-x)) rotateY(var(--stage-tilt-y));
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .node {
@@ -241,7 +292,7 @@ button {
   top: calc(var(--y) * 1%);
   width: 56px;
   height: 56px;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 34px);
   display: grid;
   place-items: center;
   border: 1px solid color-mix(in srgb, var(--tone), white 20%);
@@ -259,6 +310,7 @@ button {
   cursor: pointer;
   pointer-events: auto;
   transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+  transform-style: preserve-3d;
 }
 
 .node:hover {
@@ -366,7 +418,7 @@ button {
 .node:hover,
 .node.active,
 .node.hover-preview {
-  transform: translate(-50%, -50%) scale(1.13);
+  transform: translate3d(-50%, -50%, 86px) scale(1.13);
   filter: brightness(1.35);
   box-shadow:
     inset 0 0 0 7px rgba(0, 0, 0, 0.48),
@@ -419,13 +471,49 @@ button {
   top: 50%;
   width: 220px;
   height: 268px;
-  transform: translate(-50%, -52%);
+  transform: translate3d(-50%, -52%, 156px) rotateX(-5deg);
   z-index: 6;
   pointer-events: none;
+  transform-style: preserve-3d;
   filter:
-    drop-shadow(0 0 16px rgba(255, 42, 8, 0.9))
-    drop-shadow(0 0 64px rgba(255, 88, 20, 0.76))
-    drop-shadow(0 0 120px rgba(255, 14, 0, 0.34));
+    drop-shadow(0 0 18px rgba(255, 248, 201, 0.66))
+    drop-shadow(0 0 34px rgba(255, 42, 8, 0.94))
+    drop-shadow(0 0 84px rgba(255, 88, 20, 0.82))
+    drop-shadow(0 0 150px rgba(116, 42, 255, 0.28));
+}
+
+.depth-rings {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(54vw, 670px);
+  aspect-ratio: 1 / 0.54;
+  transform: translate3d(-50%, -51%, 94px) rotateX(66deg);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  z-index: 4;
+  filter:
+    drop-shadow(0 0 18px rgba(255, 87, 18, 0.48))
+    drop-shadow(0 0 34px rgba(91, 73, 255, 0.32));
+}
+
+.depth-ring {
+  position: absolute;
+  inset: var(--ring-inset);
+  border-radius: 50%;
+  background:
+    conic-gradient(from var(--ring-angle), transparent 0 8%, rgba(255, 230, 181, 0.9) 10%, rgba(255, 60, 12, 0.82) 13%, transparent 17% 25%, rgba(112, 74, 255, 0.78) 29%, transparent 34% 50%, rgba(42, 177, 255, 0.72) 54%, transparent 60% 73%, rgba(255, 112, 18, 0.84) 78%, transparent 84% 100%);
+  opacity: var(--ring-opacity);
+  mask: radial-gradient(ellipse, transparent 0 var(--ring-cut), black calc(var(--ring-cut) + 1%), black calc(var(--ring-cut) + 4%), transparent calc(var(--ring-cut) + 6%));
+  animation: depth-ring-spin var(--ring-speed) linear infinite;
+}
+
+.ring-a { --ring-inset: 0%; --ring-cut: 42%; --ring-angle: 0deg; --ring-opacity: 0.74; --ring-speed: 16s; }
+.ring-b { --ring-inset: 9%; --ring-cut: 36%; --ring-angle: 70deg; --ring-opacity: 0.58; --ring-speed: 11s; animation-direction: reverse; }
+.ring-c { --ring-inset: 19%; --ring-cut: 28%; --ring-angle: 150deg; --ring-opacity: 0.48; --ring-speed: 8s; }
+
+@keyframes depth-ring-spin {
+  to { transform: rotate(360deg); }
 }
 
 #fire-canvas {
@@ -1294,6 +1382,7 @@ button {
   <div class="core-plate" aria-hidden="true"></div>
   <canvas id="spark-field" aria-hidden="true"></canvas>
   <div class="lighting" aria-hidden="true"></div>
+  <div class="color-grade" aria-hidden="true"></div>
 
   <svg id="circuit-overlay" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
     <path class="trace-backbone" d="M50 310H245L305 255H430L500 310L570 255H700L760 310H950" />
@@ -1309,6 +1398,11 @@ button {
   </svg>
 
   <section class="stage" aria-label="Thirty node core grid">
+    <div class="depth-rings" aria-hidden="true">
+      <div class="depth-ring ring-a"></div>
+      <div class="depth-ring ring-b"></div>
+      <div class="depth-ring ring-c"></div>
+    </div>
     <div class="core-fire" aria-hidden="true">
       <canvas id="fire-canvas"></canvas>
       <div class="fire-glass"></div>
@@ -1687,6 +1781,7 @@ function activateNode(nodeNumber) {
   document.getElementById("temp-readout").textContent = nodeNumber >= 25 ? "CRIT" : `${Math.round(920 + nodeNumber * 74)} K`;
 
   const power = powerData[node.power];
+  document.documentElement.style.setProperty("--pulse-color", power.color);
   document.getElementById("panel-kicker").textContent = `Visualizer track open // Ring ${getRing(nodeNumber)}`;
   document.getElementById("panel-title").textContent = `${String(nodeNumber).padStart(2, "0")} // ${node.title}`;
   document.getElementById("panel-copy").textContent = node.caption;
@@ -1738,6 +1833,71 @@ function hideTooltip() {
   document.querySelectorAll(".track-row.table-hover").forEach((row) => row.classList.remove("table-hover"));
 }
 
+const app = document.getElementById("app");
+const camera = {
+  targetX: 0,
+  targetY: 0,
+  x: 0,
+  y: 0,
+  frame: 0,
+  lastInput: 0
+};
+
+function setSceneCameraVars(x, y) {
+  const root = document.documentElement.style;
+  root.setProperty("--camera-x", `${x * 18}px`);
+  root.setProperty("--camera-y", `${y * 14}px`);
+  root.setProperty("--plate-x", `${-x * 18}px`);
+  root.setProperty("--plate-y", `${-y * 14}px`);
+  root.setProperty("--plate-tilt-x", `${y * -1.15}deg`);
+  root.setProperty("--plate-tilt-y", `${x * 1.15}deg`);
+  root.setProperty("--core-x", `${x * 10}px`);
+  root.setProperty("--core-y", `${y * 8}px`);
+  root.setProperty("--core-tilt-x", `${y * -2.4}deg`);
+  root.setProperty("--core-tilt-y", `${x * 2.7}deg`);
+  root.setProperty("--stage-x", `${x * 18}px`);
+  root.setProperty("--stage-y", `${y * 12}px`);
+  root.setProperty("--stage-tilt-x", `${y * -4.2}deg`);
+  root.setProperty("--stage-tilt-y", `${x * 4.8}deg`);
+  root.setProperty("--overlay-x", `${x * 28}px`);
+  root.setProperty("--overlay-y", `${y * 20}px`);
+}
+
+function animateSceneCamera(now = performance.now()) {
+  if (now - camera.lastInput > 1600) {
+    camera.targetX = Math.sin(now * 0.00034) * 0.16;
+    camera.targetY = Math.cos(now * 0.00027) * 0.11;
+  }
+
+  camera.x += (camera.targetX - camera.x) * 0.12;
+  camera.y += (camera.targetY - camera.y) * 0.12;
+  setSceneCameraVars(camera.x, camera.y);
+  camera.frame = requestAnimationFrame(animateSceneCamera);
+}
+
+function requestSceneCameraFrame() {
+  if (!camera.frame) camera.frame = requestAnimationFrame(animateSceneCamera);
+}
+
+function handleScenePointerMove(event) {
+  camera.lastInput = performance.now();
+  camera.targetX = (event.clientX / window.innerWidth - 0.5) * 2;
+  camera.targetY = (event.clientY / window.innerHeight - 0.5) * 2;
+  requestSceneCameraFrame();
+}
+
+app.addEventListener("pointermove", handleScenePointerMove);
+app.addEventListener("mousemove", handleScenePointerMove);
+
+app.addEventListener("pointerleave", () => {
+  camera.lastInput = 0;
+  camera.targetX = 0;
+  camera.targetY = 0;
+  requestSceneCameraFrame();
+});
+
+requestSceneCameraFrame();
+
 const canvas = document.getElementById("spark-field");
 const ctx = canvas.getContext("2d");
 let sparks = [];
@@ -1754,31 +1914,56 @@ function resizeCanvas() {
   canvas.style.width = `${window.innerWidth}px`;
   canvas.style.height = `${window.innerHeight}px`;
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  sparks = Array.from({ length: 110 }, () => ({
+  sparks = Array.from({ length: 175 }, () => ({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
-    vx: (Math.random() - 0.5) * 0.34,
-    vy: -0.15 - Math.random() * 0.45,
-    size: 0.5 + Math.random() * 1.8,
-    hue: Math.random() > 0.66 ? 214 : Math.random() > 0.45 ? 278 : 18,
-    alpha: 0.15 + Math.random() * 0.65
+    depth: 0.38 + Math.random() * 1.45,
+    vx: (Math.random() - 0.5) * 0.42,
+    vy: -0.22 - Math.random() * 0.72,
+    size: 0.35 + Math.random() * 1.45,
+    length: 10 + Math.random() * 34,
+    hue: Math.random() > 0.72 ? 190 + Math.random() * 42 : Math.random() > 0.46 ? 265 + Math.random() * 35 : 10 + Math.random() * 28,
+    alpha: 0.14 + Math.random() * 0.72,
+    shimmer: Math.random() * Math.PI * 2
   }));
 }
 
 function drawSparks() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   ctx.globalCompositeOperation = "lighter";
+  const cx = window.innerWidth * 0.5;
+  const cy = window.innerHeight * 0.52;
   sparks.forEach((spark) => {
-    spark.x += spark.vx;
-    spark.y += spark.vy;
-    if (spark.y < -12 || spark.x < -12 || spark.x > window.innerWidth + 12) {
+    spark.shimmer += 0.035;
+    const orbitPull = Math.max(-0.22, Math.min(0.22, (spark.x - cx) / window.innerWidth * 0.45));
+    spark.x += (spark.vx + orbitPull) * spark.depth;
+    spark.y += (spark.vy - Math.abs(spark.x - cx) / window.innerWidth * 0.1) * spark.depth;
+    if (spark.y < -28 || spark.x < -40 || spark.x > window.innerWidth + 40) {
       spark.x = Math.random() * window.innerWidth;
       spark.y = window.innerHeight + Math.random() * 80;
+      spark.depth = 0.38 + Math.random() * 1.45;
+      spark.hue = Math.random() > 0.72 ? 190 + Math.random() * 42 : Math.random() > 0.46 ? 265 + Math.random() * 35 : 10 + Math.random() * 28;
     }
+
+    const pulse = 0.72 + Math.sin(spark.shimmer) * 0.28;
+    const tailX = spark.x - spark.vx * spark.length - (spark.x - cx) * 0.012;
+    const tailY = spark.y - spark.vy * spark.length + (spark.y - cy) * 0.006;
+    const gradient = ctx.createLinearGradient(tailX, tailY, spark.x, spark.y);
+    gradient.addColorStop(0, `hsla(${spark.hue}, 100%, 58%, 0)`);
+    gradient.addColorStop(0.55, `hsla(${spark.hue}, 100%, 62%, ${spark.alpha * 0.34 * pulse})`);
+    gradient.addColorStop(1, `hsla(${spark.hue + 18}, 100%, 82%, ${spark.alpha * 0.9 * pulse})`);
+
     ctx.beginPath();
-    ctx.fillStyle = `hsla(${spark.hue}, 100%, 64%, ${spark.alpha})`;
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = Math.max(0.45, spark.size * spark.depth);
     ctx.shadowColor = `hsl(${spark.hue}, 100%, 58%)`;
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 10 + spark.depth * 12;
+    ctx.moveTo(tailX, tailY);
+    ctx.lineTo(spark.x, spark.y);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.fillStyle = `hsla(${spark.hue + 20}, 100%, 78%, ${spark.alpha * 0.75})`;
     ctx.arc(spark.x, spark.y, spark.size, 0, Math.PI * 2);
     ctx.fill();
   });
@@ -1791,12 +1976,12 @@ function resetFireParticle(particle, hotStart = false) {
   particle.y = fireBounds.height * (0.79 + Math.random() * 0.12);
   particle.vx = (Math.random() - 0.5) * 0.62;
   particle.vy = -(0.82 + Math.random() * 1.85);
-  particle.radius = 9 + Math.random() * 30;
+  particle.radius = 8 + Math.random() * 34;
   particle.life = hotStart ? Math.random() : 0.72 + Math.random() * 0.52;
-  particle.decay = 0.009 + Math.random() * 0.014;
+  particle.decay = 0.007 + Math.random() * 0.013;
   particle.hue = 15 + Math.random() * 34;
   particle.wobble = Math.random() * Math.PI * 2;
-  particle.stretch = 1.25 + Math.random() * 1.45;
+  particle.stretch = 1.35 + Math.random() * 1.7;
 }
 
 function resizeFireCanvas() {
@@ -1809,7 +1994,7 @@ function resizeFireCanvas() {
   fireCanvas.width = Math.floor(fireBounds.width * ratio);
   fireCanvas.height = Math.floor(fireBounds.height * ratio);
   fireCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  fireParticles = Array.from({ length: 86 }, () => {
+  fireParticles = Array.from({ length: 128 }, () => {
     const particle = {};
     resetFireParticle(particle, true);
     return particle;
@@ -1874,6 +2059,16 @@ function drawFire() {
   fireCtx.beginPath();
   fireCtx.ellipse(cx, baseY, fireBounds.width * 0.36, fireBounds.height * 0.22, 0, 0, Math.PI * 2);
   fireCtx.fill();
+
+  const beamWidth = fireBounds.width * (0.08 + Math.sin(t * 0.0026) * 0.018);
+  const beamX = cx + Math.sin(t * 0.0017) * fireBounds.width * 0.018;
+  const beam = fireCtx.createLinearGradient(beamX, fireBounds.height * 0.02, beamX, baseY);
+  beam.addColorStop(0, "rgba(255, 248, 214, 0)");
+  beam.addColorStop(0.38, "rgba(255, 244, 198, 0.28)");
+  beam.addColorStop(0.72, "rgba(255, 72, 9, 0.18)");
+  beam.addColorStop(1, "rgba(255, 72, 9, 0)");
+  fireCtx.fillStyle = beam;
+  fireCtx.fillRect(beamX - beamWidth * 0.5, fireBounds.height * 0.02, beamWidth, baseY);
 
   drawFireTendrils(t);
 
