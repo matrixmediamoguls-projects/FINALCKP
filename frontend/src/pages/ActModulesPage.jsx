@@ -226,6 +226,11 @@ const ActModulesPage = () => {
       return;
     }
 
+    if (act.num === 1) {
+      navigate("/act/1/entry");
+      return;
+    }
+
     const step = act.num === activeAct ? nextStepIndex : 0;
     setActivatingAct(act);
     if (activationTimerRef.current) window.clearTimeout(activationTimerRef.current);

@@ -13,7 +13,7 @@ const acts = [
     color: '#54ff9f',
     rgb: '84, 255, 159',
     emblem: '/emblem/act_one_module_emblem.png',
-    route: '/protocol/1',
+    route: '/act/1/entry',
     status: 'Ready',
     signal: '01',
   },

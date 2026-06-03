@@ -16,6 +16,7 @@ const ReclamationCodex = lazy(() => import('./acts/Reclamation/ReclamationCodex'
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));
+const ActOneEntry = lazy(() => import('./pages/ActOneEntry'));
 const LaunchModule = lazy(() => import('./pages/LaunchModule'));
 const ActModulesPage = lazy(() => import('./pages/ActModulesPage'));
 const ActPage = lazy(() => import('./pages/ActPage'));
@@ -122,6 +123,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute withShell={false}>
             <ActNavigation />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/act/1/entry"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ActOneEntry />
           </ProtectedRoute>
         }
       />

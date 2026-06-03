@@ -219,6 +219,10 @@ const LaunchModule = () => {
 
   const handleWarpComplete = useCallback(() => {
     if (!warpDest) return;
+    if (warpDest === 1) {
+      navigate("/act/1/entry");
+      return;
+    }
     navigate(`/activation?act=${warpDest}`, { state: { act: warpDest } });
   }, [navigate, warpDest]);
 
