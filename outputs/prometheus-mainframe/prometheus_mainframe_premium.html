@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Mainframe - Premium Core Grid</title>
+<style>
+:root {
+  --ember: #ff3b10;
+  --ember-hot: #ff7a18;
+  --gold: #ffd08a;
+  --blue: #2e7cff;
+  --cyan: #20e0ff;
+  --violet: #8b35ff;
+  --teal: #35ffd0;
+  --panel: rgba(4, 7, 13, 0.76);
+  --panel-strong: rgba(3, 5, 10, 0.92);
+  --line: rgba(255, 100, 44, 0.42);
+  --text: #ffe8c8;
+  --muted: rgba(255, 211, 171, 0.62);
+  --shadow: 0 0 18px rgba(255, 65, 18, 0.75), 0 0 56px rgba(117, 42, 255, 0.36);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #010204;
+  color: var(--text);
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #020306;
+}
+
+.plate,
+.plate::before,
+.plate::after,
+.core-plate,
+.core-plate::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.plate {
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.78)),
+    url("assets/circuit-grid-reference.png") center / cover no-repeat;
+  filter: contrast(1.16) saturate(1.22) brightness(0.74);
+  transform: scale(1.035);
+}
+
+.plate::before {
+  content: "";
+  background:
+    radial-gradient(circle at 50% 51%, rgba(255, 92, 20, 0.46), transparent 22%),
+    radial-gradient(circle at 50% 50%, rgba(83, 43, 255, 0.24), transparent 38%),
+    radial-gradient(circle at 18% 18%, rgba(44, 114, 255, 0.18), transparent 20%),
+    radial-gradient(circle at 80% 72%, rgba(31, 255, 212, 0.16), transparent 18%);
+  mix-blend-mode: screen;
+  opacity: 0.86;
+}
+
+.plate::after {
+  content: "";
+  opacity: 0.32;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px;
+  mask-image: radial-gradient(circle at 50% 50%, black 0 48%, transparent 75%);
+}
+
+.core-plate {
+  z-index: 1;
+  width: min(64vw, 860px);
+  height: min(62vw, 700px);
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -49%);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.9) 72%),
+    url("assets/core-ring-reference.png") center / cover no-repeat;
+  border-radius: 50%;
+  opacity: 0.78;
+  filter: contrast(1.18) saturate(1.35) brightness(0.88);
+  mix-blend-mode: screen;
+  mask-image: radial-gradient(circle at 50% 50%, black 0 42%, rgba(0, 0, 0, 0.78) 54%, transparent 72%);
+}
+
+.core-plate::before {
+  content: "";
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 245, 210, 0.42), transparent 7%),
+    radial-gradient(circle at 50% 50%, rgba(255, 45, 12, 0.58), transparent 24%),
+    radial-gradient(circle at 50% 50%, rgba(128, 45, 255, 0.24), transparent 50%);
+  mix-blend-mode: screen;
+  animation: core-breathe 3.8s ease-in-out infinite;
+}
+
+@keyframes core-breathe {
+  0%, 100% { opacity: 0.7; transform: scale(0.99); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+#spark-field {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.lighting {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 63, 9, 0.24), transparent 22%),
+    radial-gradient(ellipse at 50% 38%, transparent 0 35%, rgba(0, 0, 0, 0.48) 72%, #000 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 19% 81%, rgba(0, 0, 0, 0.72));
+}
+
+.lighting::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.17;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 4px 4px, 4px 4px;
+  mix-blend-mode: overlay;
+}
+
+.lighting::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0 48%, rgba(255, 90, 12, 0.12) 49%, transparent 50% 100%);
+  background-size: 100% 24px;
+  opacity: 0.15;
+  animation: scan 5s linear infinite;
+}
+
+@keyframes scan {
+  from { transform: translateY(-24px); }
+  to { transform: translateY(24px); }
+}
+
+#circuit-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.trace-backbone,
+.trace-pulse {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.trace-backbone {
+  stroke: rgba(255, 107, 40, 0.34);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 12px rgba(255, 66, 15, 0.65));
+}
+
+.trace-blue {
+  stroke: rgba(47, 122, 255, 0.56);
+  filter: drop-shadow(0 0 10px rgba(47, 122, 255, 0.68));
+}
+
+.trace-violet {
+  stroke: rgba(143, 55, 255, 0.54);
+  filter: drop-shadow(0 0 10px rgba(143, 55, 255, 0.7));
+}
+
+.trace-teal {
+  stroke: rgba(45, 255, 210, 0.46);
+  filter: drop-shadow(0 0 10px rgba(45, 255, 210, 0.62));
+}
+
+.trace-pulse {
+  stroke: #fff2db;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 16 740;
+  animation: pulse-route 3.8s linear infinite;
+  opacity: 0.78;
+}
+
+.pulse-delay-1 { animation-delay: -1.2s; }
+.pulse-delay-2 { animation-delay: -2.4s; }
+.pulse-delay-3 { animation-delay: -3s; }
+
+@keyframes pulse-route {
+  to { stroke-dashoffset: -756; }
+}
+
+.stage {
+  position: absolute;
+  inset: 72px 88px 92px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.node {
+  --x: 50;
+  --y: 50;
+  --tone: var(--ember);
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 56px;
+  height: 56px;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--tone), white 20%);
+  border-radius: 50%;
+  color: #ffe3bf;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.3), transparent 13%),
+    radial-gradient(circle, rgba(255, 102, 32, 0.3), rgba(2, 4, 8, 0.86) 62%);
+  box-shadow:
+    inset 0 0 0 7px rgba(0, 0, 0, 0.48),
+    inset 0 0 18px color-mix(in srgb, var(--tone), transparent 28%),
+    0 0 14px color-mix(in srgb, var(--tone), transparent 16%),
+    0 0 42px color-mix(in srgb, var(--tone), transparent 54%);
+  text-shadow: 0 0 16px currentColor;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+}
+
+.node::before,
+.node::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, var(--tone), transparent 25%);
+  opacity: 0.58;
+}
+
+.node::after {
+  inset: 9px;
+  border-color: rgba(255, 229, 188, 0.42);
+}
+
+.node span {
+  position: relative;
+  z-index: 1;
+  font-family: "Segoe UI Semibold", "Trebuchet MS", sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.node:hover,
+.node.active {
+  transform: translate(-50%, -50%) scale(1.13);
+  filter: brightness(1.35);
+  box-shadow:
+    inset 0 0 0 7px rgba(0, 0, 0, 0.48),
+    inset 0 0 24px color-mix(in srgb, var(--tone), transparent 8%),
+    0 0 18px color-mix(in srgb, var(--tone), transparent 0%),
+    0 0 72px color-mix(in srgb, var(--tone), transparent 28%);
+}
+
+.node.visited {
+  border-color: rgba(255, 228, 177, 0.82);
+}
+
+.node.outer { --tone: var(--blue); opacity: 0.86; }
+.node.mid { --tone: var(--violet); }
+.node.inner { --tone: var(--teal); }
+.node.core { --tone: var(--ember-hot); }
+
+.core-sigil {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 174px;
+  height: 208px;
+  transform: translate(-50%, -52%);
+  z-index: 6;
+  pointer-events: none;
+  filter: drop-shadow(0 0 18px rgba(255, 42, 8, 0.95)) drop-shadow(0 0 70px rgba(255, 88, 20, 0.72));
+}
+
+.core-sigil path {
+  fill: rgba(255, 72, 12, 0.18);
+  stroke: #ffdfb3;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+.core-sigil .flame-fill {
+  fill: url("#flame-fill");
+  stroke: #fff2c8;
+  opacity: 0.96;
+  animation: flame-rise 2.6s ease-in-out infinite;
+  transform-origin: 50% 62%;
+}
+
+@keyframes flame-rise {
+  0%, 100% { transform: scaleY(0.98); opacity: 0.88; }
+  50% { transform: scaleY(1.06); opacity: 1; }
+}
+
+.hud-top,
+.hud-bottom,
+.side-hud,
+.panel {
+  position: absolute;
+  z-index: 8;
+}
+
+.hud-top {
+  top: 18px;
+  left: 24px;
+  right: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.hud-title {
+  text-align: center;
+  color: #fff1d6;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: var(--shadow);
+}
+
+.hud-rail {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 99, 31, 0.8), rgba(55, 136, 255, 0.55), transparent);
+  box-shadow: 0 0 18px rgba(255, 78, 20, 0.62);
+}
+
+.hud-bottom {
+  left: 22px;
+  right: 22px;
+  bottom: 18px;
+  height: 42px;
+  display: grid;
+  grid-template-columns: 180px 1fr 180px;
+  align-items: center;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.status-chip {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 103, 42, 0.45);
+  border-radius: 6px;
+  background: rgba(4, 9, 18, 0.68);
+  box-shadow: inset 0 0 24px rgba(255, 83, 18, 0.1), 0 0 24px rgba(0, 0, 0, 0.58);
+  color: rgba(255, 222, 190, 0.78);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff5b19;
+  box-shadow: 0 0 14px #ff5b19;
+  animation: blink 1.6s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.32; }
+}
+
+.progress-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--violet), var(--ember-hot), var(--gold));
+  box-shadow: 0 0 24px rgba(255, 88, 18, 0.8);
+  transition: width 360ms ease;
+}
+
+.side-hud {
+  top: 50%;
+  width: 180px;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.side-hud.left { left: 22px; }
+.side-hud.right { right: 22px; }
+
+.metric {
+  border: 1px solid rgba(255, 95, 31, 0.36);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(8, 14, 24, 0.78), rgba(2, 4, 8, 0.72));
+  box-shadow: inset 0 0 26px rgba(255, 65, 12, 0.08), 0 0 24px rgba(0, 0, 0, 0.5);
+}
+
+.metric label {
+  display: block;
+  color: rgba(255, 214, 170, 0.54);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 4px;
+  color: #ffb56f;
+  font-size: 18px;
+  line-height: 1.2;
+  text-shadow: 0 0 18px rgba(255, 87, 18, 0.8);
+}
+
+.panel {
+  right: 22px;
+  bottom: 72px;
+  width: min(440px, calc(100vw - 44px));
+  max-height: min(390px, calc(100vh - 144px));
+  padding: 18px;
+  border: 1px solid rgba(255, 101, 35, 0.48);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(8, 13, 22, 0.9), rgba(2, 4, 8, 0.94)),
+    radial-gradient(circle at 16% 0%, rgba(255, 95, 22, 0.22), transparent 34%);
+  box-shadow: inset 0 0 42px rgba(255, 85, 20, 0.08), 0 18px 80px rgba(0, 0, 0, 0.75);
+  transform: translateY(24px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.panel.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.panel-kicker {
+  color: rgba(255, 202, 154, 0.58);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.panel-title {
+  margin-top: 4px;
+  color: #fff1d8;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 1px;
+  text-shadow: 0 0 22px rgba(255, 73, 18, 0.68);
+}
+
+.close {
+  min-width: 42px;
+  height: 34px;
+  border: 1px solid rgba(255, 121, 54, 0.54);
+  border-radius: 6px;
+  background: rgba(255, 61, 15, 0.08);
+  color: #ffd6ba;
+  cursor: pointer;
+}
+
+.panel-copy {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  min-height: 56px;
+  padding: 8px;
+  border: 1px solid rgba(255, 115, 50, 0.28);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.stat small {
+  display: block;
+  color: rgba(255, 218, 184, 0.5);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stat b {
+  display: block;
+  margin-top: 5px;
+  color: #ffb36d;
+  font-size: 16px;
+  line-height: 1.1;
+}
+
+.bars {
+  height: 86px;
+  display: flex;
+  align-items: end;
+  gap: 3px;
+  padding: 8px 0 0;
+  border-top: 1px solid rgba(255, 113, 47, 0.18);
+}
+
+.bar {
+  flex: 1;
+  min-width: 2px;
+  height: 14px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(180deg, #ffe0a8, #ff6a19);
+  box-shadow: 0 0 10px rgba(255, 82, 20, 0.65);
+  transition: height 80ms linear;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 20;
+  max-width: 260px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 111, 42, 0.45);
+  border-radius: 6px;
+  background: rgba(3, 6, 12, 0.92);
+  color: #ffe5c3;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 0 24px rgba(255, 73, 18, 0.32);
+  opacity: 0;
+  transform: translate(12px, -12px);
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+@media (max-width: 980px) {
+  #app { min-height: 620px; }
+  .stage { inset: 88px 42px 116px; }
+  .side-hud { display: none; }
+  .hud-bottom { grid-template-columns: 130px 1fr 130px; }
+  .node { width: 46px; height: 46px; }
+  .node span { font-size: 15px; }
+  .core-sigil { width: 136px; height: 166px; }
+  .core-plate { width: 92vw; height: 78vw; }
+}
+
+@media (max-width: 680px) {
+  #app {
+    min-height: 720px;
+    overflow-y: auto;
+  }
+  .hud-top {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .hud-rail { display: none; }
+  .hud-title {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .stage {
+    inset: 112px 18px 190px;
+  }
+  .node {
+    width: 38px;
+    height: 38px;
+  }
+  .node::before { inset: -5px; }
+  .node span {
+    font-size: 12px;
+  }
+  .hud-bottom {
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .status-chip {
+    height: 30px;
+    font-size: 9px;
+  }
+  .panel {
+    left: 14px;
+    right: 14px;
+    bottom: 110px;
+    width: auto;
+    max-height: 300px;
+    overflow: auto;
+  }
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+<main id="app" aria-label="Prometheus mainframe interactive grid">
+  <div class="plate" aria-hidden="true"></div>
+  <div class="core-plate" aria-hidden="true"></div>
+  <canvas id="spark-field" aria-hidden="true"></canvas>
+  <div class="lighting" aria-hidden="true"></div>
+
+  <svg id="circuit-overlay" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+    <path class="trace-backbone" d="M50 310H245L305 255H430L500 310L570 255H700L760 310H950" />
+    <path class="trace-backbone trace-blue" d="M120 110H300L350 175H500V310" />
+    <path class="trace-backbone trace-violet" d="M880 120H700L650 185H500V310" />
+    <path class="trace-backbone trace-teal" d="M120 510H300L360 420H500V310" />
+    <path class="trace-backbone" d="M880 510H705L640 420H500V310" />
+    <path class="trace-backbone" d="M500 40V190M500 430V585" />
+    <path class="trace-pulse" d="M50 310H245L305 255H430L500 310L570 255H700L760 310H950" />
+    <path class="trace-pulse pulse-delay-1" d="M120 110H300L350 175H500V310" />
+    <path class="trace-pulse pulse-delay-2" d="M880 510H705L640 420H500V310" />
+    <path class="trace-pulse pulse-delay-3" d="M500 40V190M500 430V585" />
+  </svg>
+
+  <section class="stage" aria-label="Thirty node core grid">
+    <svg class="core-sigil" viewBox="0 0 174 208" aria-hidden="true">
+      <defs>
+        <linearGradient id="flame-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff6ca" />
+          <stop offset="0.42" stop-color="#ff5d14" />
+          <stop offset="1" stop-color="#9b0700" />
+        </linearGradient>
+      </defs>
+      <path d="M87 10C112 44 118 65 107 89C124 75 131 54 129 33C157 67 166 106 148 143C134 174 107 190 87 200C67 190 40 174 26 143C9 108 16 70 45 33C43 57 51 76 67 89C56 65 62 44 87 10Z" />
+      <path class="flame-fill" d="M88 42C105 69 104 88 93 106C109 96 118 80 118 61C140 93 138 132 116 157C106 169 95 176 87 181C78 176 67 169 57 157C35 132 34 94 56 61C56 80 65 96 81 106C70 88 71 69 88 42Z" />
+      <path class="flame-fill" d="M88 92C98 109 96 126 87 137C78 126 76 109 88 92Z" />
+    </svg>
+    <div id="nodes"></div>
+  </section>
+
+  <header class="hud-top">
+    <div class="hud-rail"></div>
+    <div class="hud-title">Prometheus Mainframe // Core Grid Interface</div>
+    <div class="hud-rail"></div>
+  </header>
+
+  <aside class="side-hud left" aria-hidden="true">
+    <div class="metric"><label>Core Temp</label><strong id="temp-readout">INF K</strong></div>
+    <div class="metric"><label>Visited</label><strong id="visited-readout">00 / 30</strong></div>
+    <div class="metric"><label>Thermal Bias</label><strong>EMBER</strong></div>
+  </aside>
+
+  <aside class="side-hud right" aria-hidden="true">
+    <div class="metric"><label>Grid Integrity</label><strong id="integrity-readout">100%</strong></div>
+    <div class="metric"><label>Active Node</label><strong id="active-readout">--</strong></div>
+    <div class="metric"><label>Containment</label><strong>LOCKED</strong></div>
+  </aside>
+
+  <section id="panel" class="panel" aria-live="polite">
+    <div class="panel-head">
+      <div>
+        <div class="panel-kicker" id="panel-kicker">Awaiting activation</div>
+        <div class="panel-title" id="panel-title">Node --</div>
+      </div>
+      <button class="close" id="close-panel" type="button" aria-label="Close diagnostics panel">X</button>
+    </div>
+    <p class="panel-copy" id="panel-copy">Select a node on the mainframe to expose its signal stream, thermal posture, and core proximity.</p>
+    <div class="stat-grid" id="stat-grid"></div>
+    <div class="bars" id="bars" aria-hidden="true"></div>
+  </section>
+
+  <footer class="hud-bottom">
+    <div class="status-chip"><span class="status-dot"></span><span>SYS: Online</span></div>
+    <div class="progress-track" aria-label="Activation progress"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="status-chip"><span>Nodes: 30</span><span class="status-dot"></span></div>
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="tooltip"></div>
+</main>
+
+<script>
+const visited = new Set();
+let currentNode = null;
+let barFrame = 0;
+
+const tierNames = {
+  outer: "Outer perimeter",
+  mid: "Mid grid",
+  inner: "Inner grid",
+  core: "Core proximity"
+};
+
+const nodeDescriptions = {
+  1: "Cold frontier relay. The Promethean signal is still a distant flicker.",
+  2: "Perimeter junction carrying first contact across the western trace.",
+  3: "Boundary anchor with a low-frequency pulse under the surface plating.",
+  4: "Southern stabilizer. Structural readings are clean but heat is rising.",
+  5: "Edge transmitter with dormant potential and strong return signal.",
+  6: "Eastern perimeter relay crossing a blue-shifted plasma channel.",
+  7: "Fringe relay node approaching the mid-grid thermal threshold.",
+  8: "Northern gateway. Outer ring completes and the descent begins.",
+  9: "Mid-grid entry. Heat blooms across adjacent conduits.",
+  10: "Circuit nexus. Dual-polarity traces converge and harden.",
+  11: "Thermal gate with signal pressure rising above nominal tolerance.",
+  12: "Grid crossroads. Flame resonance bleeds into the lower array.",
+  13: "Mid-field relay carrying stressed but usable integrity.",
+  14: "Deep mid-grid node. The surrounding silence is a pressure field.",
+  15: "Convergence node where outer pathways terminate in high flux.",
+  16: "Mid-ring apex. Last stable point before the inner sanctum.",
+  17: "Inner threshold. Thermal bloom is visible across the shell.",
+  18: "Heat boundary node with measurable signal distortion.",
+  19: "Sanctum approach. Time-stamp integrity begins to fracture.",
+  20: "Inner circuit nexus receiving full-range core resonance.",
+  21: "Deep inner grid. Shielding is under sustained thermal load.",
+  22: "Core adjacency relay with bright electromagnetic bleed.",
+  23: "Proximity alert. Every packet carries the Flame signature.",
+  24: "Inner ring final. Last node before pure Promethean proximity.",
+  25: "Core proximity achieved. Flame resonance is critical but contained.",
+  26: "Every trace glows here. Signal has become near-thermal plasma.",
+  27: "Sanctum lock node. Structural collapse thresholds are close.",
+  28: "Core orbit node. The Flame breathes through the grid shell.",
+  29: "One node from source. The mainframe remembers the whole route.",
+  30: "Promethean Flame node. Maximum proximity and direct core speech."
+};
+
+const nodes = [
+  { n: 1, x: 17, y: 16, tier: "outer" }, { n: 2, x: 8, y: 50, tier: "outer" },
+  { n: 3, x: 17, y: 84, tier: "outer" }, { n: 4, x: 50, y: 92, tier: "outer" },
+  { n: 5, x: 83, y: 84, tier: "outer" }, { n: 6, x: 92, y: 50, tier: "outer" },
+  { n: 7, x: 83, y: 16, tier: "outer" }, { n: 8, x: 50, y: 8, tier: "outer" },
+  { n: 9, x: 26, y: 22, tier: "mid" }, { n: 10, x: 18, y: 50, tier: "mid" },
+  { n: 11, x: 26, y: 78, tier: "mid" }, { n: 12, x: 50, y: 84, tier: "mid" },
+  { n: 13, x: 74, y: 78, tier: "mid" }, { n: 14, x: 82, y: 50, tier: "mid" },
+  { n: 15, x: 74, y: 22, tier: "mid" }, { n: 16, x: 50, y: 16, tier: "mid" },
+  { n: 17, x: 31, y: 30, tier: "inner" }, { n: 18, x: 25, y: 50, tier: "inner" },
+  { n: 19, x: 31, y: 70, tier: "inner" }, { n: 20, x: 50, y: 76, tier: "inner" },
+  { n: 21, x: 69, y: 70, tier: "inner" }, { n: 22, x: 75, y: 50, tier: "inner" },
+  { n: 23, x: 69, y: 30, tier: "inner" }, { n: 24, x: 50, y: 24, tier: "inner" },
+  { n: 25, x: 36, y: 50, tier: "core" }, { n: 26, x: 50, y: 65, tier: "core" },
+  { n: 27, x: 64, y: 50, tier: "core" }, { n: 28, x: 58, y: 38, tier: "core" },
+  { n: 29, x: 50, y: 48, tier: "core" }, { n: 30, x: 50, y: 34, tier: "core" }
+];
+
+const nodesEl = document.getElementById("nodes");
+const tooltip = document.getElementById("tooltip");
+const panel = document.getElementById("panel");
+const barsEl = document.getElementById("bars");
+
+nodes.forEach((node) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = `node ${node.tier}`;
+  button.style.setProperty("--x", node.x);
+  button.style.setProperty("--y", node.y);
+  button.dataset.node = String(node.n);
+  button.dataset.tier = node.tier;
+  button.setAttribute("aria-label", `Activate node ${node.n}`);
+  button.innerHTML = `<span>${String(node.n).padStart(2, "0")}</span>`;
+  button.addEventListener("click", () => activateNode(node.n));
+  button.addEventListener("mouseenter", (event) => showTooltip(event, node));
+  button.addEventListener("mousemove", (event) => moveTooltip(event));
+  button.addEventListener("mouseleave", hideTooltip);
+  nodesEl.appendChild(button);
+});
+
+for (let i = 0; i < 38; i += 1) {
+  const bar = document.createElement("div");
+  bar.className = "bar";
+  barsEl.appendChild(bar);
+}
+
+document.getElementById("close-panel").addEventListener("click", () => {
+  panel.classList.remove("open");
+  cancelAnimationFrame(barFrame);
+});
+
+function getRing(nodeNumber) {
+  if (nodeNumber <= 8) return "IV";
+  if (nodeNumber <= 16) return "III";
+  if (nodeNumber <= 24) return "II";
+  return "I";
+}
+
+function getStats(nodeNumber) {
+  const thermal = Math.min(99, Math.round(18 + nodeNumber * 2.65));
+  const proximity = Math.round(440 - nodeNumber * 13.5);
+  const signal = Math.round(260 + nodeNumber * 23);
+  const integrity = Math.max(4, Math.round(100 - nodeNumber * 2.9));
+  return { thermal, proximity, signal, integrity };
+}
+
+function activateNode(nodeNumber) {
+  currentNode = nodeNumber;
+  visited.add(nodeNumber);
+
+  document.querySelectorAll(".node").forEach((button) => {
+    const n = Number(button.dataset.node);
+    button.classList.toggle("active", n === nodeNumber);
+    button.classList.toggle("visited", visited.has(n));
+  });
+
+  const node = nodes.find((item) => item.n === nodeNumber);
+  const stats = getStats(nodeNumber);
+
+  document.getElementById("visited-readout").textContent = `${String(visited.size).padStart(2, "0")} / 30`;
+  document.getElementById("active-readout").textContent = String(nodeNumber).padStart(2, "0");
+  document.getElementById("integrity-readout").textContent = `${Math.max(1, 100 - Math.round((visited.size / 30) * 68))}%`;
+  document.getElementById("progress-fill").style.width = `${(visited.size / 30) * 100}%`;
+  document.getElementById("temp-readout").textContent = nodeNumber >= 25 ? "CRIT" : `${Math.round(920 + nodeNumber * 74)} K`;
+
+  document.getElementById("panel-kicker").textContent = `${tierNames[node.tier]} // ring ${getRing(nodeNumber)}`;
+  document.getElementById("panel-title").textContent = `Node ${String(nodeNumber).padStart(2, "0")}`;
+  document.getElementById("panel-copy").textContent = nodeDescriptions[nodeNumber];
+  document.getElementById("stat-grid").innerHTML = [
+    ["Thermal", `${stats.thermal}%`],
+    ["Proximity", `${stats.proximity}m`],
+    ["Signal", `${stats.signal}Hz`],
+    ["Integrity", `${stats.integrity}%`]
+  ].map(([label, value]) => `<div class="stat"><small>${label}</small><b>${value}</b></div>`).join("");
+
+  panel.classList.add("open");
+  cancelAnimationFrame(barFrame);
+  animateBars(stats.thermal);
+}
+
+function animateBars(thermal) {
+  const bars = barsEl.querySelectorAll(".bar");
+  const t = performance.now() * 0.005;
+  bars.forEach((bar, index) => {
+    const wave = Math.sin(t + index * 0.42) * 0.32 + Math.cos(t * 0.7 + index * 0.2) * 0.18;
+    const height = Math.max(10, Math.min(82, thermal * 0.58 + wave * thermal));
+    const hot = Math.round(120 + height * 1.6);
+    bar.style.height = `${height}px`;
+    bar.style.background = `linear-gradient(180deg, rgb(255, 238, 190), rgb(${hot}, 82, 12), rgb(99, 5, 0))`;
+  });
+  barFrame = requestAnimationFrame(() => animateBars(thermal));
+}
+
+function showTooltip(event, node) {
+  tooltip.textContent = `Node ${String(node.n).padStart(2, "0")} // ${tierNames[node.tier]}`;
+  tooltip.style.opacity = "1";
+  moveTooltip(event);
+}
+
+function moveTooltip(event) {
+  tooltip.style.left = `${event.clientX}px`;
+  tooltip.style.top = `${event.clientY}px`;
+}
+
+function hideTooltip() {
+  tooltip.style.opacity = "0";
+}
+
+const canvas = document.getElementById("spark-field");
+const ctx = canvas.getContext("2d");
+let sparks = [];
+
+function resizeCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.floor(window.innerWidth * ratio);
+  canvas.height = Math.floor(window.innerHeight * ratio);
+  canvas.style.width = `${window.innerWidth}px`;
+  canvas.style.height = `${window.innerHeight}px`;
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  sparks = Array.from({ length: 110 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.34,
+    vy: -0.15 - Math.random() * 0.45,
+    size: 0.5 + Math.random() * 1.8,
+    hue: Math.random() > 0.66 ? 214 : Math.random() > 0.45 ? 278 : 18,
+    alpha: 0.15 + Math.random() * 0.65
+  }));
+}
+
+function drawSparks() {
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  ctx.globalCompositeOperation = "lighter";
+  sparks.forEach((spark) => {
+    spark.x += spark.vx;
+    spark.y += spark.vy;
+    if (spark.y < -12 || spark.x < -12 || spark.x > window.innerWidth + 12) {
+      spark.x = Math.random() * window.innerWidth;
+      spark.y = window.innerHeight + Math.random() * 80;
+    }
+    ctx.beginPath();
+    ctx.fillStyle = `hsla(${spark.hue}, 100%, 64%, ${spark.alpha})`;
+    ctx.shadowColor = `hsl(${spark.hue}, 100%, 58%)`;
+    ctx.shadowBlur = 10;
+    ctx.arc(spark.x, spark.y, spark.size, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  requestAnimationFrame(drawSparks);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+drawSparks();
+activateNode(29);
+</script>
+</body>
+</html>
