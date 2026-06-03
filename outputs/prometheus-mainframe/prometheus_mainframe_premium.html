@@ -638,28 +638,76 @@ button {
   text-shadow: 0 0 18px rgba(255, 87, 18, 0.8);
 }
 
+.panel,
+.track-table-shell {
+  font-family: inherit;
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+}
+
 .panel {
   right: 22px;
   bottom: 72px;
   width: min(440px, calc(100vw - 44px));
   max-height: min(390px, calc(100vh - 144px));
-  padding: 18px;
+  padding: 18px 18px 18px 20px;
   border: 1px solid rgba(255, 101, 35, 0.48);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(8, 13, 22, 0.9), rgba(2, 4, 8, 0.94)),
+    linear-gradient(180deg, rgba(8, 13, 22, 0.48), rgba(2, 4, 8, 0.58)),
     radial-gradient(circle at 16% 0%, rgba(255, 95, 22, 0.22), transparent 34%);
   box-shadow: inset 0 0 42px rgba(255, 85, 20, 0.08), 0 18px 80px rgba(0, 0, 0, 0.75);
-  transform: translateY(24px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 220ms ease, transform 220ms ease;
+  transform: translateX(calc(100% - 46px));
+  opacity: 0.76;
+  pointer-events: auto;
+  transition: opacity 240ms ease, transform 280ms cubic-bezier(0.16, 1, 0.3, 1), background 240ms ease;
 }
 
 .panel.open {
-  transform: translateY(0);
-  opacity: 1;
+  transform: translateX(0);
+  opacity: 0.94;
   pointer-events: auto;
+}
+
+.panel.minimized {
+  transform: translateX(calc(100% - 46px));
+  opacity: 0.74;
+}
+
+.module-toggle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 44px;
+  border: 0;
+  border-radius: 8px 0 0 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 103, 35, 0.28), rgba(6, 8, 14, 0.32)),
+    rgba(5, 8, 14, 0.56);
+  color: rgba(255, 239, 218, 0.86);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  box-shadow: inset 0 0 24px rgba(255, 94, 24, 0.16);
+}
+
+.panel .module-toggle {
+  left: 0;
+}
+
+.module-body {
+  transition: opacity 180ms ease;
+}
+
+.minimized .module-body {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .panel-head {
@@ -705,26 +753,23 @@ button {
   line-height: 1.55;
 }
 
-.stat-grid {
+.metadata-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
-.stat {
-  min-height: 64px;
-  padding: 8px;
-  border: 1px solid rgba(255, 115, 50, 0.28);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.035);
+.metadata-item {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 220, 180, 0.11);
 }
 
-.stat.wide {
-  grid-column: 1 / -1;
+.metadata-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
-.stat small {
+.metadata-item small {
   display: block;
   color: rgba(255, 218, 184, 0.5);
   font-size: 9px;
@@ -732,7 +777,7 @@ button {
   text-transform: uppercase;
 }
 
-.stat b {
+.metadata-item b {
   display: block;
   margin-top: 5px;
   color: #ffb36d;
@@ -741,9 +786,9 @@ button {
   overflow-wrap: anywhere;
 }
 
-.stat.wide b {
-  font-size: 13px;
+.metadata-item.caption b {
   color: rgba(255, 232, 202, 0.84);
+  font-weight: 500;
 }
 
 .bars {
@@ -943,10 +988,35 @@ button {
   border: 1px solid rgba(255, 111, 42, 0.36);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(5, 10, 18, 0.88), rgba(2, 4, 8, 0.92)),
+    linear-gradient(180deg, rgba(5, 10, 18, 0.48), rgba(2, 4, 8, 0.58)),
     radial-gradient(circle at 0% 0%, rgba(255, 119, 31, 0.16), transparent 38%);
   box-shadow: inset 0 0 34px rgba(255, 86, 20, 0.07), 0 18px 60px rgba(0, 0, 0, 0.58);
   overflow: hidden;
+  transform: translateX(calc(-100% + 46px));
+  opacity: 0.76;
+  pointer-events: auto;
+  transition: opacity 240ms ease, transform 280ms cubic-bezier(0.16, 1, 0.3, 1), background 240ms ease;
+}
+
+.track-table-shell.open {
+  transform: translateX(0);
+  opacity: 0.94;
+}
+
+.track-table-shell.minimized {
+  transform: translateX(calc(-100% + 46px));
+  opacity: 0.74;
+}
+
+.track-table-shell .module-toggle {
+  right: 0;
+  left: auto;
+  border-radius: 0 8px 8px 0;
+  writing-mode: vertical-lr;
+}
+
+.track-table-shell .module-body {
+  padding-right: 44px;
 }
 
 .track-table-head {
@@ -993,7 +1063,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 1;
-  background: rgba(3, 6, 12, 0.96);
+  background: rgba(3, 6, 12, 0.64);
   color: rgba(255, 219, 185, 0.58);
   font-size: 9px;
   letter-spacing: 1px;
@@ -1215,9 +1285,6 @@ button {
   .track-table td:nth-child(4) {
     display: none;
   }
-  .stat-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 </style>
 </head>
@@ -1281,22 +1348,25 @@ button {
   </aside>
 
   <aside class="side-hud right" aria-hidden="true">
-    <div class="metric"><label>Grid Integrity</label><strong id="integrity-readout">100%</strong></div>
+    <div class="metric"><label>Metadata</label><strong id="metadata-readout">MIN</strong></div>
     <div class="metric"><label>Active Node</label><strong id="active-readout">--</strong></div>
-    <div class="metric"><label>Containment</label><strong>LOCKED</strong></div>
+    <div class="metric"><label>Map</label><strong id="map-readout">MIN</strong></div>
   </aside>
 
-  <section id="panel" class="panel" aria-live="polite">
-    <div class="panel-head">
-      <div>
-        <div class="panel-kicker" id="panel-kicker">Awaiting activation</div>
-        <div class="panel-title" id="panel-title">Node --</div>
+  <section id="panel" class="panel minimized" aria-live="polite">
+    <button class="module-toggle" id="metadata-toggle" type="button" aria-expanded="false" aria-controls="metadata-body">Metadata</button>
+    <div class="module-body" id="metadata-body">
+      <div class="panel-head">
+        <div>
+          <div class="panel-kicker" id="panel-kicker">Awaiting activation</div>
+          <div class="panel-title" id="panel-title">Node --</div>
+        </div>
+        <button class="close" id="close-btn" type="button" aria-label="Minimize metadata module">X</button>
       </div>
-      <button class="close" id="close-panel" type="button" aria-label="Close diagnostics panel">X</button>
+      <p class="panel-copy" id="panel-copy">Select a node on the mainframe to receive its title, caption, POWER classification, and archetype metadata.</p>
+      <div class="metadata-list" id="metadata-list"></div>
+      <div class="bars" id="bars" aria-hidden="true"></div>
     </div>
-    <p class="panel-copy" id="panel-copy">Select a node on the mainframe to receive its title, caption, POWER classification, and archetype metadata.</p>
-    <div class="stat-grid" id="stat-grid"></div>
-    <div class="bars" id="bars" aria-hidden="true"></div>
   </section>
 
   <section id="transmission-overlay" class="transmission-overlay" aria-live="assertive" aria-hidden="true">
@@ -1310,24 +1380,27 @@ button {
     </div>
   </section>
 
-  <section class="track-table-shell" aria-label="Interactive Reclamation track map">
-    <div class="track-table-head">
-      <span>Document Map</span>
-      <b>Reclamation POWER Tracks</b>
-      <span>Hover node / Click row</span>
-    </div>
-    <div class="track-table-wrap">
-      <table class="track-table">
-        <thead>
-          <tr>
-            <th>Node</th>
-            <th>PWR</th>
-            <th>Track</th>
-            <th>Digital Artifact</th>
-          </tr>
-        </thead>
-        <tbody id="track-table-body"></tbody>
-      </table>
+  <section id="document-map" class="track-table-shell minimized" aria-label="Interactive Reclamation track map">
+    <button class="module-toggle" id="map-toggle" type="button" aria-expanded="false" aria-controls="map-body">Map</button>
+    <div class="module-body" id="map-body">
+      <div class="track-table-head">
+        <span>Document Map</span>
+        <b>Reclamation POWER Tracks</b>
+        <span>Hover node / Click row</span>
+      </div>
+      <div class="track-table-wrap">
+        <table class="track-table">
+          <thead>
+            <tr>
+              <th>Node</th>
+              <th>PWR</th>
+              <th>Track</th>
+              <th>Digital Artifact</th>
+            </tr>
+          </thead>
+          <tbody id="track-table-body"></tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -1400,6 +1473,11 @@ const tooltip = document.getElementById("tooltip");
 const panel = document.getElementById("panel");
 const barsEl = document.getElementById("bars");
 const trackTableBody = document.getElementById("track-table-body");
+const documentMap = document.getElementById("document-map");
+const metadataToggle = document.getElementById("metadata-toggle");
+const mapToggle = document.getElementById("map-toggle");
+const metadataReadout = document.getElementById("metadata-readout");
+const mapReadout = document.getElementById("map-readout");
 const transmissionOverlay = document.getElementById("transmission-overlay");
 const transmissionWindow = document.getElementById("transmission-window");
 const transmissionCountdown = document.getElementById("transmission-countdown");
@@ -1460,8 +1538,31 @@ for (let i = 0; i < 38; i += 1) {
   barsEl.appendChild(bar);
 }
 
-document.getElementById("close-panel").addEventListener("click", () => {
-  panel.classList.remove("open");
+function setModuleExpanded(module, isExpanded) {
+  module.classList.toggle("open", isExpanded);
+  module.classList.toggle("minimized", !isExpanded);
+
+  if (module === panel) {
+    metadataToggle.setAttribute("aria-expanded", String(isExpanded));
+    metadataReadout.textContent = isExpanded ? "MAX" : "MIN";
+  }
+
+  if (module === documentMap) {
+    mapToggle.setAttribute("aria-expanded", String(isExpanded));
+    mapReadout.textContent = isExpanded ? "MAX" : "MIN";
+  }
+}
+
+metadataToggle.addEventListener("click", () => {
+  setModuleExpanded(panel, !panel.classList.contains("open"));
+});
+
+mapToggle.addEventListener("click", () => {
+  setModuleExpanded(documentMap, !documentMap.classList.contains("open"));
+});
+
+document.getElementById("close-btn").addEventListener("click", () => {
+  setModuleExpanded(panel, false);
   cancelAnimationFrame(barFrame);
 });
 
@@ -1523,7 +1624,7 @@ function launchTransmission(nodeNumber) {
   const power = powerData[node.power];
   clearTransmissionTimers();
   cancelAnimationFrame(barFrame);
-  panel.classList.remove("open");
+  setModuleExpanded(panel, false);
 
   transmissionOverlay.classList.remove("open");
   transmissionWindow.classList.remove("self-destructing");
@@ -1582,7 +1683,6 @@ function activateNode(nodeNumber) {
 
   document.getElementById("visited-readout").textContent = `${String(visited.size).padStart(2, "0")} / 30`;
   document.getElementById("active-readout").textContent = String(nodeNumber).padStart(2, "0");
-  document.getElementById("integrity-readout").textContent = `${Math.max(1, 100 - Math.round((visited.size / 30) * 68))}%`;
   document.getElementById("progress-fill").style.width = `${(visited.size / 30) * 100}%`;
   document.getElementById("temp-readout").textContent = nodeNumber >= 25 ? "CRIT" : `${Math.round(920 + nodeNumber * 74)} K`;
 
@@ -1590,14 +1690,14 @@ function activateNode(nodeNumber) {
   document.getElementById("panel-kicker").textContent = `Visualizer track open // Ring ${getRing(nodeNumber)}`;
   document.getElementById("panel-title").textContent = `${String(nodeNumber).padStart(2, "0")} // ${node.title}`;
   document.getElementById("panel-copy").textContent = node.caption;
-  document.getElementById("stat-grid").innerHTML = [
-    ["Title Metadata", node.title, "wide"],
-    ["Caption", node.caption, "wide"],
+  document.getElementById("metadata-list").innerHTML = [
+    ["Title Metadata", node.title, ""],
+    ["Caption", node.caption, "caption"],
     ["Power Classification", power.label, ""],
     ["Archetypes", node.archetypes.join(" / "), ""]
-  ].map(([label, value, span]) => `<div class="stat ${span}"><small>${label}</small><b>${value}</b></div>`).join("");
+  ].map(([label, value, role]) => `<div class="metadata-item ${role}"><small>${label}</small><b>${value}</b></div>`).join("");
 
-  panel.classList.add("open");
+  setModuleExpanded(panel, true);
   cancelAnimationFrame(barFrame);
   animateBars(stats.thermal);
 }
@@ -1834,7 +1934,6 @@ window.addEventListener("resize", resizeAllCanvases);
 resizeAllCanvases();
 drawSparks();
 drawFire();
-activateNode(29);
 </script>
 </body>
 </html>
