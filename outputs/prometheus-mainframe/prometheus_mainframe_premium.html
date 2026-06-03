@@ -1734,6 +1734,29 @@ button {
 .core-fire {
   display: none !important;
 }
+
+.center-flame-kill {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: min(46vw, 740px);
+  height: min(32vw, 520px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.98) 0 36%, rgba(2, 5, 12, 0.96) 52%, rgba(3, 7, 15, 0.76) 66%, transparent 82%),
+    radial-gradient(ellipse at 50% 50%, rgba(30, 84, 180, 0.12), transparent 68%);
+  box-shadow:
+    inset 0 0 90px rgba(0, 0, 0, 0.98),
+    0 0 46px rgba(0, 0, 0, 0.86),
+    0 0 90px rgba(20, 60, 150, 0.18);
+}
+
+.node.core {
+  display: none !important;
+}
 </style>
 </head>
 <body>
@@ -1756,6 +1779,7 @@ button {
     <path class="trace-pulse pulse-delay-2" d="M880 510H705L640 420H500V310" />
     <path class="trace-pulse pulse-delay-3" d="M500 40V190M500 430V585" />
   </svg>
+  <div class="center-flame-kill" aria-hidden="true"></div>
 
   <section class="stage" aria-label="Thirty node core grid">
     <div class="depth-rings" aria-hidden="true">
