@@ -469,17 +469,66 @@ button {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 220px;
-  height: 268px;
+  width: 252px;
+  height: 314px;
   transform: translate3d(-50%, -52%, 156px) rotateX(-5deg);
   z-index: 6;
   pointer-events: none;
   transform-style: preserve-3d;
+  will-change: filter, transform;
   filter:
-    drop-shadow(0 0 18px rgba(255, 248, 201, 0.66))
-    drop-shadow(0 0 34px rgba(255, 42, 8, 0.94))
-    drop-shadow(0 0 84px rgba(255, 88, 20, 0.82))
-    drop-shadow(0 0 150px rgba(116, 42, 255, 0.28));
+    drop-shadow(0 0 20px rgba(255, 250, 214, 0.72))
+    drop-shadow(0 0 40px rgba(255, 42, 8, 0.98))
+    drop-shadow(0 0 96px rgba(255, 88, 20, 0.86))
+    drop-shadow(0 0 176px rgba(116, 42, 255, 0.32));
+}
+
+.core-fire::before,
+.core-fire::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.core-fire::before {
+  bottom: 2%;
+  width: 112%;
+  height: 34%;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 247, 208, 0.52), transparent 18%),
+    radial-gradient(ellipse at 50% 52%, rgba(255, 70, 10, 0.66), transparent 48%),
+    radial-gradient(ellipse at 50% 64%, rgba(122, 33, 255, 0.28), transparent 72%);
+  filter: blur(9px);
+  opacity: 0.92;
+  animation: core-basin 2.6s ease-in-out infinite;
+}
+
+.core-fire::after {
+  top: 3%;
+  width: 58%;
+  height: 88%;
+  z-index: 5;
+  background:
+    linear-gradient(90deg, transparent 0 34%, rgba(255, 250, 214, 0.18) 48%, transparent 62% 100%),
+    radial-gradient(ellipse at 50% 42%, rgba(255, 248, 214, 0.24), transparent 42%);
+  mix-blend-mode: screen;
+  filter: blur(1px);
+  opacity: 0.8;
+  animation: heat-column 1.9s ease-in-out infinite;
+}
+
+@keyframes core-basin {
+  0%, 100% { transform: translateX(-50%) scale(0.96, 0.92); opacity: 0.76; }
+  50% { transform: translateX(-50%) scale(1.06, 1.04); opacity: 1; }
+}
+
+@keyframes heat-column {
+  0%, 100% { transform: translateX(-50%) skewX(-2deg) scaleY(0.98); }
+  50% { transform: translateX(-50%) skewX(2.4deg) scaleY(1.03); }
 }
 
 .depth-rings {
@@ -519,30 +568,77 @@ button {
 #fire-canvas {
   position: absolute;
   inset: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   opacity: 0.98;
   mix-blend-mode: screen;
 }
 
+.plasma-spine {
+  position: absolute;
+  left: 50%;
+  top: 13%;
+  width: 38%;
+  height: 76%;
+  z-index: 3;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 44% 44%;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(255, 255, 236, 0.92), transparent 10%),
+    linear-gradient(180deg, rgba(255, 255, 230, 0), rgba(255, 255, 226, 0.68) 30%, rgba(255, 115, 20, 0.34) 64%, transparent 95%);
+  mask-image: radial-gradient(ellipse at 50% 47%, black 0 32%, rgba(0, 0, 0, 0.56) 48%, transparent 72%);
+  mix-blend-mode: screen;
+  filter: blur(1.2px);
+  opacity: 0.76;
+  animation: plasma-spine 1.24s ease-in-out infinite;
+}
+
+.plasma-spine::before,
+.plasma-spine::after {
+  content: "";
+  position: absolute;
+  inset: 6% 30%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 230, 0.86), rgba(255, 99, 8, 0.34), transparent);
+  filter: blur(2px);
+  transform: skewX(-10deg);
+}
+
+.plasma-spine::after {
+  inset: 17% 22% 14%;
+  opacity: 0.62;
+  transform: skewX(12deg);
+  animation: plasma-spine 0.96s ease-in-out infinite reverse;
+}
+
+@keyframes plasma-spine {
+  0%, 100% { transform: translateX(-50%) scale(0.94, 0.98) skewX(-1.4deg); opacity: 0.58; }
+  50% { transform: translateX(-50%) scale(1.05, 1.04) skewX(1.8deg); opacity: 0.92; }
+}
+
 .fire-glass {
   position: absolute;
   left: 50%;
   top: 54%;
-  width: 184px;
-  height: 224px;
+  z-index: 4;
+  width: 80%;
+  height: 82%;
   transform: translate(-50%, -50%);
   border-radius: 46% 46% 42% 42%;
   background:
-    radial-gradient(ellipse at 50% 75%, rgba(255, 245, 200, 0.22), transparent 15%),
-    radial-gradient(ellipse at 50% 54%, rgba(255, 64, 10, 0.18), transparent 36%),
-    linear-gradient(90deg, transparent 0 20%, rgba(255, 228, 182, 0.12) 42%, transparent 62% 100%);
+    radial-gradient(ellipse at 50% 74%, rgba(255, 245, 200, 0.28), transparent 15%),
+    radial-gradient(ellipse at 50% 54%, rgba(255, 64, 10, 0.2), transparent 38%),
+    linear-gradient(90deg, transparent 0 16%, rgba(255, 238, 204, 0.18) 38%, transparent 56% 100%),
+    linear-gradient(104deg, transparent 0 44%, rgba(80, 194, 255, 0.14) 49%, transparent 56% 100%);
   box-shadow:
-    inset 0 0 28px rgba(255, 212, 160, 0.14),
-    inset 0 0 70px rgba(255, 56, 10, 0.16),
-    0 0 42px rgba(255, 42, 8, 0.52);
-  opacity: 0.84;
-  animation: heat-lens 2.8s ease-in-out infinite;
+    inset 0 0 34px rgba(255, 232, 190, 0.18),
+    inset 0 0 82px rgba(255, 56, 10, 0.2),
+    inset 0 0 16px rgba(77, 181, 255, 0.1),
+    0 0 52px rgba(255, 42, 8, 0.58);
+  opacity: 0.88;
+  backdrop-filter: blur(1.4px) saturate(1.4);
+  animation: heat-lens 2.2s ease-in-out infinite;
 }
 
 .fire-glass::before,
@@ -570,24 +666,27 @@ button {
 .core-sigil {
   position: absolute;
   inset: 50% auto auto 50%;
-  width: 174px;
-  height: 208px;
+  z-index: 6;
+  width: 184px;
+  height: 222px;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 0 18px rgba(255, 42, 8, 0.95)) drop-shadow(0 0 70px rgba(255, 88, 20, 0.72));
+  filter: drop-shadow(0 0 14px rgba(255, 238, 194, 0.8)) drop-shadow(0 0 64px rgba(255, 88, 20, 0.72));
+  opacity: 0.88;
+  mix-blend-mode: screen;
 }
 
 .core-sigil path {
-  fill: rgba(255, 72, 12, 0.08);
-  stroke: #ffdfb3;
-  stroke-width: 2.4;
+  fill: rgba(255, 72, 12, 0.05);
+  stroke: rgba(255, 234, 190, 0.84);
+  stroke-width: 2.1;
   stroke-linejoin: round;
 }
 
 .core-sigil .flame-fill {
   fill: url("#flame-fill");
   stroke: #fff2c8;
-  opacity: 0.32;
-  animation: flame-rise 1.8s ease-in-out infinite;
+  opacity: 0.52;
+  animation: flame-rise 1.38s ease-in-out infinite;
   transform-origin: 50% 62%;
 }
 
@@ -1405,6 +1504,7 @@ button {
     </div>
     <div class="core-fire" aria-hidden="true">
       <canvas id="fire-canvas"></canvas>
+      <div class="plasma-spine"></div>
       <div class="fire-glass"></div>
       <svg class="core-sigil" viewBox="0 0 174 208">
         <defs>
@@ -1905,6 +2005,7 @@ let sparks = [];
 const fireCanvas = document.getElementById("fire-canvas");
 const fireCtx = fireCanvas.getContext("2d");
 let fireParticles = [];
+let fireFilaments = [];
 let fireBounds = { width: 220, height: 268 };
 
 function resizeCanvas() {
@@ -1971,17 +2072,30 @@ function drawSparks() {
 }
 
 function resetFireParticle(particle, hotStart = false) {
-  const spread = fireBounds.width * 0.28;
+  const spread = fireBounds.width * 0.34;
   particle.x = fireBounds.width * 0.5 + (Math.random() - 0.5) * spread;
-  particle.y = fireBounds.height * (0.79 + Math.random() * 0.12);
-  particle.vx = (Math.random() - 0.5) * 0.62;
-  particle.vy = -(0.82 + Math.random() * 1.85);
-  particle.radius = 8 + Math.random() * 34;
+  particle.y = fireBounds.height * (0.75 + Math.random() * 0.18);
+  particle.vx = (Math.random() - 0.5) * 0.84;
+  particle.vy = -(0.95 + Math.random() * 2.25);
+  particle.radius = 6 + Math.random() * 32;
   particle.life = hotStart ? Math.random() : 0.72 + Math.random() * 0.52;
-  particle.decay = 0.007 + Math.random() * 0.013;
-  particle.hue = 15 + Math.random() * 34;
+  particle.decay = 0.008 + Math.random() * 0.014;
+  particle.hue = 10 + Math.random() * 38;
   particle.wobble = Math.random() * Math.PI * 2;
-  particle.stretch = 1.35 + Math.random() * 1.7;
+  particle.stretch = 1.65 + Math.random() * 2.2;
+  particle.heat = 0.68 + Math.random() * 0.62;
+}
+
+function resetFireFilament(filament, hotStart = false) {
+  filament.baseOffset = (Math.random() - 0.5) * fireBounds.width * 0.2;
+  filament.phase = Math.random() * Math.PI * 2;
+  filament.speed = 0.0016 + Math.random() * 0.0019;
+  filament.life = hotStart ? Math.random() : 0.74 + Math.random() * 0.44;
+  filament.decay = 0.006 + Math.random() * 0.011;
+  filament.length = fireBounds.height * (0.42 + Math.random() * 0.36);
+  filament.width = fireBounds.width * (0.018 + Math.random() * 0.024);
+  filament.lean = (Math.random() - 0.5) * fireBounds.width * 0.18;
+  filament.hue = 18 + Math.random() * 22;
 }
 
 function resizeFireCanvas() {
@@ -1994,10 +2108,15 @@ function resizeFireCanvas() {
   fireCanvas.width = Math.floor(fireBounds.width * ratio);
   fireCanvas.height = Math.floor(fireBounds.height * ratio);
   fireCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  fireParticles = Array.from({ length: 128 }, () => {
+  fireParticles = Array.from({ length: 168 }, () => {
     const particle = {};
     resetFireParticle(particle, true);
     return particle;
+  });
+  fireFilaments = Array.from({ length: 34 }, () => {
+    const filament = {};
+    resetFireFilament(filament, true);
+    return filament;
   });
 }
 
@@ -2005,17 +2124,18 @@ function drawFireTendrils(time) {
   const cx = fireBounds.width * 0.5;
   const baseY = fireBounds.height * 0.82;
   const flameGrad = fireCtx.createLinearGradient(cx, fireBounds.height * 0.12, cx, baseY);
-  flameGrad.addColorStop(0, "rgba(255, 246, 196, 0.72)");
-  flameGrad.addColorStop(0.34, "rgba(255, 111, 20, 0.68)");
-  flameGrad.addColorStop(0.76, "rgba(183, 13, 0, 0.2)");
+  flameGrad.addColorStop(0, "rgba(255, 252, 218, 0.86)");
+  flameGrad.addColorStop(0.26, "rgba(255, 155, 42, 0.72)");
+  flameGrad.addColorStop(0.72, "rgba(183, 13, 0, 0.24)");
   flameGrad.addColorStop(1, "rgba(60, 0, 0, 0)");
 
-  for (let i = 0; i < 6; i += 1) {
-    const phase = time * (0.0014 + i * 0.00016) + i * 1.7;
-    const lean = Math.sin(phase) * fireBounds.width * (0.035 + i * 0.004);
-    const height = fireBounds.height * (0.46 + (i % 3) * 0.07);
-    const width = fireBounds.width * (0.08 + i * 0.012);
-    const startX = cx + Math.sin(phase * 1.8) * fireBounds.width * 0.08;
+  for (let i = 0; i < 10; i += 1) {
+    const phase = time * (0.0012 + i * 0.00017) + i * 1.43;
+    const lean = Math.sin(phase) * fireBounds.width * (0.032 + i * 0.003);
+    const height = fireBounds.height * (0.42 + (i % 4) * 0.058);
+    const width = fireBounds.width * (0.052 + i * 0.007);
+    const startX = cx + Math.sin(phase * 1.8) * fireBounds.width * 0.095;
+    const tipX = cx + lean * 0.46 + Math.cos(phase * 1.35) * fireBounds.width * 0.032;
 
     fireCtx.beginPath();
     fireCtx.moveTo(startX, baseY);
@@ -2024,11 +2144,11 @@ function drawFireTendrils(time) {
       baseY - height * 0.34,
       cx - width * 0.4 + lean,
       baseY - height * 0.72,
-      cx + lean * 0.3,
+      tipX,
       baseY - height
     );
     fireCtx.bezierCurveTo(
-      cx + width * 0.42 + lean,
+      tipX + width * 0.42 + lean,
       baseY - height * 0.7,
       startX + width - lean,
       baseY - height * 0.28,
@@ -2037,10 +2157,43 @@ function drawFireTendrils(time) {
     );
     fireCtx.closePath();
     fireCtx.fillStyle = flameGrad;
-    fireCtx.globalAlpha = 0.18 + i * 0.035;
+    fireCtx.globalAlpha = 0.1 + i * 0.026;
     fireCtx.fill();
   }
   fireCtx.globalAlpha = 1;
+}
+
+function drawFireFilaments(time) {
+  const cx = fireBounds.width * 0.5;
+  const baseY = fireBounds.height * 0.82;
+
+  fireFilaments.forEach((filament) => {
+    filament.life -= filament.decay;
+    if (filament.life <= 0) resetFireFilament(filament);
+
+    const alpha = Math.max(0, Math.min(1, filament.life));
+    const phase = time * filament.speed + filament.phase;
+    const startX = cx + filament.baseOffset + Math.sin(phase * 1.2) * fireBounds.width * 0.03;
+    const startY = baseY + Math.cos(phase) * fireBounds.height * 0.018;
+    const tipY = startY - filament.length * (0.74 + alpha * 0.32);
+    const tipX = cx + filament.lean * alpha + Math.sin(phase * 2.1) * fireBounds.width * 0.055;
+    const midX = (startX + tipX) * 0.5 + Math.sin(phase * 1.7) * fireBounds.width * 0.08;
+    const midY = (startY + tipY) * 0.5;
+    const stroke = fireCtx.createLinearGradient(startX, startY, tipX, tipY);
+    stroke.addColorStop(0, `hsla(${filament.hue}, 100%, 45%, 0)`);
+    stroke.addColorStop(0.38, `hsla(${filament.hue + 8}, 100%, 62%, ${alpha * 0.48})`);
+    stroke.addColorStop(0.72, `hsla(${filament.hue + 28}, 100%, 86%, ${alpha * 0.66})`);
+    stroke.addColorStop(1, `hsla(${filament.hue + 36}, 100%, 94%, 0)`);
+
+    fireCtx.beginPath();
+    fireCtx.moveTo(startX, startY);
+    fireCtx.quadraticCurveTo(midX, midY, tipX, tipY);
+    fireCtx.strokeStyle = stroke;
+    fireCtx.lineWidth = filament.width * alpha;
+    fireCtx.shadowColor = `hsl(${filament.hue + 12}, 100%, 58%)`;
+    fireCtx.shadowBlur = 16 + alpha * 12;
+    fireCtx.stroke();
+  });
 }
 
 function drawFire() {
@@ -2051,33 +2204,44 @@ function drawFire() {
   const cx = fireBounds.width * 0.5;
   const baseY = fireBounds.height * 0.82;
   const baseGlow = fireCtx.createRadialGradient(cx, baseY, 8, cx, baseY, fireBounds.width * 0.42);
-  baseGlow.addColorStop(0, "rgba(255, 248, 205, 0.88)");
-  baseGlow.addColorStop(0.25, "rgba(255, 102, 17, 0.72)");
-  baseGlow.addColorStop(0.72, "rgba(144, 7, 0, 0.24)");
+  baseGlow.addColorStop(0, "rgba(255, 252, 222, 0.95)");
+  baseGlow.addColorStop(0.2, "rgba(255, 142, 28, 0.78)");
+  baseGlow.addColorStop(0.64, "rgba(144, 7, 0, 0.28)");
   baseGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
   fireCtx.fillStyle = baseGlow;
   fireCtx.beginPath();
-  fireCtx.ellipse(cx, baseY, fireBounds.width * 0.36, fireBounds.height * 0.22, 0, 0, Math.PI * 2);
+  fireCtx.ellipse(cx, baseY, fireBounds.width * 0.42, fireBounds.height * 0.24, 0, 0, Math.PI * 2);
   fireCtx.fill();
 
-  const beamWidth = fireBounds.width * (0.08 + Math.sin(t * 0.0026) * 0.018);
+  const crown = fireCtx.createRadialGradient(cx, fireBounds.height * 0.42, 4, cx, fireBounds.height * 0.42, fireBounds.width * 0.34);
+  crown.addColorStop(0, "rgba(255, 255, 232, 0.22)");
+  crown.addColorStop(0.44, "rgba(255, 74, 8, 0.18)");
+  crown.addColorStop(1, "rgba(255, 74, 8, 0)");
+  fireCtx.fillStyle = crown;
+  fireCtx.beginPath();
+  fireCtx.ellipse(cx, fireBounds.height * 0.44, fireBounds.width * 0.28, fireBounds.height * 0.42, Math.sin(t * 0.0016) * 0.08, 0, Math.PI * 2);
+  fireCtx.fill();
+
+  const beamWidth = fireBounds.width * (0.1 + Math.sin(t * 0.0026) * 0.022);
   const beamX = cx + Math.sin(t * 0.0017) * fireBounds.width * 0.018;
   const beam = fireCtx.createLinearGradient(beamX, fireBounds.height * 0.02, beamX, baseY);
   beam.addColorStop(0, "rgba(255, 248, 214, 0)");
-  beam.addColorStop(0.38, "rgba(255, 244, 198, 0.28)");
-  beam.addColorStop(0.72, "rgba(255, 72, 9, 0.18)");
+  beam.addColorStop(0.32, "rgba(255, 248, 212, 0.42)");
+  beam.addColorStop(0.7, "rgba(255, 72, 9, 0.22)");
   beam.addColorStop(1, "rgba(255, 72, 9, 0)");
   fireCtx.fillStyle = beam;
   fireCtx.fillRect(beamX - beamWidth * 0.5, fireBounds.height * 0.02, beamWidth, baseY);
 
   drawFireTendrils(t);
+  drawFireFilaments(t);
 
   fireParticles.forEach((particle) => {
     particle.life -= particle.decay;
-    particle.wobble += 0.045;
-    particle.x += particle.vx + Math.sin(particle.wobble) * 0.38;
+    particle.wobble += 0.052;
+    const pullToCore = (cx - particle.x) * 0.0025;
+    particle.x += particle.vx + pullToCore + Math.sin(particle.wobble) * 0.46;
     particle.y += particle.vy;
-    particle.radius *= 0.992;
+    particle.radius *= 0.991;
 
     if (particle.life <= 0 || particle.y < fireBounds.height * 0.05 || particle.radius < 2) {
       resetFireParticle(particle);
@@ -2092,9 +2256,9 @@ function drawFire() {
       particle.y,
       particle.radius
     );
-    gradient.addColorStop(0, `hsla(${particle.hue + 30}, 100%, 92%, ${alpha * 0.92})`);
-    gradient.addColorStop(0.22, `hsla(${particle.hue + 10}, 100%, 62%, ${alpha * 0.72})`);
-    gradient.addColorStop(0.58, `hsla(${particle.hue}, 100%, 35%, ${alpha * 0.24})`);
+    gradient.addColorStop(0, `hsla(${particle.hue + 38}, 100%, 94%, ${alpha * 0.94 * particle.heat})`);
+    gradient.addColorStop(0.2, `hsla(${particle.hue + 14}, 100%, 66%, ${alpha * 0.76})`);
+    gradient.addColorStop(0.56, `hsla(${particle.hue}, 100%, 34%, ${alpha * 0.28})`);
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
     fireCtx.save();
@@ -2109,12 +2273,12 @@ function drawFire() {
   });
 
   const whiteCore = fireCtx.createRadialGradient(cx, baseY - fireBounds.height * 0.18, 0, cx, baseY - fireBounds.height * 0.18, fireBounds.width * 0.12);
-  whiteCore.addColorStop(0, "rgba(255, 255, 230, 0.86)");
-  whiteCore.addColorStop(0.34, "rgba(255, 190, 82, 0.42)");
+  whiteCore.addColorStop(0, "rgba(255, 255, 238, 0.98)");
+  whiteCore.addColorStop(0.32, "rgba(255, 205, 92, 0.54)");
   whiteCore.addColorStop(1, "rgba(255, 70, 0, 0)");
   fireCtx.fillStyle = whiteCore;
   fireCtx.beginPath();
-  fireCtx.ellipse(cx, baseY - fireBounds.height * 0.18, fireBounds.width * 0.08, fireBounds.height * 0.2, Math.sin(t * 0.002) * 0.12, 0, Math.PI * 2);
+  fireCtx.ellipse(cx + Math.sin(t * 0.003) * fireBounds.width * 0.012, baseY - fireBounds.height * 0.2, fireBounds.width * 0.07, fireBounds.height * 0.27, Math.sin(t * 0.002) * 0.15, 0, Math.PI * 2);
   fireCtx.fill();
 
   requestAnimationFrame(drawFire);
