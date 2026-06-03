@@ -472,18 +472,17 @@ button {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 206px;
-  height: 258px;
-  transform: translate3d(-50%, -52%, 156px) rotateX(-5deg);
+  width: 224px;
+  height: 224px;
+  transform: translate3d(-50%, -50%, 156px) rotateX(62deg);
   z-index: 6;
   pointer-events: none;
   transform-style: preserve-3d;
   will-change: filter, transform;
   filter:
-    drop-shadow(0 0 10px rgba(255, 238, 194, 0.34))
-    drop-shadow(0 0 22px rgba(255, 42, 8, 0.54))
-    drop-shadow(0 0 54px rgba(255, 88, 20, 0.34))
-    drop-shadow(0 0 92px rgba(116, 42, 255, 0.14));
+    drop-shadow(0 0 14px rgba(255, 238, 194, 0.32))
+    drop-shadow(0 0 36px rgba(255, 70, 18, 0.54))
+    drop-shadow(0 0 82px rgba(116, 42, 255, 0.18));
 }
 
 .core-fire::before,
@@ -574,8 +573,139 @@ button {
   z-index: 2;
   width: 100%;
   height: 100%;
-  opacity: 0.72;
+  display: none;
+  opacity: 0;
+}
+
+.reactor-crop {
+  position: absolute;
+  inset: 9%;
+  z-index: 2;
+  border-radius: 50%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 242, 206, 0.68), transparent 8%),
+    radial-gradient(circle at 50% 50%, rgba(255, 68, 16, 0.42), transparent 28%),
+    radial-gradient(circle at 48% 52%, rgba(95, 56, 255, 0.24), transparent 52%),
+    url("assets/core-ring-reference.png") center 48% / 560px auto no-repeat;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 226, 178, 0.38),
+    inset 0 0 22px rgba(255, 237, 204, 0.18),
+    inset 0 0 64px rgba(255, 51, 10, 0.24),
+    0 0 28px rgba(255, 70, 16, 0.5);
+  filter: contrast(1.22) saturate(1.35) brightness(1.05);
   mix-blend-mode: screen;
+  transform: translateZ(18px);
+  animation: reactor-crop-pulse 3.2s ease-in-out infinite;
+}
+
+.reactor-crop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    conic-gradient(from 0deg, transparent 0 9%, rgba(255, 237, 190, 0.72) 11%, rgba(255, 73, 18, 0.62) 14%, transparent 18% 36%, rgba(80, 157, 255, 0.5) 40%, transparent 45% 61%, rgba(155, 76, 255, 0.55) 65%, transparent 71% 100%),
+    radial-gradient(circle, transparent 0 39%, rgba(255, 236, 200, 0.25) 40%, transparent 43% 100%);
+  mix-blend-mode: screen;
+  animation: reactor-rotate 9s linear infinite;
+}
+
+.reactor-crop::after {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 230, 0.9), rgba(255, 160, 54, 0.48) 22%, rgba(255, 40, 10, 0.2) 46%, transparent 70%),
+    conic-gradient(from 45deg, rgba(255, 245, 210, 0.8), rgba(255, 66, 12, 0.28), rgba(116, 42, 255, 0.22), rgba(255, 245, 210, 0.8));
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 230, 0.32),
+    0 0 30px rgba(255, 81, 18, 0.72),
+    0 0 64px rgba(255, 20, 0, 0.36);
+  animation: reactor-heart 1.8s ease-in-out infinite;
+}
+
+.reactor-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) translateZ(var(--z)) rotateX(var(--tilt));
+  border: 1px solid rgba(255, 227, 184, 0.32);
+  background:
+    conic-gradient(from var(--start), transparent 0 10%, rgba(255, 232, 186, 0.9) 12%, rgba(255, 78, 18, 0.84) 15%, transparent 19% 34%, rgba(68, 144, 255, 0.75) 39%, transparent 45% 64%, rgba(146, 72, 255, 0.72) 70%, transparent 77% 100%);
+  mask: radial-gradient(circle, transparent 0 72%, black 74% 78%, transparent 80% 100%);
+  mix-blend-mode: screen;
+  animation: reactor-rotate var(--speed) linear infinite;
+}
+
+.reactor-ring.ring-one { --size: 111%; --z: 36px; --tilt: 0deg; --start: 20deg; --speed: 7.5s; }
+.reactor-ring.ring-two { --size: 84%; --z: 48px; --tilt: 0deg; --start: 140deg; --speed: 5.4s; animation-direction: reverse; }
+.reactor-ring.ring-three { --size: 63%; --z: 56px; --tilt: 0deg; --start: 250deg; --speed: 3.9s; }
+
+.reactor-diamond {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 7;
+  width: 46px;
+  height: 46px;
+  transform: translate(-50%, -50%) translateZ(70px) rotate(45deg);
+  border: 1px solid rgba(255, 239, 204, 0.78);
+  background:
+    radial-gradient(circle at 42% 42%, rgba(255, 255, 230, 0.96), rgba(255, 96, 20, 0.56) 34%, rgba(105, 19, 255, 0.2) 72%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 42%);
+  box-shadow:
+    inset 0 0 15px rgba(255, 255, 230, 0.32),
+    0 0 22px rgba(255, 80, 18, 0.82),
+    0 0 58px rgba(255, 30, 0, 0.46);
+  animation: reactor-diamond 2.4s ease-in-out infinite;
+}
+
+.reactor-diamond::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255, 239, 204, 0.52);
+}
+
+.reactor-lens {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 31%, rgba(255, 240, 210, 0.08) 32%, transparent 36%),
+    linear-gradient(100deg, transparent 0 42%, rgba(255, 255, 235, 0.12) 49%, transparent 57% 100%);
+  mix-blend-mode: screen;
+  animation: reactor-lens 2.7s ease-in-out infinite;
+}
+
+@keyframes reactor-crop-pulse {
+  0%, 100% { transform: translateZ(18px) scale(0.99); opacity: 0.9; }
+  50% { transform: translateZ(18px) scale(1.025); opacity: 1; }
+}
+
+@keyframes reactor-rotate {
+  to { rotate: 360deg; }
+}
+
+@keyframes reactor-heart {
+  0%, 100% { transform: scale(0.94); filter: brightness(0.9); }
+  50% { transform: scale(1.08); filter: brightness(1.35); }
+}
+
+@keyframes reactor-diamond {
+  0%, 100% { transform: translate(-50%, -50%) translateZ(70px) rotate(45deg) scale(0.94); }
+  50% { transform: translate(-50%, -50%) translateZ(70px) rotate(45deg) scale(1.08); }
+}
+
+@keyframes reactor-lens {
+  0%, 100% { opacity: 0.46; transform: scaleX(0.99) skewX(-0.5deg); }
+  50% { opacity: 0.78; transform: scaleX(1.02) skewX(0.8deg); }
 }
 
 .plasma-spine {
@@ -1507,20 +1637,12 @@ button {
     </div>
     <div class="core-fire" aria-hidden="true">
       <canvas id="fire-canvas"></canvas>
-      <div class="plasma-spine"></div>
-      <div class="fire-glass"></div>
-      <svg class="core-sigil" viewBox="0 0 174 208">
-        <defs>
-          <linearGradient id="flame-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#fff6ca" />
-            <stop offset="0.42" stop-color="#ff5d14" />
-            <stop offset="1" stop-color="#9b0700" />
-          </linearGradient>
-        </defs>
-        <path d="M87 10C112 44 118 65 107 89C124 75 131 54 129 33C157 67 166 106 148 143C134 174 107 190 87 200C67 190 40 174 26 143C9 108 16 70 45 33C43 57 51 76 67 89C56 65 62 44 87 10Z" />
-        <path class="flame-fill" d="M88 42C105 69 104 88 93 106C109 96 118 80 118 61C140 93 138 132 116 157C106 169 95 176 87 181C78 176 67 169 57 157C35 132 34 94 56 61C56 80 65 96 81 106C70 88 71 69 88 42Z" />
-        <path class="flame-fill" d="M88 92C98 109 96 126 87 137C78 126 76 109 88 92Z" />
-      </svg>
+      <div class="reactor-crop"></div>
+      <div class="reactor-ring ring-one"></div>
+      <div class="reactor-ring ring-two"></div>
+      <div class="reactor-ring ring-three"></div>
+      <div class="reactor-diamond"></div>
+      <div class="reactor-lens"></div>
     </div>
     <div id="nodes"></div>
   </section>
@@ -2289,13 +2411,11 @@ function drawFire() {
 
 function resizeAllCanvases() {
   resizeCanvas();
-  resizeFireCanvas();
 }
 
 window.addEventListener("resize", resizeAllCanvases);
 resizeAllCanvases();
 drawSparks();
-drawFire();
 </script>
 </body>
 </html>
