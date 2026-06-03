@@ -261,6 +261,10 @@ button {
   transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
 }
 
+.node:hover {
+  z-index: 12;
+}
+
 .node::before,
 .node::after {
   content: "";
@@ -285,8 +289,83 @@ button {
   letter-spacing: 1px;
 }
 
+.node-popover {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 16px);
+  width: 300px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--tone), white 18%);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(4, 7, 13, 0.97), rgba(2, 4, 8, 0.96)),
+    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--tone), transparent 74%), transparent 46%);
+  color: #ffe5c3;
+  box-shadow: 0 0 28px color-mix(in srgb, var(--tone), transparent 58%), 0 18px 60px rgba(0, 0, 0, 0.72);
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(0.98);
+  transition: opacity 130ms ease, transform 130ms ease;
+  pointer-events: none;
+  text-align: left;
+}
+
+.node-popover::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%) rotate(45deg);
+  border-right: 1px solid color-mix(in srgb, var(--tone), white 18%);
+  border-bottom: 1px solid color-mix(in srgb, var(--tone), white 18%);
+  background: rgba(2, 4, 8, 0.96);
+}
+
+.node:hover .node-popover {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.node-popover-kicker {
+  color: rgba(255, 224, 190, 0.58);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.node-popover-title {
+  margin-top: 5px;
+  color: #fff5e4;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.node-popover-artifact {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 223, 194, 0.72);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.node-popover-artifact b {
+  color: #fff0cf;
+}
+
+.node-popover-foot {
+  margin-top: 8px;
+  color: rgba(255, 211, 171, 0.48);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 .node:hover,
-.node.active {
+.node.active,
+.node.hover-preview {
   transform: translate(-50%, -50%) scale(1.13);
   filter: brightness(1.35);
   box-shadow:
@@ -294,6 +373,11 @@ button {
     inset 0 0 24px color-mix(in srgb, var(--tone), transparent 8%),
     0 0 18px color-mix(in srgb, var(--tone), transparent 0%),
     0 0 72px color-mix(in srgb, var(--tone), transparent 28%);
+}
+
+.node.hover-preview:not(.active) {
+  outline: 1px solid rgba(255, 244, 220, 0.42);
+  outline-offset: 7px;
 }
 
 .node.visited {
@@ -672,23 +756,186 @@ button {
   transition: height 80ms linear;
 }
 
+.track-table-shell {
+  position: absolute;
+  left: 22px;
+  bottom: 72px;
+  z-index: 8;
+  width: min(560px, calc(100vw - 500px));
+  max-height: min(330px, calc(100vh - 178px));
+  border: 1px solid rgba(255, 111, 42, 0.36);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(5, 10, 18, 0.88), rgba(2, 4, 8, 0.92)),
+    radial-gradient(circle at 0% 0%, rgba(255, 119, 31, 0.16), transparent 38%);
+  box-shadow: inset 0 0 34px rgba(255, 86, 20, 0.07), 0 18px 60px rgba(0, 0, 0, 0.58);
+  overflow: hidden;
+}
+
+.track-table-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(255, 115, 50, 0.24);
+  color: rgba(255, 232, 202, 0.84);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.track-table-head b {
+  color: #fff2dc;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.track-table-wrap {
+  max-height: 276px;
+  overflow: auto;
+  scrollbar-color: rgba(255, 124, 42, 0.62) rgba(255, 255, 255, 0.04);
+}
+
+.track-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 11px;
+}
+
+.track-table th,
+.track-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.track-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgba(3, 6, 12, 0.96);
+  color: rgba(255, 219, 185, 0.58);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.track-table th:nth-child(1),
+.track-table td:nth-child(1) {
+  width: 42px;
+  text-align: center;
+}
+
+.track-table th:nth-child(2),
+.track-table td:nth-child(2) {
+  width: 48px;
+  text-align: center;
+}
+
+.track-table th:nth-child(4),
+.track-table td:nth-child(4) {
+  width: 170px;
+}
+
+.track-row {
+  color: rgba(255, 235, 212, 0.76);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.track-row:hover,
+.track-row.table-hover,
+.track-row.table-active {
+  color: #fff7ea;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--row-color), transparent 78%), rgba(255, 255, 255, 0.035));
+}
+
+.track-row.table-active {
+  box-shadow: inset 3px 0 0 var(--row-color);
+}
+
+.power-pill {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid color-mix(in srgb, var(--pill-color), white 30%);
+  border-radius: 50%;
+  color: #fff9ef;
+  background: color-mix(in srgb, var(--pill-color), transparent 64%);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--pill-color), transparent 34%);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.artifact-cell {
+  color: rgba(255, 225, 194, 0.64);
+  overflow-wrap: anywhere;
+}
+
 .tooltip {
   position: fixed;
   z-index: 20;
-  max-width: 260px;
-  padding: 8px 10px;
-  border: 1px solid rgba(255, 111, 42, 0.45);
-  border-radius: 6px;
-  background: rgba(3, 6, 12, 0.92);
+  width: min(330px, calc(100vw - 28px));
+  max-width: 330px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--tooltip-color, #ff6f2a), white 12%);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(4, 7, 13, 0.96), rgba(2, 4, 8, 0.95)),
+    radial-gradient(circle at 14% 0%, color-mix(in srgb, var(--tooltip-color, #ff6f2a), transparent 76%), transparent 48%);
   color: #ffe5c3;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  box-shadow: 0 0 24px rgba(255, 73, 18, 0.32);
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: 0 0 28px color-mix(in srgb, var(--tooltip-color, #ff6f2a), transparent 66%), 0 18px 60px rgba(0, 0, 0, 0.7);
   opacity: 0;
   transform: translate(12px, -12px);
   pointer-events: none;
   transition: opacity 120ms ease;
+}
+
+.tooltip.open {
+  opacity: 1;
+}
+
+.tooltip-kicker {
+  color: rgba(255, 224, 190, 0.58);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.tooltip-title {
+  margin-top: 5px;
+  color: #fff5e4;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.tooltip-artifact {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 223, 194, 0.72);
+  line-height: 1.38;
+}
+
+.tooltip-artifact b {
+  color: #fff0cf;
+}
+
+.tooltip-foot {
+  margin-top: 8px;
+  color: rgba(255, 211, 171, 0.48);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 @media (max-width: 980px) {
@@ -701,6 +948,20 @@ button {
   .core-fire { width: 170px; height: 216px; }
   .core-sigil { width: 136px; height: 166px; }
   .core-plate { width: 92vw; height: 78vw; }
+  .track-table-shell {
+    left: 18px;
+    right: 18px;
+    bottom: 72px;
+    width: auto;
+    max-height: 190px;
+  }
+  .track-table-wrap {
+    max-height: 138px;
+  }
+  .track-table th:nth-child(4),
+  .track-table td:nth-child(4) {
+    width: 132px;
+  }
 }
 
 @media (max-width: 680px) {
@@ -751,10 +1012,31 @@ button {
   .panel {
     left: 14px;
     right: 14px;
-    bottom: 110px;
+    bottom: 274px;
     width: auto;
-    max-height: 300px;
+    max-height: 230px;
     overflow: auto;
+  }
+  .track-table-shell {
+    left: 14px;
+    right: 14px;
+    bottom: 110px;
+    max-height: 152px;
+  }
+  .track-table-head {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 8px 10px;
+  }
+  .track-table-wrap {
+    max-height: 98px;
+  }
+  .track-table {
+    font-size: 10px;
+  }
+  .track-table th:nth-child(4),
+  .track-table td:nth-child(4) {
+    display: none;
   }
   .stat-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -840,6 +1122,27 @@ button {
     <div class="bars" id="bars" aria-hidden="true"></div>
   </section>
 
+  <section class="track-table-shell" aria-label="Interactive Reclamation track map">
+    <div class="track-table-head">
+      <span>Document Map</span>
+      <b>Reclamation POWER Tracks</b>
+      <span>Hover node / Click row</span>
+    </div>
+    <div class="track-table-wrap">
+      <table class="track-table">
+        <thead>
+          <tr>
+            <th>Node</th>
+            <th>PWR</th>
+            <th>Track</th>
+            <th>Digital Artifact</th>
+          </tr>
+        </thead>
+        <tbody id="track-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
   <footer class="hud-bottom">
     <div class="status-chip"><span class="status-dot"></span><span>SYS: Online</span></div>
     <div class="progress-track" aria-label="Activation progress"><div class="progress-fill" id="progress-fill"></div></div>
@@ -855,30 +1158,30 @@ let currentNode = null;
 let barFrame = 0;
 
 const powerData = {
-  P: { label: "Persistent Will", color: "#7C3AED", short: "Stabilizer" },
-  O: { label: "Purification Through Order", color: "#FBBF24", short: "Governing Force" },
-  W: { label: "Willful Action", color: "#60A5FA", short: "Engine" },
-  E: { label: "Energetic Transmutation", color: "#FB923C", short: "Transformative Axis" },
-  R: { label: "Righteous Leadership", color: "#4ADE80", short: "Leadership Axis" }
+  P: { label: "Persistent Will", color: "#7C3AED", short: "Stabilizer", artifact: "Violet Will Anchor" },
+  O: { label: "Purification Through Order", color: "#FBBF24", short: "Governing Force", artifact: "Amber Order Lens" },
+  W: { label: "Willful Action", color: "#60A5FA", short: "Engine", artifact: "Blue Action Drive" },
+  E: { label: "Energetic Transmutation", color: "#FB923C", short: "Transformative Axis", artifact: "Orange Crucible Flame" },
+  R: { label: "Righteous Leadership", color: "#4ADE80", short: "Leadership Axis", artifact: "Emerald Steward Beacon" }
 };
 
 const nodes = [
   { n: 1, x: 17, y: 16, tier: "outer", power: "E", title: "Welcome To The Fire", meaning: "The ignition point. Fire activated. Transformation begins." },
-  { n: 2, x: 8, y: 50, tier: "outer", power: "W", title: "Reclamation (The Day Musiq Matrix Came Back)", meaning: "The return. Active reclamation. Movement from victimhood into agency." },
+  { n: 2, x: 8, y: 50, tier: "outer", power: "W", title: "Reclamation", meaning: "The return. Active reclamation. Movement from victimhood into agency." },
   { n: 3, x: 17, y: 84, tier: "outer", power: "O", title: "Know Your Names", meaning: "Pattern recognition. Naming corruption. Bringing hidden structures into order." },
-  { n: 4, x: 50, y: 92, tier: "outer", power: "P", title: "Hold On", meaning: "Endurance under pressure." },
+  { n: 4, x: 50, y: 92, tier: "outer", power: "P", title: "Hold On Through The Burial", meaning: "Endurance under pressure." },
   { n: 5, x: 83, y: 84, tier: "outer", power: "P", title: "Demonic Schemes", meaning: "Persistent commitment to truth despite emotional and spiritual interference." },
   { n: 6, x: 92, y: 50, tier: "outer", power: "W", title: "Second Edition", meaning: "Conscious self-reconstruction." },
   { n: 7, x: 83, y: 16, tier: "outer", power: "O", title: "Thought Form", meaning: "Mental architecture and operational law." },
-  { n: 8, x: 50, y: 8, tier: "outer", power: "R", title: "Remember The Price (When You Speak The Name)", meaning: "Teacher archetype. Stewardship of hard-earned wisdom." },
-  { n: 9, x: 26, y: 22, tier: "mid", power: "O", title: "Blueprint of the Divine", meaning: "Universal structure. Divine order." },
+  { n: 8, x: 50, y: 8, tier: "outer", power: "R", title: "Remember The Price", meaning: "Teacher archetype. Stewardship of hard-earned wisdom." },
+  { n: 9, x: 26, y: 22, tier: "mid", power: "O", title: "Blueprint Of The Divine", meaning: "Universal structure. Divine order." },
   { n: 10, x: 18, y: 50, tier: "mid", power: "O", title: "Hostile Rewrite", meaning: "Correction of distorted narratives." },
   { n: 11, x: 26, y: 78, tier: "mid", power: "O", title: "The Witness Don't Talk", meaning: "Observation before reaction. Internal governance." },
   { n: 12, x: 50, y: 84, tier: "mid", power: "E", title: "Consecrated", meaning: "Burning away the false self." },
   { n: 13, x: 74, y: 78, tier: "mid", power: "P", title: "Through The Fog", meaning: "Maintaining course despite uncertainty." },
   { n: 14, x: 82, y: 50, tier: "mid", power: "W", title: "Code Red", meaning: "Emergency intervention. Immediate action." },
   { n: 15, x: 74, y: 22, tier: "mid", power: "E", title: "Shadow Chains", meaning: "Transformation through confrontation with bondage." },
-  { n: 16, x: 50, y: 16, tier: "mid", power: "R", title: "Don't Hang That Word", meaning: "Moral correction and responsible language." },
+  { n: 16, x: 50, y: 16, tier: "mid", power: "P", title: "Don't Hang That Word", meaning: "Moral endurance and responsible language." },
   { n: 17, x: 31, y: 30, tier: "inner", power: "W", title: "I Create As I Speak", meaning: "Manifestation through deliberate action." },
   { n: 18, x: 25, y: 50, tier: "inner", power: "R", title: "Weapons Grade Transmission", meaning: "Broadcasting guidance during collective transition." },
   { n: 19, x: 31, y: 70, tier: "inner", power: "E", title: "Blood Without Stains", meaning: "Transmuting trauma into power." },
@@ -886,14 +1189,19 @@ const nodes = [
   { n: 21, x: 69, y: 70, tier: "inner", power: "W", title: "Seer Broke Chains", meaning: "Liberation through decisive action." },
   { n: 22, x: 75, y: 50, tier: "inner", power: "R", title: "Slumlord Fundamentalist", meaning: "Standing against injustice." },
   { n: 23, x: 69, y: 30, tier: "inner", power: "O", title: "Misguided Priorities", meaning: "Reordering values." },
-  { n: 24, x: 50, y: 24, tier: "inner", power: "R", title: "Emerald Mode, Online", meaning: "Embodied leadership state." },
+  { n: 24, x: 50, y: 24, tier: "inner", power: "W", title: "Emerald Mode, Online", meaning: "Embodied action state." },
   { n: 25, x: 36, y: 50, tier: "core", power: "E", title: "As Above, So Below", meaning: "Hermetic transmutation and correspondence." },
   { n: 26, x: 50, y: 65, tier: "core", power: "R", title: "Chosen Ones", meaning: "Calling others into remembrance and responsibility." },
   { n: 27, x: 64, y: 50, tier: "core", power: "R", title: "Elemental Orchestra", meaning: "Integration and mentorship." },
   { n: 28, x: 58, y: 38, tier: "core", power: "O", title: "The Hierophant", meaning: "Examination of corrupted authority and authentic wisdom." },
-  { n: 29, x: 50, y: 48, tier: "core", power: "R", title: "Architect of the Aftermath", meaning: "Builder archetype. Leadership after collapse." },
+  { n: 29, x: 50, y: 48, tier: "core", power: "R", title: "Architect Of The Aftermath", meaning: "Builder archetype. Leadership after collapse." },
   { n: 30, x: 50, y: 34, tier: "core", power: "E", title: "Fire In My Veins", meaning: "Final embodiment of transformed power." }
 ];
+
+nodes.forEach((node) => {
+  const power = powerData[node.power];
+  node.artifact = `${power.artifact} // ${node.title}`;
+});
 
 const powerDistribution = nodes.reduce((counts, node) => {
   counts[node.power] = (counts[node.power] || 0) + 1;
@@ -904,6 +1212,7 @@ const nodesEl = document.getElementById("nodes");
 const tooltip = document.getElementById("tooltip");
 const panel = document.getElementById("panel");
 const barsEl = document.getElementById("bars");
+const trackTableBody = document.getElementById("track-table-body");
 
 nodes.forEach((node) => {
   const button = document.createElement("button");
@@ -916,12 +1225,39 @@ nodes.forEach((node) => {
   button.dataset.tier = node.tier;
   button.dataset.power = node.power;
   button.setAttribute("aria-label", `Activate track ${node.n}: ${node.title}, ${node.power} ${powerData[node.power].label}`);
-  button.innerHTML = `<span>${String(node.n).padStart(2, "0")}</span>`;
+  button.innerHTML = `
+    <span>${String(node.n).padStart(2, "0")}</span>
+    <div class="node-popover" role="presentation">
+      <div class="node-popover-kicker">Hover mode // Node ${String(node.n).padStart(2, "0")} // ${node.power} ${powerData[node.power].label}</div>
+      <div class="node-popover-title">${node.title}</div>
+      <div class="node-popover-artifact"><b>Digital Artifact:</b> ${node.artifact}</div>
+      <div class="node-popover-artifact"><b>Track Signal:</b> ${node.meaning}</div>
+      <div class="node-popover-foot">Click node to activate visualizer for this track</div>
+    </div>
+  `;
   button.addEventListener("click", () => activateNode(node.n));
   button.addEventListener("mouseenter", (event) => showTooltip(event, node));
   button.addEventListener("mousemove", (event) => moveTooltip(event));
   button.addEventListener("mouseleave", hideTooltip);
   nodesEl.appendChild(button);
+});
+
+nodes.forEach((node) => {
+  const power = powerData[node.power];
+  const row = document.createElement("tr");
+  row.className = "track-row";
+  row.dataset.node = String(node.n);
+  row.style.setProperty("--row-color", power.color);
+  row.innerHTML = `
+    <td>${String(node.n).padStart(2, "0")}</td>
+    <td><span class="power-pill" style="--pill-color:${power.color}">${node.power}</span></td>
+    <td>${node.title}</td>
+    <td class="artifact-cell">${power.artifact}</td>
+  `;
+  row.addEventListener("mouseenter", () => setTableHover(node.n, true));
+  row.addEventListener("mouseleave", () => setTableHover(node.n, false));
+  row.addEventListener("click", () => activateNode(node.n));
+  trackTableBody.appendChild(row);
 });
 
 for (let i = 0; i < 38; i += 1) {
@@ -959,6 +1295,9 @@ function activateNode(nodeNumber) {
     button.classList.toggle("active", n === nodeNumber);
     button.classList.toggle("visited", visited.has(n));
   });
+  document.querySelectorAll(".track-row").forEach((row) => {
+    row.classList.toggle("table-active", Number(row.dataset.node) === nodeNumber);
+  });
 
   const node = nodes.find((item) => item.n === nodeNumber);
   const stats = getStats(nodeNumber);
@@ -976,6 +1315,7 @@ function activateNode(nodeNumber) {
   document.getElementById("stat-grid").innerHTML = [
     ["Power", node.power],
     ["Mode", power.short],
+    ["Artifact", power.artifact],
     ["Count", powerDistribution[node.power]],
     ["Thermal", `${stats.thermal}%`],
     ["Proximity", `${stats.proximity}m`],
@@ -986,6 +1326,13 @@ function activateNode(nodeNumber) {
   panel.classList.add("open");
   cancelAnimationFrame(barFrame);
   animateBars(stats.thermal);
+}
+
+function setTableHover(nodeNumber, isHovering) {
+  const nodeButton = document.querySelector(`.node[data-node="${nodeNumber}"]`);
+  const row = document.querySelector(`.track-row[data-node="${nodeNumber}"]`);
+  if (nodeButton) nodeButton.classList.toggle("hover-preview", isHovering);
+  if (row) row.classList.toggle("table-hover", isHovering);
 }
 
 function animateBars(thermal) {
@@ -1002,8 +1349,7 @@ function animateBars(thermal) {
 }
 
 function showTooltip(event, node) {
-  tooltip.textContent = `${String(node.n).padStart(2, "0")} // ${node.power} // ${node.title}`;
-  tooltip.style.opacity = "1";
+  setTableHover(node.n, true);
   moveTooltip(event);
 }
 
@@ -1013,7 +1359,9 @@ function moveTooltip(event) {
 }
 
 function hideTooltip() {
-  tooltip.style.opacity = "0";
+  if (currentNode !== null) setTableHover(currentNode, false);
+  document.querySelectorAll(".node.hover-preview").forEach((node) => node.classList.remove("hover-preview"));
+  document.querySelectorAll(".track-row.table-hover").forEach((row) => row.classList.remove("table-hover"));
 }
 
 const canvas = document.getElementById("spark-field");
