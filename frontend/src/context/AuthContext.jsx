@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { getSupabaseClient } from '../services/supabase/client';
+import { sanitizeRedirectPath } from '../lib/authRedirects';
 import '../services/apiClient';
 
 const AuthContext = createContext(null);
@@ -101,12 +102,15 @@ export const AuthProvider = ({ children }) => {
     return appUser;
   };
 
-  const socialLogin = async (provider) => {
+  const socialLogin = async (provider, redirectPath = '/acts') => {
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
 
+    const safeRedirectPath = sanitizeRedirectPath(redirectPath);
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: `${window.location.origin}/acts` },
+      options: {
+        redirectTo: `${window.location.origin}/login?redirect=${encodeURIComponent(safeRedirectPath)}`,
+      },
     });
     if (error) throw new Error(error.message);
   };

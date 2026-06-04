@@ -2,82 +2,52 @@
 
 ## Overview
 
-This app now uses local email/password authentication through the backend:
+This app uses Supabase Auth in the browser through `@supabase/supabase-js`.
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `GET /api/auth/me`
-- `POST /api/auth/logout`
-
-Authenticated browser sessions are stored in the `session_token` cookie, which contains a backend-issued JWT.
+- The client is created in `frontend/src/services/supabase/client.js`.
+- `AuthProvider` reads the current Supabase session and listens for auth state changes.
+- `ProtectedRoute` redirects unauthenticated users to `/login` and preserves the intended destination.
+- Email/password and Google OAuth both return users to the protected page they tried to open.
 
 ## Local Setup
 
-Backend environment must include:
-
-- `JWT_SECRET`
-- `SUPABASE_URL`
-- `SUPABASE_KEY`
-
 Frontend environment must include:
 
-- `REACT_APP_BACKEND_URL`
+- `VITE_APP_SUPABASE_URL`
+- `VITE_APP_SUPABASE_ANON_KEY`
 
-## Manual API Checks
+The app also accepts these fallback names:
 
-```bash
-# Register
-curl -X POST "http://localhost:8000/api/auth/register" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test User","email":"test@example.com","password":"password123"}'
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
 
-# Login and store cookies
-curl -X POST "http://localhost:8000/api/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password123"}' \
-  -c cookies.txt
+## Supabase Dashboard Checks
 
-# Read current session
-curl -X GET "http://localhost:8000/api/auth/me" \
-  -b cookies.txt
+In the Supabase dashboard for the project referenced by `VITE_APP_SUPABASE_URL`:
 
-# Logout
-curl -X POST "http://localhost:8000/api/auth/logout" \
-  -b cookies.txt
-```
+- Enable Email authentication under Authentication providers.
+- Enable Google only if the Google button should be active.
+- Add the local site URL, for example `http://localhost:3000` or the current Vite port.
+- Add redirect URLs for `/acts`, `/login`, and any deployed production domain.
 
-## Browser / E2E Setup
+## Browser Checks
 
-Use the backend login endpoint first, then reuse the cookie jar in the browser context.
-
-```javascript
-await page.goto("http://localhost:3000/login");
-await page.getByTestId("login-email-input").fill("test@example.com");
-await page.getByTestId("login-password-input").fill("password123");
-await page.getByTestId("login-submit-btn").click();
-await page.waitForURL("**/dashboard");
-```
-
-## Direct Database Checks
-
-Verify the `users` table contains:
-
-- `user_id`
-- `email`
-- `name`
-- hashed `password`
-
-There is no separate OAuth/session table in the current auth model.
+1. Start the frontend.
+2. Open a protected page such as `/protocol/3`.
+3. Confirm the browser redirects to `/login`.
+4. Sign in with a Supabase test user.
+5. Confirm the browser returns to the original protected page.
+6. Log out and confirm protected pages redirect back to `/login`.
 
 ## Success Indicators
 
-- `/api/auth/login` returns `200`
-- `/api/auth/me` returns the logged-in user
-- Browser lands on `/dashboard`
-- Logout clears the session and `/api/auth/me` returns `401`
+- `/login` accepts a valid Supabase email/password user.
+- `/register` creates or requests confirmation for a Supabase Auth user.
+- Google OAuth returns to `/login?redirect=...`, then the app sends the authenticated user to the intended page.
+- Protected routes do not render until the Supabase session check finishes.
 
 ## Failure Indicators
 
-- `401 Invalid credentials`
-- `500` due to missing `JWT_SECRET` or Supabase config
-- Redirect loop back to `/login`
+- `Supabase is not configured`: frontend env vars are missing or empty.
+- `Invalid login credentials`: the Supabase user does not exist or the password is wrong.
+- Redirect loop: Supabase dashboard site URL or redirect URL settings do not include the current app origin.

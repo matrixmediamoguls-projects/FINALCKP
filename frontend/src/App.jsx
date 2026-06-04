@@ -37,6 +37,7 @@ const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPre
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
 import { UNLOCK_ALL_ACCESS } from './lib/accessFlags';
+import { getAuthRedirectPath } from './lib/authRedirects';
 
 const ProtectedRoute = ({ children, withShell = true }) => {
   const { user, loading } = useAuth();
@@ -82,8 +83,11 @@ const AppShellWrapper = ({ children }) => {
 
 function AppRoutes() {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) return null;
+
+  const postAuthRedirectPath = getAuthRedirectPath(location);
 
   return (
     <Routes>
@@ -92,12 +96,12 @@ function AppRoutes() {
 
       <Route
         path="/login"
-        element={user ? <Navigate to="/acts" replace /> : <Login />}
+        element={user ? <Navigate to={postAuthRedirectPath} replace /> : <Login />}
       />
 
       <Route
         path="/register"
-        element={user ? <Navigate to="/acts" replace /> : <Register />}
+        element={user ? <Navigate to={postAuthRedirectPath} replace /> : <Register />}
       />
 
       <Route

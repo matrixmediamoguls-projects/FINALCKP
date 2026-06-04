@@ -1,6 +1,7 @@
 import { useMemo, useState, useTransition } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getAuthRedirectPath } from '../lib/authRedirects';
 import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
 import SocialAuthButtons from '../components/SocialAuthButtons';
@@ -31,6 +32,10 @@ const Register = () => {
   const [isPending, startTransition] = useTransition();
   const { register, socialLogin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectPath = getAuthRedirectPath(location);
+  const loginPath =
+    redirectPath === '/acts' ? '/login' : `/login?redirect=${encodeURIComponent(redirectPath)}`;
 
   const protocolIdentity = useMemo(() => {
     const trimmedHandle = protocolHandle.trim();
@@ -69,7 +74,7 @@ const Register = () => {
     startTransition(async () => {
       try {
         await register(protocolIdentity, email.trim(), password);
-        navigate('/acts');
+        navigate(redirectPath, { replace: true });
       } catch (err) {
         setError(err.message || 'Registration failed. Please try again.');
       }
@@ -202,7 +207,7 @@ const Register = () => {
                 onSocialLogin={async (provider) => {
                   setError('');
                   try {
-                    await socialLogin(provider);
+                    await socialLogin(provider, redirectPath);
                   } catch (err) {
                     setError(err.message || 'Social login failed. Please try again.');
                   }
@@ -213,7 +218,7 @@ const Register = () => {
               <p className="pt-1 text-center text-sm text-chroma-text-secondary">
                 Already a Seeker?{' '}
                 <Link
-                  to="/login"
+                  to={loginPath}
                   className="text-chroma-gold transition-colors duration-200 hover:text-[#f0cc40]"
                   data-testid="login-link"
                 >

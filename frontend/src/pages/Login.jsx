@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeSlash, Fingerprint } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { getAuthRedirectPath } from '../lib/authRedirects';
 import SocialAuthButtons from '../components/SocialAuthButtons';
 import AuthVideoFrame from '../components/AuthVideoFrame';
 
@@ -27,7 +28,9 @@ const Login = () => {
   const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const redirectPath = location.state?.from?.pathname || '/acts';
+  const redirectPath = getAuthRedirectPath(location);
+  const registerPath =
+    redirectPath === '/acts' ? '/register' : `/register?redirect=${encodeURIComponent(redirectPath)}`;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +49,7 @@ const Login = () => {
   const handleSocialLogin = async (provider) => {
     setError('');
     try {
-      await socialLogin(provider);
+      await socialLogin(provider, redirectPath);
     } catch (err) {
       setError(err?.message || 'Google sign-in failed');
     }
@@ -121,7 +124,7 @@ const Login = () => {
 
               <p className="text-center text-sm text-chroma-text-secondary">
                 New to the Protocol?{' '}
-                <Link to="/register" className="text-chroma-gold hover:text-[#f0cc40]">
+                <Link to={registerPath} className="text-chroma-gold hover:text-[#f0cc40]">
                   Initialize Access
                 </Link>
               </p>
