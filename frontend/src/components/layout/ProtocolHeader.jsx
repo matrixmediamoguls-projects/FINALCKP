@@ -2,7 +2,12 @@ import { Menu, Settings2 } from "lucide-react";
 
 const modes = ["cinematic", "artifact", "performance", "immersive", "diagnostic"];
 
-export default function ProtocolHeader({ visualMode, onVisualModeChange }) {
+export default function ProtocolHeader({
+  visualMode,
+  onVisualModeChange,
+  onOpenVideoProjector,
+  videoProjectorReady = false,
+}) {
   return (
     <header className="pva-header">
       <div className="pva-header-act">
@@ -27,8 +32,13 @@ export default function ProtocolHeader({ visualMode, onVisualModeChange }) {
             ))}
           </select>
         </label>
-        <button type="button" aria-label="VRA module">
-          VRA MODULE
+        <button
+          type="button"
+          aria-label="Open Act III video projector"
+          onClick={onOpenVideoProjector}
+          title="Open Act III video projector"
+        >
+          {videoProjectorReady ? "MEDIA LIVE" : "VRA MODULE"}
         </button>
         <button type="button" aria-label="Settings">
           <Settings2 size={16} />

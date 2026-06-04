@@ -1,0 +1,309 @@
+.cvp-dock {
+  position: fixed;
+  top: 10px;
+  right: clamp(12px, 2vw, 28px);
+  z-index: 930;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 64, 42, 0.55);
+  border-radius: 3px;
+  background:
+    linear-gradient(90deg, rgba(255, 30, 24, 0.14), rgba(74, 230, 255, 0.08)),
+    rgba(3, 4, 5, 0.88);
+  color: #f5ece9;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  box-shadow: 0 0 22px rgba(255, 36, 24, 0.16);
+  cursor: pointer;
+}
+
+.cvp-dock svg {
+  color: #ff402f;
+}
+
+.cvp-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 940;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 clamp(10px, 3vw, 34px) 22px;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 58%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.026) 0 1px, transparent 1px 78px);
+}
+
+.cvp-projector {
+  pointer-events: auto;
+  position: relative;
+  width: min(1180px, 100%);
+  max-height: min(88svh, 840px);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid rgba(255, 57, 38, 0.54);
+  border-top: 0;
+  border-radius: 0 0 7px 7px;
+  background:
+    linear-gradient(180deg, rgba(34, 39, 43, 0.82), rgba(2, 3, 5, 0.96) 18%),
+    linear-gradient(90deg, rgba(77, 235, 255, 0.08), transparent 18%, transparent 82%, rgba(255, 52, 37, 0.12)),
+    rgba(2, 3, 5, 0.96);
+  box-shadow:
+    inset 0 -1px 0 rgba(240, 250, 255, 0.1),
+    0 28px 100px rgba(0, 0, 0, 0.84),
+    0 0 62px rgba(255, 44, 30, 0.2);
+  transform-origin: top center;
+}
+
+.cvp-projector::before,
+.cvp-projector::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.cvp-projector::before {
+  inset: 11px;
+  border: 1px solid rgba(238, 248, 255, 0.08);
+  border-radius: 0 0 4px 4px;
+}
+
+.cvp-projector::after {
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 7px;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 64, 42, 0.84), transparent),
+    linear-gradient(90deg, rgba(77, 235, 255, 0.24), transparent 22%, transparent 78%, rgba(77, 235, 255, 0.2));
+  box-shadow: 0 0 18px rgba(255, 54, 35, 0.48);
+}
+
+.cvp-header,
+.cvp-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px clamp(16px, 2.5vw, 28px);
+  color: rgba(246, 237, 234, 0.74);
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+}
+
+.cvp-header {
+  border-bottom: 1px solid rgba(255, 63, 42, 0.2);
+}
+
+.cvp-header div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.cvp-header span,
+.cvp-footer {
+  font-size: 0.66rem;
+  letter-spacing: 0;
+}
+
+.cvp-header strong {
+  max-width: min(58vw, 720px);
+  overflow: hidden;
+  color: #fff4f0;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cvp-header nav,
+.cvp-footer button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.cvp-header button,
+.cvp-footer button,
+.cvp-play-fallback {
+  border: 1px solid rgba(255, 68, 45, 0.38);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.44);
+  color: #f5ece9;
+  min-width: 34px;
+  min-height: 34px;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.cvp-header button:hover,
+.cvp-footer button:hover,
+.cvp-play-fallback:hover {
+  border-color: rgba(77, 235, 255, 0.54);
+  box-shadow: 0 0 18px rgba(77, 235, 255, 0.16);
+}
+
+.cvp-header button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.cvp-rig {
+  position: relative;
+  z-index: 1;
+  height: 24px;
+  display: grid;
+  grid-template-columns: 1fr 0.45fr 1fr;
+  align-items: center;
+  gap: clamp(12px, 3vw, 34px);
+  padding: 0 clamp(22px, 4vw, 58px);
+}
+
+.cvp-rig i {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 66, 42, 0.72), rgba(77, 235, 255, 0.32), transparent);
+  box-shadow: 0 0 12px rgba(255, 66, 42, 0.32);
+}
+
+.cvp-screen {
+  position: relative;
+  z-index: 1;
+  margin: 0 clamp(14px, 2.6vw, 30px);
+  aspect-ratio: 16 / 9;
+  min-height: 260px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 69, 46, 0.36);
+  border-radius: 4px;
+  background:
+    linear-gradient(90deg, rgba(77, 235, 255, 0.08), transparent 17%, transparent 82%, rgba(255, 67, 42, 0.1)),
+    #020304;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.055),
+    inset 0 0 54px rgba(255, 43, 28, 0.1);
+}
+
+.cvp-screen video,
+.cvp-empty {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+}
+
+.cvp-screen video {
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+.cvp-empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  color: rgba(246, 237, 234, 0.72);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 24px;
+}
+
+.cvp-empty svg {
+  color: #ff432e;
+}
+
+.cvp-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent, rgba(255, 57, 36, 0.12), transparent),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.046) 0 1px, transparent 1px 7px);
+  mix-blend-mode: screen;
+  opacity: 0.24;
+}
+
+.cvp-play-fallback {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  z-index: 3;
+  grid-auto-flow: column;
+  gap: 8px;
+  padding: 0 13px;
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+}
+
+.cvp-footer {
+  min-height: 52px;
+  border-top: 1px solid rgba(255, 63, 42, 0.16);
+}
+
+.cvp-footer span {
+  min-width: 0;
+}
+
+.cvp-footer span:nth-child(2) {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(77, 235, 255, 0.72);
+}
+
+@media (max-width: 760px) {
+  .cvp-layer {
+    padding-inline: 8px;
+  }
+
+  .cvp-header {
+    display: grid;
+    gap: 10px;
+  }
+
+  .cvp-header strong {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .cvp-header nav {
+    justify-content: space-between;
+  }
+
+  .cvp-screen {
+    min-height: 210px;
+  }
+
+  .cvp-footer {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    font-size: 0.58rem;
+  }
+
+  .cvp-footer button {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvp-dock,
+  .cvp-projector,
+  .cvp-layer {
+    transition: none;
+  }
+}

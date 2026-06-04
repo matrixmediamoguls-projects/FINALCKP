@@ -14,6 +14,7 @@ import LyricsProtocolPanel from "../../components/lyrics/LyricsProtocolPanel";
 import AudioAnalysisPanel from "../../components/analysis/AudioAnalysisPanel";
 import ProtocolEnginePanel from "../../components/protocol/ProtocolEnginePanel";
 import SystemStatusBar from "../../components/layout/SystemStatusBar";
+import CascadingVideoProjector from "../../components/media/CascadingVideoProjector";
 
 const fallbackLyrics = [
   "This is where the spirit is set free.",
@@ -62,6 +63,7 @@ export default function ReclamationCodex() {
   const audio = useAudio();
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
   const [visualMode, setVisualMode] = useState("cinematic");
+  const [projectorOpen, setProjectorOpen] = useState(false);
 
   useEffect(() => {
     if (activeTrackIndex >= tracks.length) setActiveTrackIndex(0);
@@ -151,7 +153,18 @@ export default function ReclamationCodex() {
 
   return (
     <main className="pva-root">
-      <ProtocolHeader visualMode={visualMode} onVisualModeChange={setVisualMode} />
+      <ProtocolHeader
+        visualMode={visualMode}
+        onVisualModeChange={setVisualMode}
+        onOpenVideoProjector={() => setProjectorOpen(true)}
+        videoProjectorReady
+      />
+      <CascadingVideoProjector
+        open={projectorOpen}
+        onOpen={() => setProjectorOpen(true)}
+        onClose={() => setProjectorOpen(false)}
+        contextTitle={activeTrack?.title || "ACT III RECLAMATION"}
+      />
 
       <div className="pva-main-grid">
         <aside className="pva-left">
