@@ -18,6 +18,7 @@ const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));
 const ActOneEntry = lazy(() => import('./pages/ActOneEntry'));
 const LaunchModule = lazy(() => import('./pages/LaunchModule'));
+const ImmersionModeSelection = lazy(() => import('./pages/ImmersionModeSelection'));
 const ActModulesPage = lazy(() => import('./pages/ActModulesPage'));
 const ActPage = lazy(() => import('./pages/ActPage'));
 const LockedAct = lazy(() => import('./pages/LockedAct'));
@@ -163,6 +164,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute withShell={false}>
             <LaunchModule />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/immersion-mode"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ImmersionModeSelection />
           </ProtectedRoute>
         }
       />
@@ -357,7 +367,8 @@ function AppWithBackground() {
     path.includes("act_three") ||
     path.includes("reclamation") ||
     path.includes("visualizer") ||
-    path.includes("/vma")
+    path.includes("/vma") ||
+    path.includes("/immersion-mode")
   ) {
     act = "fire";
   }
