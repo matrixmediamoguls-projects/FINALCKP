@@ -18,7 +18,7 @@ const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));
 const ActOneEntry = lazy(() => import('./pages/ActOneEntry'));
 const LaunchModule = lazy(() => import('./pages/LaunchModule'));
-const ImmersionModeSelection = lazy(() => import('./pages/ImmersionModeSelection'));
+const Reclamation_User_Journey = lazy(() => import('./pages/Reclamation_User_Journey'));
 const ActModulesPage = lazy(() => import('./pages/ActModulesPage'));
 const ActPage = lazy(() => import('./pages/ActPage'));
 const LockedAct = lazy(() => import('./pages/LockedAct'));
@@ -169,10 +169,10 @@ function AppRoutes() {
       />
 
       <Route
-        path="/immersion-mode"
+        path="/Reclamation_User_Journey"
         element={
           <ProtectedRoute withShell={false}>
-            <ImmersionModeSelection />
+            <Reclamation_User_Journey />
           </ProtectedRoute>
         }
       />
@@ -368,7 +368,7 @@ function AppWithBackground() {
     path.includes("reclamation") ||
     path.includes("visualizer") ||
     path.includes("/vma") ||
-    path.includes("/immersion-mode")
+    path.includes("/reclamation_user_journey")
   ) {
     act = "fire";
   }
