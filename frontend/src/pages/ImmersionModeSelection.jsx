@@ -16,7 +16,7 @@ const modes = [
     title: ["GUIDED", "IMMERSION", "EXPERIENCE"],
     description: "FULL CINEMATIC IMMERSION EXPERIENCE",
     button: "LAUNCH IMMERSION PROTOCOL",
-    route: "/listen/3",
+    route: "/experiencemode/immersion",
     align: "left",
   },
   {
@@ -27,7 +27,7 @@ const modes = [
     description: "You map your own journey through the Reclamation Mainframe.",
     badge: "LIMITED EXPERIENCE",
     button: "LAUNCH SOVEREIGN PROTOCOL",
-    route: "/protocol/3",
+    route: "/experiencemode/sovereign",
     align: "right",
   },
 ];
