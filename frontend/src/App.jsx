@@ -34,6 +34,7 @@ const LaunchSequencePage = lazy(() => import('./pages/LaunchSequencePage'));
 const Activation = lazy(() => import('./pages/Activation'));
 const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistant'));
 const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
+const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSovereignMode'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -175,6 +176,20 @@ function AppRoutes() {
             <Reclamation_User_Journey />
           </ProtectedRoute>
         }
+      />
+
+      <Route
+        path="/self-directed-sovereign-mode"
+        element={
+          <ProtectedRoute withShell={false}>
+            <SelfDirectedSovereignMode />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/sovereign"
+        element={<Navigate to="/self-directed-sovereign-mode" replace />}
       />
 
       {/* AUDIO */}
@@ -368,7 +383,9 @@ function AppWithBackground() {
     path.includes("reclamation") ||
     path.includes("visualizer") ||
     path.includes("/vma") ||
-    path.includes("/reclamation_user_journey")
+    path.includes("/reclamation_user_journey") ||
+    path.includes("self-directed-sovereign-mode") ||
+    path.includes("/sovereign")
   ) {
     act = "fire";
   }
