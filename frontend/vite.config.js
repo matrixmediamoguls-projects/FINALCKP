@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 const manualChunkGroups = {
   'vendor-react': ['react', 'react-dom', 'react-router-dom'],
