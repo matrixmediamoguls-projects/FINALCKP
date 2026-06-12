@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./ImmersionModeSelection.css";
+import "./ReclamationPathway.css";
 
 const SYSTEM_STATS = [
   { label: "SYSTEM INTEGRITY", value: "82%", tone: "red" },
@@ -8,14 +8,14 @@ const SYSTEM_STATS = [
   { label: "NEXUS STATUS", value: "ONLINE", tone: "green" },
 ];
 
-const modes = [
+const PATHWAYS = [
   {
-    id: "guided",
+    id: "immersion",
     number: "01",
     kicker: "CHROMA KEY PROTOCOL",
-    title: ["GUIDED", "IMMERSION", "EXPERIENCE"],
+    title: ["IMMERSION", "MODE"],
     description: "FULL CINEMATIC IMMERSION EXPERIENCE",
-    button: "LAUNCH IMMERSION PROTOCOL",
+    button: "LAUNCH IMMERSION MODE",
     route: "/experiencemode/immersion",
     align: "left",
   },
@@ -34,27 +34,27 @@ const modes = [
 
 function TopInterface() {
   return (
-    <header className="ims-top-interface">
-      <div className="ims-profile-block">
-        <div className="ims-avatar">47</div>
+    <header className="rp-top-interface">
+      <div className="rp-profile-block">
+        <div className="rp-avatar">47</div>
         <div>
-          <div className="ims-user-row">SEEKER_47 <span /></div>
+          <div className="rp-user-row">SEEKER_47 <span /></div>
           <p>ACCESS LEVEL: <strong>SEEKER</strong></p>
           <p>© CLEARANCE: <strong>OMEGA</strong></p>
         </div>
       </div>
 
-      <div className="ims-stat-row">
+      <div className="rp-stat-row">
         {SYSTEM_STATS.map((stat) => (
-          <div className="ims-stat" key={stat.label}>
+          <div className="rp-stat" key={stat.label}>
             <span>{stat.label}</span>
-            <strong className={`ims-${stat.tone}`}>{stat.value}</strong>
+            <strong className={`rp-${stat.tone}`}>{stat.value}</strong>
             <i />
           </div>
         ))}
       </div>
 
-      <div className="ims-node-block">
+      <div className="rp-node-block">
         <span>TIME SYNCHRONIZED</span>
         <strong>21:47:32 UTC</strong>
         <p>CLASSIFIED NODE<br />RMF-03-ALPHA</p>
@@ -67,24 +67,24 @@ function ModeCard({ mode }) {
   const navigate = useNavigate();
 
   return (
-    <article className={`ims-mode-card ims-${mode.id}`}>
-      <div className="ims-card-glow" />
-      <div className="ims-card-content">
-        <div className="ims-card-kicker"><span className="ims-mini-mark" />{mode.kicker}<b>••</b></div>
-        <div className="ims-card-number">{mode.number}</div>
+    <article className={`rp-mode-card rp-${mode.id}`}>
+      <div className="rp-card-glow" />
+      <div className="rp-card-content">
+        <div className="rp-card-kicker"><span className="rp-mini-mark" />{mode.kicker}<b>••</b></div>
+        <div className="rp-card-number">{mode.number}</div>
 
         <h2>
           {mode.title.map((line, index) => (
-            <span key={line} className={index === mode.title.length - 1 ? "ims-redline" : ""}>{line}</span>
+            <span key={line} className={index === mode.title.length - 1 ? "rp-redline" : ""}>{line}</span>
           ))}
         </h2>
 
-        <div className="ims-title-rule" />
-        <p className="ims-description">{mode.description}</p>
-        {mode.badge && <div className="ims-mode-badge">{mode.badge}</div>}
+        <div className="rp-title-rule" />
+        <p className="rp-description">{mode.description}</p>
+        {mode.badge && <div className="rp-mode-badge">{mode.badge}</div>}
 
         {mode.id === "guided" && (
-          <div className="ims-holo-panel">
+          <div className="rp-holo-panel">
             <strong>DAY MUSIQ MATRIX · COMPLETE</strong>
             <span>SOUL SENTIMENT +87%</span>
             <span>VISUAL POTENTIAL OPTIMAL</span>
@@ -93,7 +93,7 @@ function ModeCard({ mode }) {
         )}
 
         {mode.id === "sovereign" && (
-          <aside className="ims-side-diagnostics">
+          <aside className="rp-side-diagnostics">
             <div><span>NETWORK STATUS</span><strong>18%</strong><small>INTEGRITY REMAINING</small></div>
             <div><span>CONTAINMENT PROTOCOL</span><strong>STANDBY</strong></div>
             <div><span>NEXUS OVERRIDE</span><strong>ACCESS GRANTED</strong></div>
@@ -101,20 +101,20 @@ function ModeCard({ mode }) {
         )}
       </div>
 
-      <button type="button" className="ims-launch-button" onClick={() => navigate(mode.route)}>
-        <span className="ims-play">▶</span>
+      <button type="button" className="rp-launch-button" onClick={() => navigate(mode.route)}>
+        <span className="rp-play">▶</span>
         {mode.button}
       </button>
     </article>
   );
 }
 
-export default function ImmersionModeSelection() {
+export default function ReclamationPathway() {
   return (
-    <main className="ims-page">
+    <main className="rp-page">
       <TopInterface />
-      <section className="ims-card-stage" aria-label="Select Reclamation protocol mode">
-        {modes.map((mode) => <ModeCard key={mode.id} mode={mode} />)}
+      <section className="rp-card-stage" aria-label="Choose a Reclamation pathway">
+        {PATHWAYS.map((mode) => <ModeCard key={mode.id} mode={mode} />)}
       </section>
     </main>
   );
