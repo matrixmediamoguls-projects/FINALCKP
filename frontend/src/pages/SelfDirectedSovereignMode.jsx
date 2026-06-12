@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Boxes, BrainCircuit, Flame, Headphones, Music2, PenTool, RadioTower } from 'lucide-react';
+import { BookOpen, Boxes, BrainCircuit, Flame, Music2, PenTool, RadioTower } from 'lucide-react';
 import './SelfDirectedSovereignMode.css';
 
 const MODULES = [
@@ -12,6 +12,15 @@ const MODULES = [
     lightCode: 'The Structure Beneath The System',
     description: 'Enter the elemental architecture behind the Reclamation Mainframe.',
     route: '/codex'
+  },
+  {
+    id: 'lyrical-codex',
+    title: 'Lyrical Codex',
+    code: 'LCP',
+    icon: BookOpen,
+    lightCode: 'Content Is Structure. Structure Is Legacy.',
+    description: 'Decode lyric, testimony, indictment, memory, and revelation.',
+    route: '/protocol/3'
   },
   {
     id: 'sonic-artifacts',
@@ -48,15 +57,6 @@ const MODULES = [
     lightCode: 'The Structure Beneath The System',
     description: 'Write, reflect, annotate, and preserve your sovereign path.',
     route: '/journal'
-  },
-  {
-    id: 'reclamation-university',
-    title: 'Reclamation University',
-    code: 'RU',
-    icon: Headphones,
-    lightCode: 'The Sun Don’t Invoice?',
-    description: 'Training layer for lessons, unlocks, and operational context.',
-    route: '/Reclamation_User_Journey'
   }
 ];
 
