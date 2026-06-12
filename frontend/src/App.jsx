@@ -12,7 +12,6 @@ import { useAuth } from './context/AuthContext';
 
 import ElementalBackground from "./components/ElementalBackground";
 
-const ReclamationCodex = lazy(() => import('./acts/Reclamation/ReclamationCodex'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));
@@ -277,16 +276,8 @@ function AppRoutes() {
         }
       />
 
-      {/* ACT III MAINFRAME */}
-
-      <Route
-        path="/protocol/3"
-        element={
-          <ProtectedRoute withShell={false}>
-            <ReclamationCodex />
-          </ProtectedRoute>
-        }
-      />
+      {/* Reserved while the Act III mainframe is outside the active hierarchy. */}
+      <Route path="/protocol/3" element={<Navigate to="/acts" replace />} />
 
       {/* GENERIC ACT PROTOCOLS */}
 
@@ -377,7 +368,6 @@ function AppWithBackground() {
   }
 
   if (
-    path.includes("/protocol/3") ||
     path.includes("/act/3") ||
     path.includes("act_three") ||
     path.includes("reclamation") ||

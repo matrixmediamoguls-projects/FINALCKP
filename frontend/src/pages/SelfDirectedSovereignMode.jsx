@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Boxes, BrainCircuit, Flame, Headphones, Music2, PenTool, RadioTower } from 'lucide-react';
+import { Boxes, BrainCircuit, Flame, Headphones, Music2, PenTool, RadioTower } from 'lucide-react';
 import './SelfDirectedSovereignMode.css';
 
 const MODULES = [
@@ -12,15 +12,6 @@ const MODULES = [
     lightCode: 'The Structure Beneath The System',
     description: 'Enter the elemental architecture behind the Reclamation Mainframe.',
     route: '/codex'
-  },
-  {
-    id: 'lyrical-codex',
-    title: 'Lyrical Codex',
-    code: 'LCP',
-    icon: BookOpen,
-    lightCode: 'Content Is Structure. Structure Is Legacy.',
-    description: 'Decode lyric, testimony, indictment, memory, and revelation.',
-    route: '/protocol/3'
   },
   {
     id: 'sonic-artifacts',
@@ -129,7 +120,10 @@ function SelfDirectedSovereignMode() {
               </div>
             </div>
 
-            <div className="sovereign-carousel" style={{ '--rotation': `${activeIndex * -51.428deg}` }}>
+            <div
+              className="sovereign-carousel"
+              style={{ '--rotation': `${activeIndex * -(360 / MODULES.length)}deg` }}
+            >
               {orbitalCards.map((module, index) => {
                 const Icon = module.icon;
                 return (
