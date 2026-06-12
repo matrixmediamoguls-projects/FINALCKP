@@ -171,7 +171,7 @@ function AppRoutes() {
       />
 
       <Route
-        path="/immersion-mode"
+        path="/reclamation_pathway"
         element={
           <ProtectedRoute withShell={false}>
             <ImmersionModeSelection />

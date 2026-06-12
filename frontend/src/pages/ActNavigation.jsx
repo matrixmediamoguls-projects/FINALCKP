@@ -41,7 +41,7 @@ const acts = [
     color: '#ff4d4d',
     rgb: '255, 77, 77',
     emblem: '/emblem/act_three_module_emblem.png',
-    route: '/immersion-mode',
+    route: '/reclamation_pathway',
     status: 'Active',
     signal: '03',
   },
