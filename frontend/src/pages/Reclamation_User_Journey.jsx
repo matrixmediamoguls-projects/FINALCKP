@@ -17,15 +17,6 @@ const JOURNEY_OPTIONS = [
     button: "LAUNCH IMMERSION PROTOCOL",
     route: "/listen/3",
   },
-  {
-    id: "sovereign",
-    number: "02",
-    title: ["SELF-DIRECTED", "SOVEREIGN MODE"],
-    description: "You map your own journey through the Reclamation Mainframe.",
-    badge: "LIMITED EXPERIENCE",
-    button: "LAUNCH SOVEREIGN PROTOCOL",
-    route: "/protocol/3",
-  },
 ];
 
 function TopInterface() {
@@ -77,8 +68,6 @@ function JourneyCard({ option }) {
 
         <div className="ruj-title-rule" />
         <p className="ruj-description">{option.description}</p>
-        {option.badge && <div className="ruj-badge">{option.badge}</div>}
-
         {option.id === "guided" && (
           <div className="ruj-holo-panel">
             <strong>DAY MUSIQ MATRIX · COMPLETE</strong>
@@ -88,13 +77,6 @@ function JourneyCard({ option }) {
           </div>
         )}
 
-        {option.id === "sovereign" && (
-          <aside className="ruj-diagnostics">
-            <div><span>NETWORK STATUS</span><strong>18%</strong><small>INTEGRITY REMAINING</small></div>
-            <div><span>CONTAINMENT PROTOCOL</span><strong>STANDBY</strong></div>
-            <div><span>NEXUS OVERRIDE</span><strong>ACCESS GRANTED</strong></div>
-          </aside>
-        )}
       </div>
 
       <button type="button" className="ruj-launch-button" onClick={() => navigate(option.route)}>
