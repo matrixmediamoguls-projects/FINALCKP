@@ -129,7 +129,10 @@ function SelfDirectedSovereignMode() {
               </div>
             </div>
 
-            <div className="sovereign-carousel" style={{ '--rotation': `${activeIndex * -51.428deg}` }}>
+            <div
+              className="sovereign-carousel"
+              style={{ '--rotation': `${activeIndex * -(360 / MODULES.length)}deg` }}
+            >
               {orbitalCards.map((module, index) => {
                 const Icon = module.icon;
                 return (

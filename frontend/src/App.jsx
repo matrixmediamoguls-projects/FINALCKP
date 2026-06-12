@@ -18,6 +18,7 @@ const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));
 const ActOneEntry = lazy(() => import('./pages/ActOneEntry'));
 const LaunchModule = lazy(() => import('./pages/LaunchModule'));
+const ImmersionModeSelection = lazy(() => import('./pages/ImmersionModeSelection'));
 const Reclamation_User_Journey = lazy(() => import('./pages/Reclamation_User_Journey'));
 const ActModulesPage = lazy(() => import('./pages/ActModulesPage'));
 const ActPage = lazy(() => import('./pages/ActPage'));
@@ -165,6 +166,29 @@ function AppRoutes() {
         element={
           <ProtectedRoute withShell={false}>
             <LaunchModule />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/immersion-mode"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ImmersionModeSelection />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/experiencemode/immersion"
+        element={<Navigate to="/listen/3" replace />}
+      />
+
+      <Route
+        path="/experiencemode/sovereign"
+        element={
+          <ProtectedRoute withShell={false}>
+            <SelfDirectedSovereignMode />
           </ProtectedRoute>
         }
       />
