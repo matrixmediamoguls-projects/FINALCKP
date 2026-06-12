@@ -224,7 +224,7 @@ const LaunchModule = () => {
       return;
     }
     if (warpDest === 3) {
-      navigate("/immersion-mode");
+      navigate("/protocol/3");
       return;
     }
     navigate(`/activation?act=${warpDest}`, { state: { act: warpDest } });
