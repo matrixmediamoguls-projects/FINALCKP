@@ -1,5 +1,26 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowUpRight, Broadcast, Circuitry, LockKey, Play } from '@phosphor-icons/react';
+import {
+  ArrowCounterClockwise,
+  ArrowUpRight,
+  Bell,
+  Broadcast,
+  CaretRight,
+  ChartLineUp,
+  Circuitry,
+  EnvelopeSimple,
+  GearSix,
+  LockKey,
+  Play,
+  SignOut,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+  SlidersHorizontal,
+  Stack,
+  Waveform,
+} from '@phosphor-icons/react';
+import { useAuth } from '../context/AuthContext';
 import '../styles/act-navigation.css';
 
 const acts = [
@@ -133,8 +154,30 @@ function ActCard({ act }) {
   );
 }
 
+const commandLinks = [
+  { label: 'Elemental Protocols', icon: Circuitry, route: '/acts', active: true },
+  { label: 'Analytics', icon: ChartLineUp, route: '/seeker' },
+  { label: 'Archive', icon: Stack, route: '/journal' },
+  { label: 'Intel', icon: SlidersHorizontal, route: '/vma' },
+];
+
 export default function ActNavigation() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [clock, setClock] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setClock(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login', { replace: true });
+  };
+
+  const displayName = user?.name || 'Director';
+  const level = user?.level || 47;
 
   return (
     <main className="act-nav-page">
@@ -143,6 +186,56 @@ export default function ActNavigation() {
       <div className="act-nav-noise" />
 
       <section className="act-nav-shell" aria-label="Chroma Key Protocol act navigation">
+        <header className="act-nav-command">
+          <button className="act-nav-brand" type="button" onClick={() => navigate('/acts')}>
+            <strong>CKP</strong>
+            <span>Chroma Key Protocol</span>
+          </button>
+
+          <nav className="act-nav-command__links" aria-label="Primary navigation">
+            {commandLinks.map(({ label, icon: Icon, route, active }) => (
+              <button
+                key={label}
+                className={active ? 'is-active' : ''}
+                type="button"
+                onClick={() => navigate(route)}
+              >
+                <Icon size={22} aria-hidden="true" />
+                <span>{label}</span>
+              </button>
+            ))}
+          </nav>
+
+          <div className="act-nav-profile">
+            <div className="act-nav-profile__avatar" aria-hidden="true">
+              {displayName.slice(0, 1).toUpperCase()}
+            </div>
+            <div className="act-nav-profile__copy">
+              <strong>{displayName}</strong>
+              <span>Level {level} <i /></span>
+            </div>
+            <button type="button" aria-label="Notifications">
+              <Bell size={19} />
+            </button>
+            <button type="button" aria-label="Messages" onClick={() => navigate('/seeker')}>
+              <EnvelopeSimple size={20} />
+            </button>
+            <button type="button" aria-label="Settings" onClick={() => navigate('/onboarding')}>
+              <GearSix size={20} />
+            </button>
+            <button className="act-nav-logout" type="button" onClick={handleLogout}>
+              <span>Logout</span>
+              <SignOut size={19} />
+            </button>
+          </div>
+        </header>
+
+        <div className="act-nav-body">
+          <aside className="act-nav-rail" aria-hidden="true">
+            <span>C</span><span>K</span><span>P</span><i />
+          </aside>
+
+          <div className="act-nav-workspace">
         <header className="act-nav-hero" style={{ '--hero-image': 'url(/media/act-gateway-scene.jpg)' }}>
           <div className="act-nav-hero__media" aria-hidden="true">
             <div className="act-nav-hero__frame">
@@ -158,22 +251,24 @@ export default function ActNavigation() {
               <Broadcast size={17} weight="fill" aria-hidden="true" />
               Protocol Mainframe Online
             </span>
-            <h1>Chroma Key Protocol</h1>
-            <p>Four Acts. One Reality.</p>
+            <h1><span>Chroma</span><span>Key</span><span>Protocol</span></h1>
+            <p>Four Acts. <strong>One Reality.</strong></p>
           </div>
 
           <aside className="act-nav-telemetry" aria-label="Protocol telemetry">
             <div>
-              <span>Sequence</span>
-              <strong>04 Acts</strong>
+              <Circuitry size={31} aria-hidden="true" />
+              <span><small>Sequence</small><strong>04 Acts</strong></span>
+              <CaretRight size={21} />
             </div>
             <div>
-              <span>Mode</span>
-              <strong>Immersive</strong>
+              <Waveform size={32} aria-hidden="true" />
+              <span><small>Mode</small><strong>Immersive</strong></span>
+              <CaretRight size={21} />
             </div>
-            <div>
-              <span>Access</span>
-              <strong>Synced</strong>
+            <div className="act-nav-telemetry__access">
+              <LockKey size={34} aria-hidden="true" />
+              <span><small>Access</small><strong>Access and Protocol<br />Unlocked</strong></span>
             </div>
           </aside>
         </header>
@@ -198,6 +293,33 @@ export default function ActNavigation() {
             <ActCard key={act.num} act={act} />
           ))}
         </div>
+          </div>
+        </div>
+
+        <footer className="act-nav-console">
+          <div className="act-nav-system">
+            <i />
+            <span><small>System Status</small><strong>All Systems Operational</strong></span>
+          </div>
+          <div className="act-nav-media">
+            <span>Media Controls</span>
+            <button type="button" aria-label="Shuffle"><Shuffle size={18} /></button>
+            <button type="button" aria-label="Previous"><SkipBack size={20} weight="fill" /></button>
+            <button className="act-nav-media__play" type="button" aria-label="Open immersion player" onClick={() => navigate('/listen/3')}>
+              <Play size={25} weight="fill" />
+            </button>
+            <button type="button" aria-label="Next"><SkipForward size={20} weight="fill" /></button>
+            <button type="button" aria-label="Repeat"><ArrowCounterClockwise size={19} /></button>
+          </div>
+          <div className="act-nav-sync">
+            <span>
+              <small>Time Sync</small>
+              <strong>{clock.toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' })} UTC</strong>
+            </span>
+            <i />
+            <span><small>Protocol Version</small><strong>v2.5.1.7</strong></span>
+          </div>
+        </footer>
       </section>
     </main>
   );
