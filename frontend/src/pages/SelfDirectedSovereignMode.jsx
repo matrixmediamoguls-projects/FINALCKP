@@ -1,6 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { BookOpen, Boxes, BrainCircuit, Flame, Headphones, Music2, PenTool, RadioTower } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  BookOpen,
+  Boxes,
+  BrainCircuit,
+  ChevronLeft,
+  ChevronRight,
+  CircleGauge,
+  Headphones,
+  Minus,
+  Music2,
+  Orbit,
+  PenTool,
+  Plus,
+  RadioTower,
+} from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import './SelfDirectedSovereignMode.css';
 
 const MODULES = [
@@ -10,8 +25,17 @@ const MODULES = [
     code: 'ECP',
     icon: Boxes,
     lightCode: 'The Structure Beneath The System',
-    description: 'Enter the elemental architecture behind the Reclamation Mainframe.',
-    route: '/codex'
+    route: '/codex',
+    emblem: '/emblem/act_three_module_emblem.png',
+  },
+  {
+    id: 'reclamation-university',
+    title: 'Reclamation University',
+    code: 'RU',
+    icon: Headphones,
+    lightCode: "The Sun Don't Invoice?",
+    route: '/Reclamation_User_Journey',
+    emblem: '/emblem/reclamation_core_emblem.png',
   },
   {
     id: 'lyrical-codex',
@@ -19,8 +43,7 @@ const MODULES = [
     code: 'LCP',
     icon: BookOpen,
     lightCode: 'Content Is Structure. Structure Is Legacy.',
-    description: 'Decode lyric, testimony, indictment, memory, and revelation.',
-    route: '/protocol/3'
+    route: '/protocol/3',
   },
   {
     id: 'sonic-artifacts',
@@ -28,17 +51,15 @@ const MODULES = [
     code: 'SAP',
     icon: Music2,
     lightCode: 'Frequencies Hold Memory. Artifacts Hold Purpose.',
-    description: 'Access the sound objects, transmissions, and musical evidence.',
-    route: '/listen/3'
+    route: '/listen/3',
   },
   {
     id: 'archetypes',
-    title: 'Archaetypes',
+    title: 'Archetypes',
     code: 'ARP',
     icon: BrainCircuit,
     lightCode: 'Patterns Precede Form. Origins Shape Destiny.',
-    description: 'Study the pattern-forms operating beneath the visible story.',
-    route: '/seeker'
+    route: '/seeker',
   },
   {
     id: 'audio-visualizer-core',
@@ -46,147 +67,279 @@ const MODULES = [
     code: 'AVC',
     icon: RadioTower,
     lightCode: 'The Structure Beneath The System',
-    description: 'Launch the unobstructed visual signal chamber for Act Three.',
-    route: '/visualizer/3'
+    route: '/visualizer/3',
   },
   {
     id: 'vibes-and-scribes',
     title: 'Vibes And Scribes',
     code: 'VVS',
     icon: PenTool,
-    lightCode: 'The Structure Beneath The System',
-    description: 'Write, reflect, annotate, and preserve your sovereign path.',
-    route: '/journal'
+    lightCode: 'Write It. Witness It. Reclaim It.',
+    route: '/journal',
   },
-  {
-    id: 'reclamation-university',
-    title: 'Reclamation University',
-    code: 'RU',
-    icon: Headphones,
-    lightCode: 'The Sun Don’t Invoice?',
-    description: 'Training layer for lessons, unlocks, and operational context.',
-    route: '/Reclamation_User_Journey'
-  }
 ];
 
-function SelfDirectedSovereignMode() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeModule = MODULES[activeIndex];
+const ELEMENT_LEVELS = [
+  { label: 'Fire', value: 78, color: '#f22f2f' },
+  { label: 'Water', value: 62, color: '#249ce6' },
+  { label: 'Earth', value: 70, color: '#2daf62' },
+  { label: 'Air', value: 64, color: '#55bc56' },
+  { label: 'Sound', value: 88, color: '#8d20ef' },
+];
 
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % MODULES.length);
-    }, 5200);
+function getCircularOffset(index, activeIndex, length) {
+  let offset = index - activeIndex;
+  const midpoint = Math.floor(length / 2);
 
-    return () => window.clearInterval(timer);
-  }, []);
+  if (offset > midpoint) offset -= length;
+  if (offset < -midpoint) offset += length;
 
-  const orbitalCards = useMemo(() => {
-    const step = 360 / MODULES.length;
+  return offset;
+}
 
-    return MODULES.map((module, index) => ({
-      ...module,
-      angle: step * index,
-      isActive: index === activeIndex
-    }));
-  }, [activeIndex]);
+function ModuleCard({ module, offset, onSelect }) {
+  const Icon = module.icon;
+  const distance = Math.abs(offset);
 
   return (
-    <main className="sovereign-page">
-      <div className="sovereign-frame" aria-label="Self-Directed Sovereign Mode official operating system hub">
-        <header className="sovereign-header">
-          <div className="sovereign-brand">
-            <span className="sovereign-mark">M</span>
-            <span>Musiq Matrix</span>
-          </div>
-          <div className="sovereign-title-block">
-            <span>The Chroma Key Protocol</span>
-            <h1>Self-Directed Sovereign Mode</h1>
-          </div>
-          <div className="sovereign-status"><span /> Decryption Active</div>
-        </header>
+    <button
+      type="button"
+      className={`sos-module-card ${offset === 0 ? 'is-active' : ''}`}
+      data-offset={offset}
+      style={{ '--card-order': 20 - distance }}
+      onClick={onSelect}
+      aria-label={`Select ${module.title}`}
+      aria-current={offset === 0 ? 'true' : undefined}
+    >
+      <span className="sos-card-scan" aria-hidden="true" />
+      <span className="sos-card-title">{module.title}</span>
 
-        <section className="sovereign-stage">
-          <aside className="sovereign-audio-feed" aria-hidden="true">
-            <p>Audio Feed</p>
-            <div className="sovereign-bars">
-              {Array.from({ length: 28 }).map((_, index) => (
-                <i key={index} style={{ '--bar-delay': `${index * 0.04}s` }} />
-              ))}
-            </div>
-            <strong>Synced</strong>
-            <small>01:24</small>
-          </aside>
+      <span className="sos-card-emblem">
+        {module.emblem ? (
+          <img src={module.emblem} alt="" />
+        ) : (
+          <Icon strokeWidth={1.35} aria-hidden="true" />
+        )}
+      </span>
 
-          <div className="sovereign-orbit-wrap">
-            <div className="sovereign-radar" />
-            <div className="sovereign-flame-core" aria-label="Central Promethean Flame Core">
-              <div className="sovereign-flame-shell">
-                <div className="sovereign-flame-ring ring-one" />
-                <div className="sovereign-flame-ring ring-two" />
-                <Flame className="sovereign-flame-icon" strokeWidth={1.25} />
-                <div className="sovereign-core-label">Promethean Core</div>
-              </div>
-            </div>
-
-            <div
-              className="sovereign-carousel"
-              style={{ '--rotation': `${activeIndex * -(360 / MODULES.length)}deg` }}
-            >
-              {orbitalCards.map((module, index) => {
-                const Icon = module.icon;
-                return (
-                  <Link
-                    key={module.id}
-                    to={module.route}
-                    className={`sovereign-module-card ${module.isActive ? 'is-active' : ''}`}
-                    style={{ '--angle': `${module.angle}deg` }}
-                    onMouseEnter={() => setActiveIndex(index)}
-                    onFocus={() => setActiveIndex(index)}
-                  >
-                    <span className="module-code">{module.code} // V1.0.0</span>
-                    <Icon className="module-icon" strokeWidth={1.35} />
-                    <strong>{module.title}</strong>
-                    <em>{module.lightCode}</em>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          <aside className="sovereign-sync" aria-hidden="true">
-            <p>Sync</p>
-            {MODULES.map((module, index) => (
-              <button
-                key={module.id}
-                type="button"
-                className={index === activeIndex ? 'is-active' : ''}
-                onClick={() => setActiveIndex(index)}
-                aria-label={`Focus ${module.title}`}
-              />
-            ))}
-            <small>03:47</small>
-          </aside>
-        </section>
-
-        <section className="sovereign-control-panel">
-          <div>
-            <span>System Access // Authorized</span>
-            <h2>{activeModule.title}</h2>
-          </div>
-          <p>{activeModule.description}</p>
-          <Link to={activeModule.route} className="sovereign-launch-button">
-            Launch {activeModule.code} Protocol
-          </Link>
-        </section>
-
-        <footer className="sovereign-footer">
-          <span>Reclamation Mainframe</span>
-          <span>Live Feed · Mainframe</span>
-        </footer>
-      </div>
-    </main>
+      <span className="sos-card-light-label">Primary Light Code:</span>
+      <strong>{module.lightCode}</strong>
+      <small>{module.code} // Sovereign Access</small>
+    </button>
   );
 }
 
-export default SelfDirectedSovereignMode;
+function HudPanel({ title, children, className = '' }) {
+  return (
+    <section className={`sos-hud-panel ${className}`}>
+      <h2>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+export default function SelfDirectedSovereignMode() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [zoom, setZoom] = useState(1);
+  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+
+  const activeModule = MODULES[activeIndex];
+  const userName = user?.name || user?.email?.split('@')[0] || 'Supabase';
+
+  const cards = useMemo(
+    () =>
+      MODULES.map((module, index) => ({
+        module,
+        index,
+        offset: getCircularOffset(index, activeIndex, MODULES.length),
+      })),
+    [activeIndex],
+  );
+
+  const rotate = useCallback((direction) => {
+    setActiveIndex((current) => (current + direction + MODULES.length) % MODULES.length);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') rotate(-1);
+      if (event.key === 'ArrowRight') rotate(1);
+      if (event.key === 'Enter') navigate(activeModule.route);
+      if (event.key === '+' || event.key === '=') setZoom((value) => Math.min(1.16, value + 0.08));
+      if (event.key === '-') setZoom((value) => Math.max(0.84, value - 0.08));
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeModule.route, navigate, rotate]);
+
+  const handlePointerMove = (event) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+    setParallax({ x, y });
+  };
+
+  return (
+    <main
+      className="sos-page"
+      style={{
+        '--deck-zoom': zoom,
+        '--parallax-x': parallax.x,
+        '--parallax-y': parallax.y,
+      }}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={() => setParallax({ x: 0, y: 0 })}
+    >
+      <div className="sos-chamber" aria-hidden="true" />
+      <div className="sos-vignette" aria-hidden="true" />
+
+      <header className="sos-header">
+        <div className="sos-brand-block">
+          <img src="/emblem/reclamation_core_emblem.png" alt="" />
+          <div>
+            <strong>The Chroma Key Protocol</strong>
+            <span>Reclamation Mainframe</span>
+            <span>Sovereign Mode</span>
+          </div>
+        </div>
+
+        <div className="sos-system-status">
+          <i />
+          System Status: Operational
+        </div>
+
+        <div className="sos-user-block">
+          <div>
+            <strong>User: {userName}</strong>
+            <span>Clearance: ECP Level {user?.level || 7}</span>
+          </div>
+          <img src="/emblem/reclamation_core_emblem.png" alt="" />
+        </div>
+      </header>
+
+      <section className="sos-operating-stage" aria-label="Sovereign Mode orbital operating system">
+        <button
+          type="button"
+          className="sos-stage-arrow sos-stage-arrow--left"
+          onClick={() => rotate(-1)}
+          aria-label="Rotate modules left"
+        >
+          <ChevronLeft />
+        </button>
+
+        <div className="sos-card-deck">
+          {cards.map(({ module, index, offset }) => (
+            <ModuleCard
+              key={module.id}
+              module={module}
+              offset={offset}
+              onSelect={() => setActiveIndex(index)}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          className="sos-stage-arrow sos-stage-arrow--right"
+          onClick={() => rotate(1)}
+          aria-label="Rotate modules right"
+        >
+          <ChevronRight />
+        </button>
+      </section>
+
+      <div className="sos-core-readout">
+        <span>Promethean Core</span>
+        <div>
+          <i />
+          <small>Energy Output</small>
+          <strong>93%</strong>
+        </div>
+      </div>
+
+      <HudPanel title="Active Light Code" className="sos-light-code">
+        <div className="sos-light-code-body">
+          <CircleGauge aria-hidden="true" />
+          <div>
+            <strong>{activeModule.lightCode}</strong>
+            <span>Code: {activeModule.code}-777-A</span>
+          </div>
+        </div>
+        <p>Sync Status</p>
+        <b>Synchronized</b>
+      </HudPanel>
+
+      <div className="sos-right-hud">
+        <HudPanel title="Protocol Progress">
+          <span>Track {activeIndex + 1} of {MODULES.length}</span>
+          <div className="sos-progress">
+            <i style={{ width: `${((activeIndex + 1) / MODULES.length) * 100}%` }} />
+          </div>
+          <strong>{Math.round(((activeIndex + 1) / MODULES.length) * 100)}%</strong>
+        </HudPanel>
+
+        <HudPanel title="Element Balance">
+          <div className="sos-elements">
+            {ELEMENT_LEVELS.map((element) => (
+              <div key={element.label}>
+                <span>{element.label}</span>
+                <i>
+                  <b style={{ width: `${element.value}%`, background: element.color }} />
+                </i>
+                <strong>{element.value}%</strong>
+              </div>
+            ))}
+          </div>
+        </HudPanel>
+      </div>
+
+      <nav className="sos-control-rail" aria-label="Sovereign Mode controls">
+        <button type="button" onClick={() => setActiveIndex(1)}>
+          <CircleGauge aria-hidden="true" />
+          System Overview
+        </button>
+
+        <div className="sos-rotate-controls">
+          <span><Orbit aria-hidden="true" /> Orbital Controls</span>
+          <button type="button" onClick={() => rotate(-1)} aria-label="Rotate left">
+            <ChevronLeft />
+          </button>
+          <strong>Rotate</strong>
+          <button type="button" onClick={() => rotate(1)} aria-label="Rotate right">
+            <ChevronRight />
+          </button>
+        </div>
+
+        <div className="sos-core-button" aria-hidden="true">
+          <img src="/emblem/reclamation_core_emblem.png" alt="" />
+        </div>
+
+        <div className="sos-zoom-controls">
+          <button
+            type="button"
+            onClick={() => setZoom((value) => Math.max(0.84, value - 0.08))}
+            aria-label="Zoom out"
+          >
+            <Minus />
+          </button>
+          <strong>Zoom</strong>
+          <button
+            type="button"
+            onClick={() => setZoom((value) => Math.min(1.16, value + 0.08))}
+            aria-label="Zoom in"
+          >
+            <Plus />
+          </button>
+        </div>
+
+        <button type="button" className="sos-enter-module" onClick={() => navigate(activeModule.route)}>
+          Enter Module
+          <ChevronRight aria-hidden="true" />
+        </button>
+      </nav>
+    </main>
+  );
+}
