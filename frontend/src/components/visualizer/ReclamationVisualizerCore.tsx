@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
-import useAudioAnalyzer from "../../hooks/useAudioAnalyzer";
+import useAudioAnalyzer from "./useAudioAnalyzer";
 import VisualizerCore from "./VisualizerCore";
 
 const formatTime = (seconds: number) => {
@@ -36,25 +36,21 @@ const reclamationCoreStyles = `
   isolation: isolate;
 }
 
-.ckp-visualizer-core-viewport::before,
-.ckp-visualizer-core-viewport::after {
+.ckp-visualizer-core-viewport::before {
   content: "";
   position: absolute;
   pointer-events: none;
   z-index: 2;
   inset: -1px;
+  padding: 1px;
   border-radius: 30px;
-}
-
-.ckp-visualizer-core-viewport::before {
   background:
     linear-gradient(90deg, rgba(255, 26, 16, 0.58), transparent 16%, transparent 84%, rgba(255, 26, 16, 0.58)),
     linear-gradient(180deg, rgba(255, 156, 62, 0.22), transparent 18%, transparent 82%, rgba(255, 36, 22, 0.26));
   opacity: 0.24;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  padding: 1px;
   -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
 }
 
