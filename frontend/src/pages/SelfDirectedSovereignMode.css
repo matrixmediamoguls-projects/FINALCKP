@@ -52,7 +52,7 @@
 .sovereign-header,
 .sovereign-footer {
   position: relative;
-  z-index: 4;
+  z-index: 8;
   display: grid;
   grid-template-columns: 1fr 1.4fr 1fr;
   align-items: center;
@@ -117,7 +117,7 @@
 
 .sovereign-stage {
   position: relative;
-  z-index: 3;
+  z-index: 5;
   display: grid;
   grid-template-columns: 160px 1fr 130px;
   align-items: center;
@@ -176,24 +176,42 @@
   position: relative;
   height: 100%;
   min-height: 560px;
-  perspective: 1600px;
+  perspective: 1800px;
   transform-style: preserve-3d;
+  overflow: visible;
+}
+
+.sovereign-focus-corridor {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 3%;
+  width: min(420px, 36vw);
+  height: 82%;
+  transform: translateX(-50%);
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, transparent, rgba(255, 0, 0, 0.08), transparent);
+  filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.34));
+  pointer-events: none;
 }
 
 .sovereign-radar {
   position: absolute;
-  inset: 5% 8%;
+  z-index: 1;
+  inset: 3% 4%;
   border-radius: 50%;
   background:
     repeating-radial-gradient(circle, transparent 0 37px, rgba(255, 28, 28, 0.2) 38px 39px),
     conic-gradient(from 0deg, rgba(255, 0, 0, 0.34), transparent 24%, rgba(79, 64, 255, 0.2), transparent 55%, rgba(255, 0, 0, 0.28));
-  opacity: 0.72;
+  opacity: 0.62;
   filter: blur(0.2px);
   animation: sovereignRadar 18s linear infinite;
 }
 
 .sovereign-flame-core {
   position: absolute;
+  z-index: 7;
   inset: 0;
   display: grid;
   place-items: center;
@@ -257,20 +275,55 @@
   text-transform: uppercase;
 }
 
-.sovereign-carousel {
+.sovereign-dome-rig {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(2deg) rotateY(var(--dome-rotation));
+  transition: transform 1100ms cubic-bezier(.16, .84, .18, 1);
+}
+
+.sovereign-dome-environment,
+.sovereign-light-tracks {
+  position: absolute;
+  inset: 1% 0;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.sovereign-dome-environment {
+  background:
+    radial-gradient(circle at 50% 50%, transparent 28%, rgba(255, 0, 0, 0.11) 29% 31%, transparent 32%),
+    repeating-conic-gradient(from 0deg, rgba(255, 0, 0, 0.2) 0deg 1deg, transparent 1deg 21deg);
+  box-shadow:
+    inset 0 0 80px rgba(255, 0, 0, 0.12),
+    inset 0 0 160px rgba(39, 16, 255, 0.08);
+  opacity: 0.7;
+  transform: rotateX(68deg) translateZ(-130px);
+}
+
+.sovereign-light-tracks {
+  border: 1px solid rgba(255, 58, 58, 0.28);
+  box-shadow:
+    inset 0 0 34px rgba(255, 0, 0, 0.18),
+    0 0 42px rgba(255, 0, 0, 0.14);
+  transform: rotateX(68deg) translateZ(-80px) scale(1.08);
+}
+
+.sovereign-module-orbit-ring {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  transform: rotateX(64deg) rotateZ(var(--rotation));
-  transition: transform 900ms cubic-bezier(.2, .8, .2, 1);
 }
 
 .sovereign-module-card {
   position: absolute;
-  left: calc(50% - 140px);
-  top: calc(50% - 86px);
-  width: 280px;
-  min-height: 172px;
+  left: calc(50% - 150px);
+  top: calc(50% - 92px);
+  width: 300px;
+  min-height: 184px;
   padding: 18px;
   display: flex;
   flex-direction: column;
@@ -279,19 +332,21 @@
   color: #f2f2f2;
   text-decoration: none;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent 18% 76%, rgba(255, 0, 0, 0.18)),
-    rgba(6, 5, 6, 0.88);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.035) 26%, rgba(255, 0, 0, 0.2)),
+    rgba(6, 5, 6, 0.78);
   border: 1px solid rgba(255, 58, 58, 0.45);
+  backdrop-filter: blur(18px) saturate(1.3);
   box-shadow:
     inset 0 0 20px rgba(255, 0, 0, 0.15),
     0 22px 40px rgba(0, 0, 0, 0.58);
   clip-path: polygon(9% 0, 91% 0, 100% 16%, 100% 84%, 91% 100%, 9% 100%, 0 84%, 0 16%);
   transform:
-    rotateZ(var(--angle))
-    translateY(-285px)
-    rotateZ(calc(var(--angle) * -1))
-    rotateX(-64deg);
-  transition: transform 500ms ease, border-color 500ms ease, box-shadow 500ms ease, opacity 500ms ease;
+    rotateY(var(--angle))
+    translateZ(520px)
+    translateY(var(--dome-pitch))
+    rotateY(calc(var(--angle) * -1));
+  transition: transform 600ms ease, border-color 500ms ease, box-shadow 500ms ease, opacity 500ms ease, filter 500ms ease;
+  opacity: 0.58;
 }
 
 .sovereign-module-card.is-active,
@@ -302,7 +357,18 @@
     inset 0 0 28px rgba(255, 0, 0, 0.24),
     0 0 34px rgba(255, 0, 0, 0.55),
     0 30px 54px rgba(0, 0, 0, 0.68);
+  filter: brightness(1.18);
+  opacity: 1;
   outline: none;
+}
+
+.sovereign-module-card.is-active {
+  transform:
+    rotateY(var(--angle))
+    translateZ(590px)
+    translateY(calc(var(--dome-pitch) - 18px))
+    rotateY(calc(var(--angle) * -1))
+    scale(1.14);
 }
 
 .module-code,
@@ -340,7 +406,7 @@
 }
 
 .sovereign-sync {
-  gap: 19px;
+  gap: 16px;
   justify-content: center;
 }
 
@@ -358,13 +424,25 @@
   box-shadow: 0 0 18px #ff2020;
 }
 
+.sovereign-rotate-control {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 0 !important;
+  border: 1px solid rgba(255, 58, 58, 0.55) !important;
+  background: rgba(255, 0, 0, 0.12) !important;
+  color: #ffeded;
+  font-size: 1.6rem;
+  line-height: 1;
+  box-shadow: inset 0 0 18px rgba(255, 0, 0, 0.18);
+}
+
 .sovereign-sync small {
   margin-top: auto;
 }
 
 .sovereign-control-panel {
   position: relative;
-  z-index: 5;
+  z-index: 9;
   width: min(900px, calc(100% - 220px));
   margin: -18px auto 0;
   display: grid;
@@ -490,10 +568,19 @@
 
   .sovereign-module-card {
     transform:
-      rotateZ(var(--angle))
-      translateY(-240px)
-      rotateZ(calc(var(--angle) * -1))
-      rotateX(-64deg);
+      rotateY(var(--angle))
+      translateZ(380px)
+      translateY(var(--dome-pitch))
+      rotateY(calc(var(--angle) * -1));
+  }
+
+  .sovereign-module-card.is-active {
+    transform:
+      rotateY(var(--angle))
+      translateZ(430px)
+      translateY(calc(var(--dome-pitch) - 18px))
+      rotateY(calc(var(--angle) * -1))
+      scale(1.08);
   }
 
   .sovereign-control-panel {
@@ -504,11 +591,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sovereign-carousel,
+  .sovereign-dome-rig,
   .sovereign-radar,
   .sovereign-flame-shell,
   .sovereign-flame-ring,
   .sovereign-bars i {
     animation: none;
+    transition: none;
   }
 }
