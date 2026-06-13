@@ -72,24 +72,43 @@ const MODULES = [
 function SelfDirectedSovereignMode() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeModule = MODULES[activeIndex];
+  const step = 360 / MODULES.length;
 
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % MODULES.length);
-    }, 5200);
+    }, 6200);
 
     return () => window.clearInterval(timer);
   }, []);
 
-  const orbitalCards = useMemo(() => {
-    const step = 360 / MODULES.length;
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        setActiveIndex((current) => (current - 1 + MODULES.length) % MODULES.length);
+      }
 
+      if (event.key === 'ArrowRight') {
+        setActiveIndex((current) => (current + 1) % MODULES.length);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const orbitalCards = useMemo(() => {
     return MODULES.map((module, index) => ({
       ...module,
       angle: step * index,
+      domePitch: index % 3 === 0 ? -12 : index % 3 === 1 ? 8 : 0,
       isActive: index === activeIndex
     }));
-  }, [activeIndex]);
+  }, [activeIndex, step]);
+
+  const rotateDome = (direction) => {
+    setActiveIndex((current) => (current + direction + MODULES.length) % MODULES.length);
+  };
 
   return (
     <main className="sovereign-page">
@@ -103,7 +122,7 @@ function SelfDirectedSovereignMode() {
             <span>The Chroma Key Protocol</span>
             <h1>Self-Directed Sovereign Mode</h1>
           </div>
-          <div className="sovereign-status"><span /> Decryption Active</div>
+          <div className="sovereign-status"><span /> Dome Rig Active</div>
         </header>
 
         <section className="sovereign-stage">
@@ -119,6 +138,7 @@ function SelfDirectedSovereignMode() {
           </aside>
 
           <div className="sovereign-orbit-wrap">
+            <div className="sovereign-focus-corridor" aria-hidden="true" />
             <div className="sovereign-radar" />
             <div className="sovereign-flame-core" aria-label="Central Promethean Flame Core">
               <div className="sovereign-flame-shell">
@@ -129,30 +149,35 @@ function SelfDirectedSovereignMode() {
               </div>
             </div>
 
-            <div className="sovereign-carousel" style={{ '--rotation': `${activeIndex * -51.428deg}` }}>
-              {orbitalCards.map((module, index) => {
-                const Icon = module.icon;
-                return (
-                  <Link
-                    key={module.id}
-                    to={module.route}
-                    className={`sovereign-module-card ${module.isActive ? 'is-active' : ''}`}
-                    style={{ '--angle': `${module.angle}deg` }}
-                    onMouseEnter={() => setActiveIndex(index)}
-                    onFocus={() => setActiveIndex(index)}
-                  >
-                    <span className="module-code">{module.code} // V1.0.0</span>
-                    <Icon className="module-icon" strokeWidth={1.35} />
-                    <strong>{module.title}</strong>
-                    <em>{module.lightCode}</em>
-                  </Link>
-                );
-              })}
+            <div className="sovereign-dome-rig" style={{ '--dome-rotation': `${activeIndex * -step}deg` }}>
+              <div className="sovereign-dome-environment" aria-hidden="true" />
+              <div className="sovereign-light-tracks" aria-hidden="true" />
+              <div className="sovereign-module-orbit-ring">
+                {orbitalCards.map((module, index) => {
+                  const Icon = module.icon;
+                  return (
+                    <Link
+                      key={module.id}
+                      to={module.route}
+                      className={`sovereign-module-card ${module.isActive ? 'is-active' : ''}`}
+                      style={{ '--angle': `${module.angle}deg`, '--dome-pitch': `${module.domePitch}deg` }}
+                      onMouseEnter={() => setActiveIndex(index)}
+                      onFocus={() => setActiveIndex(index)}
+                    >
+                      <span className="module-code">{module.code} // V1.0.0</span>
+                      <Icon className="module-icon" strokeWidth={1.35} />
+                      <strong>{module.title}</strong>
+                      <em>{module.lightCode}</em>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
-          <aside className="sovereign-sync" aria-hidden="true">
-            <p>Sync</p>
+          <aside className="sovereign-sync" aria-label="Sovereign dome navigation">
+            <p>Rotate</p>
+            <button type="button" className="sovereign-rotate-control" onClick={() => rotateDome(-1)} aria-label="Rotate dome left">‹</button>
             {MODULES.map((module, index) => (
               <button
                 key={module.id}
@@ -162,7 +187,8 @@ function SelfDirectedSovereignMode() {
                 aria-label={`Focus ${module.title}`}
               />
             ))}
-            <small>03:47</small>
+            <button type="button" className="sovereign-rotate-control" onClick={() => rotateDome(1)} aria-label="Rotate dome right">›</button>
+            <small>360° Rig</small>
           </aside>
         </section>
 
@@ -179,7 +205,7 @@ function SelfDirectedSovereignMode() {
 
         <footer className="sovereign-footer">
           <span>Reclamation Mainframe</span>
-          <span>Live Feed · Mainframe</span>
+          <span>Live Feed · Rotating Dome</span>
         </footer>
       </div>
     </main>
