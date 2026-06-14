@@ -1,18 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  BookOpen,
-  Boxes,
   ChevronLeft,
   ChevronRight,
   CircleGauge,
-  Headphones,
   Minus,
-  Music2,
   Orbit,
-  PenTool,
   Plus,
-  RadioTower,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './SelfDirectedSovereignMode.css';
@@ -22,51 +16,49 @@ const MODULES = [
     id: 'elemental-codex',
     title: 'Elemental Codex',
     code: 'ECP',
-    icon: Boxes,
     lightCode: 'The Structure Beneath The System',
     route: '/codex',
-    emblem: '/emblem/act_three_module_emblem.png',
+    card: '/ui/reclamation/Module_Cards/Elemental_Codex_clean.png',
   },
   {
     id: 'reclamation-university',
     title: 'Reclamation University',
     code: 'RU',
-    icon: Headphones,
     lightCode: "The Sun Don't Invoice?",
     route: '/Reclamation_User_Journey',
-    emblem: '/emblem/reclamation_core_emblem.png',
+    card: '/ui/reclamation/Module_Cards/Reclamation_University.png',
   },
   {
     id: 'lyrical-codex',
     title: 'Lyrical Codex',
     code: 'LCP',
-    icon: BookOpen,
     lightCode: 'Content Is Structure. Structure Is Legacy.',
     route: '/protocol/3',
+    card: '/ui/reclamation/Module_Cards/Lyrical_Codex_clean.png',
   },
   {
     id: 'sonic-artifacts',
     title: 'Sonic Artifacts',
     code: 'SAP',
-    icon: Music2,
     lightCode: 'Frequencies Hold Memory. Artifacts Hold Purpose.',
     route: '/listen/3',
+    card: '/ui/reclamation/Module_Cards/Sonic_Artifacts.png',
   },
   {
     id: 'visualizer-core',
     title: 'Visualizer Core',
     code: 'VCR',
-    icon: RadioTower,
     lightCode: 'Sound Becomes Form. Frequency Becomes Vision.',
     route: '/visualizer/3',
+    card: '/ui/reclamation/Module_Cards/Visualizer_Core.png',
   },
   {
     id: 'vibes-and-tribes',
     title: 'Vibes And Tribes',
     code: 'VAT',
-    icon: PenTool,
     lightCode: 'Resonance Finds Its People.',
     route: '/journal',
+    card: '/ui/reclamation/Module_Cards/Vibes_Tribes.png',
   },
 ];
 
@@ -89,7 +81,6 @@ function getCircularOffset(index, activeIndex, length) {
 }
 
 function ModuleCard({ module, offset, onSelect }) {
-  const Icon = module.icon;
   const distance = Math.abs(offset);
 
   return (
@@ -103,19 +94,7 @@ function ModuleCard({ module, offset, onSelect }) {
       aria-current={offset === 0 ? 'true' : undefined}
     >
       <span className="sos-card-scan" aria-hidden="true" />
-      <span className="sos-card-title">{module.title}</span>
-
-      <span className="sos-card-emblem">
-        {module.emblem ? (
-          <img src={module.emblem} alt="" />
-        ) : (
-          <Icon strokeWidth={1.35} aria-hidden="true" />
-        )}
-      </span>
-
-      <span className="sos-card-light-label">Primary Light Code:</span>
-      <strong>{module.lightCode}</strong>
-      <small>{module.code} // Sovereign Access</small>
+      <img className="sos-card-art" src={module.card} alt={`${module.title} module card`} />
     </button>
   );
 }
@@ -205,6 +184,10 @@ export default function SelfDirectedSovereignMode() {
       onPointerLeave={() => updateParallax(0, 0)}
     >
       <div className="sos-chamber" aria-hidden="true" />
+      <div className="sos-depth-field" aria-hidden="true" />
+      <div className="sos-orbital-light sos-orbital-light--one" aria-hidden="true" />
+      <div className="sos-orbital-light sos-orbital-light--two" aria-hidden="true" />
+      <div className="sos-particles" aria-hidden="true" />
       <div className="sos-vignette" aria-hidden="true" />
 
       <header className="sos-header">

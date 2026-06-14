@@ -94,6 +94,7 @@ function AppRoutes() {
 
   return (
     <Routes>
+      <Route path="/qa/sovereign" element={<SelfDirectedSovereignMode />} />
 
       {/* AUTH */}
 
