@@ -141,7 +141,7 @@
   position: absolute;
   z-index: 10;
   left: 50%;
-  top: 46%;
+  top: 33%;
   width: min(1260px, 91vw);
   height: min(520px, 53vh);
   transform: translate(-50%, -50%) scale(var(--deck-zoom));
@@ -161,8 +161,8 @@
 }
 
 .sos-module-card {
-  --card-width: clamp(195px, 20vw, 306px);
-  --card-height: clamp(280px, 35vh, 420px);
+  --card-width: clamp(190px, 18.5vw, 286px);
+  --card-height: clamp(300px, 38vh, 420px);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -209,18 +209,20 @@
   --card-rotate: 42deg;
   --card-scale: .67;
   --card-opacity: .46;
+  pointer-events: none;
 }
 
 .sos-module-card[data-offset='-2'] {
-  --card-x: -500px;
+  --card-x: -525px;
   --card-z: -310px;
   --card-rotate: 28deg;
   --card-scale: .78;
   --card-opacity: .64;
+  pointer-events: none;
 }
 
 .sos-module-card[data-offset='-1'] {
-  --card-x: -275px;
+  --card-x: -300px;
   --card-z: -155px;
   --card-rotate: 14deg;
   --card-scale: .89;
@@ -236,7 +238,7 @@
 }
 
 .sos-module-card[data-offset='1'] {
-  --card-x: 275px;
+  --card-x: 300px;
   --card-z: -155px;
   --card-rotate: -14deg;
   --card-scale: .89;
@@ -244,11 +246,12 @@
 }
 
 .sos-module-card[data-offset='2'] {
-  --card-x: 500px;
+  --card-x: 525px;
   --card-z: -310px;
   --card-rotate: -28deg;
   --card-scale: .78;
   --card-opacity: .64;
+  pointer-events: none;
 }
 
 .sos-module-card[data-offset='3'] {
@@ -257,6 +260,7 @@
   --card-rotate: -42deg;
   --card-scale: .67;
   --card-opacity: .46;
+  pointer-events: none;
 }
 
 .sos-module-card::before,
@@ -400,7 +404,7 @@
   place-items: center;
   border: 0;
   color: var(--sos-red-bright);
-  background: rgba(0, 0, 0, .5);
+  background: transparent;
   cursor: pointer;
   filter: drop-shadow(0 0 10px rgba(255, 47, 37, .45));
 }
@@ -410,14 +414,14 @@
   height: 34px;
 }
 
-.sos-stage-arrow--left { left: 29%; }
-.sos-stage-arrow--right { right: 29%; }
+.sos-stage-arrow--left { left: 35.5%; }
+.sos-stage-arrow--right { right: 35.5%; }
 
 .sos-core-readout {
   position: absolute;
   z-index: 24;
   left: 50%;
-  bottom: 10.5vh;
+  bottom: 13.5vh;
   width: min(390px, 31vw);
   padding: 9px 28px 12px;
   transform: translateX(-50%);

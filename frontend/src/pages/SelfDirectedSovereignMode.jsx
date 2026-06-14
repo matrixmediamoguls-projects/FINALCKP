@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   BookOpen,
   Boxes,
-  BrainCircuit,
   ChevronLeft,
   ChevronRight,
   CircleGauge,
@@ -54,27 +53,19 @@ const MODULES = [
     route: '/listen/3',
   },
   {
-    id: 'archetypes',
-    title: 'Archetypes',
-    code: 'ARP',
-    icon: BrainCircuit,
-    lightCode: 'Patterns Precede Form. Origins Shape Destiny.',
-    route: '/seeker',
-  },
-  {
-    id: 'audio-visualizer-core',
-    title: 'Audio Visualizer Core',
-    code: 'AVC',
+    id: 'visualizer-core',
+    title: 'Visualizer Core',
+    code: 'VCR',
     icon: RadioTower,
-    lightCode: 'The Structure Beneath The System',
+    lightCode: 'Sound Becomes Form. Frequency Becomes Vision.',
     route: '/visualizer/3',
   },
   {
-    id: 'vibes-and-scribes',
-    title: 'Vibes And Scribes',
-    code: 'VVS',
+    id: 'vibes-and-tribes',
+    title: 'Vibes And Tribes',
+    code: 'VAT',
     icon: PenTool,
-    lightCode: 'Write It. Witness It. Reclaim It.',
+    lightCode: 'Resonance Finds Its People.',
     route: '/journal',
   },
 ];
@@ -294,11 +285,11 @@ export default function SelfDirectedSovereignMode() {
 
       <div className="sos-right-hud">
         <HudPanel title="Protocol Progress">
-          <span>Track {activeIndex + 1} of {MODULES.length}</span>
+          <span>Track 15 of 27</span>
           <div className="sos-progress">
-            <i style={{ width: `${((activeIndex + 1) / MODULES.length) * 100}%` }} />
+            <i style={{ width: '55%' }} />
           </div>
-          <strong>{Math.round(((activeIndex + 1) / MODULES.length) * 100)}%</strong>
+          <strong>55%</strong>
         </HudPanel>
 
         <HudPanel title="Element Balance">
