@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowCounterClockwise,
   ArrowUpRight,
   Bell,
   Broadcast,
@@ -13,9 +12,6 @@ import {
   LockKey,
   Play,
   SignOut,
-  Shuffle,
-  SkipBack,
-  SkipForward,
   SlidersHorizontal,
   Stack,
   Waveform,
@@ -300,16 +296,6 @@ export default function ActNavigation() {
           <div className="act-nav-system">
             <i />
             <span><small>System Status</small><strong>All Systems Operational</strong></span>
-          </div>
-          <div className="act-nav-media">
-            <span>Media Controls</span>
-            <button type="button" aria-label="Shuffle"><Shuffle size={18} /></button>
-            <button type="button" aria-label="Previous"><SkipBack size={20} weight="fill" /></button>
-            <button className="act-nav-media__play" type="button" aria-label="Open immersion player" onClick={() => navigate('/listen/3')}>
-              <Play size={25} weight="fill" />
-            </button>
-            <button type="button" aria-label="Next"><SkipForward size={20} weight="fill" /></button>
-            <button type="button" aria-label="Repeat"><ArrowCounterClockwise size={19} /></button>
           </div>
           <div className="act-nav-sync">
             <span>

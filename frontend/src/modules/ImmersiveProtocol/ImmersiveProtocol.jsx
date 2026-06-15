@@ -2,7 +2,6 @@ import React from 'react';
 import { ProtocolProvider, useProtocol } from './context/ProtocolContext';
 import ProtocolShell from './ProtocolShell';
 import TrackSelector from './TrackSelector';
-import ProtocolPlayer from './ProtocolPlayer';
 import './protocolStyles.css';
 
 function ImmersiveProtocolInner() {
@@ -12,9 +11,7 @@ function ImmersiveProtocolInner() {
   return (
     <div className="ip-root">
       <TrackSelector />
-      <ProtocolShell>
-        <ProtocolPlayer />
-      </ProtocolShell>
+      <ProtocolShell />
     </div>
   );
 }

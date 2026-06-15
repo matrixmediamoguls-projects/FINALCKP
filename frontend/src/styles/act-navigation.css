@@ -4,7 +4,7 @@
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
-  padding: 8px;
+  padding: 8px 8px 0;
   color: #e8ece9;
   background:
     radial-gradient(circle at 50% 24%, rgba(24, 100, 73, 0.15), transparent 34rem),
@@ -41,7 +41,9 @@
   position: relative;
   z-index: 1;
   width: min(1800px, 100%);
-  min-height: calc(100vh - 16px);
+  min-height: calc(100vh - 8px);
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   border: 1px solid var(--chrome);
   background: rgba(2, 7, 6, 0.9);
@@ -88,7 +90,6 @@
 }
 
 .act-nav-brand span,
-.act-nav-media > span,
 .act-nav-console small {
   font-family: "Share Tech Mono", monospace;
   text-transform: uppercase;
@@ -223,6 +224,7 @@
 }
 
 .act-nav-body {
+  flex: 1;
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr);
 }
@@ -677,17 +679,17 @@
 }
 
 .act-nav-console {
+  margin-top: auto;
   min-height: 60px;
   display: grid;
-  grid-template-columns: 1fr 1.3fr 1fr;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   border-top: 1px solid var(--chrome);
   background: linear-gradient(180deg, #0c1210, #050907);
 }
 
 .act-nav-system,
-.act-nav-sync,
-.act-nav-media {
+.act-nav-sync {
   min-width: 0;
   display: flex;
   align-items: center;
@@ -699,43 +701,6 @@
 .act-nav-sync span { display: grid; }
 .act-nav-console small { color: #77817c; font-size: 0.6rem; }
 .act-nav-console strong { color: var(--green); font-size: 0.78rem; font-weight: 500; }
-
-.act-nav-media {
-  position: relative;
-  justify-content: center;
-  gap: 45px;
-}
-
-.act-nav-media > span {
-  position: absolute;
-  top: -13px;
-  left: 50%;
-  padding: 0 12px;
-  color: #7f8985;
-  background: #080d0b;
-  font-size: 0.62rem;
-  transform: translateX(-50%);
-}
-
-.act-nav-media button {
-  border: 0;
-  color: #87918d;
-  background: transparent;
-  cursor: pointer;
-}
-
-.act-nav-media button:hover { color: var(--green); }
-
-.act-nav-media .act-nav-media__play {
-  width: 56px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(102, 245, 138, 0.35);
-  color: var(--green);
-  background: radial-gradient(circle, rgba(102, 245, 138, 0.18), transparent 70%);
-  clip-path: polygon(13px 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 13px 100%, 0 50%);
-}
 
 .act-nav-sync {
   justify-content: flex-end;
@@ -782,7 +747,7 @@
   .act-nav-telemetry > div > svg:last-child { display: none; }
   .act-nav-roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .act-nav-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .act-nav-console { grid-template-columns: 1fr 1fr; }
+  .act-nav-console { grid-template-columns: 1fr; }
   .act-nav-system { display: none; }
   .act-nav-sync { padding-right: 20px; }
 }
@@ -810,7 +775,6 @@
   .act-nav-card { min-height: 348px; }
   .act-nav-console { min-height: 66px; grid-template-columns: 1fr; }
   .act-nav-sync { display: none; }
-  .act-nav-media { gap: 28px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

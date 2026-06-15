@@ -1,0 +1,24 @@
+.activation-screen,
+.activation-stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.activation-screen {
+  background: #030405;
+}
+
+.activation-stage {
+  position: relative;
+  width: 100%;
+}
+
+.activation-video-shell {
+  flex: 1;
+  min-height: 0;
+}
+
+.activation-footer {
+  margin-top: auto;
+}

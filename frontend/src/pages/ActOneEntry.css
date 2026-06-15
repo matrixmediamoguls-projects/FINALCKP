@@ -436,6 +436,7 @@
 }
 
 .act-one-entry__footer {
+  margin-top: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
   letter-spacing: 0.26em;
 }

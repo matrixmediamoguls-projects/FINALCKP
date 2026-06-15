@@ -473,94 +473,36 @@
 }
 
 /* ── Player bar ──────────────────────────────────────────────── */
-.ip-player {
-  position: absolute;
-  z-index: 5;
-  left: 32px;
-  right: 32px;
-  bottom: 28px;
-  height: 54px;
+.tai-controls {
+  margin-top: 10px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 16px;
+  gap: 6px;
+}
+
+.tai-controls button {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 7px;
   border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.62);
-  backdrop-filter: blur(18px);
-  color: rgba(245,240,230,0.62);
+  background: rgba(255,255,255,0.025);
+  color: rgba(245,240,230,0.68);
   font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 9px;
-}
-
-.ip-player-meta {
-  width: min(300px, 24vw);
-  min-width: 160px;
-  overflow: hidden;
-}
-
-.ip-player-meta strong,
-.ip-player-meta span {
-  display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.ip-player-meta strong {
-  color: rgba(245,240,230,0.86);
-  font-size: 10px;
-}
-
-.ip-player-meta span {
-  color: rgba(245,240,230,0.42);
-  font-size: 8px;
-  margin-top: 3px;
-}
-
-.ip-control,
-.ip-play {
-  font-family: 'Share Tech Mono', monospace;
-  letter-spacing: 0.14em;
   cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.02);
-  color: rgba(245,240,230,0.72);
-  padding: 8px 12px;
 }
 
-.ip-play {
+.tai-controls button:nth-child(2) {
   border-color: var(--accent, #5ab038);
   color: var(--accent, #5ab038);
-  min-width: 82px;
 }
 
-.ip-play:disabled {
+.tai-controls button:disabled {
   cursor: not-allowed;
   border-color: rgba(255,255,255,0.12);
   color: rgba(245,240,230,0.36);
-}
-
-.ip-progress {
-  flex: 1;
-  height: 5px;
-  background: rgba(255,255,255,0.12);
-  cursor: pointer;
-}
-
-.ip-progress > div {
-  height: 100%;
-  transition: width 0.1s linear;
-  box-shadow: 0 0 14px var(--accent, #5ab038);
-}
-
-.ip-player-error {
-  color: #ff5b5b;
-  max-width: 220px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
@@ -577,7 +519,5 @@
   .av-wrap { width: 220px; height: 220px; }
   .av-bars { transform: translate(110px, 110px); }
   .av-bars span { transform-origin: center 88px; }
-  .lyrics-protocol { width: auto; left: 24px; right: 24px; transform: none; bottom: 88px; }
-  .ip-player { left: 12px; right: 12px; bottom: 14px; gap: 8px; }
-  .ip-player-meta { display: none; }
+  .lyrics-protocol { width: auto; left: 24px; right: 24px; transform: none; bottom: 24px; }
 }

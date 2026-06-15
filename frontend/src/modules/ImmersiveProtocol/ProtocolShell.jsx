@@ -6,13 +6,37 @@ import SonicArtifact from './modules/SonicArtifact';
 import ActKeysModule from './ActKeysModule';
 import MechPanel from '../../components/ui/MechPanel';
 import AudioVisualizer from './AudioVisualizer';
+import AudioEngine from './AudioEngine';
 
-export default function ProtocolShell({ children }) {
-  const { currentTrack, error } = useProtocol();
+export default function ProtocolShell() {
+  const {
+    currentTrack,
+    error,
+    audioRef,
+    handleTimeUpdate,
+    handleLoadedMetadata,
+    handleCanPlay,
+    handlePlay,
+    handlePause,
+    handleAudioError,
+    nextTrack,
+  } = useProtocol();
 
   return (
     <main className="protocol-shell" style={{ '--accent': currentTrack?.primary_color || '#ff1a2d' }}>
       <ActBackground />
+      <AudioEngine
+        ref={audioRef}
+        src={currentTrack?.audio_url || ''}
+        crossOrigin={currentTrack?.audio_cross_origin || undefined}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onCanPlay={handleCanPlay}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onError={handleAudioError}
+        onEnded={nextTrack}
+      />
 
       <div className="protocol-topline">
         <span>MUSIQ MATRIX MAINFRAME</span>
@@ -36,8 +60,6 @@ export default function ProtocolShell({ children }) {
       </div>
 
       {error && <div className="ip-error">{error}</div>}
-
-      {children}
     </main>
   );
 }

@@ -6,6 +6,8 @@
   position: relative;
   min-height: 100vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
   padding: clamp(1.6rem, 3vw, 3.25rem) clamp(1.4rem, 3.5vw, 4rem) 0;
   color: #f3f7fb;
@@ -369,6 +371,7 @@
 }
 
 .rp-footer {
+  margin-top: auto;
   min-height: 94px;
   margin-inline: calc(clamp(1.4rem, 3.5vw, 4rem) * -1);
   padding: 0 clamp(2.2rem, 4.5vw, 4.1rem);
