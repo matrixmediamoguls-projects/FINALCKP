@@ -86,6 +86,7 @@ export default function VisualizerFrame({ act_id, track, audioData, error, playb
         ...source[index],
         index,
         offset,
+        distance: Math.abs(offset),
         isActive: offset === 0,
       };
     });
@@ -195,7 +196,7 @@ export default function VisualizerFrame({ act_id, track, audioData, error, playb
                 type="button"
                 key={`${item.id || item.title}-${item.index}`}
                 className={`vf-track-card ${item.isActive ? "is-active" : ""}`}
-                style={{ "--offset": item.offset }}
+                style={{ "--offset": item.offset, "--distance": item.distance }}
                 onClick={() => selectTrack?.(item.index, { autoplay: isPlaying })}
               >
                 <span>{String(item.sort_order || item.track_order || item.index + 1).padStart(2, "0")}</span>
