@@ -225,6 +225,7 @@
 
 .act-nav-body {
   flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr);
 }
@@ -254,7 +255,10 @@
 
 .act-nav-workspace {
   min-width: 0;
-  padding: 8px 14px 12px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 14px 0;
 }
 
 .act-nav-hero {
@@ -430,8 +434,11 @@
 .act-nav-strip i { width: 8px; height: 8px; border-radius: 50%; background: var(--act-color); box-shadow: 0 0 10px var(--act-color); }
 
 .act-nav-roadmap {
+  flex: 1;
+  min-height: 338px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 16px;
 }
 
@@ -439,6 +446,7 @@
   position: relative;
   min-width: 0;
   min-height: 338px;
+  height: 100%;
   display: grid;
   grid-template-rows: auto 132px auto auto 40px 28px;
   gap: 5px;
@@ -764,15 +772,15 @@
   .act-nav-profile { gap: 0; padding: 0 10px; }
   .act-nav-body { grid-template-columns: 1fr; }
   .act-nav-rail { display: none; }
-  .act-nav-workspace { padding: 7px; }
+  .act-nav-workspace { display: block; padding: 7px 7px 0; }
   .act-nav-hero { min-height: 500px; }
   .act-nav-hero__content { align-self: start; padding: 30px 25px; }
   .act-nav-hero h1 { font-size: clamp(3.2rem, 16vw, 4.5rem); }
   .act-nav-telemetry { align-self: end; grid-template-columns: 1fr; margin: 0 14px 14px; }
   .act-nav-telemetry > div { min-height: 58px; }
   .act-nav-strip,
-  .act-nav-roadmap { grid-template-columns: 1fr; }
-  .act-nav-card { min-height: 348px; }
+  .act-nav-roadmap { min-height: 0; grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .act-nav-card { min-height: 348px; height: auto; }
   .act-nav-console { min-height: 66px; grid-template-columns: 1fr; }
   .act-nav-sync { display: none; }
 }
