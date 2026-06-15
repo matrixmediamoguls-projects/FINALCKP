@@ -364,8 +364,8 @@
   color: rgba(255,255,255,.56);
   background: rgba(9, 5, 5, .78);
   border: 1px solid rgba(var(--vf-red-rgb), .32);
-  transform: translateY(calc(abs(var(--offset)) * 4px)) rotateY(calc(var(--offset) * -13deg)) scale(calc(1 - (abs(var(--offset)) * .045)));
-  opacity: calc(1 - (abs(var(--offset)) * .12));
+  transform: translateY(calc(var(--distance) * 4px)) rotateY(calc(var(--offset) * -13deg)) scale(calc(1 - (var(--distance) * .045)));
+  opacity: calc(1 - (var(--distance) * .12));
   cursor: pointer;
   clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
 }
@@ -427,11 +427,6 @@
 
 @keyframes vfSpin { to { rotate: 360deg; } }
 @keyframes vfCounterSpin { to { rotate: -360deg; } }
-
-@supports not (width: calc(abs(-1) * 1px)) {
-  .vf-track-card { opacity: .72; transform: none; }
-  .vf-track-card.is-active { opacity: 1; transform: scale(1.06); }
-}
 
 @media (max-width: 1100px) {
   .vf-mainframe { aspect-ratio: auto; min-height: 100dvh; max-height: none; overflow: auto; clip-path: none; }
