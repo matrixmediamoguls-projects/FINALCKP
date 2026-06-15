@@ -21,7 +21,9 @@
 .sos-depth-field,
 .sos-orbital-light,
 .sos-particles,
-.sos-vignette {
+.sos-vignette,
+.sos-violet-conduits,
+.sos-promethean-core {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -110,6 +112,140 @@
     linear-gradient(90deg, rgba(84, 143, 158, .06) 1px, transparent 1px);
   background-size: 92px 92px;
   mask-image: linear-gradient(180deg, #000, transparent 38%);
+}
+
+.sos-violet-conduits {
+  z-index: 6;
+  overflow: hidden;
+  perspective: 900px;
+  opacity: .78;
+  mask-image: linear-gradient(180deg, transparent 4%, #000 16%, #000 72%, transparent 91%);
+}
+
+.sos-violet-conduits::before {
+  content: '';
+  position: absolute;
+  inset: 8% 0 17%;
+  background:
+    radial-gradient(ellipse at 18% 52%, rgba(127, 52, 255, .12), transparent 18%),
+    radial-gradient(ellipse at 82% 52%, rgba(127, 52, 255, .12), transparent 18%),
+    radial-gradient(ellipse at 50% 86%, rgba(151, 63, 255, .14), transparent 34%);
+  animation: sosVioletAtmosphere 8s ease-in-out infinite;
+}
+
+.sos-violet-conduits i {
+  --conduit-x: 50%;
+  --conduit-delay: 0s;
+  position: absolute;
+  top: 5%;
+  bottom: 20%;
+  left: var(--conduit-x);
+  width: 1px;
+  opacity: .42;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(194, 133, 255, .4) 14%,
+    #9b4dff 45%,
+    rgba(179, 91, 255, .72) 76%,
+    transparent
+  );
+  box-shadow:
+    0 0 5px rgba(177, 84, 255, .9),
+    0 0 18px rgba(133, 55, 255, .58),
+    0 0 46px rgba(117, 44, 224, .28);
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotateZ(var(--conduit-angle, 0deg));
+  animation: sosConduitPulse 5.8s var(--conduit-delay) ease-in-out infinite;
+}
+
+.sos-violet-conduits i::after {
+  content: '';
+  position: absolute;
+  inset: 0 -2px;
+  background: linear-gradient(180deg, transparent 8%, #e2c0ff 48%, transparent 58%);
+  background-size: 100% 42%;
+  background-repeat: no-repeat;
+  animation: sosConduitCharge 7s var(--conduit-delay) linear infinite;
+}
+
+.sos-violet-conduits i:nth-child(1) { --conduit-x: 11%; --conduit-angle: -1.4deg; --conduit-delay: -1.2s; }
+.sos-violet-conduits i:nth-child(2) { --conduit-x: 25%; --conduit-angle: -.7deg; --conduit-delay: -4.4s; }
+.sos-violet-conduits i:nth-child(3) { --conduit-x: 39%; --conduit-angle: -.25deg; --conduit-delay: -2.8s; }
+.sos-violet-conduits i:nth-child(4) { --conduit-x: 61%; --conduit-angle: .25deg; --conduit-delay: -5.1s; }
+.sos-violet-conduits i:nth-child(5) { --conduit-x: 75%; --conduit-angle: .7deg; --conduit-delay: -3.6s; }
+.sos-violet-conduits i:nth-child(6) { --conduit-x: 89%; --conduit-angle: 1.4deg; --conduit-delay: -.4s; }
+
+.sos-promethean-core {
+  z-index: 7;
+  overflow: hidden;
+}
+
+.sos-core-flame {
+  position: absolute;
+  inset: 0;
+  background: url('/media/sovereign-mode/reclamation-mainframe-chamber.png') center / cover no-repeat;
+  filter:
+    saturate(1.65)
+    contrast(1.12)
+    brightness(1.44)
+    drop-shadow(0 0 12px rgba(255, 66, 28, .9));
+  transform: scale(1.085)
+    translate(
+      calc(var(--parallax-x) * -7px),
+      calc(var(--parallax-y) * -4px)
+    );
+  mask-image: radial-gradient(ellipse 12% 16% at 50% 62%, #000 0 34%, rgba(0, 0, 0, .92) 46%, transparent 78%);
+  animation: sosFlameRadiance 3.8s ease-in-out infinite;
+  transition: transform 160ms ease-out;
+}
+
+.sos-core-aura {
+  position: absolute;
+  left: 50%;
+  top: 61%;
+  width: min(430px, 34vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 246, 192, .82) 0 2%, rgba(255, 113, 36, .5) 9%, rgba(255, 37, 19, .23) 25%, rgba(130, 21, 8, .09) 48%, transparent 70%);
+  mix-blend-mode: screen;
+  filter: blur(5px);
+  transform: translate(-50%, -50%);
+  animation: sosCoreRadiance 4.2s ease-in-out infinite;
+}
+
+.sos-core-reflection {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: min(900px, 68vw);
+  height: min(300px, 29vh);
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(ellipse at center, transparent 0 11%, rgba(255, 59, 25, .08) 11.4% 11.8%, transparent 12.2% 18%),
+    radial-gradient(ellipse at center, rgba(255, 79, 30, .28), rgba(157, 33, 17, .1) 34%, transparent 67%);
+  mix-blend-mode: screen;
+  filter: blur(3px);
+  transform: translate(-50%, -8%) rotateX(68deg);
+  animation: sosCoreReflection 6s ease-in-out infinite;
+}
+
+.sos-core-embers {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  width: min(310px, 24vw);
+  height: 32vh;
+  opacity: .72;
+  background-image:
+    radial-gradient(circle, #fff1b8 0 1px, rgba(255, 85, 26, .85) 1.4px, transparent 2.3px),
+    radial-gradient(circle, rgba(255, 48, 21, .9) 0 1px, transparent 2px);
+  background-size: 47px 61px, 73px 89px;
+  filter: drop-shadow(0 0 5px #ff3b1f);
+  transform: translateX(-50%);
+  mask-image: radial-gradient(ellipse at bottom, #000, transparent 72%);
+  animation: sosEmberLift 6.5s linear infinite;
 }
 
 .sos-header {
@@ -733,6 +869,58 @@
   50% { opacity: 1; transform: scale(1.025) translate(calc(var(--parallax-x) * -3px), calc(var(--parallax-y) * -2px)); }
 }
 
+@keyframes sosVioletAtmosphere {
+  0%, 100% { opacity: .58; filter: blur(0); }
+  50% { opacity: .92; filter: blur(3px); }
+}
+
+@keyframes sosConduitPulse {
+  0%, 100% { opacity: .24; filter: brightness(.74); }
+  46% { opacity: .48; filter: brightness(1.1); }
+  54% { opacity: .78; filter: brightness(1.5); }
+  64% { opacity: .4; filter: brightness(.92); }
+}
+
+@keyframes sosConduitCharge {
+  0% { background-position: 0 150%; opacity: 0; }
+  12% { opacity: .9; }
+  38% { opacity: .35; }
+  52%, 100% { background-position: 0 -90%; opacity: 0; }
+}
+
+@keyframes sosFlameRadiance {
+  0%, 100% {
+    opacity: .9;
+    filter: saturate(1.5) contrast(1.08) brightness(1.28) drop-shadow(0 0 10px rgba(255, 66, 28, .8));
+  }
+  48% {
+    opacity: 1;
+    filter: saturate(1.9) contrast(1.16) brightness(1.72) drop-shadow(0 0 20px rgba(255, 86, 31, 1));
+  }
+  56% {
+    opacity: .94;
+    filter: saturate(1.7) contrast(1.12) brightness(1.46) drop-shadow(0 0 15px rgba(255, 55, 22, .95));
+  }
+}
+
+@keyframes sosCoreRadiance {
+  0%, 100% { opacity: .72; transform: translate(-50%, -50%) scale(.88); }
+  48% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+  58% { opacity: .86; transform: translate(-50%, -50%) scale(1.02); }
+}
+
+@keyframes sosCoreReflection {
+  0%, 100% { opacity: .58; transform: translate(-50%, -8%) rotateX(68deg) scale(.94); }
+  50% { opacity: .92; transform: translate(-50%, -8%) rotateX(68deg) scale(1.08); }
+}
+
+@keyframes sosEmberLift {
+  from { background-position: 3px 90px, 37px 130px; opacity: 0; }
+  18% { opacity: .72; }
+  78% { opacity: .46; }
+  to { background-position: 3px -115px, 37px -145px; opacity: 0; }
+}
+
 @keyframes sosCardScan {
   0%, 14% { top: 14%; opacity: 0; }
   28%, 72% { opacity: .8; }
@@ -861,6 +1049,13 @@
   .sos-depth-field,
   .sos-orbital-light,
   .sos-particles,
+  .sos-violet-conduits::before,
+  .sos-violet-conduits i,
+  .sos-violet-conduits i::after,
+  .sos-core-flame,
+  .sos-core-aura,
+  .sos-core-reflection,
+  .sos-core-embers,
   .sos-operating-stage::before,
   .sos-card-deck,
   .sos-module-card,
@@ -868,6 +1063,13 @@
     transition: none;
   }
 
+  .sos-violet-conduits::before,
+  .sos-violet-conduits i,
+  .sos-violet-conduits i::after,
+  .sos-core-flame,
+  .sos-core-aura,
+  .sos-core-reflection,
+  .sos-core-embers,
   .sos-card-scan::after,
   .sos-core-button img {
     animation: none;

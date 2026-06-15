@@ -189,6 +189,20 @@ export default function SelfDirectedSovereignMode() {
       <div className="sos-orbital-light sos-orbital-light--two" aria-hidden="true" />
       <div className="sos-particles" aria-hidden="true" />
       <div className="sos-vignette" aria-hidden="true" />
+      <div className="sos-violet-conduits" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </div>
+      <div className="sos-promethean-core" aria-hidden="true">
+        <span className="sos-core-flame" />
+        <span className="sos-core-aura" />
+        <span className="sos-core-reflection" />
+        <span className="sos-core-embers" />
+      </div>
 
       <header className="sos-header">
         <div className="sos-brand-block">
