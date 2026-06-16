@@ -10,7 +10,8 @@ import {
   buildProtocolPath,
   canAccessAct,
 } from "../data/journey";
-import { DEFAULT_VISUALIZER_PATH } from "../components/visualizer/visualizerAssets";
+
+const DEFAULT_VISUALIZER_PATH = "/visualizer/act_three";
 
 const cardMotion = {
   hidden: { opacity: 0, y: 18, scale: 0.985 },
