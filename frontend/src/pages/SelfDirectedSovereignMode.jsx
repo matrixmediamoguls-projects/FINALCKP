@@ -41,12 +41,12 @@ const MODULES = [
     route: '/seeker'
   },
   {
-    id: 'audio-visualizer-core',
-    title: 'Audio Visualizer Core',
-    code: 'AVC',
+    id: 'visualizer-core',
+    title: 'Visualizer Core',
+    code: 'VCORE',
     icon: RadioTower,
-    lightCode: 'The Structure Beneath The System',
-    description: 'Launch the unobstructed visual signal chamber for Act Three.',
+    lightCode: 'The Reactor Chamber Where The Song Powers The Mainframe.',
+    description: 'Launch the cinematic audio-reactive CKP visualizer core for Act Three.',
     route: '/visualizer/3'
   },
   {
