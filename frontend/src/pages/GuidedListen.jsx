@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import ImmersiveProtocol from '../modules/ImmersiveProtocol/ImmersiveProtocol';
+import ReclamationCodex from '../acts/Reclamation/ReclamationCodex';
 
 const API_URL = import.meta.env.VITE_APP_BACKEND_URL;
 
@@ -94,7 +94,7 @@ const GuidedListen = () => {
   const { actNumber } = useParams();
   const actNum = parseInt(actNumber || '0');
   if (!actNum) return <ImmersionLanding />;
-  if (actNum === 3) return <ImmersiveProtocol />;
+  if (actNum === 3) return <ReclamationCodex />;
   return <div style={{ padding: 24 }}>Guided Listen Act {actNum}</div>;
 };
 
