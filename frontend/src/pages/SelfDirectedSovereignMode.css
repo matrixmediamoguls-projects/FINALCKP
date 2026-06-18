@@ -392,12 +392,7 @@
     rotateY(var(--card-rotate))
     scale(var(--card-scale));
   opacity: var(--card-opacity);
-  transition:
-    transform 760ms cubic-bezier(.18, .82, .2, 1),
-    opacity 520ms ease,
-    filter 520ms ease,
-    border-color 520ms ease,
-    box-shadow 520ms ease;
+  transition: none;
 }
 
 .sos-module-card[data-offset='-3'] {
@@ -478,24 +473,6 @@
     0 0 30px rgba(255, 58, 39, .32),
     0 0 86px rgba(255, 36, 28, .12),
     0 42px 82px rgba(0, 0, 0, .92);
-}
-
-.sos-card-scan {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.sos-card-scan::after {
-  content: '';
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 87, 65, .8), transparent);
-  box-shadow: 0 0 12px rgba(255, 39, 31, .8);
-  animation: sosCardScan 4.6s ease-in-out infinite;
 }
 
 .sos-card-art {
@@ -921,12 +898,6 @@
   to { background-position: 3px -115px, 37px -145px; opacity: 0; }
 }
 
-@keyframes sosCardScan {
-  0%, 14% { top: 14%; opacity: 0; }
-  28%, 72% { opacity: .8; }
-  86%, 100% { top: 86%; opacity: 0; }
-}
-
 @keyframes sosCorePulse {
   0%, 100% { transform: scale(.96); opacity: .72; }
   50% { transform: scale(1.04); opacity: 1; }
@@ -1070,7 +1041,6 @@
   .sos-core-aura,
   .sos-core-reflection,
   .sos-core-embers,
-  .sos-card-scan::after,
   .sos-core-button img {
     animation: none;
   }

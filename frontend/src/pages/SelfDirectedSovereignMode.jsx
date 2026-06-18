@@ -93,7 +93,6 @@ function ModuleCard({ module, offset, onSelect }) {
       aria-label={`Select ${module.title}`}
       aria-current={offset === 0 ? 'true' : undefined}
     >
-      <span className="sos-card-scan" aria-hidden="true" />
       <img className="sos-card-art" src={module.card} alt={`${module.title} module card`} />
     </button>
   );
