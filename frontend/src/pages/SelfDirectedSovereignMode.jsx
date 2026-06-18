@@ -80,13 +80,14 @@ function getCircularOffset(index, activeIndex, length) {
   return offset;
 }
 
-function ModuleCard({ module, offset, onSelect }) {
+function ModuleCard({ module, offset, index, onSelect }) {
   const distance = Math.abs(offset);
 
   return (
     <button
       type="button"
       className={`sos-module-card ${offset === 0 ? 'is-active' : ''}`}
+      data-module-index={index}
       data-offset={offset}
       style={{ '--card-order': 20 - distance }}
       onClick={onSelect}
@@ -130,6 +131,28 @@ export default function SelfDirectedSovereignMode() {
 
   const rotate = useCallback((direction) => {
     setActiveIndex((current) => (current + direction + MODULES.length) % MODULES.length);
+  }, []);
+
+  const handleDeckClick = useCallback((event) => {
+    if (event.target.closest('.sos-module-card')) return;
+
+    const cards = Array.from(event.currentTarget.querySelectorAll('.sos-module-card'))
+      .filter((card) => window.getComputedStyle(card).pointerEvents !== 'none')
+      .filter((card) => {
+        const rect = card.getBoundingClientRect();
+        return (
+          event.clientX >= rect.left &&
+          event.clientX <= rect.right &&
+          event.clientY >= rect.top &&
+          event.clientY <= rect.bottom
+        );
+      })
+      .sort((a, b) => Number(b.style.getPropertyValue('--card-order')) - Number(a.style.getPropertyValue('--card-order')));
+
+    const selectedIndex = Number(cards[0]?.dataset.moduleIndex);
+    if (Number.isInteger(selectedIndex)) {
+      setActiveIndex(selectedIndex);
+    }
   }, []);
 
   useEffect(() => {
@@ -237,11 +260,12 @@ export default function SelfDirectedSovereignMode() {
           <ChevronLeft />
         </button>
 
-        <div className="sos-card-deck">
+        <div className="sos-card-deck" onClick={handleDeckClick}>
           {cards.map(({ module, index, offset }) => (
             <ModuleCard
               key={module.id}
               module={module}
+              index={index}
               offset={offset}
               onSelect={() => setActiveIndex(index)}
             />
