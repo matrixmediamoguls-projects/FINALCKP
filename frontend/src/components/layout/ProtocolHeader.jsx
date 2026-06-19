@@ -1,5 +1,3 @@
-import { Menu, Settings2 } from "lucide-react";
-
 const modes = ["cinematic", "artifact", "performance", "immersive", "diagnostic"];
 
 export default function ProtocolHeader({
@@ -11,17 +9,18 @@ export default function ProtocolHeader({
   return (
     <header className="pva-header">
       <div className="pva-header-act">
-        <strong>ACT THREE</strong>
-        <span>RECLAMATION</span>
+        <strong>CKP</strong>
+        <span>CKP // RECLAMATION MAINFRAME</span>
+        <span>SOVEREIGN MODE</span>
       </div>
 
       <div className="pva-header-title">
         <h1>CHROMA KEY PROTOCOL</h1>
-        <p>AUDIO VISUALIZER ENGINE</p>
+        <p>LIVE AUDIO REACTOR // PROMETHEAN CORE</p>
       </div>
 
       <div className="pva-header-status">
-        <span>PROTOCOL STATUS: ONLINE</span>
+        <span>SYSTEM STATUS <b>AUTHORIZED</b></span>
         <label className="pva-mode-chip">
           <span>MODE</span>
           <select value={visualMode} onChange={(e) => onVisualModeChange?.(e.target.value)}>
@@ -38,13 +37,7 @@ export default function ProtocolHeader({
           onClick={onOpenVideoProjector}
           title="Open Act III video projector"
         >
-          {videoProjectorReady ? "MEDIA LIVE" : "VRA MODULE"}
-        </button>
-        <button type="button" aria-label="Settings">
-          <Settings2 size={16} />
-        </button>
-        <button type="button" aria-label="Menu">
-          <Menu size={16} />
+          {videoProjectorReady ? "V4.7.2" : "VRA"}
         </button>
       </div>
     </header>
