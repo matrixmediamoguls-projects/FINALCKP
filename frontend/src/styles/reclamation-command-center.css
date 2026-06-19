@@ -99,6 +99,55 @@
   grid-auto-rows: min-content;
 }
 
+.pva-center {
+  --pva-viewport-image: url("/media/visualizer/reclamation-city-gatekeeper.png");
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: calc(100vh - 112px);
+  align-content: end;
+  padding: 40vh 22px 18px;
+  border: 1px solid rgba(255, 72, 48, 0.5);
+  background-color: #050607;
+  background-image:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.76) 68%, rgba(0, 0, 0, 0.92)),
+    radial-gradient(circle at 50% 48%, rgba(255, 39, 20, 0.18), transparent 42%),
+    var(--pva-viewport-image);
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+  box-shadow: inset 0 0 0 1px rgba(255, 42, 26, 0.18), inset 0 0 80px rgba(255, 18, 0, 0.12);
+}
+
+.pva-center::before,
+.pva-center::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.pva-center::before {
+  background:
+    linear-gradient(90deg, transparent 0 48%, rgba(255, 40, 20, 0.16) 50%, transparent 52% 100%),
+    repeating-linear-gradient(90deg, rgba(255, 58, 35, 0.08) 0 1px, transparent 1px 92px),
+    repeating-linear-gradient(0deg, rgba(255, 58, 35, 0.05) 0 1px, transparent 1px 88px);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+.pva-center::after {
+  inset: auto 0 0;
+  height: 44%;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.88));
+  z-index: 0;
+}
+
+.pva-center > * {
+  position: relative;
+  z-index: 1;
+}
+
 .pva-panel {
   border: 1px solid rgba(255, 72, 48, 0.45);
   background: linear-gradient(180deg, rgba(8, 9, 10, 0.95), rgba(3, 3, 4, 0.92));
@@ -357,6 +406,11 @@
 
   .pva-main-grid {
     grid-template-columns: 1fr;
+  }
+
+  .pva-center {
+    min-height: 66vh;
+    padding-top: 32vh;
   }
 
   .pva-right {
