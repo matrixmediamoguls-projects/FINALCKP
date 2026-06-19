@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ChevronLeft,
@@ -105,8 +105,6 @@ export default function SelfDirectedSovereignMode() {
   const { user } = useAuth();
   const [activeIndex, setActiveIndex] = useState(1);
   const [zoom, setZoom] = useState(1);
-  const pageRef = useRef(null);
-  const animationFrameRef = useRef(null);
 
   const activeModule = MODULES[activeIndex];
   const userName = user?.name || user?.email?.split('@')[0] || 'Supabase';
@@ -160,42 +158,10 @@ export default function SelfDirectedSovereignMode() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeModule.route, navigate, rotate]);
 
-  useEffect(
-    () => () => {
-      if (animationFrameRef.current) {
-        window.cancelAnimationFrame(animationFrameRef.current);
-      }
-    },
-    [],
-  );
-
-  const updateParallax = useCallback((x, y) => {
-    if (animationFrameRef.current) {
-      window.cancelAnimationFrame(animationFrameRef.current);
-    }
-
-    animationFrameRef.current = window.requestAnimationFrame(() => {
-      const page = pageRef.current;
-      if (!page) return;
-      page.style.setProperty('--parallax-x', x);
-      page.style.setProperty('--parallax-y', y);
-    });
-  }, []);
-
-  const handlePointerMove = (event) => {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
-    updateParallax(x, y);
-  };
-
   return (
     <main
-      ref={pageRef}
       className="sos-page"
       style={{ '--deck-zoom': zoom, '--parallax-x': 0, '--parallax-y': 0 }}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={() => updateParallax(0, 0)}
     >
       <div className="sos-chamber" aria-hidden="true" />
       <div className="sos-depth-field" aria-hidden="true" />

@@ -17,6 +17,14 @@
   isolation: isolate;
 }
 
+.sos-page,
+.sos-page *,
+.sos-page *::before,
+.sos-page *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
 .sos-chamber,
 .sos-depth-field,
 .sos-orbital-light,
@@ -346,6 +354,7 @@
 }
 
 .sos-operating-stage::before {
+  display: none;
   content: '';
   position: absolute;
   z-index: 0;
@@ -364,10 +373,7 @@
   z-index: 1;
   inset: 0;
   transform-style: preserve-3d;
-  transform:
-    rotateX(calc(var(--parallax-y) * -1.6deg))
-    rotateY(calc(var(--parallax-x) * 1.8deg));
-  transition: transform 180ms ease-out;
+  transform: none;
 }
 
 .sos-module-card {
