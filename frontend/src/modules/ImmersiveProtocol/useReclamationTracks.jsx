@@ -3,6 +3,8 @@ import { getSupabaseClient } from '../../services/supabase/client';
 import { enrichTrackWithVisualResonance } from '../../data/visualResonanceManifest';
 import { fallbackTrack } from './fallbackTrack';
 
+export const DEFAULT_VISUALIZER_VIEWPORT_IMAGE = '/media/visualizer/reclamation-city-gatekeeper.png';
+
 const safeArray = (value) => {
   if (Array.isArray(value)) return value.slice(0, 5);
   if (!value) return [];
@@ -48,8 +50,11 @@ const parseLyricLines = (value) => {
     .filter((line) => line.text);
 };
 
+const isFrontendPublicAsset = (path) => /^\/(media|assets)\//i.test(path || '');
+
 const resolveR2Url = (base, path) => {
   if (!path) return '';
+  if (isFrontendPublicAsset(path)) return path;
   if (/^https?:\/\//i.test(path)) return path;
   if (/^\/\//.test(path)) return `https:${path}`;
   const baseClean = (base || '').replace(/\/$/, '');
@@ -135,6 +140,10 @@ const resolveVisualMedia = (raw, r2BaseUrl) => {
     '';
 
   const imageSource =
+    raw.viewport_image_url ||
+    raw.viewport_background_image ||
+    raw.frontend_viewport_image ||
+    raw.visualizer_viewport_image ||
     raw.visual_image ||
     raw.background_image ||
     raw.background_image_url ||
@@ -144,7 +153,7 @@ const resolveVisualMedia = (raw, r2BaseUrl) => {
     raw.shell_image ||
     raw.act_logo_image ||
     raw.bg_image ||
-    '';
+    DEFAULT_VISUALIZER_VIEWPORT_IMAGE;
 
   const mediaSource =
     raw.visual_media_url ||
@@ -168,19 +177,33 @@ const resolveVisualMedia = (raw, r2BaseUrl) => {
     return {
       visual_media_url: video,
       visual_media_type: 'video',
-      visual_media_fallback_image: image || '',
+      visual_media_fallback_image: image || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+      viewport_image_url: image || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
     };
   }
   if (media) {
     return {
       visual_media_url: media,
       visual_media_type: raw.visual_media_type || (isVideoAsset(media) ? 'video' : 'image'),
-      visual_media_fallback_image: image || '',
+      visual_media_fallback_image: image || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+      viewport_image_url: image || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
     };
   }
-  if (image) return { visual_media_url: image, visual_media_type: 'image', visual_media_fallback_image: '' };
+  if (image) {
+    return {
+      visual_media_url: image,
+      visual_media_type: 'image',
+      visual_media_fallback_image: '',
+      viewport_image_url: image,
+    };
+  }
 
-  return { visual_media_url: '', visual_media_type: '', visual_media_fallback_image: '' };
+  return {
+    visual_media_url: DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+    visual_media_type: 'image',
+    visual_media_fallback_image: '',
+    viewport_image_url: DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+  };
 };
 
 const resolveVisualMediaAsync = async (raw, r2BaseUrl, supabase, supabaseUrl) => {
@@ -203,6 +226,10 @@ const resolveVisualMediaAsync = async (raw, r2BaseUrl, supabase, supabaseUrl) =>
     raw.visual_video_url,
     raw.media_video_url,
     raw.bg_video,
+    raw.viewport_image_url,
+    raw.viewport_background_image,
+    raw.frontend_viewport_image,
+    raw.visualizer_viewport_image,
     raw.visual_image,
     raw.background_image,
     raw.background_image_url,
@@ -221,12 +248,14 @@ const resolveVisualMediaAsync = async (raw, r2BaseUrl, supabase, supabaseUrl) =>
       candidate
     );
     if (resolved) {
+      const resolvedType = isVideoAsset(resolved) ? 'video' : (media.visual_media_type || 'image');
       return {
         visual_media_url: resolved,
-        visual_media_type: isVideoAsset(resolved)
-          ? 'video'
-          : (media.visual_media_type || 'image'),
-        visual_media_fallback_image: media.visual_media_fallback_image || '',
+        visual_media_type: resolvedType,
+        visual_media_fallback_image: media.visual_media_fallback_image || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+        viewport_image_url: resolvedType === 'video'
+          ? (media.viewport_image_url || DEFAULT_VISUALIZER_VIEWPORT_IMAGE)
+          : resolved,
       };
     }
   }
@@ -293,11 +322,16 @@ const hydrateDurations = async (tracks) => Promise.all(
 );
 
 const normalizeTrack = async (raw, r2BaseUrl, supabase, supabaseUrl) => {
-  const lyricSource = raw.lyrics || '';
+  const lyricSource = raw.lyrics || raw.display_text || '';
   const lyric_lines = parseLyricLines(lyricSource);
   const actLabel = raw.act || raw.act_id || 'ACT THREE';
   const audio_url = resolveAudioUrl(raw, r2BaseUrl);
   const visualMedia = await resolveVisualMediaAsync(raw, r2BaseUrl, supabase, supabaseUrl);
+  const viewportImage =
+    visualMedia.viewport_image_url ||
+    visualMedia.visual_media_fallback_image ||
+    visualMedia.visual_media_url ||
+    DEFAULT_VISUALIZER_VIEWPORT_IMAGE;
 
   return {
     ...raw,
@@ -308,25 +342,33 @@ const normalizeTrack = async (raw, r2BaseUrl, supabase, supabaseUrl) => {
     audio_url,
     audio_cross_origin: raw.audio_cross_origin || undefined,
     ...visualMedia,
+    viewport_image_url: viewportImage,
+    viewport_alt_text: raw.viewport_alt_text || 'Chroma Key Protocol Act Three visualizer viewport',
     has_audio: Boolean(audio_url),
     lyrics_text: lyricSource,
     lyric_lines,
-    lyric_source: raw.lyrics ? 'reclamation_tracks.lyrics' : '',
+    lyric_source: lyricSource ? 'reclamation_tracks.lyrics/display_text' : '',
     context_points: [
       raw.artist ? `Artist: ${raw.artist}` : '',
       `Signal: ${raw.release_status || 'unpublished'}`,
       audio_url ? 'Audio source: Cloudflare media endpoint' : 'Audio source: unavailable',
+      viewportImage ? `Viewport source: ${viewportImage}` : '',
       lyric_lines.length ? `${lyric_lines.length} lyric lines indexed` : 'No lyric lines indexed',
     ].filter(Boolean),
     shell_image_url: resolveR2Url(r2BaseUrl, raw.shell_image),
-    act_background_image: resolveR2Url(r2BaseUrl, raw.shell_image || raw.background_image || ''),
+    act_background_image: resolveR2Url(r2BaseUrl, raw.shell_image || raw.background_image || viewportImage),
     act_logo_asset: resolveR2Url(r2BaseUrl, raw.act_logo_asset || raw.act_logo_image || ''),
-    background_image_url: resolveR2Url(r2BaseUrl, raw.background_image),
+    background_image_url: resolveR2Url(r2BaseUrl, raw.background_image || viewportImage),
   };
 };
 
 export default function useReclamationTracks() {
-  const [tracks, setTracks] = useState([enrichTrackWithVisualResonance(fallbackTrack)]);
+  const [tracks, setTracks] = useState([enrichTrackWithVisualResonance({
+    ...fallbackTrack,
+    viewport_image_url: DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+    visual_media_url: fallbackTrack.visual_media_url || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+    visual_media_type: fallbackTrack.visual_media_type || 'image',
+  })]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -369,7 +411,12 @@ export default function useReclamationTracks() {
 
         const normalized = await hydrateDurations(normalizedInput);
         if (!normalized.length) {
-          setTracks([enrichTrackWithVisualResonance(fallbackTrack)]);
+          setTracks([enrichTrackWithVisualResonance({
+            ...fallbackTrack,
+            viewport_image_url: DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+            visual_media_url: fallbackTrack.visual_media_url || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+            visual_media_type: fallbackTrack.visual_media_type || 'image',
+          })]);
           setError('No active tracks found. Using fallback track.');
         } else {
           setTracks(normalized);
@@ -377,7 +424,12 @@ export default function useReclamationTracks() {
         }
       } catch (loadError) {
         setError(loadError?.message || 'Unable to load track metadata from Supabase.');
-        setTracks([enrichTrackWithVisualResonance(fallbackTrack)]);
+        setTracks([enrichTrackWithVisualResonance({
+          ...fallbackTrack,
+          viewport_image_url: DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+          visual_media_url: fallbackTrack.visual_media_url || DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
+          visual_media_type: fallbackTrack.visual_media_type || 'image',
+        })]);
       } finally {
         setLoading(false);
       }
