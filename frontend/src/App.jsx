@@ -212,6 +212,15 @@ function AppRoutes() {
       />
 
       <Route
+        path="/experiencemode/sovereign"
+        element={
+          <ProtectedRoute withShell={false}>
+            <SelfDirectedSovereignMode />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="/sovereign"
         element={<Navigate to="/self-directed-sovereign-mode" replace />}
       />
@@ -388,6 +397,7 @@ function AppWithBackground() {
     path.includes("/vma") ||
     path.includes("/reclamation_user_journey") ||
     path.includes("self-directed-sovereign-mode") ||
+    path.includes("/experiencemode/sovereign") ||
     path.includes("/sovereign")
   ) {
     act = "fire";
