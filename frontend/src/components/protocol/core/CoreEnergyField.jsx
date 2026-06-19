@@ -59,8 +59,8 @@ export default function CoreEnergyField({
       <mesh ref={mesh}>
         <sphereGeometry args={[1.28, 128, 128]} />
         <meshStandardMaterial
-          color="#ff2a22"
-          emissive="#ff120b"
+          color="#49f5ff"
+          emissive="#04d9ff"
           emissiveIntensity={2.7 + bass * 6.2 + shockwave * 8.4}
           roughness={0.18}
           metalness={0.44}
@@ -71,8 +71,8 @@ export default function CoreEnergyField({
       <mesh ref={spikeField}>
         <icosahedronGeometry args={[1.72, 2]} />
         <meshStandardMaterial
-          color="#ff6954"
-          emissive="#ff1b12"
+          color="#f4c35f"
+          emissive="#ffb13b"
           emissiveIntensity={1.25 + emotionalIntensity * 3.2 + shockwave * 3.4}
           transparent
           opacity={0.2 + mid * 0.22 + shockwave * 0.18}
@@ -84,7 +84,7 @@ export default function CoreEnergyField({
         <torusGeometry args={[1.72, 0.018 + bass * 0.02, 12, 160]} />
         <meshStandardMaterial
           color="#ffffff"
-          emissive="#ff2a22"
+          emissive="#7cf8ff"
           emissiveIntensity={2 + bass * 4.2 + shockwave * 5.8}
           transparent
           opacity={0.58 + bass * 0.24}
@@ -94,8 +94,8 @@ export default function CoreEnergyField({
       <mesh ref={outerRing} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[2.12, 0.012 + mid * 0.018, 10, 192]} />
         <meshStandardMaterial
-          color="#ff3428"
-          emissive="#9b0707"
+          color="#a06bff"
+          emissive="#7c3dff"
           emissiveIntensity={1.25 + mid * 3.4 + emotionalIntensity * 1.8}
           transparent
           opacity={0.42 + emotionalIntensity * 0.2}

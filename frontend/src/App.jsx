@@ -95,7 +95,6 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/qa/sovereign" element={<SelfDirectedSovereignMode />} />
-      <Route path="/qa/visualizer" element={<FinalVisualizerPage />} />
 
       {/* AUTH */}
 

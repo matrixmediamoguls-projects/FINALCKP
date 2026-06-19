@@ -5,13 +5,13 @@
   --vrc-emotional: 0;
   --vrc-flash: 0;
   --vrc-shockwave: 0;
-  --vrc-signal: #ff1b16;
-  --vrc-signal-rgb: 255, 27, 22;
-  --vrc-depth: #070000;
-  --vrc-amber: #ff6751;
-  --vrc-amber-rgb: 255, 103, 81;
-  --vrc-violet: #8d0707;
-  --vrc-violet-rgb: 141, 7, 7;
+  --vrc-signal: #51f6ff;
+  --vrc-signal-rgb: 81, 246, 255;
+  --vrc-depth: #091116;
+  --vrc-amber: #f3bd55;
+  --vrc-amber-rgb: 243, 189, 85;
+  --vrc-violet: #8c6cff;
+  --vrc-violet-rgb: 140, 108, 255;
 
   position: relative;
   width: 100%;
@@ -21,9 +21,9 @@
   border-radius: 50%;
   border: 1px solid rgba(var(--vrc-signal-rgb), .58);
   background:
-    radial-gradient(circle at 50% 41%, rgba(255, 255, 255, .16), transparent 5%),
-    radial-gradient(circle at 48% 48%, rgba(var(--vrc-signal-rgb), .42), transparent 27%),
-    radial-gradient(circle at 62% 58%, rgba(var(--vrc-amber-rgb), .16), transparent 34%),
+    radial-gradient(circle at 42% 38%, rgba(255, 255, 255, .14), transparent 9%),
+    radial-gradient(circle at 48% 48%, rgba(var(--vrc-signal-rgb), .28), transparent 30%),
+    radial-gradient(circle at 62% 58%, rgba(var(--vrc-amber-rgb), .13), transparent 34%),
     radial-gradient(circle at 50% 50%, rgba(2, 10, 14, .24), rgba(0, 0, 0, .97) 70%),
     var(--vrc-depth);
   box-shadow:
@@ -65,12 +65,11 @@
 
 .vrc-shell::before {
   background:
-    repeating-conic-gradient(from 0deg, rgba(var(--vrc-signal-rgb), .92) 0 1.2deg, transparent 1.2deg 3.4deg),
-    repeating-radial-gradient(circle, transparent 0 9%, rgba(var(--vrc-signal-rgb), .25) 9.4% 9.8%, transparent 10.2% 14%),
-    radial-gradient(circle, transparent 0 54%, rgba(var(--vrc-amber-rgb), .34) 55% 56%, transparent 57%);
-  mask-image: radial-gradient(circle, transparent 0 47%, #000 48% 66%, transparent 67%);
-  opacity: .78;
-  animation: vrcRingSpin 28s linear infinite;
+    repeating-conic-gradient(from 0deg, rgba(var(--vrc-signal-rgb), .4) 0 1deg, transparent 1deg 5deg),
+    radial-gradient(circle, transparent 0 58%, rgba(var(--vrc-amber-rgb), .24) 59% 60%, transparent 61%);
+  mask-image: radial-gradient(circle, transparent 0 54%, #000 55% 64%, transparent 65%);
+  opacity: .2;
+  animation: none;
 }
 
 .vrc-shell::after {
@@ -123,33 +122,15 @@
 }
 
 .vrc-background-glow {
-  z-index: 1;
-  display: block;
-  background:
-    radial-gradient(circle, rgba(255, 33, 22, .38), transparent 25%),
-    repeating-conic-gradient(from 0deg, transparent 0 13deg, rgba(255, 30, 22, .22) 13.5deg 14.5deg, transparent 15deg 30deg);
-  opacity: .62;
+  display: none;
 }
 
 .vrc-grid-overlay {
-  z-index: 2;
-  display: block;
-  background:
-    linear-gradient(rgba(255, 30, 22, .08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 30, 22, .08) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: radial-gradient(circle, #000 0 58%, transparent 75%);
+  display: none;
 }
 
 .vrc-reactive-sweep {
-  z-index: 5;
-  display: block;
-  inset: 0 auto 0 41%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .28), rgba(255, 28, 20, .8), transparent);
-  width: 18%;
-  transform-origin: 50% 50%;
-  animation: vrcSweep 3.8s linear infinite;
-  opacity: .7;
+  display: none;
 }
 
 .vrc-reactor-rings {
@@ -189,8 +170,8 @@
 
 .vrc-scope-bars {
   z-index: 6;
-  inset: 5% 16% auto 16%;
-  height: 118px;
+  inset: auto 22% 13% 22%;
+  height: 58px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -199,7 +180,7 @@
 }
 
 .vrc-scope-bars span {
-  width: 5px;
+  width: 4px;
   height: var(--scope-height);
   background: linear-gradient(180deg, rgba(255, 255, 255, .9), var(--vrc-signal) 46%, rgba(var(--vrc-amber-rgb), .54));
   box-shadow: 0 0 calc(8px + var(--vrc-hat) * 16px) rgba(var(--vrc-signal-rgb), .56);
@@ -217,42 +198,6 @@
   overflow: hidden;
 }
 
-.vrc-viewport::before,
-.vrc-viewport::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 8;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
-
-.vrc-viewport::before {
-  width: 25%;
-  height: 45%;
-  background:
-    radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, .92), rgba(255, 83, 54, .72) 18%, transparent 36%),
-    radial-gradient(ellipse at 44% 42%, rgba(255, 25, 18, .95), transparent 48%),
-    radial-gradient(ellipse at 56% 62%, rgba(255, 103, 64, .82), transparent 52%);
-  clip-path: polygon(50% 0, 63% 20%, 58% 37%, 72% 57%, 55% 100%, 46% 76%, 31% 100%, 38% 58%, 28% 39%, 40% 22%);
-  filter: blur(.5px) drop-shadow(0 0 18px rgba(255, 38, 22, .9)) drop-shadow(0 0 44px rgba(255, 22, 14, .65));
-  mix-blend-mode: screen;
-  opacity: .86;
-}
-
-.vrc-viewport::after {
-  width: 34%;
-  height: 34%;
-  border: 2px solid rgba(255, 58, 42, .9);
-  transform: translate(-50%, -50%) rotate(45deg);
-  box-shadow:
-    inset 0 0 18px rgba(255, 29, 20, .5),
-    0 0 18px rgba(255, 29, 20, .7);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  opacity: .72;
-}
-
 .vrc-viewport canvas {
   display: block;
   filter:
@@ -265,14 +210,12 @@
   top: 50%;
   left: 50%;
   z-index: 7;
-  width: 46%;
-  height: 46%;
+  width: 74%;
+  height: 74%;
   object-fit: contain;
   transform: translate(-50%, -50%);
   pointer-events: none;
   filter:
-    saturate(2.2)
-    hue-rotate(320deg)
     drop-shadow(0 0 8px rgba(255, 255, 255, .72))
     drop-shadow(0 0 calc(18px + var(--vrc-bass) * 38px) rgba(var(--vrc-signal-rgb), .82))
     drop-shadow(0 0 calc(48px + var(--vrc-flash) * 38px) rgba(var(--vrc-amber-rgb), .38));
@@ -280,16 +223,11 @@
 }
 
 .vrc-scanlines {
-  z-index: 12;
-  display: block;
-  background: repeating-linear-gradient(180deg, transparent 0 3px, rgba(255, 35, 25, .09) 4px 5px);
-  mix-blend-mode: screen;
+  display: none;
 }
 
 .vrc-vignette {
-  z-index: 13;
-  display: block;
-  background: radial-gradient(circle, transparent 0 38%, rgba(0, 0, 0, .34) 59%, rgba(0, 0, 0, .78) 100%);
+  display: none;
 }
 
 .vrc-shockwave {

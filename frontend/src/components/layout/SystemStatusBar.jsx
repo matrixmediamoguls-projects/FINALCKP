@@ -3,36 +3,24 @@ export default function SystemStatusBar({
   particlesEnabled,
   visualsRunning,
   theme,
-  currentTime = "0:00",
-  duration = "0:00",
-  totalDuration = "0:00",
-  trackTitle = "NO TRACK",
 }) {
   return (
     <section className="pva-system-bar">
       <div>
-        <span>DATABASE</span>
-        <strong>SUPABASE CONNECTED</strong>
+        <span>REACTIVE</span>
+        <strong>{intensity > 35 ? "ACTIVE" : "READY"}</strong>
       </div>
       <div>
-        <span>NODE</span>
-        <strong>{particlesEnabled ? "R2 LIVE" : "LOCAL"}</strong>
+        <span>PARTICLES</span>
+        <strong>{particlesEnabled ? "ENABLED" : "DISABLED"}</strong>
       </div>
       <div>
-        <span>SECTOR</span>
-        <strong>{visualsRunning ? "7 - EXTERIOR FEED" : theme}</strong>
+        <span>VISUALS</span>
+        <strong>{visualsRunning ? "RUNNING" : "IDLE"}</strong>
       </div>
       <div>
-        <span>PROTOCOL</span>
-        <strong>{intensity > 35 ? "CKP ENCRYPTED" : "ARMED"}</strong>
-      </div>
-      <div>
-        <span>TRACK</span>
-        <strong>{trackTitle}</strong>
-      </div>
-      <div>
-        <span>TIME</span>
-        <strong>{currentTime} / {duration || totalDuration}</strong>
+        <span>THEME</span>
+        <strong>{theme}</strong>
       </div>
     </section>
   );
