@@ -192,32 +192,6 @@
   accent-color: #ff4a36;
 }
 
-.pva-visualizer-core .pva-core-title {
-  text-align: center;
-  margin-bottom: 8px;
-  letter-spacing: 0.12em;
-}
-
-.pva-core-frame {
-  width: min(800px, 100%);
-  margin: 0 auto;
-  aspect-ratio: 1 / 1;
-}
-
-.pva-core-time {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 8px;
-  align-items: center;
-}
-
-.pva-core-time i {
-  height: 4px;
-  display: block;
-  background: #ff4a36;
-}
-
 .pva-visual-stage {
   min-height: 320px;
   border: 1px solid rgba(255, 64, 40, 0.35);
@@ -253,18 +227,6 @@
   font-family: inherit;
   font-size: 0.62rem;
   padding: 4px 6px;
-}
-
-.pva-visualizer-core.is-diagnostic .pva-core-frame {
-  filter: grayscale(0.32) contrast(1.12);
-}
-
-.pva-visualizer-core.is-performance .pva-core-frame {
-  transform: scale(1.02);
-}
-
-.pva-visualizer-core.is-immersive .pva-core-frame {
-  box-shadow: 0 0 40px rgba(255, 70, 48, 0.26);
 }
 
 .pva-visual-display.is-artifact .pva-visual-stage img,

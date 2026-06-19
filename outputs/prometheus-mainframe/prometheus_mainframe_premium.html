@@ -1975,7 +1975,7 @@ nodes.forEach((node) => {
       <div class="node-popover-title">${node.title}</div>
       <div class="node-popover-artifact"><b>Digital Artifact:</b> ${node.artifact}</div>
       <div class="node-popover-artifact"><b>Track Signal:</b> ${node.meaning}</div>
-      <div class="node-popover-foot">Click node to activate visualizer for this track</div>
+      <div class="node-popover-foot">Click node to activate this track</div>
     </div>
   `;
   button.addEventListener("click", () => launchTransmission(node.n));
@@ -2123,7 +2123,7 @@ function launchTransmission(nodeNumber) {
   }
 
   setTransmissionTimer(() => {
-    transmissionKicker.textContent = "SELF DESTRUCT // VISUALIZER HANDOFF";
+    transmissionKicker.textContent = "SELF DESTRUCT // TRACK HANDOFF";
     transmissionCountdown.textContent = "0";
     transmissionWindow.classList.add("self-destructing");
   }, 8000);
@@ -2159,7 +2159,7 @@ function activateNode(nodeNumber) {
 
   const power = powerData[node.power];
   document.documentElement.style.setProperty("--pulse-color", power.color);
-  document.getElementById("panel-kicker").textContent = `Visualizer track open // Ring ${getRing(nodeNumber)}`;
+  document.getElementById("panel-kicker").textContent = `Track open // Ring ${getRing(nodeNumber)}`;
   document.getElementById("panel-title").textContent = `${String(nodeNumber).padStart(2, "0")} // ${node.title}`;
   document.getElementById("panel-copy").textContent = node.caption;
   document.getElementById("metadata-list").innerHTML = [

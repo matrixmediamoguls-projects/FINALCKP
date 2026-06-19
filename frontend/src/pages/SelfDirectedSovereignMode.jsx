@@ -45,14 +45,6 @@ const MODULES = [
     card: '/ui/reclamation/Module_Cards/Sonic_Artifacts.png',
   },
   {
-    id: 'visualizer-core',
-    title: 'Visualizer Core',
-    code: 'VCR',
-    lightCode: 'Sound Becomes Form. Frequency Becomes Vision.',
-    route: '/visualizer/3',
-    card: '/ui/reclamation/Module_Cards/Visualizer_Core.png',
-  },
-  {
     id: 'vibes-and-tribes',
     title: 'Vibes And Tribes',
     code: 'VAT',

@@ -16,7 +16,7 @@ ALTER TABLE tracks ADD COLUMN IF NOT EXISTS notes TEXT;
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS release_status TEXT DEFAULT 'draft';
 
--- Act Logo Visualizer
+-- Act Logo
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_image TEXT;
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_text TEXT DEFAULT 'CHROMA KEY PROTOCOL';
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_subtitle TEXT;
@@ -24,9 +24,7 @@ ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_ring_enabled BOOLEAN DEFAUL
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_reactivity_strength INTEGER DEFAULT 80;
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_glow_strength INTEGER DEFAULT 80;
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_rotation_speed NUMERIC DEFAULT 0.15;
-ALTER TABLE tracks ADD COLUMN IF NOT EXISTS act_logo_visualizer_style TEXT DEFAULT 'radial-bars';
-
--- Act Visualizer Background
+-- Act Background
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS background_image TEXT;
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS background_overlay_opacity NUMERIC DEFAULT 0.22;
 ALTER TABLE tracks ADD COLUMN IF NOT EXISTS background_blur INTEGER DEFAULT 0;

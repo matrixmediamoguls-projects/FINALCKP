@@ -23,7 +23,6 @@ export const fallbackTrack = {
   act_logo_reactivity_strength: 90,
   act_logo_glow_strength: 95,
   act_logo_rotation_speed: 0.15,
-  act_logo_visualizer_style: 'radial-bars',
   background_image: '',
   background_overlay_opacity: 0.22,
   background_blur: 0,

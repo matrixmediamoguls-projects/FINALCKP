@@ -30,7 +30,6 @@ const SeekerPage = lazy(() => import('./pages/SeekerPage'));
 const ProtocolChat = lazy(() => import('./pages/ProtocolChat'));
 const GuidedListen = lazy(() => import('./pages/GuidedListen'));
 const ActProtocol = lazy(() => import('./pages/ActProtocol'));
-const FinalVisualizerPage = lazy(() => import('./pages/FinalVisualizerPage'));
 const LaunchSequencePage = lazy(() => import('./pages/LaunchSequencePage'));
 const Activation = lazy(() => import('./pages/Activation'));
 const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistant'));
@@ -251,26 +250,6 @@ function AppRoutes() {
         element={<LaunchSequencePage />}
       />
 
-      {/* VISUALIZER */}
-
-      <Route
-        path="/visualizer"
-        element={
-          <ProtectedRoute withShell={false}>
-            <FinalVisualizerPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/visualizer/:actId"
-        element={
-          <ProtectedRoute withShell={false}>
-            <FinalVisualizerPage />
-          </ProtectedRoute>
-        }
-      />
-
       {/* SEEKER / VMA */}
 
       <Route
@@ -406,7 +385,6 @@ function AppWithBackground() {
     path.includes("/act/3") ||
     path.includes("act_three") ||
     path.includes("reclamation") ||
-    path.includes("visualizer") ||
     path.includes("/vma") ||
     path.includes("/reclamation_user_journey") ||
     path.includes("self-directed-sovereign-mode") ||

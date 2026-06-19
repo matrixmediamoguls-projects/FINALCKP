@@ -11,8 +11,6 @@ import {
   canAccessAct,
 } from "../data/journey";
 
-const DEFAULT_VISUALIZER_PATH = "/visualizer/act_three";
-
 const cardMotion = {
   hidden: { opacity: 0, y: 18, scale: 0.985 },
   show: { opacity: 1, y: 0, scale: 1 },
@@ -214,7 +212,7 @@ const ActModulesPage = () => {
     }
 
     if (act.num === 3) {
-      navigate(DEFAULT_VISUALIZER_PATH);
+      navigate("/experiencemode/sovereign");
       return;
     }
 

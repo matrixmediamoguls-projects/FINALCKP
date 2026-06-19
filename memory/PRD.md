@@ -1,7 +1,7 @@
 # The Chroma Key Protocol — PRD
 
 ## Original Problem Statement
-Build an interactive learning module called "The Chroma Key Protocol" (Musiq Matrix — Balanced Elementals) with a High-Fidelity Cyber-Noir aesthetic. Features include 4 Phase/Act cards, "The Seeker" (Prometheus) AI identity, an Immersion Protocol (sonic visualizer with synced popups), Spin Wheel (12 sections), Social/Spotify integrations, and an Admin Panel. Implement Tiered Access: Free (Act I), $17.99 License (Acts I-IV + Act III ownership), $29.99 Full Access (Everything + all ownership), and a $5.00 Admin-configurable Add-on for full ownership. A deeply interactive 5-Step Protocol Engine per Act.
+Build an interactive learning module called "The Chroma Key Protocol" (Musiq Matrix — Balanced Elementals) with a High-Fidelity Cyber-Noir aesthetic. Features include 4 Phase/Act cards, "The Seeker" (Prometheus) AI identity, an Immersion Protocol with synced popups, Spin Wheel (12 sections), Social/Spotify integrations, and an Admin Panel. Implement Tiered Access: Free (Act I), $17.99 License (Acts I-IV + Act III ownership), $29.99 Full Access (Everything + all ownership), and a $5.00 Admin-configurable Add-on for full ownership. A deeply interactive 5-Step Protocol Engine per Act.
 
 ## User Personas
 - **Seekers**: Users going through the 4-Act self-discovery protocol
@@ -13,7 +13,7 @@ Build an interactive learning module called "The Chroma Key Protocol" (Musiq Mat
 - AI Agent (Prometheus/Meridian/Terra/Aether) per Act for transmissions
 - Tiered access gating (Free, License, Full)
 - Spin Wheel (earned per completed act)
-- Immersion Protocol with audio visualization
+- Immersion Protocol with synced audio state
 - Admin Panel for content/pricing management
 - JWT + Google OAuth authentication
 - Stripe payment integration

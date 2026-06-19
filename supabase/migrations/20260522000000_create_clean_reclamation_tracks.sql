@@ -1,4 +1,4 @@
--- Clean visualizer-only track table.
+-- Clean reclamation track table.
 -- The legacy public.tracks table is still used by admin and guided-listening APIs.
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

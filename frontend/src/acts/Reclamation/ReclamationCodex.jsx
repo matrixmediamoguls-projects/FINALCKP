@@ -8,7 +8,6 @@ import "../../styles/reclamation-command-center.css";
 import ProtocolHeader from "../../components/layout/ProtocolHeader";
 import TrackListPanel from "../../components/music/TrackListPanel";
 import QuickControlsPanel from "../../components/controls/QuickControlsPanel";
-import VisualizerCorePanel from "../../components/visualizer/VisualizerCorePanel";
 import VisualDisplayPanel from "../../components/visuals/VisualDisplayPanel";
 import LyricsProtocolPanel from "../../components/lyrics/LyricsProtocolPanel";
 import AudioAnalysisPanel from "../../components/analysis/AudioAnalysisPanel";
@@ -191,13 +190,6 @@ export default function ReclamationCodex() {
         </aside>
 
         <section className="pva-center">
-          <VisualizerCorePanel
-            track={activeTrack}
-            currentTime={fmt(currentTime)}
-            duration={fmt(duration)}
-            progress={progress}
-            visualMode={visualMode}
-          />
           <LyricsProtocolPanel
             lines={lyricWindow}
             activeLineId={lyricLines[activeLyricIndex]?.id}

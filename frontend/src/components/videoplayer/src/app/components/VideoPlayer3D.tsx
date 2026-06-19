@@ -413,7 +413,7 @@ export default function VideoPlayer3D() {
                   </span>
                 </div>
 
-                {/* Audio visualizer */}
+                {/* Audio meter */}
                 <div className="absolute bottom-14 left-1/2 -translate-x-1/2 flex items-end gap-0.5 z-[3]">
                   {audioLevels.map((height, i) => (
                     <div

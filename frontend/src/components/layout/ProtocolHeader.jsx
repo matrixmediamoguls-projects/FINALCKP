@@ -17,7 +17,7 @@ export default function ProtocolHeader({
 
       <div className="pva-header-title">
         <h1>CHROMA KEY PROTOCOL</h1>
-        <p>AUDIO VISUALIZER ENGINE</p>
+        <p>AUDIO PROTOCOL ENGINE</p>
       </div>
 
       <div className="pva-header-status">
