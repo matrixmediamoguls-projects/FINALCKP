@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import useAudioAnalyzer from "../../hooks/useAudioAnalyzer";
-import useReclamationTracks from "../../modules/ImmersiveProtocol/useReclamationTracks";
+import useReclamationTracks, { DEFAULT_VISUALIZER_VIEWPORT_IMAGE } from "../../modules/ImmersiveProtocol/useReclamationTracks";
 import { useAudio } from "../../context/audioprovider";
 import "../../styles/reclamation-command-center.css";
 
@@ -76,6 +76,12 @@ export default function ReclamationCodex() {
   }, [tracks]);
 
   const activeTrack = tracks[activeTrackIndex] ?? null;
+  const viewportImage =
+    activeTrack?.viewport_image_url ||
+    activeTrack?.visual_media_fallback_image ||
+    activeTrack?.background_image_url ||
+    activeTrack?.act_background_image ||
+    DEFAULT_VISUALIZER_VIEWPORT_IMAGE;
   const currentAudioTrack = audio?.currentTrack;
   const isCurrentTrack =
     currentAudioTrack?.id === activeTrack?.id ||
@@ -189,7 +195,11 @@ export default function ReclamationCodex() {
           />
         </aside>
 
-        <section className="pva-center">
+        <section
+          className="pva-center"
+          style={{ "--pva-viewport-image": `url("${viewportImage}")` }}
+          aria-label={activeTrack?.viewport_alt_text || "Chroma Key Protocol visualizer viewport"}
+        >
           <LyricsProtocolPanel
             lines={lyricWindow}
             activeLineId={lyricLines[activeLyricIndex]?.id}
@@ -199,7 +209,7 @@ export default function ReclamationCodex() {
           <SystemStatusBar
             intensity={intensity}
             particlesEnabled
-            visualsRunning={Boolean(activeTrack?.visual_media_url)}
+            visualsRunning={Boolean(activeTrack?.visual_media_url || viewportImage)}
             theme="Reclamation"
           />
         </section>
