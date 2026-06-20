@@ -39,8 +39,11 @@ function ModuleCard({ card, index, activeIndex, onSelect, onOpen }) {
       data-offset={offset}
       data-module-key={card.key}
       style={{ '--card-order': 10 - Math.abs(offset) }}
-      onClick={() => (isActive ? onOpen(card.key) : onSelect(index))}
-      aria-label={`${isActive ? 'Open' : 'Select'} ${card.label}`}
+      onClick={() => {
+        onSelect(index);
+        onOpen(card.key);
+      }}
+      aria-label={`Open ${card.label}`}
     >
       <img className="sos-card-art" src={card.image} alt={card.label} draggable="false" />
     </button>
