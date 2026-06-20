@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import AudioVisualizerCore from '../../modules/sovereign/AudioVisualizerCore';
 import { getActThreeTracks } from '../../lib/supabase/tracks';
 import './SovereignMode.css';
+import './SovereignModePolish.css';
 
 export default function SovereignMode() {
   const [tracks, setTracks] = useState([]);
