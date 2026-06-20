@@ -28,18 +28,19 @@ function getCarouselOffset(index, activeIndex) {
   return offset;
 }
 
-function ModuleCard({ card, index, activeIndex, onSelect }) {
+function ModuleCard({ card, index, activeIndex, onSelect, onOpen }) {
   const offset = getCarouselOffset(index, activeIndex);
+  const isActive = offset === 0;
 
   return (
     <button
       type="button"
-      className={`sos-module-card ${offset === 0 ? 'is-active' : ''}`}
+      className={`sos-module-card ${isActive ? 'is-active' : ''}`}
       data-offset={offset}
       data-module-key={card.key}
       style={{ '--card-order': 10 - Math.abs(offset) }}
-      onClick={() => onSelect(index)}
-      aria-label={`Open ${card.label}`}
+      onClick={() => (isActive ? onOpen(card.key) : onSelect(index))}
+      aria-label={`${isActive ? 'Open' : 'Select'} ${card.label}`}
     >
       <img className="sos-card-art" src={card.image} alt={card.label} draggable="false" />
     </button>
@@ -50,6 +51,7 @@ export default function SovereignMode() {
   const [tracks, setTracks] = useState([]);
   const [selectedTrackId, setSelectedTrackId] = useState(null);
   const [activeModuleIndex, setActiveModuleIndex] = useState(3);
+  const [openModuleKey, setOpenModuleKey] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -70,7 +72,8 @@ export default function SovereignMode() {
   );
 
   const activeCard = MODULE_CARDS[activeModuleIndex];
-  const ActiveModule = activeCard.Component;
+  const openCard = MODULE_CARDS.find((card) => card.key === openModuleKey);
+  const OpenModule = openCard?.Component;
 
   const rotateCarousel = (direction) => {
     setActiveModuleIndex((current) => (current + direction + MODULE_CARDS.length) % MODULE_CARDS.length);
@@ -84,9 +87,7 @@ export default function SovereignMode() {
       <div className="sos-orbital-light sos-orbital-light--two" aria-hidden="true" />
       <div className="sos-particles" aria-hidden="true" />
       <div className="sos-vignette" aria-hidden="true" />
-      <div className="sos-violet-conduits" aria-hidden="true">
-        <i /><i /><i /><i /><i /><i />
-      </div>
+      <div className="sos-violet-conduits" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
 
       <div className="sos-promethean-core" aria-hidden="true">
         <div className="sos-core-flame" />
@@ -96,17 +97,13 @@ export default function SovereignMode() {
       </div>
 
       <section className="sos-operating-stage" aria-label="Sovereign module carousel">
-        <button type="button" className="sos-stage-arrow sos-stage-arrow--left" onClick={() => rotateCarousel(-1)} aria-label="Previous module">
-          <ChevronLeft />
-        </button>
+        <button type="button" className="sos-stage-arrow sos-stage-arrow--left" onClick={() => rotateCarousel(-1)} aria-label="Previous module"><ChevronLeft /></button>
         <div className="sos-card-deck">
           {MODULE_CARDS.map((card, index) => (
-            <ModuleCard key={card.key} card={card} index={index} activeIndex={activeModuleIndex} onSelect={setActiveModuleIndex} />
+            <ModuleCard key={card.key} card={card} index={index} activeIndex={activeModuleIndex} onSelect={setActiveModuleIndex} onOpen={setOpenModuleKey} />
           ))}
         </div>
-        <button type="button" className="sos-stage-arrow sos-stage-arrow--right" onClick={() => rotateCarousel(1)} aria-label="Next module">
-          <ChevronRight />
-        </button>
+        <button type="button" className="sos-stage-arrow sos-stage-arrow--right" onClick={() => rotateCarousel(1)} aria-label="Next module"><ChevronRight /></button>
       </section>
 
       <section className="sos-core-readout" aria-label="Active sovereign module">
@@ -118,20 +115,18 @@ export default function SovereignMode() {
         </div>
       </section>
 
-      <div hidden>
-        {activeCard.key === 'visualizer_core' ? (
-          <ActiveModule
-            selectedTrackId={selectedTrackId}
-            activeTrackData={activeTrackData}
-            tracks={tracks}
-            onTrackChange={setSelectedTrackId}
-            isPlaying={isPlaying}
-            onPlayStateChange={setIsPlaying}
-          />
-        ) : (
-          <ActiveModule selectedTrackId={selectedTrackId} />
-        )}
-      </div>
+      {openCard && (
+        <section className="absolute inset-0 z-50 overflow-auto bg-black/95 p-6 text-white" aria-label={`${openCard.label} module page`}>
+          <div className="mx-auto max-w-7xl">
+            <button type="button" onClick={() => setOpenModuleKey(null)} className="mb-4 rounded-full border border-red-400/40 px-4 py-2 text-xs uppercase tracking-[0.18em] text-red-200">Close Module</button>
+            {openCard.key === 'visualizer_core' ? (
+              <OpenModule selectedTrackId={selectedTrackId} activeTrackData={activeTrackData} tracks={tracks} onTrackChange={setSelectedTrackId} isPlaying={isPlaying} onPlayStateChange={setIsPlaying} />
+            ) : (
+              <OpenModule selectedTrackId={selectedTrackId} />
+            )}
+          </div>
+        </section>
+      )}
     </main>
   );
 }
