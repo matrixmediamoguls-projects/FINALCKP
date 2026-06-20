@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { DEFAULT_VISUALIZER_VIEWPORT_IMAGE } from "../../modules/ImmersiveProtocol/useReclamationTracks";
 
 const isVideo = (url) => /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url || "");
 
@@ -8,9 +9,10 @@ export default function VisualDisplayPanel({ track, visualMode, onVisualModeChan
   const mediaUrl = useMemo(
     () =>
       track?.visual_media_url ||
+      track?.viewport_image_url ||
       track?.background_image_url ||
       track?.act_background_image ||
-      "",
+      DEFAULT_VISUALIZER_VIEWPORT_IMAGE,
     [track]
   );
 
@@ -33,14 +35,10 @@ export default function VisualDisplayPanel({ track, visualMode, onVisualModeChan
         </label>
       </div>
       <div className="pva-visual-stage">
-        {mediaUrl ? (
-          mediaType === "video" ? (
-            <video src={mediaUrl} autoPlay muted loop playsInline />
-          ) : (
-            <img src={mediaUrl} alt="Track visual backdrop" />
-          )
+        {mediaType === "video" ? (
+          <video src={mediaUrl} poster={track?.viewport_image_url || DEFAULT_VISUALIZER_VIEWPORT_IMAGE} autoPlay muted loop playsInline />
         ) : (
-          <div className="pva-media-empty">No media URL resolved</div>
+          <img src={mediaUrl} alt={track?.viewport_alt_text || "Chroma Key Protocol Act Three visualizer viewport"} />
         )}
       </div>
       <footer>{mediaType.toUpperCase()} · {visualMode?.toUpperCase()}</footer>

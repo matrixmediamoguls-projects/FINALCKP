@@ -1,0 +1,291 @@
+.pva-center--reactor {
+  align-content: center end;
+  padding: 20px 22px 18px;
+}
+
+.reactor-core {
+  --reactor-size: clamp(360px, 48vw, 680px);
+  position: relative;
+  width: min(var(--reactor-size), 100%);
+  aspect-ratio: 1;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  transform: scale(var(--reactor-pulse-scale, 1));
+  transition: transform 120ms linear;
+  filter: drop-shadow(0 0 28px rgba(255, 29, 12, calc(0.2 + var(--reactor-intensity, 0.7) * 0.35)));
+}
+
+.reactor-core::before,
+.reactor-core::after {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.reactor-core::before {
+  background:
+    radial-gradient(circle, transparent 0 39%, rgba(255, 29, 12, 0.14) 40% 41%, transparent 42%),
+    conic-gradient(from 0deg, transparent 0 4deg, rgba(255, 50, 30, 0.32) 4deg 5deg, transparent 5deg 10deg);
+  opacity: 0.7;
+  animation: reactorSpin 38s linear infinite;
+}
+
+.reactor-core::after {
+  inset: 15%;
+  border: 1px solid rgba(255, 53, 35, 0.28);
+  box-shadow: inset 0 0 44px rgba(255, 0, 0, 0.12), 0 0 36px rgba(255, 0, 0, 0.1);
+}
+
+.reactor-core__halo,
+.reactor-core__orbit,
+.reactor-core__spectrum,
+.reactor-core__chamber {
+  position: absolute;
+  border-radius: 999px;
+}
+
+.reactor-core__halo--outer {
+  inset: 4%;
+  border: 1px solid rgba(255, 55, 34, 0.34);
+  background: repeating-conic-gradient(from 0deg, rgba(255, 45, 20, 0.12) 0 1deg, transparent 1deg 6deg);
+  mask: radial-gradient(circle, transparent 0 62%, #000 63% 75%, transparent 76%);
+  animation: reactorSpin 24s linear infinite;
+}
+
+.reactor-core__halo--middle {
+  inset: 16%;
+  border: 1px solid rgba(255, 64, 42, 0.38);
+  background: conic-gradient(from 90deg, transparent, rgba(255, 37, 17, 0.22), transparent, rgba(255, 37, 17, 0.16), transparent);
+  animation: reactorSpinReverse 31s linear infinite;
+}
+
+.reactor-core__halo--inner {
+  inset: 26%;
+  border: 1px dashed rgba(255, 72, 48, 0.34);
+  box-shadow: 0 0 22px rgba(255, 32, 14, 0.16), inset 0 0 36px rgba(255, 32, 14, 0.1);
+  animation: reactorSpin 18s linear infinite;
+}
+
+.reactor-core__spectrum {
+  inset: 0;
+  z-index: 2;
+  transform: rotate(-90deg);
+}
+
+.reactor-core__spectrum i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: var(--bar-height);
+  transform-origin: 50% calc((var(--reactor-size) * -0.315));
+  transform: rotate(var(--bar-angle)) translateY(calc(var(--reactor-size) * -0.335));
+  border-radius: 999px 999px 2px 2px;
+  background: linear-gradient(180deg, rgba(255, 236, 230, 0.95), rgba(255, 45, 22, 0.92) 38%, rgba(255, 0, 0, 0.12));
+  opacity: var(--bar-opacity);
+  box-shadow: 0 0 10px rgba(255, 41, 22, 0.72), 0 0 18px rgba(255, 0, 0, 0.34);
+  transition: height 90ms linear, opacity 90ms linear;
+}
+
+.reactor-core.is-live .reactor-core__spectrum i:nth-child(4n) {
+  animation: reactorBarFlicker 600ms ease-in-out infinite alternate;
+}
+
+.reactor-core__orbit--one {
+  inset: 20%;
+  border: 1px solid rgba(255, 72, 48, 0.32);
+}
+
+.reactor-core__orbit--two {
+  inset: 31%;
+  border: 1px solid rgba(255, 72, 48, 0.22);
+}
+
+.reactor-core__orbit--three {
+  inset: 40%;
+  border: 1px solid rgba(255, 72, 48, 0.16);
+}
+
+.reactor-core__chamber {
+  inset: 31%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle, rgba(255, 32, 16, calc(0.05 + var(--reactor-bass, 0.8) * 0.12)), transparent 48%),
+    radial-gradient(circle, rgba(0, 0, 0, 0.98) 0 58%, rgba(18, 0, 0, 0.88) 76%, transparent 77%);
+  border: 1px solid rgba(255, 52, 30, 0.32);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.95),
+    inset 0 0 26px rgba(255, 36, 18, calc(0.06 + var(--reactor-intensity, 0.7) * 0.18)),
+    0 0 30px rgba(255, 12, 0, calc(0.12 + var(--reactor-intensity, 0.7) * 0.2));
+}
+
+.reactor-core__void {
+  position: absolute;
+  inset: 16%;
+  border-radius: 999px;
+  background: radial-gradient(circle, #000 0 62%, rgba(255, 22, 8, 0.08) 70%, transparent 72%);
+}
+
+.reactor-core__crosshair {
+  position: absolute;
+  inset: 7%;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent 0 49.7%, rgba(255, 42, 24, 0.22) 50%, transparent 50.3% 100%),
+    linear-gradient(0deg, transparent 0 49.7%, rgba(255, 42, 24, 0.22) 50%, transparent 50.3% 100%);
+  opacity: 0.36;
+}
+
+.reactor-core__readout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  letter-spacing: 0.18em;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.reactor-core:hover .reactor-core__readout {
+  opacity: 1;
+}
+
+.reactor-core__readout span,
+.reactor-core__readout em,
+.reactor-core__caption span,
+.reactor-core__node {
+  font-size: 0.62rem;
+  color: rgba(255, 180, 170, 0.78);
+  font-style: normal;
+}
+
+.reactor-core__readout strong {
+  color: #ff2d18;
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  text-shadow: 0 0 16px rgba(255, 38, 18, 0.75);
+}
+
+.reactor-core__node {
+  position: absolute;
+  z-index: 4;
+  top: 45%;
+  min-width: 58px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 52, 30, 0.36);
+  background: rgba(0, 0, 0, 0.72);
+  text-align: center;
+  box-shadow: 0 0 18px rgba(255, 0, 0, 0.13);
+}
+
+.reactor-core__node strong {
+  display: block;
+  margin-top: 4px;
+  color: #ff2d18;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+}
+
+.reactor-core__node--left {
+  left: 2%;
+}
+
+.reactor-core__node--right {
+  right: 2%;
+}
+
+.reactor-core__transport {
+  position: absolute;
+  z-index: 5;
+  bottom: 7%;
+  display: inline-grid;
+  grid-template-columns: 56px 72px 56px;
+  align-items: center;
+  justify-items: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid rgba(255, 55, 34, 0.4);
+  background: linear-gradient(180deg, rgba(15, 0, 0, 0.82), rgba(0, 0, 0, 0.88));
+  box-shadow: 0 0 24px rgba(255, 20, 0, 0.18);
+}
+
+.reactor-core__transport span,
+.reactor-core__transport strong {
+  color: #f5ecea;
+  text-shadow: 0 0 12px rgba(255, 28, 10, 0.6);
+}
+
+.reactor-core__transport strong {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 63, 41, 0.85);
+  background: rgba(255, 32, 12, 0.16);
+  color: #ffefeb;
+  font-size: 1.35rem;
+  transform: translateY(-7px);
+}
+
+.reactor-core__caption {
+  position: absolute;
+  z-index: 5;
+  bottom: -9%;
+  min-width: min(360px, 68%);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 12px 18px 14px;
+  border: 1px solid rgba(255, 57, 35, 0.55);
+  background: linear-gradient(180deg, rgba(30, 0, 0, 0.86), rgba(0, 0, 0, 0.92));
+  box-shadow: 0 0 30px rgba(255, 18, 0, 0.22);
+}
+
+.reactor-core__caption strong {
+  color: #ff2d18;
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.reactor-core.is-live .reactor-core__halo--outer,
+.reactor-core.is-live .reactor-core__halo--middle,
+.reactor-core.is-live .reactor-core__halo--inner {
+  animation-duration: calc(18s - (var(--reactor-intensity, 0.7) * 8s));
+}
+
+@keyframes reactorSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes reactorSpinReverse {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes reactorBarFlicker {
+  from { filter: brightness(0.9); }
+  to { filter: brightness(1.5); }
+}
+
+@media (max-width: 1400px) {
+  .reactor-core {
+    --reactor-size: clamp(320px, 56vw, 560px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .pva-center--reactor {
+    padding-top: 20px;
+  }
+
+  .reactor-core {
+    --reactor-size: min(86vw, 520px);
+  }
+}
