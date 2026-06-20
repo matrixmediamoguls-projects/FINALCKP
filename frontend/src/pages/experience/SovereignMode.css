@@ -657,3 +657,79 @@
   .ckp-title-plate { order: -1; }
   .ckp-stage-window { height: 520px; margin-top: 12px; }
 }
+
+.sovereign-module-card-deck {
+  position: fixed;
+  z-index: 60;
+  left: clamp(14px, 1.6vw, 28px);
+  top: clamp(14px, 1.6vw, 28px);
+  width: clamp(132px, 10.5vw, 190px);
+  pointer-events: none;
+}
+
+.sovereign-module-card {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(255, 44, 28, 0.76);
+  background: rgba(2, 0, 0, 0.82);
+  clip-path: polygon(8% 0, 92% 0, 100% 7%, 100% 93%, 92% 100%, 8% 100%, 0 93%, 0 7%);
+  box-shadow:
+    0 0 22px rgba(255, 18, 0, 0.42),
+    inset 0 0 18px rgba(255, 18, 0, 0.18);
+}
+
+.sovereign-module-card::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255, 77, 54, 0.38);
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+.sovereign-module-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.08);
+}
+
+.sovereign-module-card__copy {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 8%;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.95), 0 0 12px rgba(255, 0, 0, 0.85);
+}
+
+.sovereign-module-card__copy span,
+.sovereign-module-card__copy p {
+  display: block;
+  margin: 0;
+  color: rgba(255, 236, 232, 0.82);
+  font-size: clamp(6px, 0.55vw, 9px);
+  letter-spacing: 0.18em;
+}
+
+.sovereign-module-card__copy strong {
+  display: block;
+  margin: 4px 0;
+  color: #fff;
+  font-size: clamp(13px, 1.05vw, 20px);
+  line-height: 0.95;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 900px) {
+  .sovereign-module-card-deck {
+    width: 112px;
+    opacity: 0.86;
+  }
+
+  .sovereign-module-card__copy p {
+    display: none;
+  }
+}
