@@ -200,7 +200,7 @@ export default function ReclamationCodex() {
         </aside>
 
         <section
-          className="pva-center"
+          className="pva-center pva-center--reactor"
           style={{ "--pva-viewport-image": `url("${viewportImage}")` }}
           aria-label={activeTrack?.viewport_alt_text || "Chroma Key Protocol visualizer viewport"}
         >
