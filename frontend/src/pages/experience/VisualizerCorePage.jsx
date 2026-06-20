@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import AudioVisualizerCore from '../../modules/sovereign/AudioVisualizerCore';
 import { getActThreeTracks } from '../../lib/supabase/tracks';
-import './SovereignMode.css';
-import './SovereignModePolish.css';
+import './VisualizerCorePage.css';
+import './VisualizerCorePagePolish.css';
 
-export default function SovereignMode() {
+export default function VisualizerCorePage() {
   const [tracks, setTracks] = useState([]);
   const [selectedTrackId, setSelectedTrackId] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -27,7 +27,7 @@ export default function SovereignMode() {
   );
 
   return (
-    <main className="sovereign-visualizer-page">
+    <main className="visualizer-core-page">
       <AudioVisualizerCore
         selectedTrackId={selectedTrackId}
         activeTrackData={activeTrackData}

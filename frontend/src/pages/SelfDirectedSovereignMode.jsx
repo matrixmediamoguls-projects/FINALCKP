@@ -17,7 +17,7 @@ const MODULES = [
     title: 'Audio Visualizer Core',
     code: 'AVC',
     lightCode: 'See The Waveform. Shape The Sound. Amplify Your Vision.',
-    route: '/visualizer',
+    route: '/visualizer-core',
     card: '/ui/reclamation/Module_Cards/Visualizer_Core.png',
   },
   {
