@@ -9,6 +9,7 @@ import ProtocolHeader from "../../components/layout/ProtocolHeader";
 import TrackListPanel from "../../components/music/TrackListPanel";
 import QuickControlsPanel from "../../components/controls/QuickControlsPanel";
 import VisualDisplayPanel from "../../components/visuals/VisualDisplayPanel";
+import VisualizerReactorCore from "../../components/visuals/VisualizerReactorCore";
 import LyricsProtocolPanel from "../../components/lyrics/LyricsProtocolPanel";
 import AudioAnalysisPanel from "../../components/analysis/AudioAnalysisPanel";
 import ProtocolEnginePanel from "../../components/protocol/ProtocolEnginePanel";
@@ -96,6 +97,9 @@ export default function ReclamationCodex() {
 
   const analysis = useAudioAnalyzer(audio?.audioElement, isPlaying);
   const intensity = Math.round((isPlaying ? analysis.intensity : 0.78) * 100);
+  const bass = Math.round((isPlaying ? analysis.bass : 0.82) * 100);
+  const mid = Math.round((isPlaying ? analysis.mid : 0.64) * 100);
+  const treble = Math.round((isPlaying ? analysis.treble : 0.71) * 100);
 
   const lyricLines = useMemo(() => buildTimedLyrics(activeTrack, duration), [activeTrack, duration]);
   const activeLyricIndex = useMemo(() => {
@@ -200,6 +204,16 @@ export default function ReclamationCodex() {
           style={{ "--pva-viewport-image": `url("${viewportImage}")` }}
           aria-label={activeTrack?.viewport_alt_text || "Chroma Key Protocol visualizer viewport"}
         >
+          <VisualizerReactorCore
+            isPlaying={isPlaying}
+            intensity={intensity}
+            bass={bass}
+            mid={mid}
+            treble={treble}
+            bpm={activeTrack?.bpm}
+            keySignature={activeTrack?.key_signature || activeTrack?.key}
+            trackTitle={activeTrack?.title || "ACT III RECLAMATION"}
+          />
           <LyricsProtocolPanel
             lines={lyricWindow}
             activeLineId={lyricLines[activeLyricIndex]?.id}
@@ -218,9 +232,9 @@ export default function ReclamationCodex() {
           <VisualDisplayPanel track={activeTrack} visualMode={visualMode} onVisualModeChange={setVisualMode} />
           <AudioAnalysisPanel
             intensity={intensity}
-            bass={Math.round((isPlaying ? analysis.bass : 0.82) * 100)}
-            mid={Math.round((isPlaying ? analysis.mid : 0.64) * 100)}
-            treble={Math.round((isPlaying ? analysis.treble : 0.71) * 100)}
+            bass={bass}
+            mid={mid}
+            treble={treble}
           />
           <ProtocolEnginePanel track={activeTrack} isPlaying={isPlaying} />
         </aside>
