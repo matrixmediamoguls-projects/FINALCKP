@@ -9,6 +9,7 @@ import ReclamationUniversity from '../../modules/sovereign/ReclamationUniversity
 import VibesAndScribes from '../../modules/sovereign/VibesAndScribes';
 import { getActThreeTracks } from '../../lib/supabase/tracks';
 import '../SelfDirectedSovereignMode.css';
+import './SovereignModeCardWiring.css';
 
 const MODULE_CARDS = [
   { key: 'sonic_artifacts', label: 'Sonic Artifacts', Component: SonicArtifacts, image: '/media/sovereign-mode/module-cards/sonic-artifacts.png' },
@@ -35,7 +36,7 @@ function ModuleCard({ card, index, activeIndex, onSelect, onOpen }) {
   return (
     <button
       type="button"
-      className={`sos-module-card ${isActive ? 'is-active' : ''}`}
+      className={`sos-module-card sos-module-card--${card.key} ${isActive ? 'is-active' : ''}`}
       data-offset={offset}
       data-module-key={card.key}
       style={{ '--card-order': 10 - Math.abs(offset) }}
@@ -45,7 +46,8 @@ function ModuleCard({ card, index, activeIndex, onSelect, onOpen }) {
       }}
       aria-label={`Open ${card.label}`}
     >
-      <img className="sos-card-art" src={card.image} alt={card.label} draggable="false" />
+      <img className="sos-card-art" src={card.image} alt="" draggable="false" aria-hidden="true" />
+      <span className="sos-card-fallback-label">{card.label}</span>
     </button>
   );
 }
