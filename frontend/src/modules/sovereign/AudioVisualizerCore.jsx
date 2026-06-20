@@ -115,7 +115,10 @@ export default function AudioVisualizerCore({ selectedTrackId, activeTrackData, 
   };
 
   return (
-    <section className="ckp-visualizer-shell" style={{ '--ckp-accent': accent }}>
+    <section
+      className={`ckp-visualizer-shell ${isPlaying ? 'is-playing' : ''}`}
+      style={{ '--ckp-accent': accent, '--ckp-energy': Math.max(0.15, audioLevel / 100) }}
+    >
       <div className="ckp-frame-corner ckp-frame-corner-tl" />
       <div className="ckp-frame-corner ckp-frame-corner-tr" />
       <div className="ckp-frame-corner ckp-frame-corner-bl" />
@@ -149,6 +152,14 @@ export default function AudioVisualizerCore({ selectedTrackId, activeTrackData, 
       <section className="ckp-stage-window">
         <img className="ckp-stage-backdrop" src={viewportImage} alt="" />
         <div className="ckp-stage-tint" />
+        <div className="ckp-stage-readout ckp-stage-readout--left">
+          <span>Active transmission</span>
+          <strong>{activeTrack?.title || 'Reclamation'}</strong>
+        </div>
+        <div className="ckp-stage-readout ckp-stage-readout--right">
+          <span>Signal response</span>
+          <strong>{isPlaying ? `${Math.max(1, Math.round(audioLevel))}%` : 'Standby'}</strong>
+        </div>
         {(requirements?.video_url || requirements?.loop_visual_url) && (
           <video className="ckp-video-layer" src={requirements.video_url || requirements.loop_visual_url} muted loop playsInline autoPlay />
         )}

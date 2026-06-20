@@ -100,7 +100,7 @@
 }
 
 .pva-center {
-  --pva-viewport-image: url("/media/visualizer/reclamation-city-gatekeeper.png");
+  --pva-viewport-image: url("/media/visualizer/reclamation-city-gatekeeper.png.png");
   position: relative;
   overflow: hidden;
   isolation: isolate;

@@ -6,7 +6,9 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #000;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(93, 0, 0, .2), transparent 42%),
+    #000;
 }
 
 .ckp-visualizer-shell {
@@ -27,7 +29,15 @@
     inset 0 0 4.6vw rgba(255, 0, 0, .13),
     0 0 2vw rgba(255, 0, 0, .55);
   font-family: 'Rajdhani', sans-serif;
+  animation: ckp-interface-online .7s cubic-bezier(.2, .8, .2, 1) both;
 }
+
+.ckp-visualizer-shell > * { animation: ckp-panel-resolve .55s ease-out both; }
+.ckp-visualizer-shell > .ckp-top-command { animation-delay: .08s; }
+.ckp-visualizer-shell > .ckp-stage-window { animation-delay: .14s; }
+.ckp-visualizer-shell > .ckp-playback-dock { animation-delay: .2s; }
+.ckp-visualizer-shell > .ckp-track-system { animation-delay: .26s; }
+.ckp-visualizer-shell > .ckp-footer-command { animation-delay: .32s; }
 
 .ckp-visualizer-shell::before {
   inset: .55%;
@@ -129,6 +139,37 @@
   mix-blend-mode: screen;
 }
 
+.ckp-stage-window::after {
+  content: '';
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 24, 24, .08) 1px, transparent 1px) 0 0 / 2.75vw 100%,
+    linear-gradient(180deg, transparent 0 49.7%, rgba(255, 36, 36, .18) 50%, transparent 50.3%);
+  mask-image: linear-gradient(90deg, #000, transparent 27%, transparent 73%, #000);
+  opacity: .65;
+}
+
+.ckp-stage-readout {
+  position: absolute;
+  z-index: 8;
+  top: 5.5%;
+  min-width: 10.5vw;
+  padding: .42vw .65vw;
+  border-top: 1px solid rgba(255, 43, 43, .46);
+  border-bottom: 1px solid rgba(255, 43, 43, .18);
+  background: linear-gradient(90deg, rgba(0, 0, 0, .7), transparent);
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+}
+
+.ckp-stage-readout--left { left: 2.1%; }
+.ckp-stage-readout--right { right: 2.1%; text-align: right; background: linear-gradient(270deg, rgba(0, 0, 0, .7), transparent); }
+.ckp-stage-readout span { display: block; color: rgba(255, 255, 255, .42); font-size: clamp(5px, .48vw, 9px); letter-spacing: .14em; }
+.ckp-stage-readout strong { display: block; margin-top: .23vw; color: rgba(255, 255, 255, .82); font-size: clamp(7px, .64vw, 12px); font-weight: 400; letter-spacing: .08em; }
+
 .ckp-video-layer { z-index: 1; opacity: .46; }
 
 .ckp-reactor-wrap {
@@ -141,6 +182,13 @@
   min-width: 330px;
   min-height: 330px;
 }
+
+.ckp-visualizer-shell.is-playing .ckp-reactor-wrap {
+  filter: drop-shadow(0 0 calc(1.4vw * var(--ckp-energy)) var(--ckp-red));
+}
+
+.ckp-visualizer-shell.is-playing .ckp-reactor-rays { animation-duration: 12s; }
+.ckp-visualizer-shell.is-playing .ckp-core-emblem { animation: ckp-emblem-pulse 1.85s ease-in-out infinite; }
 
 .ckp-reactor-rays span {
   width: .13vw;
@@ -211,6 +259,7 @@
   border-color: rgba(255, 0, 0, .58);
   box-shadow: inset 0 0 1.3vw rgba(255, 0, 0, .12);
   isolation: isolate;
+  transition: transform .22s ease, border-color .22s ease, filter .22s ease, box-shadow .22s ease;
 }
 
 .ckp-track-art {
@@ -240,6 +289,9 @@
 }
 
 .ckp-track-card.is-active .ckp-track-art { opacity: .18; }
+.ckp-track-card:not(.is-active):hover { transform: translateY(-3%); border-color: rgba(255, 70, 55, .88); filter: brightness(1.18); }
+.ckp-track-card:focus-visible { outline: 1px solid #fff; outline-offset: 3px; }
+.ckp-track-card strong { text-shadow: 0 2px 8px #000; }
 .ckp-carousel-arrow { display: grid; place-items: center; }
 .ckp-carousel-arrow svg { width: 2.2vw; height: 2.2vw; }
 
@@ -273,11 +325,27 @@
 }
 
 .ckp-hud-icon svg { width: 58%; }
+.ckp-footer-controls > div { transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+.ckp-footer-controls > div:hover { border-color: rgba(255, 48, 36, .82); background: rgba(32, 5, 4, .82); transform: translateY(-2px); }
 .ckp-footer-controls p,
 .ckp-live-status p { font-size: clamp(6px, .55vw, 10px); }
 .ckp-footer-controls strong,
 .ckp-live-status strong { font-size: clamp(7px, .65vw, 12px); }
 .ckp-live-status time { font-family: 'Share Tech Mono', monospace; font-size: clamp(8px, .8vw, 15px); }
+
+@keyframes ckp-interface-online {
+  from { opacity: 0; transform: scale(.985); filter: brightness(.35) saturate(.4); }
+  to { opacity: 1; transform: scale(1); filter: brightness(1) saturate(1); }
+}
+
+@keyframes ckp-panel-resolve {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ckp-emblem-pulse {
+  50% { filter: saturate(1.3) brightness(1.14); box-shadow: 0 0 3.1vw rgba(255, 0, 0, .82), inset 0 0 1.8vw rgba(255, 0, 0, .46); }
+}
 
 @media (max-aspect-ratio: 4 / 3), (max-width: 760px) {
   .visualizer-core-page { overflow: auto; place-items: start center; }
@@ -298,4 +366,15 @@
   .ckp-live-status { display: none; }
   .ckp-footer-controls { grid-template-columns: repeat(3, 1fr); }
   .ckp-footer-mark { display: none; }
+  .ckp-stage-readout { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ckp-visualizer-shell,
+  .ckp-visualizer-shell > *,
+  .ckp-visualizer-shell.is-playing .ckp-core-emblem,
+  .ckp-reactor-rays,
+  .ckp-reactor-ring-mid {
+    animation: none;
+  }
 }

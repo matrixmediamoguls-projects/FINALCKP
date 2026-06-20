@@ -4,7 +4,7 @@ import { enrichTrackWithVisualResonance } from '../../data/visualResonanceManife
 import { fallbackTrack } from './fallbackTrack';
 
 export const ACT_THREE_TRACKS_TABLE = 'act.three.tracks';
-export const DEFAULT_VISUALIZER_VIEWPORT_IMAGE = '/media/visualizer/reclamation-city-gatekeeper.png';
+export const DEFAULT_VISUALIZER_VIEWPORT_IMAGE = '/media/visualizer/reclamation-city-gatekeeper.png.png';
 
 function formatDuration(seconds) {
   const value = Number(seconds);
