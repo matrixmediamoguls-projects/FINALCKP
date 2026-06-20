@@ -1,3 +1,5 @@
+import "./VisualizerReactorCore.css";
+
 const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, Number(value) || 0));
 
 const buildBars = (count, bass, mid, treble, intensity) => {
