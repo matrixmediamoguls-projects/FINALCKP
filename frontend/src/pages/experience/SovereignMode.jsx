@@ -8,6 +8,24 @@ import ReclamationUniversity from '../../modules/sovereign/ReclamationUniversity
 import VibesAndScribes from '../../modules/sovereign/VibesAndScribes';
 import { getActThreeTracks } from '../../lib/supabase/tracks';
 
+function SelectableModule({ moduleKey, selectedModuleKey, onSelect, children }) {
+  const isSelected = moduleKey === selectedModuleKey;
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => onSelect(moduleKey)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') onSelect(moduleKey);
+      }}
+      className={`rounded-2xl transition ${isSelected ? 'ring-1 ring-red-300/60' : 'hover:ring-1 hover:ring-red-500/25'}`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function SovereignMode() {
   const [tracks, setTracks] = useState([]);
   const [selectedTrackId, setSelectedTrackId] = useState(null);
@@ -59,15 +77,15 @@ export default function SovereignMode() {
 
       <section className="mx-auto grid max-w-[1800px] grid-cols-1 gap-4 xl:grid-cols-[320px_minmax(0,1fr)_320px]">
         <aside className="space-y-4">
-          <button type="button" onClick={() => setSelectedModuleKey('sonic_artifacts')} className="w-full text-left">
+          <SelectableModule moduleKey="sonic_artifacts" selectedModuleKey={selectedModuleKey} onSelect={setSelectedModuleKey}>
             <SonicArtifacts selectedTrackId={selectedTrackId} />
-          </button>
-          <button type="button" onClick={() => setSelectedModuleKey('elemental_codex')} className="w-full text-left">
+          </SelectableModule>
+          <SelectableModule moduleKey="elemental_codex" selectedModuleKey={selectedModuleKey} onSelect={setSelectedModuleKey}>
             <ElementalCodex selectedTrackId={selectedTrackId} />
-          </button>
-          <button type="button" onClick={() => setSelectedModuleKey('archaetypes')} className="w-full text-left">
+          </SelectableModule>
+          <SelectableModule moduleKey="archaetypes" selectedModuleKey={selectedModuleKey} onSelect={setSelectedModuleKey}>
             <Archaetypes selectedTrackId={selectedTrackId} />
-          </button>
+          </SelectableModule>
         </aside>
 
         <section>
@@ -93,15 +111,15 @@ export default function SovereignMode() {
         </section>
 
         <aside className="space-y-4">
-          <button type="button" onClick={() => setSelectedModuleKey('lyrical_codex')} className="w-full text-left">
+          <SelectableModule moduleKey="lyrical_codex" selectedModuleKey={selectedModuleKey} onSelect={setSelectedModuleKey}>
             <LyricalCodex selectedTrackId={selectedTrackId} />
-          </button>
-          <button type="button" onClick={() => setSelectedModuleKey('reclamation_university')} className="w-full text-left">
+          </SelectableModule>
+          <SelectableModule moduleKey="reclamation_university" selectedModuleKey={selectedModuleKey} onSelect={setSelectedModuleKey}>
             <ReclamationUniversity selectedTrackId={selectedTrackId} />
-          </button>
-          <button type="button" onClick={() => setSelectedModuleKey('vibes_and_scribes')} className="w-full text-left">
+          </SelectableModule>
+          <SelectableModule moduleKey="vibes_and_scribes" selectedModuleKey={selectedModuleKey} onSelect={setSelectedModuleKey}>
             <VibesAndScribes selectedTrackId={selectedTrackId} />
-          </button>
+          </SelectableModule>
         </aside>
       </section>
     </main>
