@@ -35,6 +35,7 @@ const Activation = lazy(() => import('./pages/Activation'));
 const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistant'));
 const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSovereignMode'));
+const SovereignVisualizer = lazy(() => import('./pages/experience/SovereignMode'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -223,6 +224,15 @@ function AppRoutes() {
       <Route
         path="/sovereign"
         element={<Navigate to="/self-directed-sovereign-mode" replace />}
+      />
+
+      <Route
+        path="/visualizer"
+        element={
+          <ProtectedRoute withShell={false}>
+            <SovereignVisualizer />
+          </ProtectedRoute>
+        }
       />
 
       {/* AUDIO */}
