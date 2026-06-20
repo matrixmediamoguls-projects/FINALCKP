@@ -9,6 +9,7 @@ import VibesAndScribes from '../../modules/sovereign/VibesAndScribes';
 import { getActThreeTracks } from '../../lib/supabase/tracks';
 import './SovereignMode.css';
 import './SovereignModePolish.css';
+import './SovereignModeModules.css';
 
 const MODULES = [
   { key: 'sonic_artifacts', title: 'Sonic Artifacts', rail: 'left', Component: SonicArtifacts },
