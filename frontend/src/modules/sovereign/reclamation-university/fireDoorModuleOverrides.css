@@ -1,0 +1,20 @@
+.fire-door-threshold span:first-child {
+  transform: scaleX(var(--threshold-scale, 1));
+}
+
+.fire-door-embers i:nth-child(18) { left: 11%; animation-delay: -8.2s; }
+.fire-door-embers i:nth-child(19) { left: 28%; animation-delay: -1.2s; }
+.fire-door-embers i:nth-child(20) { left: 57%; animation-delay: -4.2s; }
+.fire-door-embers i:nth-child(21) { left: 82%; animation-delay: -7.2s; }
+.fire-door-embers i:nth-child(22) { left: 96%; animation-delay: -2.2s; }
+
+.fire-door-panel.is-unlocked,
+.fire-door-hero.is-unlocked {
+  border-color: rgba(252, 165, 165, 0.48);
+  box-shadow: inset 0 0 42px rgba(127, 29, 29, 0.18), 0 0 54px rgba(239, 68, 68, 0.18);
+}
+
+.fire-door-badge {
+  display: inline-flex;
+  align-items: center;
+}
