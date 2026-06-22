@@ -9,6 +9,7 @@ import DeclarationBuilder from './reclamation-university/DeclarationBuilder';
 import IntegrationKeyReveal from './reclamation-university/IntegrationKeyReveal';
 import RecUniJournalSave from './reclamation-university/RecUniJournalSave';
 import './reclamation-university/fireDoorModule.css';
+import './reclamation-university/fireDoorModuleOverrides.css';
 
 const INITIATION_COPY = [
   'Welcome, Rising Seeker. Module 1: The Fire Door.',
