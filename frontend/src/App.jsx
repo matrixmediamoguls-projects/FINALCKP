@@ -35,6 +35,7 @@ const Activation = lazy(() => import('./pages/Activation'));
 const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistant'));
 const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSovereignMode'));
+const CKPVisualizerCore = lazy(() => import('./pages/CKPVisualizerCore'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -182,6 +183,24 @@ function AppRoutes() {
       <Route
         path="/experiencemode/immersion"
         element={<Navigate to="/listen/3" replace />}
+      />
+
+      <Route
+        path="/experiencemode/visualizer"
+        element={
+          <ProtectedRoute withShell={false}>
+            <CKPVisualizerCore />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/visualizer-core"
+        element={
+          <ProtectedRoute withShell={false}>
+            <CKPVisualizerCore />
+          </ProtectedRoute>
+        }
       />
 
       <Route
@@ -398,6 +417,8 @@ function AppWithBackground() {
     path.includes("/reclamation_user_journey") ||
     path.includes("self-directed-sovereign-mode") ||
     path.includes("/experiencemode/sovereign") ||
+    path.includes("/experiencemode/visualizer") ||
+    path.includes("/visualizer-core") ||
     path.includes("/sovereign")
   ) {
     act = "fire";
