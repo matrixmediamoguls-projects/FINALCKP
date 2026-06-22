@@ -20,30 +20,30 @@ export default function RecUniJournalSave({ moduleId, selectedShadowCodes, retri
 
     if (result?.error) {
       setStatus('error');
-      setMessage(result.error.message || 'Unable to save this declaration yet.');
+      setMessage(result.error.message || 'Unable to seal this private record yet.');
       return;
     }
 
     setStatus('saved');
-    setMessage('Saved to your private Reclamation University record.');
+    setMessage('Your Module 1 declaration has been sealed to your private Reclamation University record.');
   };
 
   return (
-    <section className="rounded-3xl border border-white/10 bg-black/55 p-5">
-      <p className="text-[10px] uppercase tracking-[0.3em] text-red-300/70">Private Record</p>
-      <h4 className="mt-2 text-xl font-semibold uppercase tracking-[0.12em] text-white">Save the declaration.</h4>
-      <p className="mt-3 text-sm leading-7 text-zinc-400">Store Module 1 completion, selected codes, retrieved laws, and the declaration in Supabase for the signed student record.</p>
+    <section className="fire-door-panel">
+      <p className="fire-door-kicker">Scene 07 • Private Record</p>
+      <h4 className="mt-2 text-2xl font-semibold uppercase tracking-[0.12em] text-white">Seal the record.</h4>
+      <p className="mt-3 text-sm leading-7 text-zinc-400">Store the marked Shadow Codes, retrieved Light Codes, First Law, and Integration Key as the Rising Seeker private record.</p>
 
       <button
         type="button"
         onClick={handleSave}
         disabled={disabled || status === 'saving'}
-        className="mt-5 rounded-full border border-red-300/45 bg-red-950/40 px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-red-50 transition enabled:hover:border-red-200 enabled:hover:bg-red-900/55 disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/[0.03] disabled:text-zinc-600"
+        className="fire-door-action mt-5 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        {status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved' : 'Save Private Record'}
+        {status === 'saving' ? 'Sealing...' : status === 'saved' ? 'Record Sealed' : 'Seal Private Record'}
       </button>
 
-      {message && <p className={`mt-4 text-xs leading-6 ${status === 'error' ? 'text-red-300' : 'text-red-100'}`}>{message}</p>}
+      {message && <p className={`mt-4 text-sm leading-6 ${status === 'error' ? 'text-red-300' : 'text-red-100'}`}>{message}</p>}
     </section>
   );
 }
