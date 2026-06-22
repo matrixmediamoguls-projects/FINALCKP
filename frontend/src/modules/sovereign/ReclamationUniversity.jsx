@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import SovereignModulePanel from '../../components/sovereign/SovereignModulePanel';
 import FireDoorInitiationScene from './reclamation-university/FireDoorInitiationScene';
-import ModuleHeroCard from './reclamation-university/ModuleHeroCard';
 import PairedTrackPortal from './reclamation-university/PairedTrackPortal';
 import ShadowCodeSelector from './reclamation-university/ShadowCodeSelector';
 import LightCodeMapper from './reclamation-university/LightCodeMapper';
@@ -19,22 +18,6 @@ const INITIATION_COPY = [
   'When the lyric says the body can be chained but truth cannot, it is teaching a core Reclamation principle. Circumstances can limit movement. Systems can delay process. People can obscure a record. But the truth itself remains mobile. It moves through voice, pattern, testimony, timing, and code.',
   'Your work in this module is to cross the Fire Door. To cross it, name the restriction, retrieve the authorship, and speak the first law of the self that cannot be erased.',
 ];
-
-const MODULE_META = {
-  moduleId: 'ACT3-RU-M01',
-  kicker: 'Rising Seeker Initiation Protocol',
-  title: 'The Fire Door',
-  subtitle: 'Authorship Ignition • Truth Liberation • First Law Declaration',
-  element: 'Fire',
-  identityState: 'Dormant',
-  teacherOpening:
-    'Transmission received. The Fire Door is active. Proceed through the signal keys, shadow scan, light retrieval, and First Law seal to unlock Reclaimer state.',
-  statCards: [
-    { label: 'Scene Path', value: 'Signal Keys → Shadow Scan → Light Retrieval → First Law → Record Seal' },
-    { label: 'Identity Arc', value: 'Rising Seeker becomes Reclaimer only after the Fire Door opens.' },
-    { label: 'Core Outcome', value: 'Name the restriction, retrieve authorship, and speak the first law of the self that cannot be erased.' },
-  ],
-};
 
 const SOURCE_TRACKS = [
   {
@@ -118,8 +101,64 @@ const LIGHT_MAPPINGS = [
 const INTEGRATION_KEY = 'The lock was never on the true self. The lock was on the story you were taught to believe about the true self.';
 const INITIAL_DECLARATION = { restriction: '', authorship: '', fireLesson: '', newLaw: '' };
 
+const SCENE_TITLES = [
+  ['02', 'Signal Keys', 'Receive both ignition keys before the chamber advances.'],
+  ['03', 'Shadow Code Scan', 'Mark the restriction that tried to rename the signal.'],
+  ['04', 'Light Code Retrieval', 'Convert the marked pressure into a recoverable law.'],
+  ['05', 'First Law Declaration', 'Write and seal the law of the self that cannot be erased.'],
+  ['06', 'Fire Door Opens', 'Receive the Integration Key and seal the private record.'],
+];
+
+function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvance, onReplayTransmission, children }) {
+  const activeScene = SCENE_TITLES[activeSceneIndex];
+  const isFinalScene = activeSceneIndex === SCENE_TITLES.length - 1;
+
+  return (
+    <div className="fire-door-sequence-shell">
+      <header className="fire-door-command-header">
+        <div>
+          <p className="fire-door-kicker">Rising Seeker Protocol</p>
+          <h2>{activeScene[1]}</h2>
+          <p>{activeScene[2]}</p>
+        </div>
+        <button type="button" className="fire-door-secondary-action" onClick={onReplayTransmission}>Replay Transmission</button>
+      </header>
+
+      <nav className="fire-door-scene-rail" aria-label="Module 1 scene progress">
+        {SCENE_TITLES.map(([number, title], index) => {
+          const isActive = index === activeSceneIndex;
+          const isPast = index < activeSceneIndex;
+          return (
+            <span key={title} className={`${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}>
+              <b>{number}</b>
+              <small>{title}</small>
+            </span>
+          );
+        })}
+      </nav>
+
+      <section className="fire-door-active-scene" aria-label={activeScene[1]}>
+        {children}
+      </section>
+
+      <footer className="fire-door-gate-controls">
+        <button type="button" className="fire-door-secondary-action" onClick={onBack} disabled={activeSceneIndex === 0}>Previous Gate</button>
+        <div>
+          <span className={`fire-door-gate-status ${canAdvance || isFinalScene ? 'is-open' : ''}`}>
+            {isFinalScene ? 'Final chamber active' : canAdvance ? 'Gate condition satisfied' : lockMessage}
+          </span>
+          {!isFinalScene && (
+            <button type="button" className="fire-door-action" onClick={onAdvance} disabled={!canAdvance}>Open Next Gate</button>
+          )}
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 export default function ReclamationUniversity() {
   const [hasCrossedFireDoor, setHasCrossedFireDoor] = useState(false);
+  const [activeSceneIndex, setActiveSceneIndex] = useState(0);
   const [listenedTracks, setListenedTracks] = useState([]);
   const [selectedAnchorKey, setSelectedAnchorKey] = useState(LYRIC_ANCHORS[0].key);
   const [selectedShadowCodes, setSelectedShadowCodes] = useState([]);
@@ -140,6 +179,14 @@ export default function ReclamationUniversity() {
     { label: 'Shadow Code marked', complete: selectedShadowCodes.length > 0 },
     { label: 'Light Code retrieved', complete: retrievedLightCodes.length > 0 },
     { label: 'First Law sealed', complete: declarationSealed },
+  ];
+
+  const sceneAdvanceRules = [
+    { canAdvance: listenedTracks.length === SOURCE_TRACKS.length, lockMessage: 'Receive both signal keys.' },
+    { canAdvance: selectedShadowCodes.length > 0, lockMessage: 'Mark at least one Shadow Code.' },
+    { canAdvance: retrievedLightCodes.length > 0, lockMessage: 'Retrieve at least one Light Code.' },
+    { canAdvance: declarationSealed, lockMessage: 'Seal the First Law.' },
+    { canAdvance: moduleUnlocked, lockMessage: 'Final chamber active.' },
   ];
 
   const toggleListenedTrack = (trackOrder) => {
@@ -168,54 +215,77 @@ export default function ReclamationUniversity() {
     setDeclaration((current) => ({ ...current, [field]: value }));
   };
 
+  const activeRule = sceneAdvanceRules[activeSceneIndex];
+
+  const activeScene = [
+    <PairedTrackPortal
+      key="signal-keys"
+      sourceTracks={SOURCE_TRACKS}
+      lyricAnchors={LYRIC_ANCHORS}
+      listenedTracks={listenedTracks}
+      selectedAnchorKey={selectedAnchorKey}
+      onMarkListened={toggleListenedTrack}
+      onAnchorSelect={setSelectedAnchorKey}
+    />,
+    <ShadowCodeSelector
+      key="shadow-scan"
+      shadowCodes={SHADOW_CODES}
+      selectedShadowCodes={selectedShadowCodes}
+      onToggleShadowCode={toggleShadowCode}
+    />,
+    <LightCodeMapper
+      key="light-retrieval"
+      mappings={LIGHT_MAPPINGS}
+      selectedShadowCodes={selectedShadowCodes}
+      retrievedLightCodes={retrievedLightCodes}
+      onRetrieveLightCode={toggleLightCode}
+    />,
+    <DeclarationBuilder
+      key="first-law"
+      declaration={declaration}
+      onChange={updateDeclaration}
+      onComplete={() => setDeclarationSealed(isDeclarationComplete)}
+      isComplete={isDeclarationComplete}
+      isSealed={declarationSealed}
+    />,
+    <div key="final-unlock" className="fire-door-final-grid">
+      <IntegrationKeyReveal
+        isUnlocked={moduleUnlocked}
+        integrationKey={INTEGRATION_KEY}
+        badge="Fire Door Opened"
+        nextPath="Module 2 — Shadow Code Recognition"
+        requirements={requirements}
+      />
+      <RecUniJournalSave
+        moduleId="ACT3-RU-M01"
+        selectedShadowCodes={selectedShadowCodes}
+        retrievedLightCodes={retrievedLightCodes}
+        declaration={declaration}
+        integrationKey={INTEGRATION_KEY}
+        disabled={!moduleUnlocked}
+      />
+    </div>,
+  ][activeSceneIndex];
+
   return (
     <div className="fire-door-module-root">
       {!hasCrossedFireDoor ? (
         <FireDoorInitiationScene copy={INITIATION_COPY} onCross={() => setHasCrossedFireDoor(true)} />
       ) : (
         <SovereignModulePanel eyebrow="Reclamation University" title="Module 1: The Fire Door">
-          <div className="fire-door-stage">
-            <ModuleHeroCard
-              moduleMeta={MODULE_META}
-              hasEntered={hasCrossedFireDoor}
-              onEnter={() => setHasCrossedFireDoor(false)}
-              actionLabel="Replay Transmission"
-            />
-
-            <PairedTrackPortal
-              sourceTracks={SOURCE_TRACKS}
-              lyricAnchors={LYRIC_ANCHORS}
-              listenedTracks={listenedTracks}
-              selectedAnchorKey={selectedAnchorKey}
-              onMarkListened={toggleListenedTrack}
-              onAnchorSelect={setSelectedAnchorKey}
-            />
-
-            <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
-              <ShadowCodeSelector shadowCodes={SHADOW_CODES} selectedShadowCodes={selectedShadowCodes} onToggleShadowCode={toggleShadowCode} />
-              <LightCodeMapper mappings={LIGHT_MAPPINGS} selectedShadowCodes={selectedShadowCodes} retrievedLightCodes={retrievedLightCodes} onRetrieveLightCode={toggleLightCode} />
-            </div>
-
-            <DeclarationBuilder declaration={declaration} onChange={updateDeclaration} onComplete={() => setDeclarationSealed(isDeclarationComplete)} isComplete={isDeclarationComplete} isSealed={declarationSealed} />
-
-            <div className="grid gap-5 xl:grid-cols-[1fr_0.86fr]">
-              <IntegrationKeyReveal
-                isUnlocked={moduleUnlocked}
-                integrationKey={INTEGRATION_KEY}
-                badge="Fire Door Opened"
-                nextPath="Module 2 — Shadow Code Recognition"
-                requirements={requirements}
-              />
-              <RecUniJournalSave
-                moduleId={MODULE_META.moduleId}
-                selectedShadowCodes={selectedShadowCodes}
-                retrievedLightCodes={retrievedLightCodes}
-                declaration={declaration}
-                integrationKey={INTEGRATION_KEY}
-                disabled={!moduleUnlocked}
-              />
-            </div>
-          </div>
+          <SceneShell
+            activeSceneIndex={activeSceneIndex}
+            canAdvance={activeRule.canAdvance}
+            lockMessage={activeRule.lockMessage}
+            onBack={() => setActiveSceneIndex((current) => Math.max(0, current - 1))}
+            onAdvance={() => setActiveSceneIndex((current) => Math.min(SCENE_TITLES.length - 1, current + 1))}
+            onReplayTransmission={() => {
+              setActiveSceneIndex(0);
+              setHasCrossedFireDoor(false);
+            }}
+          >
+            {activeScene}
+          </SceneShell>
         </SovereignModulePanel>
       )}
     </div>
