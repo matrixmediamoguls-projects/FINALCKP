@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import SovereignModulePanel from '../../components/sovereign/SovereignModulePanel';
-import { getReclamationUniversityByTrack } from '../../lib/supabase/reclamationUniversity';
+import FireDoorInitiationScene from './reclamation-university/FireDoorInitiationScene';
 import ModuleHeroCard from './reclamation-university/ModuleHeroCard';
 import PairedTrackPortal from './reclamation-university/PairedTrackPortal';
 import ShadowCodeSelector from './reclamation-university/ShadowCodeSelector';
@@ -8,39 +8,47 @@ import LightCodeMapper from './reclamation-university/LightCodeMapper';
 import DeclarationBuilder from './reclamation-university/DeclarationBuilder';
 import IntegrationKeyReveal from './reclamation-university/IntegrationKeyReveal';
 import RecUniJournalSave from './reclamation-university/RecUniJournalSave';
+import './reclamation-university/fireDoorModule.css';
+
+const INITIATION_COPY = [
+  'Welcome, Rising Seeker. Module 1: The Fire Door.',
+  'You are not here to learn how to become powerful. You are here to notice where power was already present and where another system attempted to restrict it, redirect it, or rename it.',
+  'The first fire often arrives disguised as betrayal. Someone takes credit. Someone stays silent. Someone benefits while you disappear. Someone tells you that your voice is too strange, too synthetic, too late, too much, or too dangerous. The old lesson says: grieve the theft and wait for the world to correct it. Reclamation teaches something sharper: audit the theft, retrieve the signal, and sign the work.',
+  'This module does not ask you to deny what happened. Denial is not light. Denial is another mask. You are asked to look directly at what tried to contain your calling, then identify the fire hidden inside the pressure.',
+  'When the lyric says the body can be chained but truth cannot, it is teaching a core Reclamation principle. Circumstances can limit movement. Systems can delay process. People can obscure a record. But the truth itself remains mobile. It moves through voice, pattern, testimony, timing, and code.',
+  'Your work in this module is to cross the Fire Door. To cross it, name the restriction, retrieve the authorship, and speak the first law of the self that cannot be erased.',
+];
 
 const MODULE_META = {
   moduleId: 'ACT3-RU-M01',
-  kicker: 'Reclamation University',
-  title: 'Module 1: The Fire Door',
-  subtitle: 'Authorship Ignition • Truth Liberation • The First Student Activation',
+  kicker: 'Rising Seeker Initiation Protocol',
+  title: 'The Fire Door',
+  subtitle: 'Authorship Ignition • Truth Liberation • First Law Declaration',
   element: 'Fire',
-  studentLessonCopy: [
-    'Welcome to Module 1: The Fire Door.',
-    'You are not here to learn how to become powerful. You are here to notice where power was already present and where another system attempted to restrict it, redirect it, or rename it.',
-    'The first fire often arrives disguised as betrayal. Someone takes credit. Someone stays silent. Someone benefits while you disappear. Someone tells you that your voice is too strange, too synthetic, too late, too much, or too dangerous. The old lesson says: grieve the theft and wait for the world to correct it. Reclamation teaches something sharper: audit the theft, retrieve the signal, and sign the work.',
-    'This module does not ask you to deny what happened. Denial is not light. Denial is another mask. You are asked to look directly at what tried to contain your calling, then identify the fire hidden inside the pressure.',
-    'When the lyric says the body can be chained but truth cannot, it is teaching a core Reclamation principle. Circumstances can limit movement. Systems can delay process. People can obscure a record. But the truth itself remains mobile. It moves through voice, pattern, testimony, timing, and code.',
-    'Your work in this module is to cross the Fire Door. To cross it, name the restriction, retrieve the authorship, and speak the first law of the self that cannot be erased.',
-  ],
-  teacherOpening: '',
+  identityState: 'Dormant',
+  teacherOpening:
+    'Transmission received. The Fire Door is active. Proceed through the signal keys, shadow scan, light retrieval, and First Law seal to unlock Reclaimer state.',
   statCards: [
-    { label: 'Archetype Shift', value: 'The Seeker becomes the Reclaimer. The witness becomes the signed author.' },
-    { label: 'Runtime', value: '35 to 55 minutes for the interactive digital lesson.' },
-    { label: 'Outcome', value: 'Name the restriction, retrieve authorship, and write the first reclamation law.' },
+    { label: 'Scene Path', value: 'Signal Keys → Shadow Scan → Light Retrieval → First Law → Record Seal' },
+    { label: 'Identity Arc', value: 'Rising Seeker becomes Reclaimer only after the Fire Door opens.' },
+    { label: 'Core Outcome', value: 'Name the restriction, retrieve authorship, and speak the first law of the self that cannot be erased.' },
   ],
 };
 
 const SOURCE_TRACKS = [
   {
     trackOrder: 1,
+    keyLabel: 'KEY I: AUTHORSHIP IGNITION',
     title: 'Welcome To The Fire Act Three Overture',
-    function: 'Authorship ignition. The student stops negotiating with erasure and identifies the systems that tried to restrict the calling.',
+    function: 'The Rising Seeker stops negotiating with erasure and identifies the systems that tried to restrict the calling.',
+    lyricAnchor: 'You cannot sign away what God wrote in me.',
   },
   {
     trackOrder: 2,
+    keyLabel: 'KEY II: TRUTH LIBERATION',
     title: 'Reclamation The Day Musiq Matrix Came Back',
-    function: 'Truth liberation. The student learns that a restricted season can delay movement without owning the truth.',
+    function: 'The Rising Seeker learns that a restricted season can delay movement without owning the truth.',
+    lyricAnchor: 'They can chain your body, but they will never chain your truth.',
   },
 ];
 
@@ -91,27 +99,26 @@ const SHADOW_CODES = [
   {
     id: 'SC-07',
     title: 'The Smallness Script',
-    definition: 'The lie that opposition would not gather if the student carried no power.',
+    definition: 'The lie that opposition would not gather if the Seeker carried no power.',
     diagnostic: 'What does the scale of resistance reveal about the scale of the gift?',
   },
 ];
 
 const LIGHT_MAPPINGS = [
-  { shadowId: 'SC-01', shadowTitle: 'Contracted Calling', lightId: 'LC-01', lightTitle: 'Divine Inscription', activation: 'The student remembers that the original text was written before the counterfeit contract.', replacementLaw: 'No external agreement can override what was originally written into me.' },
-  { shadowId: 'SC-02', shadowTitle: 'Stolen Authorship', lightId: 'LC-02', lightTitle: 'Signed Authorship', activation: 'The student stops waiting for validation and places their own name on the work, truth, and law they carry.', replacementLaw: 'I authorize my own name, my own work, and my own record.' },
+  { shadowId: 'SC-01', shadowTitle: 'Contracted Calling', lightId: 'LC-01', lightTitle: 'Divine Inscription', activation: 'The Rising Seeker remembers that the original text was written before the counterfeit contract.', replacementLaw: 'No external agreement can override what was originally written into me.' },
+  { shadowId: 'SC-02', shadowTitle: 'Stolen Authorship', lightId: 'LC-02', lightTitle: 'Signed Authorship', activation: 'The Rising Seeker stops waiting for validation and places their own name on the work, truth, and law they carry.', replacementLaw: 'I authorize my own name, my own work, and my own record.' },
   { shadowId: 'SC-03', shadowTitle: 'Witness Silence', lightId: 'LC-03', lightTitle: 'Public Record', activation: 'Silence does not erase the record. It delays the reveal until the evidence has matured.', replacementLaw: 'Silence may hide truth for a season, but evidence matures in the open.' },
   { shadowId: 'SC-04', shadowTitle: 'Restricted Light', lightId: 'LC-04', lightTitle: 'Fire Conversion', activation: 'Suppression compresses the signal until it becomes concentrated enough to ignite.', replacementLaw: 'What compressed me clarified me.' },
   { shadowId: 'SC-05', shadowTitle: 'Cage Narrative', lightId: 'LC-05', lightTitle: 'Voice as Code', activation: 'The truth remains mobile through voice, pattern, testimony, timing, and code.', replacementLaw: 'My circumstances may have held my movement, but they never owned my truth.' },
-  { shadowId: 'SC-06', shadowTitle: 'Energy Redirect', lightId: 'LC-06', lightTitle: 'Reclaimed Signal', activation: 'The student identifies where attention and lifeforce were redirected, then returns the signal to its rightful assignment.', replacementLaw: 'My energy returns to the assignment it was built to power.' },
+  { shadowId: 'SC-06', shadowTitle: 'Energy Redirect', lightId: 'LC-06', lightTitle: 'Reclaimed Signal', activation: 'The Rising Seeker identifies where attention and lifeforce were redirected, then returns the signal to its rightful assignment.', replacementLaw: 'My energy returns to the assignment it was built to power.' },
   { shadowId: 'SC-07', shadowTitle: 'Smallness Script', lightId: 'LC-07', lightTitle: 'Bigger Cage, Louder Call', activation: 'Resistance is reframed as evidence of calling, not proof of failure.', replacementLaw: 'The scale of resistance confirms the scale of what I carry.' },
 ];
 
 const INTEGRATION_KEY = 'The lock was never on the true self. The lock was on the story you were taught to believe about the true self.';
 const INITIAL_DECLARATION = { restriction: '', authorship: '', fireLesson: '', newLaw: '' };
 
-export default function ReclamationUniversity({ selectedTrackId }) {
-  const [lesson, setLesson] = useState(null);
-  const [hasEntered, setHasEntered] = useState(false);
+export default function ReclamationUniversity() {
+  const [hasCrossedFireDoor, setHasCrossedFireDoor] = useState(false);
   const [listenedTracks, setListenedTracks] = useState([]);
   const [selectedAnchorKey, setSelectedAnchorKey] = useState(LYRIC_ANCHORS[0].key);
   const [selectedShadowCodes, setSelectedShadowCodes] = useState([]);
@@ -119,28 +126,19 @@ export default function ReclamationUniversity({ selectedTrackId }) {
   const [declaration, setDeclaration] = useState(INITIAL_DECLARATION);
   const [declarationSealed, setDeclarationSealed] = useState(false);
 
-  useEffect(() => {
-    let active = true;
-    getReclamationUniversityByTrack(selectedTrackId).then((payload) => {
-      if (active) setLesson(payload);
-    });
-    return () => {
-      active = false;
-    };
-  }, [selectedTrackId]);
-
   const isDeclarationComplete = useMemo(
     () => Object.values(declaration).every((value) => String(value || '').trim().length > 2),
     [declaration]
   );
 
-  const moduleUnlocked = listenedTracks.length === SOURCE_TRACKS.length && selectedShadowCodes.length > 0 && retrievedLightCodes.length > 0 && declarationSealed;
+  const moduleUnlocked = hasCrossedFireDoor && listenedTracks.length === SOURCE_TRACKS.length && selectedShadowCodes.length > 0 && retrievedLightCodes.length > 0 && declarationSealed;
 
   const requirements = [
-    { label: 'Both portal tracks complete', complete: listenedTracks.length === SOURCE_TRACKS.length },
-    { label: 'Shadow Code selected', complete: selectedShadowCodes.length > 0 },
+    { label: 'Transmission received', complete: hasCrossedFireDoor },
+    { label: 'Both track signals received', complete: listenedTracks.length === SOURCE_TRACKS.length },
+    { label: 'Shadow Code marked', complete: selectedShadowCodes.length > 0 },
     { label: 'Light Code retrieved', complete: retrievedLightCodes.length > 0 },
-    { label: 'Declaration sealed', complete: declarationSealed },
+    { label: 'First Law sealed', complete: declarationSealed },
   ];
 
   const toggleListenedTrack = (trackOrder) => {
@@ -170,12 +168,19 @@ export default function ReclamationUniversity({ selectedTrackId }) {
   };
 
   return (
-    <SovereignModulePanel eyebrow="Reclamation University" title="Module 1: The Fire Door">
-      <div className="space-y-5">
-        <ModuleHeroCard moduleMeta={MODULE_META} hasEntered={hasEntered} onEnter={() => setHasEntered(true)} />
+    <div className="fire-door-module-root">
+      {!hasCrossedFireDoor ? (
+        <FireDoorInitiationScene copy={INITIATION_COPY} onCross={() => setHasCrossedFireDoor(true)} />
+      ) : (
+        <SovereignModulePanel eyebrow="Reclamation University" title="Module 1: The Fire Door">
+          <div className="fire-door-stage">
+            <ModuleHeroCard
+              moduleMeta={MODULE_META}
+              hasEntered={hasCrossedFireDoor}
+              onEnter={() => setHasCrossedFireDoor(false)}
+              actionLabel="Replay Transmission"
+            />
 
-        {hasEntered && (
-          <>
             <PairedTrackPortal
               sourceTracks={SOURCE_TRACKS}
               lyricAnchors={LYRIC_ANCHORS}
@@ -190,7 +195,7 @@ export default function ReclamationUniversity({ selectedTrackId }) {
               <LightCodeMapper mappings={LIGHT_MAPPINGS} selectedShadowCodes={selectedShadowCodes} retrievedLightCodes={retrievedLightCodes} onRetrieveLightCode={toggleLightCode} />
             </div>
 
-            <DeclarationBuilder declaration={declaration} onChange={updateDeclaration} onComplete={() => setDeclarationSealed(isDeclarationComplete)} isComplete={isDeclarationComplete} />
+            <DeclarationBuilder declaration={declaration} onChange={updateDeclaration} onComplete={() => setDeclarationSealed(isDeclarationComplete)} isComplete={isDeclarationComplete} isSealed={declarationSealed} />
 
             <div className="grid gap-5 xl:grid-cols-[1fr_0.86fr]">
               <IntegrationKeyReveal
@@ -209,9 +214,9 @@ export default function ReclamationUniversity({ selectedTrackId }) {
                 disabled={!moduleUnlocked}
               />
             </div>
-          </>
-        )}
-      </div>
-    </SovereignModulePanel>
+          </div>
+        </SovereignModulePanel>
+      )}
+    </div>
   );
 }
