@@ -90,7 +90,11 @@ export default function FireDoorInitiationScene({ copy, onCross }) {
   }, [copy, prefersReducedMotion]);
 
   return (
-    <section className="fire-door-initiation" style={{ '--transmission-progress': `${progress}%` }} aria-label="Rising Seeker Fire Door initiation">
+    <section
+      className="fire-door-initiation"
+      style={{ '--transmission-progress': `${progress}%`, '--threshold-scale': 1 + progress / 90 }}
+      aria-label="Rising Seeker Fire Door initiation"
+    >
       <div className="fire-door-noise" aria-hidden="true" />
       <div className="fire-door-scanline" aria-hidden="true" />
       <div className="fire-door-threshold" aria-hidden="true">
