@@ -1,0 +1,254 @@
+.fire-door-threshold span:first-child {
+  transform: scaleX(var(--threshold-scale, 1));
+}
+
+.fire-door-embers i:nth-child(18) { left: 11%; animation-delay: -8.2s; }
+.fire-door-embers i:nth-child(19) { left: 28%; animation-delay: -1.2s; }
+.fire-door-embers i:nth-child(20) { left: 57%; animation-delay: -4.2s; }
+.fire-door-embers i:nth-child(21) { left: 82%; animation-delay: -7.2s; }
+.fire-door-embers i:nth-child(22) { left: 96%; animation-delay: -2.2s; }
+
+.fire-door-panel.is-unlocked,
+.fire-door-hero.is-unlocked {
+  border-color: rgba(252, 165, 165, 0.48);
+  box-shadow: inset 0 0 42px rgba(127, 29, 29, 0.18), 0 0 54px rgba(239, 68, 68, 0.18);
+}
+
+.fire-door-badge {
+  display: inline-flex;
+  align-items: center;
+}
+
+.fire-door-sequence-shell {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.4rem);
+}
+
+.fire-door-command-header {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(239, 68, 68, 0.26);
+  border-radius: 30px;
+  padding: clamp(1.1rem, 2.6vw, 2rem);
+  background:
+    radial-gradient(circle at 88% 12%, rgba(239, 68, 68, 0.19), transparent 30%),
+    linear-gradient(145deg, rgba(8, 3, 3, 0.94), rgba(0, 0, 0, 0.82));
+  box-shadow: 0 0 45px rgba(127, 29, 29, 0.2), inset 0 0 34px rgba(239, 68, 68, 0.06);
+}
+
+.fire-door-command-header::after {
+  content: '';
+  position: absolute;
+  right: 1.2rem;
+  top: 1rem;
+  width: min(32vw, 280px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.72), rgba(201, 139, 60, 0.4));
+  box-shadow: 0 0 22px rgba(239, 68, 68, 0.34);
+}
+
+.fire-door-command-header h2 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(2.2rem, 6vw, 5.7rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-shadow: 0 0 34px rgba(239, 68, 68, 0.24);
+}
+
+.fire-door-command-header p:not(.fire-door-kicker) {
+  max-width: 720px;
+  margin: 0.9rem 0 0;
+  color: #d4d4d8;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  line-height: 1.65;
+}
+
+.fire-door-secondary-action {
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #d4d4d8;
+  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.68rem;
+  padding: 0.8rem 1rem;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.fire-door-secondary-action:hover:not(:disabled) {
+  border-color: rgba(252, 165, 165, 0.48);
+  color: #fee2e2;
+  background: rgba(127, 29, 29, 0.18);
+}
+
+.fire-door-secondary-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.fire-door-scene-rail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.fire-door-scene-rail span {
+  position: relative;
+  min-height: 86px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 0.85rem;
+  color: #71717a;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.fire-door-scene-rail span::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.fire-door-scene-rail span.is-active {
+  transform: translateY(-2px);
+  border-color: rgba(252, 165, 165, 0.5);
+  background: linear-gradient(145deg, rgba(127, 29, 29, 0.34), rgba(0, 0, 0, 0.64));
+  color: #fee2e2;
+  box-shadow: 0 0 28px rgba(239, 68, 68, 0.12);
+}
+
+.fire-door-scene-rail span.is-past {
+  border-color: rgba(239, 68, 68, 0.22);
+  color: #fca5a5;
+}
+
+.fire-door-scene-rail b {
+  display: block;
+  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+}
+
+.fire-door-scene-rail small {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: Rajdhani, 'Space Grotesk', system-ui, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+}
+
+.fire-door-active-scene {
+  min-height: 540px;
+  display: grid;
+  align-items: stretch;
+  animation: fdReveal 420ms ease both;
+}
+
+.fire-door-active-scene > .fire-door-panel,
+.fire-door-active-scene > .fire-door-final-grid {
+  min-height: 100%;
+}
+
+.fire-door-gate-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(239, 68, 68, 0.16);
+  border-radius: 24px;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.44);
+}
+
+.fire-door-gate-controls > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.fire-door-gate-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  color: #a1a1aa;
+  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.fire-door-gate-status.is-open {
+  border-color: rgba(252, 165, 165, 0.44);
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.18);
+}
+
+.fire-door-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+  transform: none;
+}
+
+.fire-door-final-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.75fr);
+  gap: 1rem;
+}
+
+.fire-door-active-scene .fire-door-panel {
+  border-radius: 30px;
+  padding: clamp(1.25rem, 2.7vw, 2rem);
+}
+
+.fire-door-active-scene .fire-door-panel > .fire-door-kicker + h4,
+.fire-door-active-scene .fire-door-panel > div .fire-door-kicker + h4 {
+  font-size: clamp(1.75rem, 3.8vw, 3.3rem);
+  line-height: 0.96;
+  letter-spacing: 0.08em;
+}
+
+.fire-door-active-scene .fire-door-card,
+.fire-door-active-scene textarea {
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.fire-door-active-scene .fire-door-card:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .fire-door-command-header,
+  .fire-door-gate-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .fire-door-scene-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .fire-door-scene-rail span {
+    min-height: auto;
+  }
+
+  .fire-door-final-grid {
+    grid-template-columns: 1fr;
+  }
+}
