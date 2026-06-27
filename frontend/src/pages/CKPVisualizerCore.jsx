@@ -54,7 +54,6 @@ function useAudioReactivity(audioRef, isPlaying, currentTrackId, volume, setCurr
 
     const track = getVisualizerTrack(currentTrackId);
     audio.src = track.audioSrc;
-    audio.volume = volume;
     audio.crossOrigin = 'anonymous';
     audio.load();
     setCurrentTime(0);
@@ -65,7 +64,7 @@ function useAudioReactivity(audioRef, isPlaying, currentTrackId, volume, setCurr
     return () => {
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
-  }, [audioRef, currentTrackId, setCurrentTime, setDuration, volume]);
+  }, [audioRef, currentTrackId, setCurrentTime, setDuration]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -78,6 +77,7 @@ function useAudioReactivity(audioRef, isPlaying, currentTrackId, volume, setCurr
     if (!audio) return undefined;
 
     const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextConstructor) return undefined;
 
     function ensureGraph() {
       if (graphRef.current) return graphRef.current;
@@ -139,31 +139,45 @@ function useAudioReactivity(audioRef, isPlaying, currentTrackId, volume, setCurr
   return { bands, beat };
 }
 
-function EclipseShader({ bands }) {
+function EclipseShader({ bands, beat }) {
   const material = useMemo(
     () =>
       new THREE.ShaderMaterial({
         transparent: true,
         depthWrite: false,
+        blending: THREE.AdditiveBlending,
         uniforms: {
           uTime: { value: 0 },
           uBass: { value: 0 },
-          uHigh: { value: 0 }
+          uMid: { value: 0 },
+          uHigh: { value: 0 },
+          uBeat: { value: 0 }
         },
         vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
         fragmentShader: `
           uniform float uTime;
           uniform float uBass;
+          uniform float uMid;
           uniform float uHigh;
+          uniform float uBeat;
           varying vec2 vUv;
+
           void main(){
             vec2 uv = vUv - 0.5;
+            uv.x *= 1.78;
             float r = length(uv);
-            float corona = smoothstep(0.54, 0.2, r) - smoothstep(0.24, 0.04, r);
-            float wave = sin((r * 42.0) - uTime * 2.2) * 0.04;
-            vec3 color = vec3(0.42 + uBass, 0.02 + uHigh * 0.16, 0.025);
-            float alpha = (corona * 0.32 + wave * corona) * smoothstep(0.86, 0.12, r);
-            gl_FragColor = vec4(color, alpha);
+            float angle = atan(uv.y, uv.x);
+            float pulse = uBass * 0.06 + uBeat * 0.08;
+            float corona = smoothstep(0.58 + pulse, 0.19, r) - smoothstep(0.24 + pulse * 0.35, 0.055, r);
+            float inner = smoothstep(0.19 + pulse, 0.02, r);
+            float filament = sin(angle * 18.0 + uTime * 0.9) * sin(r * 84.0 - uTime * 2.4);
+            float ring = 1.0 - smoothstep(0.012, 0.034, abs(r - (0.32 + uBass * 0.035)));
+            float smoke = smoothstep(0.82, 0.18, r) * (0.22 + uHigh * 0.18);
+            vec3 crimson = vec3(0.86 + uBass * 0.25, 0.025 + uHigh * 0.075, 0.045);
+            vec3 deepRed = vec3(0.24, 0.006, 0.012);
+            vec3 color = mix(deepRed, crimson, corona + ring * 0.42 + filament * 0.08);
+            float alpha = corona * (0.22 + uBass * 0.34) + ring * (0.18 + uBeat * 0.32) + inner * 0.08 + smoke * 0.06;
+            gl_FragColor = vec4(color, clamp(alpha, 0.0, 0.68));
           }
         `
       }),
@@ -173,12 +187,14 @@ function EclipseShader({ bands }) {
   useFrame(({ clock }) => {
     material.uniforms.uTime.value = clock.elapsedTime;
     material.uniforms.uBass.value = bands.bass;
+    material.uniforms.uMid.value = bands.mid;
     material.uniforms.uHigh.value = bands.high;
+    material.uniforms.uBeat.value = beat.intensity;
   });
 
   return (
-    <mesh material={material} position={[0, 0, -1.8]}>
-      <planeGeometry args={[14, 8, 1, 1]} />
+    <mesh material={material} position={[0, 0, -2.4]}>
+      <planeGeometry args={[16, 9, 1, 1]} />
     </mesh>
   );
 }
@@ -186,19 +202,19 @@ function EclipseShader({ bands }) {
 function ParticleField({ bands }) {
   const pointsRef = useRef(null);
   const { positions, colors } = useMemo(() => {
-    const count = 1200;
+    const count = 950;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i += 1) {
-      const radius = 2.1 + Math.random() * 4.9;
+      const radius = 2.4 + Math.random() * 5.6;
       const theta = Math.random() * Math.PI * 2;
       positions[i * 3] = Math.cos(theta) * radius;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 5.2;
-      positions[i * 3 + 2] = Math.sin(theta) * radius - 1.2;
-      colors[i * 3] = 1;
-      colors[i * 3 + 1] = 0.05 + Math.random() * 0.15;
-      colors[i * 3 + 2] = 0.03 + Math.random() * 0.08;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 5.8;
+      positions[i * 3 + 2] = Math.sin(theta) * radius - 1.4;
+      colors[i * 3] = 0.82 + Math.random() * 0.18;
+      colors[i * 3 + 1] = 0.02 + Math.random() * 0.06;
+      colors[i * 3 + 2] = 0.035 + Math.random() * 0.07;
     }
 
     return { positions, colors };
@@ -213,15 +229,15 @@ function ParticleField({ bands }) {
       const index = i * 3;
       const x = array[index];
       const z = array[index + 2];
-      const angle = Math.atan2(z, x) + 0.0007 + bands.high * 0.0018;
-      const radius = Math.sqrt(x * x + z * z) + Math.sin(clock.elapsedTime + i) * bands.bass * 0.0015;
+      const angle = Math.atan2(z, x) + 0.00045 + bands.high * 0.0012;
+      const radius = Math.sqrt(x * x + z * z) + Math.sin(clock.elapsedTime * 0.8 + i) * bands.bass * 0.001;
       array[index] = Math.cos(angle) * radius;
-      array[index + 1] += Math.sin(clock.elapsedTime * 1.4 + i * 0.02) * bands.highMid * 0.002;
+      array[index + 1] += Math.sin(clock.elapsedTime * 1.1 + i * 0.02) * bands.highMid * 0.0016;
       array[index + 2] = Math.sin(angle) * radius;
     }
 
     points.geometry.attributes.position.needsUpdate = true;
-    points.rotation.z += 0.0004 + bands.mid * 0.0012;
+    points.rotation.z += 0.00024 + bands.mid * 0.00086;
   });
 
   return (
@@ -230,34 +246,136 @@ function ParticleField({ bands }) {
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.025} vertexColors transparent opacity={0.82} depthWrite={false} blending={THREE.AdditiveBlending} />
+      <pointsMaterial size={0.018} vertexColors transparent opacity={0.58} depthWrite={false} blending={THREE.AdditiveBlending} />
     </points>
+  );
+}
+
+function SignalSpokes({ bands, beat }) {
+  const groupRef = useRef(null);
+  const positions = useMemo(() => {
+    const count = 72;
+    const vertices = new Float32Array(count * 2 * 3);
+
+    for (let i = 0; i < count; i += 1) {
+      const angle = (i / count) * Math.PI * 2;
+      const inner = 1.05 + (i % 3) * 0.04;
+      const outer = 4.25 + (i % 5) * 0.06;
+      const base = i * 6;
+      vertices[base] = Math.cos(angle) * inner;
+      vertices[base + 1] = Math.sin(angle) * inner;
+      vertices[base + 2] = -0.08;
+      vertices[base + 3] = Math.cos(angle) * outer;
+      vertices[base + 4] = Math.sin(angle) * outer;
+      vertices[base + 5] = -0.08;
+    }
+
+    return vertices;
+  }, []);
+
+  useFrame(() => {
+    const group = groupRef.current;
+    if (!group) return;
+    group.rotation.z -= 0.0008 + bands.lowMid * 0.0024;
+    const scale = 1 + bands.bass * 0.03 + beat.intensity * 0.025;
+    group.scale.set(scale, scale, scale);
+  });
+
+  return (
+    <group ref={groupRef} position={[0, 0, -0.18]}>
+      <lineSegments>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        </bufferGeometry>
+        <lineBasicMaterial color="#ff3642" transparent opacity={0.09 + bands.highMid * 0.14 + beat.intensity * 0.08} blending={THREE.AdditiveBlending} depthWrite={false} />
+      </lineSegments>
+    </group>
+  );
+}
+
+function PrometheanCore({ bands, beat }) {
+  const groupRef = useRef(null);
+
+  useFrame(({ clock }) => {
+    const group = groupRef.current;
+    if (!group) return;
+    group.rotation.y = Math.sin(clock.elapsedTime * 0.22) * 0.18;
+    group.rotation.z += 0.0014 + bands.mid * 0.004;
+    const scale = 1 + bands.bass * 0.12 + beat.intensity * 0.09;
+    group.scale.set(scale, scale, scale);
+  });
+
+  return (
+    <group ref={groupRef} position={[0, 0, 0.12]}>
+      <mesh>
+        <icosahedronGeometry args={[0.9, 3]} />
+        <meshStandardMaterial color="#320409" emissive="#ff2634" emissiveIntensity={0.55 + bands.bass * 1.15 + beat.intensity * 1.4} roughness={0.42} metalness={0.28} transparent opacity={0.72} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[1.28, 0.012, 16, 180]} />
+        <meshBasicMaterial color="#ff3140" transparent opacity={0.28 + bands.highMid * 0.28} blending={THREE.AdditiveBlending} depthWrite={false} />
+      </mesh>
+      <mesh rotation={[0.84, 0.16, 0]}>
+        <torusGeometry args={[1.58, 0.008, 12, 220]} />
+        <meshBasicMaterial color="#ff5a52" transparent opacity={0.18 + beat.intensity * 0.22} blending={THREE.AdditiveBlending} depthWrite={false} />
+      </mesh>
+    </group>
   );
 }
 
 function FrequencyRings({ bands, beat }) {
   const groupRef = useRef(null);
-  const rings = [2.8, 3.25, 3.7, 4.15];
+  const rings = [2.78, 3.18, 3.58, 4.02, 4.42];
 
   useFrame(() => {
     const group = groupRef.current;
     if (!group) return;
-    group.rotation.z += 0.002 + bands.mid * 0.009;
+    group.rotation.z += 0.0012 + bands.mid * 0.006;
     group.children.forEach((child, index) => {
-      const scale = 1 + bands.bass * (0.08 + index * 0.025) + beat.intensity * 0.08;
+      const scale = 1 + bands.bass * (0.06 + index * 0.018) + beat.intensity * 0.06;
       child.scale.set(scale, scale, scale);
-      child.rotation.z += (index % 2 === 0 ? 1 : -1) * (0.002 + bands.highMid * 0.006);
+      child.rotation.z += (index % 2 === 0 ? 1 : -1) * (0.0015 + bands.highMid * 0.0045);
     });
   });
 
   return (
-    <group ref={groupRef} position={[0, 0, 0.15]}>
+    <group ref={groupRef} position={[0, 0, 0.06]}>
       {rings.map((radius, index) => (
         <mesh key={radius}>
-          <torusGeometry args={[radius, 0.008 + index * 0.003, 12, 192]} />
-          <meshBasicMaterial color={index % 2 === 0 ? '#ff2a2a' : '#ff7a18'} transparent opacity={0.22 + index * 0.08} blending={THREE.AdditiveBlending} depthWrite={false} />
+          <torusGeometry args={[radius, 0.006 + index * 0.0018, 12, 220]} />
+          <meshBasicMaterial color={index === 3 ? '#ff7a5c' : '#ff2f3d'} transparent opacity={0.12 + index * 0.035 + beat.intensity * 0.08} blending={THREE.AdditiveBlending} depthWrite={false} />
         </mesh>
       ))}
+    </group>
+  );
+}
+
+function SpectrumHalo({ bands }) {
+  const groupRef = useRef(null);
+  const bars = useMemo(() => Array.from({ length: 64 }, (_, index) => index), []);
+  const bandValues = [bands.sub, bands.bass, bands.lowMid, bands.mid, bands.highMid, bands.high];
+
+  useFrame(() => {
+    const group = groupRef.current;
+    if (!group) return;
+    group.rotation.z += 0.0006 + bands.high * 0.002;
+  });
+
+  return (
+    <group ref={groupRef} position={[0, 0, 0.2]}>
+      {bars.map((index) => {
+        const angle = (index / bars.length) * Math.PI * 2;
+        const value = bandValues[index % bandValues.length];
+        const radius = 4.72;
+        const height = 0.22 + value * 1.05 + (index % 8 === 0 ? bands.high * 0.2 : 0);
+
+        return (
+          <mesh key={index} position={[Math.cos(angle) * radius, Math.sin(angle) * radius, 0]} rotation={[0, 0, angle]} scale={[1, height, 1]}>
+            <boxGeometry args={[0.012, 0.42, 0.012]} />
+            <meshBasicMaterial color={index % 8 === 0 ? '#ff8b64' : '#ff3141'} transparent opacity={0.1 + value * 0.36} blending={THREE.AdditiveBlending} depthWrite={false} />
+          </mesh>
+        );
+      })}
     </group>
   );
 }
@@ -267,11 +385,15 @@ function WebGLReactiveLayer({ bands, beat }) {
     <div className="ckp-webgl-layer" aria-hidden="true">
       <Canvas camera={{ position: [0, 0, 9], fov: 45 }} gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}>
         <AdaptiveDpr pixelated={false} />
-        <ambientLight intensity={0.65} />
-        <pointLight position={[0, 0, 5]} intensity={3.2} color="#ff2b2b" />
-        <EclipseShader bands={bands} />
+        <ambientLight intensity={0.48} />
+        <pointLight position={[0, 0, 5]} intensity={2.7} color="#ff2531" />
+        <pointLight position={[-4, 2, 3]} intensity={0.72} color="#8a050c" />
+        <EclipseShader bands={bands} beat={beat} />
+        <SignalSpokes bands={bands} beat={beat} />
         <ParticleField bands={bands} />
+        <PrometheanCore bands={bands} beat={beat} />
         <FrequencyRings bands={bands} beat={beat} />
+        <SpectrumHalo bands={bands} />
         <Preload all />
       </Canvas>
     </div>
@@ -308,6 +430,7 @@ export default function CKPVisualizerCore() {
   const track = getVisualizerTrack(currentTrackId);
   const { bands, beat } = useAudioReactivity(audioRef, isPlaying, currentTrackId, volume, setCurrentTime, setDuration);
   const activeLyricIndex = track.lyrics.findIndex((line) => currentTime >= line.start && currentTime < line.end);
+  const edgeSpectrum = useMemo(() => Array.from({ length: 32 }, (_, index) => index), []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -392,10 +515,12 @@ export default function CKPVisualizerCore() {
     <main className="ckp-visualizer-shell" data-beat={beat.detected ? 'true' : 'false'}>
       <audio ref={audioRef} preload="metadata" />
       <div className="ckp-mainframe-grid" />
+      <div className="ckp-cinematic-noise" />
       <WebGLReactiveLayer bands={bands} beat={beat} />
 
       <header className="ckp-visualizer-topbar">
         <a className="ckp-back-link" href="/experiencemode">← Experience Mode</a>
+        <div className="ckp-brand-mark">CKP III · RECLAMATION</div>
         <div className="ckp-protocol-status"><span /> Visualizer Core Active</div>
       </header>
 
@@ -433,7 +558,15 @@ export default function CKPVisualizerCore() {
             <video ref={videoRef} className="ckp-reclamation-video" preload="metadata" />
             <div className="ckp-viewport-overlay scanline" />
             <div className="ckp-viewport-overlay reactive-vignette" />
-            <div className="ckp-viewport-label"><span>Rendered Cinematic Feed</span><b>{track.title}</b></div>
+            <div className="ckp-viewport-corners"><span /><span /><span /><span /></div>
+            <div className="ckp-viewport-spectrum" aria-hidden="true">
+              {edgeSpectrum.map((index) => {
+                const bandValues = [bands.sub, bands.bass, bands.lowMid, bands.mid, bands.highMid, bands.high];
+                const value = bandValues[index % bandValues.length];
+                return <span key={index} style={{ transform: `scaleY(${0.18 + value * 1.25})`, opacity: 0.28 + value * 0.58 }} />;
+              })}
+            </div>
+            <div className="ckp-viewport-label"><span>Premium Cinematic Feed</span><b>{track.title}</b></div>
           </div>
         </section>
 
