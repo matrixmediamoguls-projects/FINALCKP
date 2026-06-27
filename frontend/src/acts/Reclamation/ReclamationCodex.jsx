@@ -4,6 +4,7 @@ import useAudioAnalyzer from "../../hooks/useAudioAnalyzer";
 import useReclamationTracks, { DEFAULT_VISUALIZER_VIEWPORT_IMAGE } from "../../modules/ImmersiveProtocol/useReclamationTracks";
 import { useAudio } from "../../context/audioprovider";
 import "../../styles/reclamation-command-center.css";
+import "../../styles/reclamation-reference-cockpit.css";
 
 const FALLBACK_LYRICS = [
   "I'm breaking the code",
@@ -196,158 +197,47 @@ export default function ReclamationCodex() {
   const activeTimelineIndex = Math.min(TIMELINE_SEGMENTS.length - 1, Math.floor((progress / 100) * TIMELINE_SEGMENTS.length));
 
   return (
-    <main
-      className="pva-root pva-reference-root"
-      style={{
-        "--intensity": intensity / 100,
-        "--bass": bass / 100,
-        "--mid": mid / 100,
-        "--treble": treble / 100,
-        "--progress": `${progress}%`,
-      }}
-    >
+    <main className="pva-root pva-reference-root" style={{ "--intensity": intensity / 100, "--bass": bass / 100, "--mid": mid / 100, "--treble": treble / 100, "--progress": `${progress}%` }}>
       <header className="pva-topbar">
-        <div className="pva-brand-lockup">
-          <strong>CKP</strong>
-          <span><b>CKP //</b> RECLAMATION MAINFRAME</span>
-          <em>SOVEREIGN MODE</em>
-        </div>
+        <div className="pva-brand-lockup"><strong>CKP</strong><span><b>CKP //</b> RECLAMATION MAINFRAME</span><em>SOVEREIGN MODE</em></div>
         <div className="pva-protocol-title"><span>✦</span><b>THE CHROMA KEY PROTOCOL</b><span>✦</span></div>
-        <div className="pva-system-authorized">
-          <span>SYSTEM STATUS<br /><b>AUTHORIZED</b></span>
-          <i />
-          <strong>V4.7.2</strong>
-          <b className="pva-glyph">♜</b>
-        </div>
+        <div className="pva-system-authorized"><span>SYSTEM STATUS<br /><b>AUTHORIZED</b></span><i /><strong>V4.7.2</strong><b className="pva-glyph">♜</b></div>
       </header>
 
       <section className="pva-reference-main">
         <aside className="pva-panel pva-lyrics-feed">
-          <div className="pva-panel-heading">
-            <h2>LYRICS FEED</h2>
-            <p>LIVE LYRICAL PROTOCOL</p>
-          </div>
+          <div className="pva-panel-heading"><h2>LYRICS FEED</h2><p>LIVE LYRICAL PROTOCOL</p></div>
           <div className="pva-lyric-stack">
             {(lyricWindow.length ? lyricWindow : FALLBACK_LYRICS.map((text, index) => ({ id: `fallback-${index}`, text }))).map((line) => {
               const active = line.id === lyricLines[activeLyricIndex]?.id || (!lyricLines.length && line.id === 'fallback-0');
-              return (
-                <p key={line.id} className={active ? 'is-active' : ''}>
-                  {active && <span className="pva-active-lyric-sigil">✣</span>}
-                  {line.text}
-                </p>
-              );
+              return <p key={line.id} className={active ? 'is-active' : ''}>{active && <span className="pva-active-lyric-sigil">✣</span>}{line.text}</p>;
             })}
             <div className="pva-lyric-rail" aria-hidden="true" />
           </div>
-          <div className="pva-keyword-box">
-            <h3>KEYWORD HIGHLIGHT</h3>
-            {KEYWORDS.map((keyword, index) => (
-              <p key={keyword}>
-                <span>{keyword}</span>
-                <i style={{ width: `${52 + ((intensity + index * 9) % 38)}%` }} />
-              </p>
-            ))}
-          </div>
+          <div className="pva-keyword-box"><h3>KEYWORD HIGHLIGHT</h3>{KEYWORDS.map((keyword, index) => <p key={keyword}><span>{keyword}</span><i style={{ width: `${52 + ((intensity + index * 9) % 38)}%` }} /></p>)}</div>
         </aside>
 
-        <section
-          className="pva-center pva-center--reference-match"
-          style={{ "--pva-viewport-image": `url("${viewportImage}")` }}
-          aria-label={activeTrack?.viewport_alt_text || "Chroma Key Protocol visualizer viewport"}
-        >
-          <div className="pva-hud-ring pva-hud-ring--outer" aria-hidden="true" />
-          <div className="pva-hud-ring pva-hud-ring--inner" aria-hidden="true" />
+        <section className="pva-center pva-center--reference-match" style={{ "--pva-viewport-image": `url("${viewportImage}")` }} aria-label={activeTrack?.viewport_alt_text || "Chroma Key Protocol visualizer viewport"}>
+          <div className="pva-hud-ring pva-hud-ring--outer" aria-hidden="true" /><div className="pva-hud-ring pva-hud-ring--inner" aria-hidden="true" />
           <ReactorBars intensity={intensity} bass={bass} mid={mid} treble={treble} />
-          <div className="pva-crosshair pva-crosshair--horizontal" aria-hidden="true" />
-          <div className="pva-crosshair pva-crosshair--vertical" aria-hidden="true" />
+          <div className="pva-crosshair pva-crosshair--horizontal" aria-hidden="true" /><div className="pva-crosshair pva-crosshair--vertical" aria-hidden="true" />
           <div className="pva-center-chip pva-center-chip--bpm"><span>BPM</span><b>{activeTrack?.bpm || 128}</b></div>
           <div className="pva-center-chip pva-center-chip--key"><span>KEY</span><b>{activeTrack?.key_signature || "C# MINOR"}</b></div>
-          <div className="pva-reactive-emblem" aria-hidden="true">
-            <span className="pva-emblem-flame" />
-            <span className="pva-emblem-diamond" />
-          </div>
-          <div className="pva-now-playing">NOW PLAYING</div>
-          <div className="pva-viewport-track-title">{activeTrack?.title || "RECLAMATION"}</div>
+          <div className="pva-reactive-emblem" aria-hidden="true"><span className="pva-emblem-flame" /><span className="pva-emblem-diamond" /></div>
+          <div className="pva-now-playing">NOW PLAYING</div><div className="pva-viewport-track-title">{activeTrack?.title || "RECLAMATION"}</div>
         </section>
 
         <aside className="pva-panel pva-sync-core">
-          <div className="pva-panel-heading">
-            <h2>SYNC CORE</h2>
-            <p>REAL TIME PROTOCOL</p>
-          </div>
-          <div className="pva-sync-list">
-            {[
-              ["VOCAL DETECTION", "ACTIVE"],
-              ["BEAT LOCK", isPlaying ? "LOCKED" : "ARMED"],
-              ["BPM", activeTrack?.bpm || 128],
-              ["KEY", activeTrack?.key_signature || "C# MINOR"],
-              ["CHORUS DETECTED", progress > 30 && progress < 70 ? "YES" : "SCAN"],
-              ["INTENSITY STATE", intensity > 80 ? "ASCENDING" : "CHARGING"],
-              ["SYNC ACCURACY", `${Math.max(91, Math.min(99, Math.round(90 + intensity / 9)))}%`],
-            ].map(([label, value]) => (
-              <p key={label}><span>{label}</span><b>{value}</b></p>
-            ))}
-          </div>
-          <div className="pva-intensity-monitor">
-            <h3>INTENSITY MONITOR</h3>
-            <MiniSparkline />
-            <strong>{intensity}%<span>CURRENT</span></strong>
-          </div>
-          <div className="pva-frequency-core">
-            <h3>FREQUENCY CORE</h3>
-            <div className="pva-radar" aria-hidden="true"><i /></div>
-            {[
-              ["SUB BASS", bass],
-              ["BASS", Math.round((bass + intensity) / 2)],
-              ["MIDS", mid],
-              ["HIGHS", treble],
-            ].map(([label, value]) => (
-              <p key={label}><span>{label}</span><i style={{ width: `${value}%` }} /><b>{value}%</b></p>
-            ))}
-          </div>
+          <div className="pva-panel-heading"><h2>SYNC CORE</h2><p>REAL TIME PROTOCOL</p></div>
+          <div className="pva-sync-list">{[["VOCAL DETECTION", "ACTIVE"], ["BEAT LOCK", isPlaying ? "LOCKED" : "ARMED"], ["BPM", activeTrack?.bpm || 128], ["KEY", activeTrack?.key_signature || "C# MINOR"], ["CHORUS DETECTED", progress > 30 && progress < 70 ? "YES" : "SCAN"], ["INTENSITY STATE", intensity > 80 ? "ASCENDING" : "CHARGING"], ["SYNC ACCURACY", `${Math.max(91, Math.min(99, Math.round(90 + intensity / 9)))}%`]].map(([label, value]) => <p key={label}><span>{label}</span><b>{value}</b></p>)}</div>
+          <div className="pva-intensity-monitor"><h3>INTENSITY MONITOR</h3><MiniSparkline /><strong>{intensity}%<span>CURRENT</span></strong></div>
+          <div className="pva-frequency-core"><h3>FREQUENCY CORE</h3><div className="pva-radar" aria-hidden="true"><i /></div>{[["SUB BASS", bass], ["BASS", Math.round((bass + intensity) / 2)], ["MIDS", mid], ["HIGHS", treble]].map(([label, value]) => <p key={label}><span>{label}</span><i style={{ width: `${value}%` }} /><b>{value}%</b></p>)}</div>
         </aside>
       </section>
 
-      <section className="pva-bottom-dock">
-        <button className="pva-carousel-arrow" type="button" onClick={prevTrack} aria-label="Previous track">‹</button>
-        <div className="pva-track-carousel">
-          {loading && <div className="pva-loading-card">SUPABASE SIGNAL SYNCING</div>}
-          {visibleTracks.map(({ track, index, offset }) => (
-            <button
-              type="button"
-              key={track?.id || track?.track_id || index}
-              className={`pva-carousel-card ${index === activeTrackIndex ? 'is-active' : ''}`}
-              style={{ "--offset": offset }}
-              onClick={() => playTrack(track, index)}
-            >
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <strong>{track?.title || track?.name || 'RECLAMATION SIGNAL'}</strong>
-              <em>{track?.duration || fmt(track?.duration_seconds) || '03:47'}</em>
-              <WaveformStrip />
-            </button>
-          ))}
-        </div>
-        <button className="pva-carousel-arrow" type="button" onClick={nextTrack} aria-label="Next track">›</button>
-      </section>
+      <section className="pva-bottom-dock"><button className="pva-carousel-arrow" type="button" onClick={prevTrack} aria-label="Previous track">‹</button><div className="pva-track-carousel">{loading && <div className="pva-loading-card">SUPABASE SIGNAL SYNCING</div>}{visibleTracks.map(({ track, index, offset }) => <button type="button" key={track?.id || track?.track_id || index} className={`pva-carousel-card ${index === activeTrackIndex ? 'is-active' : ''}`} style={{ "--offset": offset }} onClick={() => playTrack(track, index)}><span>{String(index + 1).padStart(2, '0')}</span><strong>{track?.title || track?.name || 'RECLAMATION SIGNAL'}</strong><em>{track?.duration || fmt(track?.duration_seconds) || '03:47'}</em><WaveformStrip /></button>)}</div><button className="pva-carousel-arrow" type="button" onClick={nextTrack} aria-label="Next track">›</button></section>
 
-      <footer className="pva-protocol-footer">
-        <div className="pva-protocol-timeline" onClick={seek} role="button" tabIndex={0} aria-label="Protocol timeline">
-          <span className="pva-timeline-label">PROTOCOL TIMELINE</span>
-          <i className="pva-timeline-line"><b /></i>
-          {TIMELINE_SEGMENTS.map((segment, index) => (
-            <span key={`${segment}-${index}`} className={index === activeTimelineIndex ? 'is-active' : ''}>{segment}</span>
-          ))}
-        </div>
-        <div className="pva-status-strip">
-          <span>DATABASE <b className="is-green">●</b> SUPABASE CONNECTED</span>
-          <span>NODE <b>●</b> {isPlaying ? 'R2 LIVE' : 'LOCAL LIVE'}</span>
-          <span>SECTOR 7 - EXTERIOR FEED</span>
-          <span>PROTOCOL <b>●</b> CKP ENCRYPTED</span>
-          <span>{fmt(currentTime)} / {fmt(duration)}</span>
-        </div>
-        {error && <p className="pva-signal-error">SUPABASE SIGNAL INTERRUPTED: {error}</p>}
-      </footer>
-
+      <footer className="pva-protocol-footer"><div className="pva-protocol-timeline" onClick={seek} role="button" tabIndex={0} aria-label="Protocol timeline"><span className="pva-timeline-label">PROTOCOL TIMELINE</span><i className="pva-timeline-line"><b /></i>{TIMELINE_SEGMENTS.map((segment, index) => <span key={`${segment}-${index}`} className={index === activeTimelineIndex ? 'is-active' : ''}>{segment}</span>)}</div><div className="pva-status-strip"><span>DATABASE <b className="is-green">●</b> SUPABASE CONNECTED</span><span>NODE <b>●</b> {isPlaying ? 'R2 LIVE' : 'LOCAL LIVE'}</span><span>SECTOR 7 - EXTERIOR FEED</span><span>PROTOCOL <b>●</b> CKP ENCRYPTED</span><span>{fmt(currentTime)} / {fmt(duration)}</span></div>{error && <p className="pva-signal-error">SUPABASE SIGNAL INTERRUPTED: {error}</p>}</footer>
       <button className="pva-play-toggle" type="button" onClick={togglePlayback}>{isPlaying ? 'PAUSE PROTOCOL' : 'LAUNCH PROTOCOL'}</button>
     </main>
   );
