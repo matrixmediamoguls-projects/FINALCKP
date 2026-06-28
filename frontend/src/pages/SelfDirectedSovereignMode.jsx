@@ -33,7 +33,7 @@ const MODULES = [
     title: 'Reclamation University',
     code: 'RU',
     lightCode: "The Sun Don't Invoice?",
-    route: '/Reclamation_User_Journey',
+    route: '/experiencemode/sovereign/reclamation-university',
     card: '/ui/reclamation/Module_Cards/Reclamation_University.png',
   },
   {
@@ -234,7 +234,7 @@ export default function SelfDirectedSovereignMode() {
               index={index}
               offset={offset}
               onSelect={() => {
-                if (module.id === 'audio-visualizer-core') {
+                if (offset === 0) {
                   navigate(module.route);
                   return;
                 }
