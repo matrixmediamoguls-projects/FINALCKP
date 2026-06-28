@@ -20,7 +20,6 @@ const ActOneEntry = lazy(() => import('./pages/ActOneEntry'));
 const LaunchModule = lazy(() => import('./pages/LaunchModule'));
 const ReclamationPathway = lazy(() => import('./pages/ReclamationPathway'));
 const Reclamation_User_Journey = lazy(() => import('./pages/Reclamation_User_Journey'));
-const ActModulesPage = lazy(() => import('./pages/ActModulesPage'));
 const ActPage = lazy(() => import('./pages/ActPage'));
 const LockedAct = lazy(() => import('./pages/LockedAct'));
 const Journal = lazy(() => import('./pages/Journal'));
@@ -36,6 +35,7 @@ const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistan
 const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSovereignMode'));
 const CKPVisualizerCore = lazy(() => import('./pages/CKPVisualizerCore'));
+const ReclamationUniversityPage = lazy(() => import('./pages/ReclamationUniversityPage'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -213,6 +213,29 @@ function AppRoutes() {
       />
 
       <Route
+        path="/experiencemode/sovereign/reclamation-university"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ReclamationUniversityPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/experiencemode/sovereign/reclamation-university/:facultyId"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ReclamationUniversityPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/reclamation-university"
+        element={<Navigate to="/experiencemode/sovereign/reclamation-university" replace />}
+      />
+
+      <Route
         path="/Reclamation_User_Journey"
         element={
           <ProtectedRoute withShell={false}>
@@ -223,15 +246,6 @@ function AppRoutes() {
 
       <Route
         path="/self-directed-sovereign-mode"
-        element={
-          <ProtectedRoute withShell={false}>
-            <SelfDirectedSovereignMode />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/experiencemode/sovereign"
         element={
           <ProtectedRoute withShell={false}>
             <SelfDirectedSovereignMode />
