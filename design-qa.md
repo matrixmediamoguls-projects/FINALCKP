@@ -1,32 +1,20 @@
-**Design QA**
+# Sovereign Mode Design QA
 
-- Source visual truth: `C:\Users\matri\Desktop\dab92f22-42a4-4112-a7dd-f316baa80a33.png`
-- Target route: `http://127.0.0.1:5173/experiencemode/sovereign`
-- Source viewport: 1536x1024
-- Implementation screenshot: unavailable
+- Reference: `outputs/sovereign-mode-design/sovereign-mode-depth-concept.png`
+- Target: `http://localhost:3000/experiencemode/sovereign`
+- Build: passed with Vite 8
+- Source checks: passed (`git diff --check`)
+- Browser capture: blocked because the in-app browser runtime reported no available browser targets
+- Reference comparison: blocked until a same-viewport application screenshot can be captured
 
-**Full-View Comparison Evidence**
+## Implemented comparison points
 
-Blocked. The Browser plugin installation in this session does not include its required `browser-client.mjs` runtime, so the protected route could not be captured for a screenshot comparison.
-
-**Source And Implementation Checks**
-
-- The reference was opened and inspected at its native 1536x1024 resolution.
-- A clean 1536x1024 chamber background was generated from the source art direction and placed in the project.
-- The layout reproduces the source hierarchy: identity header, operational status, perspective module deck, central Promethean platform, left and right HUDs, energy readout, and bottom orbital controls.
-- Module cards use real project emblems or icon-library assets, not placeholder shapes.
-- The operating system provides working rotation, selection, zoom, keyboard, parallax, progress, and enter-module interactions.
-- Responsive rules preserve one dominant active module and adjacent depth cards on smaller viewports.
-
-**Patches Made**
-
-- Replaced the previous tilted circular carousel with a forward-facing perspective deck.
-- Added seven selectable modules with wrapped orbital positioning.
-- Added generated 3D Reclamation chamber artwork derived from the reference.
-- Added pointer parallax and animated card/core effects.
-- Added working rotate, zoom, system overview, and enter-module controls.
-- Connected user identity and active-module HUD values to live component state.
-
-**Final Result**
+- Three-plane composition: chamber background, orbital card stage, foreground control deck
+- Saturated crimson, violet, cyan, ember, and graphite palette
+- Left Promethean Core and Active Light Code telemetry stack
+- Centered sovereign metadata header and user identity panel
+- Receding six-card carousel with active-card focus and functional rotation
+- Right Protocol Progress and Element Balance telemetry stack
+- Responsive desktop, compact desktop, and mobile layout rules
 
 final result: blocked

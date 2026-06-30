@@ -4,6 +4,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleGauge,
+  Flame,
   Minus,
   Orbit,
   Plus,
@@ -211,21 +212,23 @@ export default function SelfDirectedSovereignMode() {
         <div className="sos-brand-block">
           <img src="/emblem/reclamation_core_emblem.png" alt="" />
           <div>
-            <strong>The Chroma Key Protocol</strong>
-            <span>Reclamation Mainframe</span>
-            <span>Sovereign Mode</span>
+            <strong>Chroma Key Protocol</strong>
+            <span>Self-Directed Sovereign Mode</span>
           </div>
         </div>
 
-        <div className="sos-system-status">
-          <i />
-          System Status: Operational
+        <div className="sos-command-meta" aria-label="Sovereign system information">
+          <div><span>Sovereign ID</span><strong>CKP-7X9L-Q892</strong></div>
+          <div><span>Light Code</span><strong>{activeModule.code}-777-A</strong></div>
+          <div><span>Status</span><strong className="is-stable"><i /> Stable</strong></div>
+          <div><span>Clearance</span><strong>Omega</strong></div>
         </div>
 
         <div className="sos-user-block">
           <div>
-            <strong>User: {userName}</strong>
-            <span>Clearance: ECP Level {user?.level || 7}</span>
+            <span>Sovereign</span>
+            <strong>{userName}</strong>
+            <span>Level {user?.level || 7} · Initiate</span>
           </div>
           <img src="/emblem/reclamation_core_emblem.png" alt="" />
         </div>
@@ -269,26 +272,33 @@ export default function SelfDirectedSovereignMode() {
         </button>
       </section>
 
-      <div className="sos-core-readout">
-        <span>Promethean Core</span>
-        <div>
-          <i />
-          <small>Energy Output</small>
-          <strong>93%</strong>
-        </div>
-      </div>
-
-      <HudPanel title="Active Light Code" className="sos-light-code">
-        <div className="sos-light-code-body">
-          <CircleGauge aria-hidden="true" />
-          <div>
-            <strong>{activeModule.lightCode}</strong>
-            <span>Code: {activeModule.code}-777-A</span>
+      <aside className="sos-left-hud" aria-label="Core telemetry">
+        <HudPanel title="Promethean Core" className="sos-core-telemetry">
+          <div className="sos-core-telemetry-body">
+            <div>
+              <span>Energy Readout</span>
+              <strong>93.7%</strong>
+            </div>
+            <Flame aria-hidden="true" />
           </div>
-        </div>
-        <p>Sync Status</p>
-        <b>Synchronized</b>
-      </HudPanel>
+          <div className="sos-energy-cells" aria-hidden="true">
+            {Array.from({ length: 6 }, (_, index) => <i key={index} />)}
+          </div>
+          <b>Core Stability: Optimal</b>
+        </HudPanel>
+
+        <HudPanel title="Active Light Code" className="sos-light-code">
+          <div className="sos-light-code-body">
+            <CircleGauge aria-hidden="true" />
+            <div>
+              <strong>{activeModule.lightCode}</strong>
+              <span>Code: {activeModule.code}-777-A</span>
+            </div>
+          </div>
+          <p>Sync Status</p>
+          <b>Synchronized</b>
+        </HudPanel>
+      </aside>
 
       <div className="sos-right-hud">
         <HudPanel title="Protocol Progress">
