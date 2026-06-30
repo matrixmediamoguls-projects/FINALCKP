@@ -153,6 +153,19 @@ export default function SelfDirectedSovereignMode() {
     }
   }, []);
 
+  const handlePointerMove = useCallback((event) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+    event.currentTarget.style.setProperty('--parallax-x', x.toFixed(3));
+    event.currentTarget.style.setProperty('--parallax-y', y.toFixed(3));
+  }, []);
+
+  const resetParallax = useCallback((event) => {
+    event.currentTarget.style.setProperty('--parallax-x', 0);
+    event.currentTarget.style.setProperty('--parallax-y', 0);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowLeft') rotate(-1);
@@ -170,6 +183,8 @@ export default function SelfDirectedSovereignMode() {
     <main
       className="sos-page"
       style={{ '--deck-zoom': zoom, '--parallax-x': 0, '--parallax-y': 0 }}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetParallax}
     >
       <div className="sos-chamber" aria-hidden="true" />
       <div className="sos-depth-field" aria-hidden="true" />
