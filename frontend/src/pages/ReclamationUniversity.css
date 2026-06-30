@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+.ru-page {
+  position: relative;
+  min-height: 100vh;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  overflow: hidden;
+  color: #fff7f4;
+  font-family: 'Rajdhani', Inter, system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 38, 45, .18), transparent 27%),
+    radial-gradient(circle at 84% 76%, rgba(255, 175, 70, .09), transparent 30%),
+    linear-gradient(145deg, rgba(5, 2, 2, .98), rgba(19, 3, 4, .96) 46%, rgba(2, 2, 4, .99));
+}
+
+.ru-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .24;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(circle at center, #000, transparent 78%);
+}
+
+.ru-orb {
+  position: fixed;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(6px);
+}
+
+.ru-orb-a {
+  top: 12%;
+  left: 45%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(255, 43, 54, .18), transparent 64%);
+}
+
+.ru-orb-b {
+  right: -120px;
+  bottom: -120px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(255, 182, 92, .12), transparent 68%);
+}
+
+.ru-header {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  border: 1px solid rgba(255, 60, 70, .24);
+  border-radius: 22px;
+  background: linear-gradient(90deg, rgba(10, 5, 6, .74), rgba(29, 5, 7, .48));
+  box-shadow: inset 0 0 35px rgba(255, 40, 50, .08), 0 24px 60px rgba(0,0,0,.38);
+  backdrop-filter: blur(18px);
+}
+
+.ru-header button,
+.ru-header aside {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+}
+
+.ru-header button {
+  width: fit-content;
+  border: 1px solid rgba(255, 59, 70, .35);
+  border-radius: 999px;
+  padding: .75rem 1rem;
+  background: rgba(255, 43, 54, .07);
+  color: #ffd8d8;
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+
+.ru-header svg { width: 18px; height: 18px; }
+
+.ru-header div { text-align: center; }
+
+.ru-header div span,
+.ru-header aside span,
+.ru-panel-title span,
+.ru-core-kicker span,
+.ru-core article span,
+.ru-reflection span,
+.ru-related span,
+.ru-footer span {
+  color: rgba(255, 220, 214, .62);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.ru-header h1 {
+  margin: .12rem 0 0;
+  color: #fff;
+  font-size: clamp(1.7rem, 3vw, 3rem);
+  line-height: .9;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  text-shadow: 0 0 18px rgba(255, 42, 54, .34);
+}
+
+.ru-header aside {
+  justify-content: flex-end;
+  color: #ffcf88;
+}
+
+.ru-header aside strong {
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.ru-shell {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(245px, .82fr) minmax(420px, 1.7fr) minmax(265px, .9fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  min-height: calc(100vh - 184px);
+}
+
+.ru-panel,
+.ru-core {
+  border: 1px solid rgba(255, 66, 76, .2);
+  border-radius: 24px;
+  background: linear-gradient(155deg, rgba(12, 6, 7, .8), rgba(24, 5, 6, .48));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.035), 0 28px 70px rgba(0,0,0,.36);
+  backdrop-filter: blur(18px);
+}
+
+.ru-panel {
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.ru-panel-title {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 1rem;
+}
+
+.ru-panel-title svg,
+.ru-seal svg {
+  color: #ffb85d;
+}
+
+.ru-search {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: .75rem .8rem;
+  background: rgba(0,0,0,.28);
+}
+
+.ru-search svg { width: 16px; color: rgba(255,255,255,.5); }
+
+.ru-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  font: inherit;
+}
+
+.ru-course-map {
+  display: grid;
+  gap: .55rem;
+  margin: 1rem 0;
+}
+
+.ru-course-map div,
+.ru-lessons button,
+.ru-meta-grid div,
+.ru-related button {
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px;
+  background: rgba(0,0,0,.22);
+}
+
+.ru-course-map div {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .65rem .72rem;
+  color: rgba(255,245,241,.78);
+}
+
+.ru-course-map b,
+.ru-lessons small {
+  color: #ff3643;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.ru-lessons {
+  display: grid;
+  gap: .6rem;
+  max-height: 46vh;
+  overflow: auto;
+  padding-right: .2rem;
+}
+
+.ru-lessons button {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: .3rem .55rem;
+  padding: .75rem;
+  text-align: left;
+  cursor: pointer;
+  color: #fff;
+}
+
+.ru-lessons button.is-active {
+  border-color: rgba(255, 67, 78, .6);
+  background: linear-gradient(135deg, rgba(255, 43, 54, .18), rgba(255, 176, 91, .06));
+  box-shadow: 0 0 22px rgba(255, 43, 54, .16);
+}
+
+.ru-lessons span {
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+.ru-lessons b {
+  grid-column: 2;
+  color: rgba(255,225,218,.58);
+  font-size: .78rem;
+  font-weight: 500;
+}
+
+.ru-core {
+  position: relative;
+  padding: clamp(1.4rem, 2.3vw, 2.4rem);
+  overflow: hidden;
+}
+
+.ru-core::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 43, 54, .24), transparent 25%, transparent 75%, rgba(255, 190, 101, .12)),
+    radial-gradient(circle at 78% 12%, rgba(255,255,255,.08), transparent 24%);
+}
+
+.ru-core > * { position: relative; z-index: 1; }
+
+.ru-core-kicker {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ru-core-kicker b {
+  color: #ffbd70;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.ru-core h2 {
+  max-width: 820px;
+  margin: 1rem 0 .8rem;
+  font-size: clamp(3rem, 6vw, 6.6rem);
+  line-height: .84;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  text-shadow: 0 0 28px rgba(255, 43, 54, .34);
+}
+
+.ru-track-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  border: 1px solid rgba(255, 184, 93, .28);
+  border-radius: 999px;
+  padding: .6rem .85rem;
+  color: #ffe5bc;
+  background: rgba(255, 184, 93, .08);
+}
+
+.ru-track-chip svg { width: 17px; }
+
+.ru-core blockquote {
+  margin: 1.2rem 0;
+  border-left: 3px solid #ff3744;
+  padding: 1rem 1.25rem;
+  color: #fff3d7;
+  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+  line-height: 1.18;
+  background: rgba(255, 43, 54, .07);
+}
+
+.ru-core article {
+  margin-top: 1rem;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(0,0,0,.22);
+}
+
+.ru-core article p,
+.ru-signal p {
+  margin: .6rem 0 0;
+  color: rgba(255, 242, 238, .82);
+  font-size: 1.06rem;
+  line-height: 1.65;
+}
+
+.ru-signal {
+  display: flex;
+  gap: .9rem;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 184, 93, .24);
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(255, 184, 93, .07);
+}
+
+.ru-signal svg { color: #ffbd70; flex: 0 0 auto; }
+
+.ru-reflection {
+  margin-top: 1rem;
+  border-radius: 18px;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(255, 43, 54, .22), rgba(255, 188, 106, .09));
+  border: 1px solid rgba(255, 63, 75, .32);
+}
+
+.ru-reflection strong {
+  display: block;
+  margin-top: .5rem;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.ru-seal {
+  display: grid;
+  place-items: center;
+  min-height: 150px;
+  border: 1px solid rgba(255, 184, 93, .2);
+  border-radius: 18px;
+  background: radial-gradient(circle, rgba(255, 184, 93, .12), rgba(0,0,0,.16));
+  text-align: center;
+}
+
+.ru-seal svg { width: 36px; height: 36px; }
+
+.ru-seal strong { color: #ffbd70; text-transform: uppercase; letter-spacing: .1em; }
+
+.ru-meta-grid {
+  display: grid;
+  gap: .65rem;
+  margin-top: 1rem;
+}
+
+.ru-meta-grid div {
+  padding: .8rem;
+}
+
+.ru-meta-grid span,
+.ru-progress span {
+  display: block;
+  color: rgba(255, 229, 221, .55);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.ru-meta-grid strong {
+  display: block;
+  margin-top: .3rem;
+  color: white;
+}
+
+.ru-progress {
+  margin-top: 1rem;
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(0,0,0,.24);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.ru-progress div,
+.ru-footer div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ru-progress i {
+  display: block;
+  height: 9px;
+  margin-top: .8rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  overflow: hidden;
+}
+
+.ru-progress b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff2d3a, #ffbd70);
+  box-shadow: 0 0 16px rgba(255, 45, 58, .45);
+}
+
+.ru-related {
+  display: grid;
+  gap: .55rem;
+  margin-top: 1rem;
+}
+
+.ru-related button {
+  padding: .7rem;
+  color: rgba(255,245,241,.82);
+  text-align: left;
+}
+
+.ru-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.ru-footer div {
+  min-width: 220px;
+  border: 1px solid rgba(255, 66, 76, .2);
+  border-radius: 999px;
+  padding: .75rem 1rem;
+  background: rgba(0,0,0,.34);
+}
+
+.ru-footer svg { width: 17px; color: #ffbd70; }
+
+@media (max-width: 1120px) {
+  .ru-header,
+  .ru-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ru-header div,
+  .ru-header aside {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .ru-shell {
+    min-height: auto;
+  }
+
+  .ru-lessons {
+    max-height: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .ru-page { padding: .85rem; }
+  .ru-core h2 { font-size: 2.65rem; }
+  .ru-footer { flex-direction: column; }
+}
