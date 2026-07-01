@@ -11,7 +11,7 @@ const facultyCards = [
     subtitle: 'Understand the war for consciousness and the nature of power.',
     accent: 'green',
     route: '/experiencemode/sovereign/reclamation-university/foundations',
-    asset: '/reclamation-university/faculty-foundations.svg',
+    asset: '/ui/reclamation/Module_Cards/reclamation_university/module_one_card.svg',
   },
   {
     id: 'identity',
@@ -19,7 +19,7 @@ const facultyCards = [
     subtitle: 'Deconstruct the false self and reclaim your divine architecture.',
     accent: 'blue',
     route: '/experiencemode/sovereign/reclamation-university/identity',
-    asset: '/reclamation-university/faculty-identity.svg',
+    asset: '/ui/reclamation/Module_Cards/reclamation_university/module_two_card.svg',
   },
   {
     id: 'language',
@@ -27,7 +27,7 @@ const facultyCards = [
     subtitle: 'Words are weapons. Master the code you create with your voice.',
     accent: 'red',
     route: '/experiencemode/sovereign/reclamation-university/language',
-    asset: '/reclamation-university/faculty-language.svg',
+    asset: '/ui/reclamation/Module_Cards/reclamation_university/module_three_card.svg',
   },
   {
     id: 'thought-forms',
@@ -35,7 +35,7 @@ const facultyCards = [
     subtitle: 'Decode the mechanics of thought and how realities are built.',
     accent: 'amber',
     route: '/experiencemode/sovereign/reclamation-university/thought-forms',
-    asset: '/reclamation-university/faculty-thought-forms.svg',
+    asset: '/ui/reclamation/Module_Cards/reclamation_university/module_four_card.svg',
   },
   {
     id: 'sovereign-mind',
@@ -43,7 +43,7 @@ const facultyCards = [
     subtitle: 'Train the mind beyond conditioned limits and programmed patterns.',
     accent: 'gold',
     route: '/experiencemode/sovereign/reclamation-university/sovereign-mind',
-    asset: '/reclamation-university/faculty-sovereign-mind.svg',
+    asset: '/ui/reclamation/Module_Cards/reclamation_university/module_five_card.svg',
   },
   {
     id: 'aftermath',
@@ -51,7 +51,7 @@ const facultyCards = [
     subtitle: 'Learn to build, protect, and leave a legacy beyond the system.',
     accent: 'purple',
     route: '/experiencemode/sovereign/reclamation-university/aftermath',
-    asset: '/reclamation-university/faculty-aftermath.svg',
+    asset: '/ui/reclamation/Module_Cards/reclamation_university/module_six_card.svg',
   },
 ];
 
