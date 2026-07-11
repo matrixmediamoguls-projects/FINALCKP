@@ -1,11 +1,12 @@
-const FIELDS = [
-  ['restriction', 'The restriction I am no longer allowing to define me is'],
-  ['authorship', 'The part of my authorship I am reclaiming is'],
-  ['fireLesson', 'The fire I once feared is now teaching me'],
-  ['newLaw', 'The law I speak over my next chapter is'],
+const DEFAULT_FIELDS = [
+  { key: 'restriction', label: 'The restriction I am no longer allowing to define me is' },
+  { key: 'authorship', label: 'The part of my authorship I am reclaiming is' },
+  { key: 'fireLesson', label: 'The fire I once feared is now teaching me' },
+  { key: 'newLaw', label: 'The law I speak over my next chapter is' },
 ];
 
-export default function DeclarationBuilder({ declaration, onChange, onComplete, isComplete, isSealed }) {
+export default function DeclarationBuilder({ declaration = {}, declarationFields = DEFAULT_FIELDS, onChange, onComplete, isComplete = false, isSealed = false }) {
+  const FIELDS = declarationFields.length > 0 ? declarationFields : DEFAULT_FIELDS;
   return (
     <section className="fire-door-panel fire-door-record">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -17,7 +18,10 @@ export default function DeclarationBuilder({ declaration, onChange, onComplete, 
       </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {FIELDS.map(([key, label]) => (
+        {FIELDS.map((field) => {
+          const key = field.key || field[0];
+          const label = field.label || field[1];
+          return (
           <label key={key} className="fire-door-card block p-4">
             <span className="fire-door-badge">{label}</span>
             <textarea
@@ -27,7 +31,8 @@ export default function DeclarationBuilder({ declaration, onChange, onComplete, 
               placeholder="Write the law here..."
             />
           </label>
-        ))}
+        );
+        })}
       </div>
 
       <div className="mt-5 rounded-2xl border border-red-500/20 bg-red-950/15 p-4 text-sm leading-7 text-zinc-200">
@@ -38,12 +43,16 @@ export default function DeclarationBuilder({ declaration, onChange, onComplete, 
         <div className="fire-door-sealed-record mt-5 rounded-3xl border border-red-300/35 bg-red-950/20 p-5">
           <p className="fire-door-kicker">First Law Sealed</p>
           <div className="mt-3 grid gap-3 md:grid-cols-2">
-            {FIELDS.map(([key, label]) => (
+            {FIELDS.map((field) => {
+              const key = field.key || field[0];
+              const label = field.label || field[1];
+              return (
               <div key={key} className="rounded-2xl border border-white/10 bg-black/35 p-3">
                 <span className="fire-door-micro text-red-200/70">{label}</span>
                 <p className="mt-2 text-sm leading-6 text-zinc-100">{declaration[key]}</p>
               </div>
-            ))}
+            );
+            })
           </div>
         </div>
       )}

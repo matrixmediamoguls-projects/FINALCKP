@@ -36,6 +36,8 @@ const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPre
 const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSovereignMode'));
 const CKPVisualizerCore = lazy(() => import('./pages/CKPVisualizerCore'));
 const ReclamationUniversityPage = lazy(() => import('./pages/ReclamationUniversityPage'));
+const ReclamationFacultyPage = lazy(() => import('./pages/ReclamationFacultyPage'));
+const ReclamationModulePage = lazy(() => import('./pages/ReclamationModulePage'));
 
 import AppShell from './components/layout/AppShell';
 import PaywallModal from './components/layout/PaywallModal';
@@ -222,10 +224,19 @@ function AppRoutes() {
       />
 
       <Route
-        path="/experiencemode/sovereign/reclamation-university/:facultyId"
+        path="/experiencemode/sovereign/reclamation-university/:facultySlug"
         element={
           <ProtectedRoute withShell={false}>
-            <ReclamationUniversityPage />
+            <ReclamationFacultyPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/experiencemode/sovereign/reclamation-university/:facultySlug/:moduleSlug"
+        element={
+          <ProtectedRoute withShell={false}>
+            <ReclamationModulePage />
           </ProtectedRoute>
         }
       />

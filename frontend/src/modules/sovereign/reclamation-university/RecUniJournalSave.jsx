@@ -1,31 +1,45 @@
 import { useState } from 'react';
 import { saveReclamationUniversityResponse } from '../../../lib/supabase/reclamationUniversity';
 
-export default function RecUniJournalSave({ moduleId, selectedShadowCodes, retrievedLightCodes, declaration, integrationKey, disabled }) {
+export default function RecUniJournalSave({ moduleId, selectedShadowCodes, retrievedLightCodes, declaration, integrationKey, disabled, onSave, isSaving: externalIsSaving = false }) {
   const [status, setStatus] = useState('idle');
   const [message, setMessage] = useState('');
 
   const handleSave = async () => {
-    if (disabled || status === 'saving') return;
-    setStatus('saving');
-    setMessage('');
+    if (disabled || status === 'saving' || externalIsSaving) return;
+    
+    if (onSave) {
+      setStatus('saving');
+      setMessage('');
+      try {
+        await onSave();
+        setStatus('saved');
+        setMessage('Your declaration has been sealed to your private Reclamation University record.');
+      } catch (err) {
+        setStatus('error');
+        setMessage(err.message || 'Unable to seal this private record yet.');
+      }
+    } else {
+      setStatus('saving');
+      setMessage('');
 
-    const result = await saveReclamationUniversityResponse({
-      moduleId,
-      selectedShadowCodes,
-      retrievedLightCodes,
-      declaration,
-      integrationKey,
-    });
+      const result = await saveReclamationUniversityResponse({
+        moduleId,
+        selectedShadowCodes,
+        retrievedLightCodes,
+        declaration,
+        integrationKey,
+      });
 
-    if (result?.error) {
-      setStatus('error');
-      setMessage(result.error.message || 'Unable to seal this private record yet.');
-      return;
+      if (result?.error) {
+        setStatus('error');
+        setMessage(result.error.message || 'Unable to seal this private record yet.');
+        return;
+      }
+
+      setStatus('saved');
+      setMessage('Your Module 1 declaration has been sealed to your private Reclamation University record.');
     }
-
-    setStatus('saved');
-    setMessage('Your Module 1 declaration has been sealed to your private Reclamation University record.');
   };
 
   return (
@@ -37,7 +51,7 @@ export default function RecUniJournalSave({ moduleId, selectedShadowCodes, retri
       <button
         type="button"
         onClick={handleSave}
-        disabled={disabled || status === 'saving'}
+        disabled={disabled || status === 'saving' || externalIsSaving}
         className="fire-door-action mt-5 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {status === 'saving' ? 'Sealing...' : status === 'saved' ? 'Record Sealed' : 'Seal Private Record'}
