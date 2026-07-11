@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronRight, Lock, CheckCircle } from 'lucide-react';
-import { getFacultyBySlug, isFacultyUnlocked } from '../data/reclamationUniversityCurriculum';
+import { getFacultyBySlug } from '../data/reclamationUniversityCurriculum';
+import { useReclamationFacultyUnlock } from '../hooks/useReclamationFacultyUnlock';
 import './ReclamationFacultyPage.css';
 
 export default function ReclamationFacultyPage() {
@@ -9,12 +10,26 @@ export default function ReclamationFacultyPage() {
   const { facultySlug } = useParams();
   const faculty = useMemo(() => getFacultyBySlug(facultySlug), [facultySlug]);
 
-  // TODO: Load user's completed faculties from Supabase
-  const completedFacultySlugs = [];
-  const isUnlocked = useMemo(
-    () => isFacultyUnlocked(facultySlug, completedFacultySlugs),
-    [facultySlug, completedFacultySlugs]
-  );
+  const { isFacultyAccessible, getFacultyRequirements, isLoading } = useReclamationFacultyUnlock();
+  const isUnlocked = useMemo(() => isFacultyAccessible(facultySlug), [facultySlug, isFacultyAccessible]);
+  const requirements = useMemo(() => getFacultyRequirements(facultySlug), [facultySlug, getFacultyRequirements]);
+
+  if (isLoading) {
+    return (
+      <main className="ru-page" aria-label="Loading faculty">
+        <div className="ru-background" aria-hidden="true">
+          <div className="ru-bg-citadel" />
+          <div className="ru-bg-grid" />
+          <div className="ru-bg-scanlines" />
+          <div className="ru-bg-vignette" />
+        </div>
+
+        <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
+          <h1>Loading Faculty...</h1>
+        </div>
+      </main>
+    );
+  }
 
   if (!faculty) {
     return (
@@ -95,10 +110,19 @@ export default function ReclamationFacultyPage() {
             <p className="ru-faculty-subtitle">{faculty.subtitle}</p>
             <p className="ru-faculty-description">{faculty.description}</p>
 
-            {!isUnlocked && (
+            {!isUnlocked && requirements && (
               <div className="ru-lock-message">
                 <Lock size={20} />
-                <p>Complete prerequisite faculties to unlock this faculty.</p>
+                <div>
+                  <p>Complete prerequisite faculties to unlock this faculty:</p>
+                  <ul style={{ marginTop: '0.5rem', marginLeft: '1.5rem' }}>
+                    {requirements.requirements.map((req) => (
+                      <li key={req.slug} style={{ fontSize: '0.875rem', color: req.completed ? '#86efac' : '#fca5a5' }}>
+                        {req.completed ? '✓' : '○'} {req.title}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
           </div>

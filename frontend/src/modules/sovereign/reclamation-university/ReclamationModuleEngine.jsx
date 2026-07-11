@@ -8,7 +8,7 @@ import LightCodeMapper from './LightCodeMapper';
 import DeclarationBuilder from './DeclarationBuilder';
 import IntegrationKeyReveal from './IntegrationKeyReveal';
 import RecUniJournalSave from './RecUniJournalSave';
-import { saveReclamationUniversityResponse, loadUserProgress } from '../../../lib/supabase/reclamationUniversity';
+import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
 import './fireDoorModule.css';
 import './fireDoorModuleOverrides.css';
 
@@ -99,7 +99,25 @@ export default function ReclamationModuleEngine({ module, faculty }) {
   const [retrievedLightCodes, setRetrievedLightCodes] = useState([]);
   const [declaration, setDeclaration] = useState({});
   const [declarationSealed, setDeclarationSealed] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+
+  // Load progress from Supabase
+  const { progress, isLoading, isSaving, saveProgress, saveCompletion, trackEvent } =
+    useReclamationModuleProgress(module?.id, faculty?.slug, module?.slug);
+
+  // Initialize from loaded progress
+  useEffect(() => {
+    if (progress && !isLoading) {
+      setHasCrossedFireDoor(true);
+      setActiveSceneIndex(progress.active_scene || 0);
+      setListenedTracks(progress.listened_track_ids || []);
+      setSelectedShadowCodes(progress.selected_shadow_codes || []);
+      setRetrievedLightCodes(progress.retrieved_light_codes || []);
+      setDeclaration(progress.declaration_json || {});
+      if (progress.status === 'completed') {
+        setDeclarationSealed(true);
+      }
+    }
+  }, [progress, isLoading]);
 
   // Initialize default anchor key
   useEffect(() => {
@@ -151,9 +169,11 @@ export default function ReclamationModuleEngine({ module, faculty }) {
   ];
 
   const toggleListenedTrack = (trackId) => {
-    setListenedTracks((current) =>
-      current.includes(trackId) ? current.filter((item) => item !== trackId) : [...current, trackId]
-    );
+    const newListenedTracks = listenedTracks.includes(trackId)
+      ? listenedTracks.filter((item) => item !== trackId)
+      : [...listenedTracks, trackId];
+    setListenedTracks(newListenedTracks);
+    trackEvent('track_listened', { trackId, listened: !listenedTracks.includes(trackId) });
   };
 
   const toggleShadowCode = (codeId) => {
@@ -164,14 +184,17 @@ export default function ReclamationModuleEngine({ module, faculty }) {
         .filter((item) => next.includes(item.shadowId))
         .map((item) => item.lightId);
       setRetrievedLightCodes((lights) => lights.filter((item) => allowedLightCodes.includes(item)));
+      trackEvent('shadow_code_selected', { codeId, selected: !current.includes(codeId) });
       return next;
     });
   };
 
   const toggleLightCode = (lightId) => {
+    const isSelected = !retrievedLightCodes.includes(lightId);
     setRetrievedLightCodes((current) =>
       current.includes(lightId) ? current.filter((item) => item !== lightId) : [...current, lightId]
     );
+    trackEvent('light_code_retrieved', { lightId, retrieved: isSelected });
   };
 
   const updateDeclaration = (field, value) => {
@@ -179,36 +202,35 @@ export default function ReclamationModuleEngine({ module, faculty }) {
     setDeclaration((current) => ({ ...current, [field]: value }));
   };
 
-  const handleSaveCompletion = async () => {
-    setIsSaving(true);
-    try {
-      const result = await saveReclamationUniversityResponse({
-        moduleId: module.id,
-        selectedShadowCodes,
-        retrievedLightCodes,
-        declaration,
-        integrationKey: module.integrationKey,
-      });
+  const handleSceneAdvance = async () => {
+    const newSceneIndex = Math.min(SCENE_TITLES.length - 1, activeSceneIndex + 1);
+    setActiveSceneIndex(newSceneIndex);
 
-      if (result.error) {
-        console.error('Error saving module completion:', result.error);
-      } else {
-        console.log('Module completion saved:', result.data);
-        // Emit analytics event
-        emitAnalyticsEvent('module_completed', {
-          facultySlug: faculty?.slug,
-          moduleSlug: module?.slug,
-          xpReward: module?.xpReward,
-        });
-      }
-    } finally {
-      setIsSaving(false);
-    }
+    // Save progress after advancing
+    await saveProgress({
+      status: 'in_progress',
+      activeScene: newSceneIndex,
+      listenedTrackIds: listenedTracks,
+      selectedShadowCodes,
+      retrievedLightCodes,
+      declarationJson: declaration,
+    });
   };
 
-  const emitAnalyticsEvent = (eventName, payload = {}) => {
-    // TODO: Implement analytics event emission
-    console.log(`Analytics Event: ${eventName}`, payload);
+  const handleSaveCompletion = async () => {
+    const result = await saveCompletion({
+      selectedShadowCodes,
+      retrievedLightCodes,
+      declaration,
+      integrationKey: module.integrationKey,
+      journalEntry: {
+        entryType: 'module_completion',
+        title: `${faculty?.title} — ${module?.title}`,
+        body: `Completed ${module?.title} and received Integration Key.`,
+      },
+    });
+
+    return result;
   };
 
   const activeRule = sceneAdvanceRules[activeSceneIndex];
@@ -294,12 +316,35 @@ export default function ReclamationModuleEngine({ module, faculty }) {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="fire-door-module-root">
+        <SovereignModulePanel eyebrow="Reclamation University" title="Loading Module">
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <p>Initializing module experience...</p>
+          </div>
+        </SovereignModulePanel>
+      </div>
+    );
+  }
+
   return (
     <div className="fire-door-module-root">
       {!hasCrossedFireDoor ? (
         <FireDoorInitiationScene
           copy={module?.initiationCopy || []}
-          onCross={() => setHasCrossedFireDoor(true)}
+          onCross={() => {
+            setHasCrossedFireDoor(true);
+            trackEvent('fire_door_crossed');
+            saveProgress({
+              status: 'in_progress',
+              activeScene: 0,
+              listenedTrackIds: [],
+              selectedShadowCodes: [],
+              retrievedLightCodes: [],
+              declarationJson: {},
+            });
+          }}
         />
       ) : (
         <SovereignModulePanel eyebrow={faculty?.title} title={module?.title}>
@@ -308,7 +353,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
             canAdvance={activeRule.canAdvance}
             lockMessage={activeRule.lockMessage}
             onBack={() => setActiveSceneIndex(Math.max(0, activeSceneIndex - 1))}
-            onAdvance={() => setActiveSceneIndex(Math.min(SCENE_TITLES.length - 1, activeSceneIndex + 1))}
+            onAdvance={handleSceneAdvance}
             onReplayTransmission={() => setActiveSceneIndex(0)}
           >
             {activeScene}
