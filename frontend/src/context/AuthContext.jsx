@@ -11,6 +11,7 @@ const toAppUser = (supabaseUser) => {
   if (!supabaseUser) return null;
 
   const meta = supabaseUser.user_metadata || {};
+  const appMeta = supabaseUser.app_metadata || {};
 
   return {
     user_id: supabaseUser.id,
@@ -19,11 +20,11 @@ const toAppUser = (supabaseUser) => {
     name: meta.name || meta.full_name || supabaseUser.email?.split('@')[0] || 'Seeker',
     full_name: meta.full_name || meta.name,
     picture: meta.avatar_url || meta.picture || null,
-    tier: meta.tier || 'free',
-    is_admin: meta.is_admin || false,
+    tier: appMeta.tier || 'free',
+    is_admin: appMeta.is_admin === true,
     current_act: meta.current_act || 1,
     completed_acts: meta.completed_acts || [],
-    act3_unlocked: meta.act3_unlocked || false,
+    act3_unlocked: appMeta.act3_unlocked === true,
     level: meta.level || 0,
   };
 };

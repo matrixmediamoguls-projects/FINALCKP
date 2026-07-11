@@ -52,7 +52,7 @@ export default function DeclarationBuilder({ declaration = {}, declarationFields
                 <p className="mt-2 text-sm leading-6 text-zinc-100">{declaration[key]}</p>
               </div>
             );
-            })
+            })}
           </div>
         </div>
       )}
