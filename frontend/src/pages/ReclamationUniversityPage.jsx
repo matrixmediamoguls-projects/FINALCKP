@@ -1,214 +1,210 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, ChevronDown, ChevronRight, Cpu, GraduationCap, Hexagon, Settings } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowUpRight,
+  BookOpen,
+  CircleUserRound,
+  GraduationCap,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './ReclamationUniversityPage.css';
 
-const facultyCards = [
+const faculties = [
   {
     id: 'foundations',
+    numeral: 'I',
     title: 'Foundations of Reclamation',
     subtitle: 'Understand the war for consciousness and the nature of power.',
-    accent: 'green',
+    discipline: 'Origins / Power / Discernment',
     route: '/experiencemode/sovereign/reclamation-university/foundations',
     asset: '/ui/reclamation/Module_Cards/reclamation_university/module_one_card.svg',
   },
   {
     id: 'identity',
+    numeral: 'II',
     title: 'The Architecture of Identity',
     subtitle: 'Deconstruct the false self and reclaim your divine architecture.',
-    accent: 'blue',
+    discipline: 'Identity / Memory / Selfhood',
     route: '/experiencemode/sovereign/reclamation-university/identity',
     asset: '/ui/reclamation/Module_Cards/reclamation_university/module_two_card.svg',
   },
   {
     id: 'language',
+    numeral: 'III',
     title: 'The Language Protocol',
     subtitle: 'Words are weapons. Master the code you create with your voice.',
-    accent: 'red',
+    discipline: 'Language / Signal / Command',
     route: '/experiencemode/sovereign/reclamation-university/language',
     asset: '/ui/reclamation/Module_Cards/reclamation_university/module_three_card.svg',
   },
   {
     id: 'thought-forms',
+    numeral: 'IV',
     title: 'Thought Forms & Reality',
     subtitle: 'Decode the mechanics of thought and how realities are built.',
-    accent: 'amber',
+    discipline: 'Thought / Pattern / Reality',
     route: '/experiencemode/sovereign/reclamation-university/thought-forms',
     asset: '/ui/reclamation/Module_Cards/reclamation_university/module_four_card.svg',
   },
   {
     id: 'sovereign-mind',
+    numeral: 'V',
     title: 'The Sovereign Mind',
     subtitle: 'Train the mind beyond conditioned limits and programmed patterns.',
-    accent: 'gold',
+    discipline: 'Will / Focus / Sovereignty',
     route: '/experiencemode/sovereign/reclamation-university/sovereign-mind',
     asset: '/ui/reclamation/Module_Cards/reclamation_university/module_five_card.svg',
   },
   {
     id: 'aftermath',
+    numeral: 'VI',
     title: 'Architect of the Aftermath',
     subtitle: 'Learn to build, protect, and leave a legacy beyond the system.',
-    accent: 'purple',
+    discipline: 'Legacy / Protection / Creation',
     route: '/experiencemode/sovereign/reclamation-university/aftermath',
     asset: '/ui/reclamation/Module_Cards/reclamation_university/module_six_card.svg',
   },
 ];
 
-const stats = [
-  { label: 'Protocol Status', value: 'Online', tone: 'green' },
-  { label: 'Sovereign Level', value: 'Max', tone: 'red' },
-  { label: 'Curriculum Progress', value: '73%', tone: 'red' },
-  { label: 'Reclamation XP', value: '48,760', tone: 'red' },
-];
-
-function FacultyCard({ faculty }) {
-  const navigate = useNavigate();
-
+function FacultyCard({ faculty, index, onOpen }) {
   return (
-    <button
-      type="button"
-      className="ru-faculty-card"
-      data-accent={faculty.accent}
-      onClick={() => navigate(faculty.route)}
-      aria-label={`Explore ${faculty.title}`}
-    >
-      <img
-        src={faculty.asset}
-        alt={`${faculty.title} faculty module card`}
-        className="ru-faculty-art"
-        onError={(event) => {
-          event.currentTarget.style.display = 'none';
-        }}
-      />
-      <span className="ru-faculty-fallback" aria-hidden="true">
-        <i className="ru-faculty-glyph"><Hexagon size={48} /></i>
-        <strong>{faculty.title}</strong>
-        <small>{faculty.subtitle}</small>
-        <b>Explore <ChevronRight size={16} /></b>
-      </span>
-    </button>
+    <article className="ru-faculty-card" style={{ '--faculty-index': index }}>
+      <button type="button" className="ru-faculty-action" onClick={onOpen}>
+        <span className="ru-card-figure">
+          <img src={faculty.asset} alt="" className="ru-faculty-art" />
+          <span className="ru-card-number" aria-hidden="true">{faculty.numeral}</span>
+          <span className="ru-card-open" aria-hidden="true"><ArrowUpRight size={20} /></span>
+        </span>
+
+        <span className="ru-card-copy">
+          <span className="ru-card-discipline">Faculty {faculty.numeral} · {faculty.discipline}</span>
+          <strong>{faculty.title}</strong>
+          <span className="ru-card-summary">{faculty.subtitle}</span>
+          <span className="ru-card-cta">Enter faculty <ArrowUpRight size={14} /></span>
+        </span>
+      </button>
+    </article>
   );
 }
 
 export default function ReclamationUniversityPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const userName = useMemo(() => user?.name || user?.email?.split('@')[0] || 'Musiq Matrix', [user]);
+  const userName = useMemo(
+    () => user?.name || user?.email?.split('@')[0] || 'Sovereign Seeker',
+    [user],
+  );
+
+  const scrollToFaculties = () => {
+    document.getElementById('ru-faculties')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
-    <main className="ru-page" aria-label="Reclamation University dashboard">
-      <div className="ru-background" aria-hidden="true">
-        <div className="ru-bg-citadel" />
-        <div className="ru-bg-grid" />
-        <div className="ru-bg-scanlines" />
-        <div className="ru-bg-vignette" />
+    <main className="ru-page" aria-label="Reclamation University">
+      <div className="ru-atmosphere" aria-hidden="true">
+        <span className="ru-orbit ru-orbit-one" />
+        <span className="ru-orbit ru-orbit-two" />
+        <span className="ru-grain" />
       </div>
 
       <header className="ru-topbar">
-        <button type="button" className="ru-brand" onClick={() => navigate('/experiencemode/sovereign')}>
-          <span className="ru-brand-mark">✶</span>
-          <span>
-            <strong>Chroma Key</strong>
-            <small>Protocol</small>
-          </span>
+        <button
+          type="button"
+          className="ru-back"
+          onClick={() => navigate('/experiencemode/sovereign')}
+          aria-label="Return to Sovereign Mode"
+        >
+          <ArrowLeft size={18} />
+          <span>Return to Sovereign Mode</span>
         </button>
 
-        <div className="ru-access-status">
-          <span />
-          Access and Protocol Unlocked
-          <ChevronRight size={14} />
+        <div className="ru-wordmark" aria-label="Chroma Key Protocol">
+          <span className="ru-wordmark-sigil">CK</span>
+          <span><strong>Reclamation</strong><small>University · Est. beyond time</small></span>
         </div>
 
-        <nav className="ru-nav" aria-label="Reclamation University navigation">
-          <button type="button" className="is-active">Reclamation University</button>
-          <button type="button">Elemental Protocols</button>
-          <button type="button">Analytics</button>
-          <button type="button">Archive</button>
-          <button type="button">Intel</button>
-        </nav>
-
-        <div className="ru-user-cluster">
-          <button type="button" className="ru-icon-button" aria-label="System settings"><Settings size={20} /></button>
-          <span className="ru-user-sigil">✦</span>
-          <div>
-            <strong>{userName}</strong>
-            <small>Sovereign Seer</small>
-          </div>
-          <ChevronDown size={16} />
+        <div className="ru-identity">
+          <span className="ru-access-dot" aria-hidden="true" />
+          <span><small>Access recognized</small><strong>{userName}</strong></span>
+          <CircleUserRound size={22} />
         </div>
       </header>
 
       <section className="ru-hero" aria-labelledby="reclamation-university-title">
+        <aside className="ru-hero-index" aria-hidden="true">
+          <span>RU · 001</span>
+          <i />
+          <span>Curriculum of Sovereignty</span>
+        </aside>
+
         <div className="ru-hero-copy">
-          <div className="ru-kicker"><span />Welcome To<span /></div>
+          <p className="ru-eyebrow"><Sparkles size={14} /> The educational arm of the Chroma Key Protocol</p>
           <h1 id="reclamation-university-title">
             <span>Reclamation</span>
-            <strong>University</strong>
+            <em>University</em>
           </h1>
-          <p className="ru-subtitle">The Curriculum of Sovereignty.<br />The Knowledge to Break the Code.</p>
-          <p className="ru-description">
-            Reclamation University is the educational arm of the Chroma Key Protocol.
-            A living curriculum of truth, transformation, and timeline mastery.
-            Study the codes. Embody the keys. Become ungovernable.
-          </p>
+          <div className="ru-manifesto">
+            <p>A living curriculum for those who refuse inherited limits.</p>
+            <p>Study the codes. Embody the keys. Become ungovernable.</p>
+          </div>
           <div className="ru-hero-actions">
-            <button type="button" className="ru-primary-cta" onClick={() => document.getElementById('ru-faculties')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}>
-              Enter The University
-              <ChevronRight size={20} />
+            <button type="button" className="ru-enter" onClick={scrollToFaculties}>
+              View the curriculum <ArrowDown size={17} />
             </button>
+            <span className="ru-enrollment"><ShieldCheck size={16} /> Enrollment open · Access unlocked</span>
           </div>
         </div>
 
         <div className="ru-seal-stage" aria-hidden="true">
-          <div className="ru-vertical-rune" />
+          <div className="ru-seal-halo" />
+          <div className="ru-seal-type ru-seal-type-top">Knowledge · Application · Liberation</div>
           <div className="ru-seal">
-            <span className="ru-seal-ring ru-seal-ring-one" />
-            <span className="ru-seal-ring ru-seal-ring-two" />
-            <span className="ru-seal-ring ru-seal-ring-three" />
-            <span className="ru-seal-core">
-              <BookOpen size={54} />
-              <GraduationCap size={28} />
-            </span>
+            <span className="ru-seal-outer" />
+            <span className="ru-seal-inner" />
+            <span className="ru-seal-core"><BookOpen size={52} /><GraduationCap size={24} /></span>
           </div>
+          <div className="ru-seal-type ru-seal-type-bottom">Chroma Key Protocol · MMXXVI</div>
+        </div>
+
+        <div className="ru-hero-note">
+          <span>Field note 01</span>
+          <p>“They built the system to hide the truth. We built the university to teach it.”</p>
         </div>
       </section>
 
       <section id="ru-faculties" className="ru-faculties" aria-labelledby="ru-faculties-title">
-        <div className="ru-section-label">
-          <span />
-          <h2 id="ru-faculties-title">University Faculties</h2>
-          <span />
-        </div>
+        <header className="ru-section-header">
+          <div>
+            <p className="ru-eyebrow">Six faculties · One sovereign curriculum</p>
+            <h2 id="ru-faculties-title">Choose your field of study.</h2>
+          </div>
+          <p>
+            Each faculty is a threshold. Move in sequence or enter where the signal is strongest.
+          </p>
+        </header>
+
         <div className="ru-faculty-grid">
-          {facultyCards.map((faculty) => (
-            <FacultyCard key={faculty.id} faculty={faculty} />
+          {faculties.map((faculty, index) => (
+            <FacultyCard
+              key={faculty.id}
+              faculty={faculty}
+              index={index}
+              onOpen={() => navigate(faculty.route)}
+            />
           ))}
         </div>
       </section>
 
-      <footer className="ru-footer">
-        <div className="ru-footer-brand">
-          <Cpu size={34} />
-          <span>
-            <strong>Reclamation University</strong>
-            <small>Knowledge is the key. Application is power.</small>
-          </span>
-        </div>
-
-        <div className="ru-stat-grid">
-          {stats.map((stat) => (
-            <div key={stat.label} className="ru-stat" data-tone={stat.tone}>
-              <small>{stat.label}</small>
-              <strong>{stat.value}</strong>
-            </div>
-          ))}
-        </div>
-
-        <blockquote>
-          “They built the system to hide the truth.<br />We built the university to teach it.”
-        </blockquote>
-      </footer>
+      <section className="ru-closing" aria-label="University principles">
+        <div className="ru-closing-mark"><GraduationCap size={34} /></div>
+        <p>Knowledge is the key.</p>
+        <strong>Application is power.</strong>
+        <span>Reclamation University · Chroma Key Protocol</span>
+      </section>
     </main>
   );
 }
