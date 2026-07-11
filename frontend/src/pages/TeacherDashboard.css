@@ -1,0 +1,336 @@
+/* Teacher Dashboard Styles */
+
+.teacher-dashboard {
+  position: relative;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #e5e7eb;
+  overflow-x: hidden;
+}
+
+/* Background */
+
+.dashboard-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dashboard-bg-grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+      rgba(59, 130, 246, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+.dashboard-bg-vignette {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* Container */
+
+.dashboard-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header */
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.dashboard-subtitle {
+  font-size: 1rem;
+  color: #9ca3af;
+  margin: 0.5rem 0 0 0;
+  font-style: italic;
+}
+
+/* Error State */
+
+.dashboard-error {
+  padding: 2rem;
+  background-color: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 0.75rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-error h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  color: #fca5a5;
+}
+
+.dashboard-error p {
+  margin: 0;
+  color: #d1d5db;
+}
+
+.dashboard-retry {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(220, 38, 38, 0.2);
+  border: 1px solid #dc2626;
+  color: #fca5a5;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.dashboard-retry:hover {
+  background-color: rgba(220, 38, 38, 0.3);
+  color: #fecaca;
+}
+
+/* Loading State */
+
+.dashboard-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Statistics */
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(10, 20, 30, 0.7));
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.1);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 0.5rem;
+  color: #3b82f6;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Navigation Cards */
+
+.dashboard-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.dashboard-nav-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(10, 20, 30, 0.7));
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.dashboard-nav-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(20, 30, 40, 0.8));
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+.nav-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.nav-content h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  color: #fff;
+}
+
+.nav-content p {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* Activity Section */
+
+.dashboard-activity {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(10, 20, 30, 0.7));
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 0.75rem;
+}
+
+.dashboard-activity h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #fff;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+  border-left: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.activity-event {
+  flex: 1;
+  font-weight: 600;
+  color: #e5e7eb;
+  text-transform: capitalize;
+}
+
+.activity-module {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  text-transform: capitalize;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.activity-empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 1rem;
+  font-style: italic;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nav-content {
+    text-align: center;
+  }
+}

@@ -1,0 +1,472 @@
+/* Mobile-First Responsive Utilities */
+
+/* ============================================================================
+   BREAKPOINTS
+   ============================================================================ */
+
+/* 
+   Mobile-first approach:
+   - Base styles: mobile (< 640px)
+   - sm: 640px
+   - md: 768px
+   - lg: 1024px
+   - xl: 1280px
+   - 2xl: 1536px
+*/
+
+/* ============================================================================
+   TOUCH-FRIENDLY INTERACTIONS
+   ============================================================================ */
+
+/* Ensure touch targets are at least 44x44px */
+button,
+a,
+input[type='checkbox'],
+input[type='radio'],
+select {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+   MOBILE TYPOGRAPHY
+   ============================================================================ */
+
+/* Base mobile font sizes */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+h4 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+  }
+}
+
+/* ============================================================================
+   MOBILE SPACING
+   ============================================================================ */
+
+/* Base mobile spacing */
+:root {
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+}
+
+/* Mobile containers */
+.container {
+  width: 100%;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* ============================================================================
+   MOBILE GRID LAYOUTS
+   ============================================================================ */
+
+/* Single column on mobile */
+.grid-auto {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid-auto {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-auto {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-auto {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================================================
+   MOBILE NAVIGATION
+   ============================================================================ */
+
+/* Mobile-friendly navigation */
+nav {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+nav a,
+nav button {
+  padding: 0.75rem 1rem;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* Mobile menu toggle */
+.mobile-menu-toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-toggle {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   MOBILE FORMS
+   ============================================================================ */
+
+/* Mobile-friendly form inputs */
+input,
+textarea,
+select {
+  font-size: 16px; /* Prevents zoom on iOS */
+  padding: 0.75rem;
+  width: 100%;
+  border-radius: 0.375rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================================================
+   MOBILE IMAGES
+   ============================================================================ */
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Picture element for responsive images */
+picture {
+  display: block;
+}
+
+/* ============================================================================
+   MOBILE TABLES
+   ============================================================================ */
+
+/* Stack tables on mobile */
+@media (max-width: 768px) {
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+  }
+
+  td {
+    padding-left: 50%;
+    position: relative;
+    border: none;
+    padding-bottom: 0.5rem;
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+}
+
+/* ============================================================================
+   MOBILE MODALS & DIALOGS
+   ============================================================================ */
+
+/* Full-screen modals on mobile */
+@media (max-width: 640px) {
+  .modal-content {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 90vh;
+    border-radius: 1rem 1rem 0 0;
+    width: 100%;
+  }
+}
+
+/* ============================================================================
+   MOBILE UTILITIES
+   ============================================================================ */
+
+/* Hide on mobile */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: block;
+  }
+}
+
+/* Show only on mobile */
+.show-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .show-mobile {
+    display: none;
+  }
+}
+
+/* Mobile padding */
+.p-mobile {
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .p-mobile {
+    padding: 1.5rem;
+  }
+}
+
+/* Mobile margin */
+.m-mobile {
+  margin: 1rem;
+}
+
+@media (min-width: 768px) {
+  .m-mobile {
+    margin: 1.5rem;
+  }
+}
+
+/* ============================================================================
+   MOBILE SAFE AREA (for notched devices)
+   ============================================================================ */
+
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* ============================================================================
+   MOBILE PERFORMANCE
+   ============================================================================ */
+
+/* Optimize scrolling performance */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+/* Reduce repaints */
+.will-animate {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ============================================================================
+   MOBILE ACCESSIBILITY
+   ============================================================================ */
+
+/* Focus states for keyboard navigation */
+button:focus,
+a:focus,
+input:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #3b82f6;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ============================================================================
+   MOBILE LANDSCAPE ADJUSTMENTS
+   ============================================================================ */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  header {
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .spacing-large {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ============================================================================
+   PRINT STYLES
+   ============================================================================ */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
