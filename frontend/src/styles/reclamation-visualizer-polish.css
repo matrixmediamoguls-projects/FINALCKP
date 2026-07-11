@@ -1,0 +1,122 @@
+.pva-reference-main {
+  margin-inline: 16px;
+  grid-template-columns: minmax(190px, 15.5%) minmax(0, 1fr) minmax(200px, 16.5%);
+  gap: 12px;
+}
+
+.pva-panel { padding: 20px 18px; }
+.pva-panel-heading h2 { font-size: clamp(1.1rem, 1.22vw, 1.55rem); }
+.pva-panel-heading p,
+.pva-keyword-box h3,
+.pva-intensity-monitor h3,
+.pva-frequency-core h3 { margin-bottom: 16px; font-size: .76rem; }
+.pva-lyric-stack { gap: 10px; min-height: 220px; padding-right: 18px; }
+.pva-lyric-stack p { font-size: clamp(.78rem, .84vw, 1rem); line-height: 1.1; }
+.pva-keyword-box { margin-top: 16px; padding-top: 16px; }
+.pva-keyword-box p { grid-template-columns: 1fr 64px; gap: 10px; margin: 10px 0; font-size: .84rem; }
+.pva-sync-list p { padding: 9px 0; font-size: .76rem; }
+.pva-intensity-monitor { margin-top: 16px; padding-top: 14px; gap: 10px; }
+.pva-intensity-monitor strong { font-size: 1.9rem; }
+.pva-frequency-core { margin-top: 18px; grid-template-columns: 58px 1fr; gap: 5px 10px; }
+.pva-radar { width: 54px; }
+.pva-frequency-core p { grid-template-columns: 58px 1fr 35px; gap: 6px; font-size: .72rem; }
+
+.pva-center--reference-match {
+  box-shadow: inset 0 0 90px rgba(255, 0, 0, .14), 0 0 72px rgba(255, 0, 0, .2);
+}
+
+.pva-center-chip { min-width: 70px; padding: 9px 10px 10px; }
+.pva-center-chip--bpm { left: 4.5%; }
+.pva-center-chip--key { right: 4.5%; }
+
+.pva-reactor-bars { width: min(43vw, 570px); animation: none; }
+.pva-reactor-bars i {
+  left: 50%;
+  top: auto;
+  bottom: 50%;
+  width: 2px;
+  height: 50%;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--bar-angle)) scaleY(var(--bar-scale));
+  background: linear-gradient(180deg, #fff 0, #ff3838 8%, rgba(255, 0, 0, .76) 25%, rgba(255, 0, 0, .12) 48%, transparent 69%);
+  box-shadow: 0 0 var(--bar-glow) rgba(255, 20, 20, .86);
+  opacity: var(--bar-opacity);
+  transition: transform 180ms cubic-bezier(.2, .78, .2, 1), opacity 180ms ease-out;
+}
+
+.pva-bottom-dock { margin-inline: 54px; grid-template-columns: 58px minmax(0, 1fr) 58px; gap: 12px; }
+.pva-track-carousel {
+  align-items: center;
+  gap: 0;
+  perspective: 1100px;
+  perspective-origin: center 42%;
+  transform-style: preserve-3d;
+}
+
+.pva-carousel-card {
+  width: clamp(132px, 11vw, 208px);
+  min-height: 134px;
+  z-index: var(--card-z);
+  opacity: var(--card-opacity);
+  transform: translateY(var(--card-shift-y)) translateZ(var(--card-depth)) rotateY(var(--card-angle)) scale(var(--card-scale));
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  border-color: rgba(255, 255, 255, .2);
+  background: linear-gradient(145deg, rgba(20, 20, 22, .98), rgba(0, 0, 0, .92)), radial-gradient(circle at 50% 20%, rgba(255, 0, 0, .16), transparent 55%);
+  box-shadow: inset 0 0 22px rgba(255, 0, 0, .07), 0 16px 26px rgba(0, 0, 0, .72);
+  transition: transform .42s cubic-bezier(.2, .8, .2, 1), opacity .35s ease, filter .35s ease, border-color .3s ease, box-shadow .35s ease;
+}
+
+.pva-carousel-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, .07), transparent 25%, transparent 72%, rgba(255, 0, 0, .08));
+  clip-path: inherit;
+}
+
+.pva-carousel-card.is-active {
+  min-height: 168px;
+  z-index: 20;
+  opacity: 1;
+  transform: translateY(-18px) translateZ(78px) rotateY(0deg) scale(1.1);
+  border-color: #ff3030;
+  background: linear-gradient(150deg, rgba(34, 8, 8, .98), rgba(0, 0, 0, .96)), radial-gradient(circle at 50% 35%, rgba(255, 0, 0, .3), transparent 62%);
+  box-shadow: inset 0 0 32px rgba(255, 0, 0, .18), 0 20px 38px rgba(0, 0, 0, .9), 0 0 22px rgba(255, 0, 0, .72), 0 0 48px rgba(255, 0, 0, .28);
+}
+
+.pva-carousel-card:not(.is-active):hover {
+  z-index: 15;
+  opacity: 1;
+  transform: translateY(-8px) translateZ(28px) rotateY(var(--card-hover-angle)) scale(1.02);
+  border-color: rgba(255, 65, 65, .82);
+  filter: brightness(1.12);
+}
+
+.pva-carousel-card:focus-visible { outline: 1px solid #fff; outline-offset: 4px; }
+.pva-carousel-card strong,
+.pva-carousel-card em,
+.pva-carousel-card span,
+.pva-wave-strip { position: relative; z-index: 1; }
+
+@media (max-width: 1400px) and (min-width: 1101px) {
+  .pva-reference-main { grid-template-columns: minmax(178px, 16%) minmax(0, 1fr) minmax(190px, 17%); }
+  .pva-panel { padding: 18px 15px; }
+  .pva-bottom-dock { margin-inline: 30px; }
+  .pva-carousel-card { width: clamp(118px, 10.8vw, 164px); }
+}
+
+@media (max-width: 1100px) {
+  .pva-reference-main { margin-inline: 14px; grid-template-columns: 1fr; }
+  .pva-bottom-dock { margin-inline: 14px; }
+  .pva-track-carousel { justify-content: flex-start; gap: 10px; perspective: none; overflow-x: auto; padding: 20px 8px; }
+  .pva-carousel-card,
+  .pva-carousel-card.is-active,
+  .pva-carousel-card:not(.is-active):hover { flex: 0 0 150px; min-height: 138px; transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pva-reactor-bars i,
+  .pva-carousel-card { transition: none; }
+}
