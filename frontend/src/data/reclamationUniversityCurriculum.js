@@ -41,6 +41,75 @@ const LEARNING_OBJECTIVES = {
   ],
 };
 
+const ADVANCED_MODULES = {
+  foundations: [
+    ['pressure-audit', 'Module 2: Pressure Audit', 'Applied Practice', 'Convert a lived pressure event into a documented Shadow-to-Light map.'],
+    ['authorship-covenant', 'Module 3: Authorship Covenant', 'Mastery Practice', 'Create a durable authorship covenant and a repeatable boundary practice.'],
+  ],
+  identity: [
+    ['pattern-excavation', 'Module 2: Pattern Excavation', 'Applied Practice', 'Test a hidden law against evidence from repeated decisions and outcomes.'],
+    ['identity-blueprint', 'Module 3: Identity Blueprint', 'Mastery Practice', 'Build an identity blueprint that replaces inherited architecture with chosen law.'],
+  ],
+  language: [
+    ['clean-speech-lab', 'Module 2: Clean Speech Lab', 'Applied Practice', 'Practice converting reactive language into precise, accountable declaration.'],
+    ['public-record', 'Module 3: Public Record', 'Mastery Practice', 'Author a truth record that preserves context, evidence, and intended impact.'],
+  ],
+  'thought-forms': [
+    ['alignment-prototype', 'Module 2: Alignment Prototype', 'Applied Practice', 'Prototype one aligned behavior across thought, feeling, action, and identity.'],
+    ['reality-architecture', 'Module 3: Reality Architecture', 'Mastery Practice', 'Build and evaluate a thirty-day authored-reality practice.'],
+  ],
+  'sovereign-mind': [
+    ['witness-practice', 'Module 2: Witness Practice', 'Applied Practice', 'Use the witness position to interrupt a conditioned response in real time.'],
+    ['choice-protocol', 'Module 3: Choice Protocol', 'Mastery Practice', 'Author a reusable decision protocol for recurring triggers.'],
+  ],
+  aftermath: [
+    ['pattern-literacy', 'Module 2: Pattern Literacy', 'Applied Practice', 'Teach another learner to recognize a systemic pattern without relying on personal context.'],
+    ['torch-transfer', 'Module 3: Torch Transfer', 'Mastery Practice', 'Publish a clear teaching map with safeguards, actions, and measures of transfer.'],
+  ],
+};
+
+const buildAdvancedModules = (faculty) => {
+  const base = faculty.modules[0];
+  return (ADVANCED_MODULES[faculty.slug] || []).map(([slug, title, stage, outcome], index) => {
+    const codeOffset = (index + 1) * 10;
+    const renumber = (id) => `${id.slice(0, 3)}${String(Number(id.slice(3)) + codeOffset).padStart(2, '0')}`;
+    return {
+      ...base,
+      id: `module-${slug}`,
+      slug,
+      order: index + 2,
+      title,
+      subtitle: outcome,
+      initiationCopy: [
+        `${stage}: ${title}.`,
+        `This module extends ${base.title} from recognition into ${index === 0 ? 'applied practice' : 'independent mastery'}.`,
+        outcome,
+        'Use the signal keys as evidence, select the pattern that is active now, retrieve its replacement law, and document an observable next action.',
+      ],
+      learningObjectives: [
+        `Identify one current situation in which the faculty concept is operating.`,
+        `Apply the faculty method to produce a specific Shadow-to-Light analysis.`,
+        `${index === 0 ? 'Demonstrate' : 'Evaluate'} the result through one observable action and a written reflection.`,
+      ],
+      shadowCodes: base.shadowCodes.map((code) => ({ ...code, id: renumber(code.id) })),
+      lightMappings: base.lightMappings.map((mapping) => ({
+        ...mapping,
+        shadowId: renumber(mapping.shadowId),
+        lightId: renumber(mapping.lightId),
+      })),
+      declarationFields: [
+        { key: 'currentContext', label: 'What current situation will you work with?', placeholder: 'Name one specific setting, event, or decision...' },
+        { key: 'evidence', label: 'What evidence reveals the active pattern?', placeholder: 'Describe what was said, chosen, repeated, or observed...' },
+        { key: 'application', label: 'How will you apply the retrieved law?', placeholder: 'State the action you will take...' },
+        { key: 'measure', label: 'What observable result will show integration?', placeholder: 'I will know this is integrated when...' },
+      ],
+      integrationKey: outcome,
+      xpReward: base.xpReward + ((index + 1) * 150),
+      estimatedMinutes: base.estimatedMinutes + ((index + 1) * 10),
+    };
+  });
+};
+
 const buildRubricCriteria = (field) => [
   `Specificity: directly answers “${field.label}” with a concrete example or commitment.`,
   'Evidence: connects the response to an observed pattern, event, decision, or behavior.',
@@ -52,13 +121,17 @@ const enrichCurriculum = (curriculum) => ({
   faculties: curriculum.faculties.map((faculty) => ({
     ...faculty,
     artworkAlt: `${faculty.title} faculty module artwork`,
-    modules: faculty.modules.map((module) => ({
+    modules: [...faculty.modules, ...buildAdvancedModules(faculty)].map((module) => ({
       ...module,
-      learningObjectives: LEARNING_OBJECTIVES[module.id] || [],
+      learningObjectives: module.learningObjectives || LEARNING_OBJECTIVES[module.id] || [],
       shadowCodes: module.shadowCodes.map((code) => ({
         ...code,
         id: `${faculty.slug}-${code.id}`,
         displayId: code.id,
+        collectiveDiagnostic: `Collective or ancestral frame: ${code.diagnostic
+          .replace(/\bI\b/g, 'we')
+          .replace(/\bmy\b/gi, 'our')
+          .replace(/\bme\b/gi, 'us')}`,
       })),
       lightMappings: module.lightMappings.map((mapping) => ({
         ...mapping,
@@ -250,7 +323,7 @@ const BASE_RECLAMATION_CURRICULUM = {
       description: 'Discover how speech is creative law. Learn to move from silence to clean declaration and understand the power of naming.',
       accent: 'red',
       artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_three_card.svg',
-      prerequisiteFacultyIds: ['foundations-of-reclamation'],
+      prerequisiteFacultyIds: ['foundations-of-reclamation', 'architecture-of-identity'],
       modules: [
         {
           id: 'module-voice-recovery',
@@ -330,6 +403,7 @@ const BASE_RECLAMATION_CURRICULUM = {
           sourceTrackIds: ['i-create-as-i-speak', 'emerald-mode-online', 'blueprint-of-the-divine'],
           initiationCopy: [
             'Welcome to the Manifestation Lab, Rising Seeker.',
+            'Bridge from Identity: in Identity, you dissolved the walls built by hidden laws; here, you use that cleared ground to build authored architecture.',
             'You have learned that the mind is a medium. You have learned that thought forms build walls. Now you will learn the inverse: how to use thought forms to build what you author.',
             'Manifestation is not fantasy. It is not positive thinking. It is the precise alignment of thought, feeling, action, and identity into a coherent signal.',
             'The work is to identify the thought you want to live into form. Then to feel it as if it is already true. Then to take action as if it is already true. Then to become the identity that naturally lives that truth.',

@@ -8,6 +8,12 @@ import { AudioProvider } from "@/context/audioprovider";
 
 import "@/index.css";
 import App from "@/App";
+import { validateSupabaseConfiguration } from "@/services/supabase/client";
+
+const supabaseConfiguration = validateSupabaseConfiguration();
+if (!supabaseConfiguration.isValid) {
+  console.error("Application startup blocked by invalid Supabase configuration:", supabaseConfiguration.issues);
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById("root")

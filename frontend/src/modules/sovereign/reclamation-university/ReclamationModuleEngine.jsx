@@ -280,6 +280,10 @@ export default function ReclamationModuleEngine({ module, faculty }) {
       selectedAnchorKey={selectedAnchorKey}
       onMarkListened={toggleListenedTrack}
       onAnchorSelect={setSelectedAnchorKey}
+      onTrackError={(track, error) => trackEvent('track_load_failed', {
+        trackId: track.title,
+        message: error?.message || 'Unknown track error',
+      })}
     />,
     <ShadowCodeSelector
       key="shadow-scan"

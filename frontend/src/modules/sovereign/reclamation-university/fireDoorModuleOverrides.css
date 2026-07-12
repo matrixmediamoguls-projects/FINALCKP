@@ -206,6 +206,18 @@
   transform: none;
 }
 
+.fire-door-module-root :where(button, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid #fef08a;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(127, 29, 29, 0.7);
+}
+
+.fire-door-secondary-action.is-active {
+  border-color: #fca5a5;
+  color: #fff;
+  background: rgba(127, 29, 29, 0.45);
+}
+
 .fire-door-final-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.75fr);

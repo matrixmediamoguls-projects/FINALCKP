@@ -22,9 +22,10 @@ export default function DeclarationBuilder({ declaration = {}, declarationFields
           const key = field.key || field[0];
           const label = field.label || field[1];
           return (
-          <label key={key} className="fire-door-card block p-4">
+          <label key={key} htmlFor={`${key}-declaration`} className="fire-door-card block p-4">
             <span className="fire-door-badge">{label}</span>
             <textarea
+              id={`${key}-declaration`}
               value={declaration[key] || ''}
               onChange={(event) => onChange(key, event.target.value)}
               className="mt-3 min-h-[120px] w-full resize-y rounded-2xl border border-red-500/15 bg-black/60 p-3 text-sm leading-7 text-white outline-none transition placeholder:text-zinc-700 focus:border-red-300/45"
