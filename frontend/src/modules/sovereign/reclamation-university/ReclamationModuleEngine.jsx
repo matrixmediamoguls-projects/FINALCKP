@@ -29,14 +29,14 @@ import './fireDoorModuleOverrides.css';
  */
 
 const SCENE_TITLES = [
-  ['02', 'Signal Keys', 'Receive both ignition keys before the chamber advances.'],
-  ['03', 'Shadow Code Scan', 'Mark the restriction that tried to rename the signal.'],
-  ['04', 'Light Code Retrieval', 'Convert the marked pressure into a recoverable law.'],
-  ['05', 'First Law Declaration', 'Write and seal the law of the self that cannot be erased.'],
-  ['06', 'Fire Door Opens', 'Receive the Integration Key and seal the private record.'],
+  ['01', 'Receive the Signal', 'Listen to every paired track and identify its teaching.'],
+  ['02', 'Name the Pattern', 'Choose the Shadow Code that best describes the restriction.'],
+  ['03', 'Retrieve the Law', 'Translate that pattern into a usable Light Code.'],
+  ['04', 'Write Your Declaration', 'Put the recovered law into your own words and seal it.'],
+  ['05', 'Integrate and Save', 'Receive the Integration Key and preserve your record.'],
 ];
 
-function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvance, onReplayTransmission, children }) {
+function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvance, onExit, onSceneSelect, children }) {
   const activeScene = SCENE_TITLES[activeSceneIndex];
   const isFinalScene = activeSceneIndex === SCENE_TITLES.length - 1;
 
@@ -48,8 +48,8 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
           <h2>{activeScene[1]}</h2>
           <p>{activeScene[2]}</p>
         </div>
-        <button type="button" className="fire-door-secondary-action" onClick={onReplayTransmission}>
-          Replay Transmission
+        <button type="button" className="fire-door-secondary-action" onClick={onExit}>
+          Exit to Faculty
         </button>
       </header>
 
@@ -58,10 +58,17 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
           const isActive = index === activeSceneIndex;
           const isPast = index < activeSceneIndex;
           return (
-            <span key={title} className={`${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}>
+            <button
+              type="button"
+              key={title}
+              className={`${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}
+              onClick={() => isPast && onSceneSelect(index)}
+              disabled={!isPast && !isActive}
+              aria-current={isActive ? 'step' : undefined}
+            >
               <b>{number}</b>
               <small>{title}</small>
-            </span>
+            </button>
           );
         })}
       </nav>
@@ -72,15 +79,15 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
 
       <footer className="fire-door-gate-controls">
         <button type="button" className="fire-door-secondary-action" onClick={onBack} disabled={activeSceneIndex === 0}>
-          Previous Gate
+          Previous Step
         </button>
         <div>
           <span className={`fire-door-gate-status ${canAdvance || isFinalScene ? 'is-open' : ''}`}>
-            {isFinalScene ? 'Final chamber active' : canAdvance ? 'Gate condition satisfied' : lockMessage}
+            {isFinalScene ? 'Ready to complete' : canAdvance ? 'Step complete' : lockMessage}
           </span>
           {!isFinalScene && (
             <button type="button" className="fire-door-action" onClick={onAdvance} disabled={!canAdvance}>
-              Open Next Gate
+              Continue to Step {activeSceneIndex + 2}
             </button>
           )}
         </div>
@@ -173,6 +180,10 @@ export default function ReclamationModuleEngine({ module, faculty }) {
       ? listenedTracks.filter((item) => item !== trackId)
       : [...listenedTracks, trackId];
     setListenedTracks(newListenedTracks);
+    saveProgress({
+      status: 'in_progress', activeScene: activeSceneIndex, listenedTrackIds: newListenedTracks,
+      selectedShadowCodes, retrievedLightCodes, declarationJson: declaration,
+    });
     trackEvent('track_listened', { trackId, listened: !listenedTracks.includes(trackId) });
   };
 
@@ -184,6 +195,11 @@ export default function ReclamationModuleEngine({ module, faculty }) {
         .filter((item) => next.includes(item.shadowId))
         .map((item) => item.lightId);
       setRetrievedLightCodes((lights) => lights.filter((item) => allowedLightCodes.includes(item)));
+      saveProgress({
+        status: 'in_progress', activeScene: activeSceneIndex, listenedTrackIds: listenedTracks,
+        selectedShadowCodes: next, retrievedLightCodes: retrievedLightCodes.filter((item) => allowedLightCodes.includes(item)),
+        declarationJson: declaration,
+      });
       trackEvent('shadow_code_selected', { codeId, selected: !current.includes(codeId) });
       return next;
     });
@@ -191,9 +207,14 @@ export default function ReclamationModuleEngine({ module, faculty }) {
 
   const toggleLightCode = (lightId) => {
     const isSelected = !retrievedLightCodes.includes(lightId);
-    setRetrievedLightCodes((current) =>
-      current.includes(lightId) ? current.filter((item) => item !== lightId) : [...current, lightId]
-    );
+    const nextLightCodes = retrievedLightCodes.includes(lightId)
+      ? retrievedLightCodes.filter((item) => item !== lightId)
+      : [...retrievedLightCodes, lightId];
+    setRetrievedLightCodes(nextLightCodes);
+    saveProgress({
+      status: 'in_progress', activeScene: activeSceneIndex, listenedTrackIds: listenedTracks,
+      selectedShadowCodes, retrievedLightCodes: nextLightCodes, declarationJson: declaration,
+    });
     trackEvent('light_code_retrieved', { lightId, retrieved: isSelected });
   };
 
@@ -333,6 +354,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
       {!hasCrossedFireDoor ? (
         <FireDoorInitiationScene
           copy={module?.initiationCopy || []}
+          module={module}
           onCross={() => {
             setHasCrossedFireDoor(true);
             trackEvent('fire_door_crossed');
@@ -354,7 +376,8 @@ export default function ReclamationModuleEngine({ module, faculty }) {
             lockMessage={activeRule.lockMessage}
             onBack={() => setActiveSceneIndex(Math.max(0, activeSceneIndex - 1))}
             onAdvance={handleSceneAdvance}
-            onReplayTransmission={() => setActiveSceneIndex(0)}
+            onExit={() => navigate(`/experiencemode/sovereign/reclamation-university/${faculty?.slug}`)}
+            onSceneSelect={setActiveSceneIndex}
           >
             {activeScene}
           </SceneShell>

@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #ff2a1a;
+  --red-dim: rgba(255, 42, 26, 0.55);
+  --red-faint: rgba(255, 42, 26, 0.12);
+  --cyan: #00c8ff;
+  --cyan-dim: rgba(0, 200, 255, 0.55);
+  --green: #22ff88;
+  --green-dim: rgba(34, 255, 136, 0.55);
+  --text: #fff;
+  --text-dim: rgba(255, 255, 255, 0.55);
+  --bg: #020202;
+  --panel-bg: linear-gradient(135deg, rgba(20, 0, 0, 0.75), rgba(0, 0, 0, 0.6));
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(ellipse at 50% 45%, rgba(140, 0, 0, 0.22) 0%, #060101 45%, #010101 100%);
+  color: var(--text);
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* scanline overlay */
+.app-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.06) 3px,
+    rgba(0,0,0,0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+.app-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 12px;
+  padding: 0 12px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── HUD panel base ── */
+.hud-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--red-dim);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.1), inset 0 0 14px rgba(255, 0, 0, 0.06);
+  padding: 10px 12px;
+  position: relative;
+}
+
+.hud-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--red-faint);
+  pointer-events: none;
+}
+
+.panel-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+
+.panel-label-cyan {
+  color: var(--cyan);
+}
+
+.panel-label-green {
+  color: var(--green);
+}
+
+/* ── Glow helpers ── */
+.red-glow {
+  filter: drop-shadow(0 0 6px rgba(255, 42, 26, 0.9));
+}
+
+.cyan-glow {
+  filter: drop-shadow(0 0 5px rgba(0, 200, 255, 0.9));
+}
+
+/* ── Clip panel corners ── */
+.clip-tl {
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+}
+.clip-tr {
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+.clip-both {
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
+}
+
+/* ── Scrollbar hide ── */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }

@@ -1,136 +1,82 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
+import { ArrowRight, BookOpen, Check, ChevronDown, Clock3, Headphones, ListChecks } from 'lucide-react';
 
-const SYSTEM_LABELS = [
-  'SIGNAL ACQUISITION: ACTIVE',
-  'RISING SEEKER DETECTED',
-  'ACT III: RECLAMATION PROTOCOL ONLINE',
-  'MODULE 1: THE FIRE DOOR',
+const MODULE_STEPS = [
+  ['01', 'Receive the signal', 'Listen to each paired track and identify its teaching.'],
+  ['02', 'Name the pattern', 'Choose the Shadow Code that describes the restriction.'],
+  ['03', 'Retrieve the law', 'Translate that pattern into a usable Light Code.'],
+  ['04', 'Write your declaration', 'Put the recovered law into your own words.'],
+  ['05', 'Integrate and save', 'Receive the Integration Key and preserve your record.'],
 ];
 
-function usePrefersReducedMotion() {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener?.('change', handleChange);
-    return () => mediaQuery.removeEventListener?.('change', handleChange);
-  }, []);
-
-  return prefersReducedMotion;
-}
-
-export default function FireDoorInitiationScene({ copy, onCross }) {
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const [visibleSystemCount, setVisibleSystemCount] = useState(0);
-  const [visibleParagraphs, setVisibleParagraphs] = useState([]);
-  const [activeText, setActiveText] = useState('');
-  const [isTransmissionComplete, setIsTransmissionComplete] = useState(false);
-
-  const progress = useMemo(() => {
-    const systemWeight = visibleSystemCount / SYSTEM_LABELS.length;
-    const paragraphWeight = (visibleParagraphs.length + (activeText ? 0.5 : 0)) / copy.length;
-    return Math.min(100, Math.round(((systemWeight * 0.3) + (paragraphWeight * 0.7)) * 100));
-  }, [activeText, copy.length, visibleParagraphs.length, visibleSystemCount]);
-
-  useEffect(() => {
-    let cancelled = false;
-    const timers = [];
-    const delay = (ms) => new Promise((resolve) => {
-      const timer = window.setTimeout(resolve, ms);
-      timers.push(timer);
-    });
-
-    async function runTransmission() {
-      setVisibleSystemCount(0);
-      setVisibleParagraphs([]);
-      setActiveText('');
-      setIsTransmissionComplete(false);
-
-      for (let index = 0; index < SYSTEM_LABELS.length; index += 1) {
-        if (cancelled) return;
-        setVisibleSystemCount(index + 1);
-        await delay(prefersReducedMotion ? 260 : 560);
-      }
-
-      await delay(prefersReducedMotion ? 260 : 620);
-
-      for (const paragraph of copy) {
-        if (cancelled) return;
-
-        if (prefersReducedMotion) {
-          setVisibleParagraphs((current) => [...current, paragraph]);
-          await delay(520);
-        } else {
-          setActiveText('');
-          for (let index = 1; index <= paragraph.length; index += 1) {
-            if (cancelled) return;
-            setActiveText(paragraph.slice(0, index));
-            await delay(20);
-          }
-          setVisibleParagraphs((current) => [...current, paragraph]);
-          setActiveText('');
-          await delay(820);
-        }
-      }
-
-      await delay(prefersReducedMotion ? 420 : 1200);
-      if (!cancelled) setIsTransmissionComplete(true);
-    }
-
-    runTransmission();
-
-    return () => {
-      cancelled = true;
-      timers.forEach((timer) => window.clearTimeout(timer));
-    };
-  }, [copy, prefersReducedMotion]);
+export default function FireDoorInitiationScene({ copy = [], module, onCross }) {
+  const [showTransmission, setShowTransmission] = useState(false);
+  const trackCount = module?.sourceTrackIds?.length || 0;
 
   return (
-    <section
-      className="fire-door-initiation"
-      style={{ '--transmission-progress': `${progress}%`, '--threshold-scale': 1 + progress / 90 }}
-      aria-label="Rising Seeker Fire Door initiation"
-    >
-      <div className="fire-door-noise" aria-hidden="true" />
-      <div className="fire-door-scanline" aria-hidden="true" />
-      <div className="fire-door-threshold" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
-      <div className="fire-door-embers" aria-hidden="true">
-        {Array.from({ length: 22 }).map((_, index) => <i key={index} />)}
+    <main className="module-brief" aria-labelledby="module-brief-title">
+      <div className="module-brief-glow" aria-hidden="true" />
+
+      <header className="module-brief-header">
+        <p className="fire-door-kicker">Reclamation University · Module Brief</p>
+        <h1 id="module-brief-title">{module?.title || 'The Fire Door'}</h1>
+        <p>{module?.subtitle || 'Cross the threshold where authorship returns.'}</p>
+      </header>
+
+      <div className="module-brief-meta" aria-label="Module details">
+        <span><Clock3 size={17} /><strong>{module?.estimatedMinutes || 45}</strong> minutes</span>
+        <span><Headphones size={17} /><strong>{trackCount}</strong> track signals</span>
+        <span><ListChecks size={17} /><strong>5</strong> guided steps</span>
       </div>
 
-      <div className="fire-door-transmission-shell">
-        <div className="fire-door-status-grid" aria-hidden="true">
-          {SYSTEM_LABELS.map((label, index) => (
-            <span key={label} className={visibleSystemCount > index ? 'is-visible' : ''}>{label}</span>
+      <section className="module-brief-outcome" aria-labelledby="module-outcome-title">
+        <span className="module-brief-icon"><BookOpen size={23} /></span>
+        <div>
+          <p className="fire-door-kicker">Your outcome</p>
+          <h2 id="module-outcome-title">Turn one restrictive pattern into a law you can live by.</h2>
+          <p>Your work saves as you move through the sequence. You can leave and return at any point.</p>
+        </div>
+      </section>
+
+      <section className="module-brief-roadmap" aria-labelledby="module-roadmap-title">
+        <div className="module-brief-section-heading">
+          <p className="fire-door-kicker">The sequence</p>
+          <h2 id="module-roadmap-title">What you will do</h2>
+        </div>
+        <ol>
+          {MODULE_STEPS.map(([number, title, description]) => (
+            <li key={number}>
+              <span>{number}</span>
+              <div><strong>{title}</strong><p>{description}</p></div>
+              <Check size={16} aria-hidden="true" />
+            </li>
           ))}
-        </div>
+        </ol>
+      </section>
 
-        <div className="sr-only">{copy.join('\n\n')}</div>
-
-        <div className="fire-door-copy-panel" aria-hidden="true">
-          <div className="fire-door-progress-track"><span /></div>
-          <div className="fire-door-copy">
-            {visibleParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-            {activeText && <p className="is-typing">{activeText}<b aria-hidden="true" /></p>}
-          </div>
-        </div>
-
-        {isTransmissionComplete && (
-          <div className="fire-door-completion">
-            <span>TRANSMISSION RECEIVED</span>
-            <strong>FIRE DOOR READY</strong>
-            <button type="button" onClick={onCross}>Cross The Fire Door</button>
+      <section className={`module-transmission ${showTransmission ? 'is-open' : ''}`}>
+        <button
+          type="button"
+          className="module-transmission-toggle"
+          onClick={() => setShowTransmission((current) => !current)}
+          aria-expanded={showTransmission}
+        >
+          <span><strong>Opening transmission</strong><small>{copy.length} short readings · optional before beginning</small></span>
+          <ChevronDown size={19} />
+        </button>
+        {showTransmission && (
+          <div className="module-transmission-copy">
+            {copy.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 18)}`}>{paragraph}</p>)}
           </div>
         )}
-      </div>
-    </section>
+      </section>
+
+      <footer className="module-brief-footer">
+        <p><strong>Progress saves automatically.</strong> Begin when you are ready.</p>
+        <button type="button" className="fire-door-action" onClick={onCross}>
+          Begin Module <ArrowRight size={18} />
+        </button>
+      </footer>
+    </main>
   );
 }
