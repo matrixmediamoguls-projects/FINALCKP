@@ -28,8 +28,20 @@ export default function DeclarationBuilder({ declaration = {}, declarationFields
               value={declaration[key] || ''}
               onChange={(event) => onChange(key, event.target.value)}
               className="mt-3 min-h-[120px] w-full resize-y rounded-2xl border border-red-500/15 bg-black/60 p-3 text-sm leading-7 text-white outline-none transition placeholder:text-zinc-700 focus:border-red-300/45"
-              placeholder="Write the law here..."
+              placeholder={field.placeholder || 'Write the law here...'}
+              aria-describedby={`${key}-declaration-guidance`}
             />
+            {(field.feedbackCopy || field.rubricCriteria?.length > 0) && (
+              <details id={`${key}-declaration-guidance`} className="mt-3 rounded-xl border border-white/10 bg-black/25 p-3 text-left">
+                <summary className="cursor-pointer text-xs font-semibold uppercase tracking-[0.14em] text-red-200">Response guidance</summary>
+                {field.feedbackCopy && <p className="mt-2 text-xs leading-6 text-zinc-300">{field.feedbackCopy}</p>}
+                {field.rubricCriteria?.length > 0 && (
+                  <ul className="mt-2 list-disc space-y-1 pl-5 text-xs leading-5 text-zinc-400">
+                    {field.rubricCriteria.map((criterion) => <li key={criterion}>{criterion}</li>)}
+                  </ul>
+                )}
+              </details>
+            )}
           </label>
         );
         })}

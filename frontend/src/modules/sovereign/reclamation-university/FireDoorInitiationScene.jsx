@@ -38,6 +38,24 @@ export default function FireDoorInitiationScene({ copy = [], module, onCross }) 
         </div>
       </section>
 
+      {module?.learningObjectives?.length > 0 && (
+        <section className="module-brief-roadmap" aria-labelledby="module-objectives-title">
+          <div className="module-brief-section-heading">
+            <p className="fire-door-kicker">Performance targets</p>
+            <h2 id="module-objectives-title">By the end of this module, you can</h2>
+          </div>
+          <ol>
+            {module.learningObjectives.map((objective, index) => (
+              <li key={objective}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <div><p>{objective}</p></div>
+                <Check size={16} aria-hidden="true" />
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
       <section className="module-brief-roadmap" aria-labelledby="module-roadmap-title">
         <div className="module-brief-section-heading">
           <p className="fire-door-kicker">The sequence</p>

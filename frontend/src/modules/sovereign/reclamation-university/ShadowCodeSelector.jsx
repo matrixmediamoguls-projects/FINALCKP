@@ -16,7 +16,7 @@ export default function ShadowCodeSelector({ shadowCodes, selectedShadowCodes, o
               className={`fire-door-card w-full p-4 text-left transition ${active ? 'is-active' : ''}`}
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="fire-door-badge is-hot">{code.id}</span>
+                <span className="fire-door-badge is-hot" title={code.id}>{code.displayId || code.id}</span>
                 <span className={`fire-door-badge ${active ? 'is-hot' : ''}`}>{active ? 'Marked for Retrieval' : 'Run Scan'}</span>
               </div>
               <strong className="mt-3 block text-base uppercase tracking-[0.12em] text-white">{code.title}</strong>

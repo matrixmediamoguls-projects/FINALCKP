@@ -52,6 +52,8 @@ dump.rdb
 
 # System files
 .DS_Store
+desktop.ini
+*.save
 *.pem
 
 # Python

@@ -8,7 +8,72 @@
  * Faculty order follows the natural progression from foundational concepts to advanced practice.
  */
 
-export const RECLAMATION_CURRICULUM = {
+const LEARNING_OBJECTIVES = {
+  'module-fire-door': [
+    'Identify at least one external restriction and explain how it affected personal authorship.',
+    'Trace a selected Shadow Code to evidence from lived experience and its corresponding Light Code.',
+    'Author a specific first law that converts the named pressure into a future-facing commitment.',
+  ],
+  'module-thought-form-studio': [
+    'Identify a recurring pattern and distinguish its visible outcome from the hidden law beneath it.',
+    'Trace one inherited or absorbed thought form to its source using concrete evidence.',
+    'Author a replacement law and describe one behavior that demonstrates the new thought form.',
+  ],
+  'module-voice-recovery': [
+    'Identify a suppressed truth and explain the anticipated consequence that kept it unspoken.',
+    'Differentiate reactive speech from a clear, evidence-based declaration.',
+    'Author a concise declaration that names the truth and the change its signal is intended to create.',
+  ],
+  'module-manifestation-lab': [
+    'Identify where thought, feeling, action, and identity are misaligned around one desired outcome.',
+    'Trace a limiting assumption to the behavior or decision it currently produces.',
+    'Design one observable action that aligns present behavior with the authored future identity.',
+  ],
+  'module-sovereign-training': [
+    'Identify a conditioned response and trace it to a specific source or repeated experience.',
+    'Apply the witness position to separate an observed trigger from an automatic reaction.',
+    'Author and rehearse a sovereign alternative that can be used when the trigger recurs.',
+  ],
+  'module-teaching-transmission': [
+    'Identify a repeatable system pattern within a personal reclamation experience.',
+    'Translate lived experience into a teachable protocol with clear recognition and response steps.',
+    'Author a practical map that another learner can apply without needing the author present.',
+  ],
+};
+
+const buildRubricCriteria = (field) => [
+  `Specificity: directly answers “${field.label}” with a concrete example or commitment.`,
+  'Evidence: connects the response to an observed pattern, event, decision, or behavior.',
+  'Application: states what the learner will recognize, choose, or do differently next.',
+];
+
+const enrichCurriculum = (curriculum) => ({
+  ...curriculum,
+  faculties: curriculum.faculties.map((faculty) => ({
+    ...faculty,
+    artworkAlt: `${faculty.title} faculty module artwork`,
+    modules: faculty.modules.map((module) => ({
+      ...module,
+      learningObjectives: LEARNING_OBJECTIVES[module.id] || [],
+      shadowCodes: module.shadowCodes.map((code) => ({
+        ...code,
+        id: `${faculty.slug}-${code.id}`,
+        displayId: code.id,
+      })),
+      lightMappings: module.lightMappings.map((mapping) => ({
+        ...mapping,
+        shadowId: `${faculty.slug}-${mapping.shadowId}`,
+      })),
+      declarationFields: module.declarationFields.map((field) => ({
+        ...field,
+        feedbackCopy: `A strong response names a specific example, explains why it matters, and states the authored choice that follows.`,
+        rubricCriteria: buildRubricCriteria(field),
+      })),
+    })),
+  })),
+});
+
+const BASE_RECLAMATION_CURRICULUM = {
   faculties: [
     {
       id: 'foundations-of-reclamation',
@@ -456,6 +521,8 @@ export const RECLAMATION_CURRICULUM = {
     },
   ],
 };
+
+export const RECLAMATION_CURRICULUM = enrichCurriculum(BASE_RECLAMATION_CURRICULUM);
 
 /**
  * Helper function to get a faculty by slug

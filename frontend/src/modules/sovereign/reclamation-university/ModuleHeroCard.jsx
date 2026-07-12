@@ -35,6 +35,15 @@ export default function ModuleHeroCard({ moduleMeta, hasEntered, onEnter, action
         ))}
       </div>
 
+      {moduleMeta.learningObjectives?.length > 0 && (
+        <section className="mt-6 rounded-2xl border border-red-500/20 bg-black/35 p-5" aria-labelledby="module-learning-objectives">
+          <p id="module-learning-objectives" className="fire-door-kicker">Measurable learning objectives</p>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-zinc-300">
+            {moduleMeta.learningObjectives.map((objective) => <li key={objective}>{objective}</li>)}
+          </ul>
+        </section>
+      )}
+
       <button type="button" onClick={onEnter} className="fire-door-action mt-7">
         {actionLabel || (hasEntered ? 'Transmission Received' : 'Initiate Protocol')}
       </button>

@@ -114,17 +114,23 @@ export default function ReclamationModuleEngine({ module, faculty }) {
   // Initialize from loaded progress
   useEffect(() => {
     if (progress && !isLoading) {
+      const shadowIdByLegacyId = new Map(
+        (module?.shadowCodes || []).map((code) => [code.displayId || code.id, code.id])
+      );
+      const normalizedShadowCodes = (progress.selected_shadow_codes || [])
+        .map((codeId) => shadowIdByLegacyId.get(codeId) || codeId)
+        .filter((codeId) => (module?.shadowCodes || []).some((code) => code.id === codeId));
       setHasCrossedFireDoor(true);
       setActiveSceneIndex(progress.active_scene || 0);
       setListenedTracks(progress.listened_track_ids || []);
-      setSelectedShadowCodes(progress.selected_shadow_codes || []);
+      setSelectedShadowCodes(normalizedShadowCodes);
       setRetrievedLightCodes(progress.retrieved_light_codes || []);
       setDeclaration(progress.declaration_json || {});
       if (progress.status === 'completed') {
         setDeclarationSealed(true);
       }
     }
-  }, [progress, isLoading]);
+  }, [progress, isLoading, module]);
 
   // Initialize default anchor key
   useEffect(() => {
