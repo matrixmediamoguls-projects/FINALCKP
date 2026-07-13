@@ -1,13 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Component, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Bounds, useGLTF } from '@react-three/drei';
 import {
   ChevronLeft,
   ChevronRight,
   CircleGauge,
-  Flame,
+  Diamond,
   Minus,
   Orbit,
   Plus,
+  Radio,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './SelfDirectedSovereignMode.css';
@@ -19,7 +22,7 @@ const MODULES = [
     code: 'AVC',
     lightCode: 'See The Waveform. Shape The Sound. Amplify Your Vision.',
     route: '/visualizer-core',
-    card: '/ui/reclamation/Module_Cards/Visualizer_Core.png',
+    card: '/ui/reclamation/Module_Cards/Sovereign/visualizer_core.png',
   },
   {
     id: 'elemental-codex',
@@ -27,7 +30,7 @@ const MODULES = [
     code: 'ECP',
     lightCode: 'The Structure Beneath The System',
     route: '/codex',
-    card: '/ui/reclamation/Module_Cards/Elemental_Codex_clean.png',
+    card: '/ui/reclamation/Module_Cards/Sovereign/elemental_codex.png',
   },
   {
     id: 'reclamation-university',
@@ -35,7 +38,7 @@ const MODULES = [
     code: 'RU',
     lightCode: "The Sun Don't Invoice?",
     route: '/experiencemode/sovereign/reclamation-university',
-    card: '/ui/reclamation/Module_Cards/Reclamation_University.png',
+    card: '/ui/reclamation/Module_Cards/Sovereign/reclamation_university.png',
   },
   {
     id: 'lyrical-codex',
@@ -43,7 +46,7 @@ const MODULES = [
     code: 'LCP',
     lightCode: 'Content Is Structure. Structure Is Legacy.',
     route: '/protocol/3',
-    card: '/ui/reclamation/Module_Cards/Lyrical_Codex_clean.png',
+    card: '/ui/reclamation/Module_Cards/Sovereign/lyrical_codex.png',
   },
   {
     id: 'sonic-artifacts',
@@ -51,7 +54,7 @@ const MODULES = [
     code: 'SAP',
     lightCode: 'Frequencies Hold Memory. Artifacts Hold Purpose.',
     route: '/listen/3',
-    card: '/ui/reclamation/Module_Cards/Sonic_Artifacts.png',
+    card: '/ui/reclamation/Module_Cards/Sovereign/sonic_artifacts.png',
   },
   {
     id: 'vibes-and-tribes',
@@ -59,7 +62,7 @@ const MODULES = [
     code: 'VAT',
     lightCode: 'Resonance Finds Its People.',
     route: '/journal',
-    card: '/ui/reclamation/Module_Cards/Vibes_Tribes.png',
+    card: '/ui/reclamation/Module_Cards/Sovereign/archaetypes.png',
   },
 ];
 
@@ -70,6 +73,39 @@ const ELEMENT_LEVELS = [
   { label: 'Air', value: 64, color: '#55bc56' },
   { label: 'Sound', value: 88, color: '#8d20ef' },
 ];
+
+const PROTOCOL_PROGRESS = { currentTrack: 15, totalTracks: 27, percentage: 55 };
+const CORE_MODEL = '/ui/reclamation/Module_Cards/Sovereign/flamecore.glb';
+
+class CoreErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
+function PrometheanModel({ intensity }) {
+  const model = useRef();
+  const { scene } = useGLTF(CORE_MODEL);
+
+  useFrame((state, delta) => {
+    if (!model.current) return;
+    model.current.rotation.y += delta * (0.2 + intensity * 0.34);
+    model.current.position.y = Math.sin(state.clock.elapsedTime * 1.35) * 0.025;
+  });
+
+  return <primitive ref={model} object={scene} />;
+}
+
+useGLTF.preload(CORE_MODEL);
 
 function getCircularOffset(index, activeIndex, length) {
   let offset = index - activeIndex;
@@ -92,10 +128,15 @@ function ModuleCard({ module, offset, index, onSelect }) {
       data-offset={offset}
       style={{ '--card-order': 20 - distance }}
       onClick={onSelect}
-      aria-label={`Select ${module.title}`}
+      aria-label={offset === 0 ? `Enter ${module.title}` : `Select ${module.title}`}
       aria-current={offset === 0 ? 'true' : undefined}
     >
-      <img className="sos-card-art" src={module.card} alt={`${module.title} module card`} />
+      <span className="sos-card-shell">
+        <span className="sos-card-corner sos-card-corner--tl" aria-hidden="true" />
+        <span className="sos-card-corner sos-card-corner--tr" aria-hidden="true" />
+        <img className="sos-card-art" src={module.card} alt={`${module.title} module card`} />
+        <span className="sos-card-scanline" aria-hidden="true" />
+      </span>
     </button>
   );
 }
@@ -112,8 +153,11 @@ function HudPanel({ title, children, className = '' }) {
 export default function SelfDirectedSovereignMode() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(2);
   const [zoom, setZoom] = useState(1);
+  const [isRotating, setIsRotating] = useState(false);
+  const [interactionIntensity, setInteractionIntensity] = useState(0);
+  const settleTimer = useRef();
 
   const activeModule = MODULES[activeIndex];
   const userName = user?.name || user?.email?.split('@')[0] || 'Supabase';
@@ -128,39 +172,35 @@ export default function SelfDirectedSovereignMode() {
     [activeIndex],
   );
 
+  const animateSelection = useCallback(() => {
+    window.clearTimeout(settleTimer.current);
+    setIsRotating(true);
+    setInteractionIntensity(1);
+    settleTimer.current = window.setTimeout(() => {
+      setIsRotating(false);
+      setInteractionIntensity(0);
+    }, 620);
+  }, []);
+
+  const selectModule = useCallback((index) => {
+    animateSelection();
+    setActiveIndex((index + MODULES.length) % MODULES.length);
+  }, [animateSelection]);
+
   const rotate = useCallback((direction) => {
+    animateSelection();
     setActiveIndex((current) => (current + direction + MODULES.length) % MODULES.length);
-  }, []);
-
-  const handleDeckClick = useCallback((event) => {
-    if (event.target.closest('.sos-module-card')) return;
-
-    const cards = Array.from(event.currentTarget.querySelectorAll('.sos-module-card'))
-      .filter((card) => window.getComputedStyle(card).pointerEvents !== 'none')
-      .filter((card) => {
-        const rect = card.getBoundingClientRect();
-        return (
-          event.clientX >= rect.left &&
-          event.clientX <= rect.right &&
-          event.clientY >= rect.top &&
-          event.clientY <= rect.bottom
-        );
-      })
-      .sort((a, b) => Number(b.style.getPropertyValue('--card-order')) - Number(a.style.getPropertyValue('--card-order')));
-
-    const selectedIndex = Number(cards[0]?.dataset.moduleIndex);
-    if (Number.isInteger(selectedIndex)) {
-      setActiveIndex(selectedIndex);
-    }
-  }, []);
+  }, [animateSelection]);
 
   const handlePointerMove = useCallback((event) => {
     const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+    const x = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width - 0.5) * 2));
+    const y = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height - 0.5) * 2));
     event.currentTarget.style.setProperty('--parallax-x', x.toFixed(3));
     event.currentTarget.style.setProperty('--parallax-y', y.toFixed(3));
   }, []);
+
+  useEffect(() => () => window.clearTimeout(settleTimer.current), []);
 
   const resetParallax = useCallback((event) => {
     event.currentTarget.style.setProperty('--parallax-x', 0);
@@ -169,6 +209,8 @@ export default function SelfDirectedSovereignMode() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
+      const target = event.target;
+      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable) return;
       if (event.key === 'ArrowLeft') rotate(-1);
       if (event.key === 'ArrowRight') rotate(1);
       if (event.key === 'Enter') navigate(activeModule.route);
@@ -182,53 +224,33 @@ export default function SelfDirectedSovereignMode() {
 
   return (
     <main
-      className="sos-page"
-      style={{ '--deck-zoom': zoom, '--parallax-x': 0, '--parallax-y': 0 }}
+      className={`sos-page ${isRotating ? 'is-rotating' : ''}`}
+      style={{ '--deck-zoom': zoom, '--core-intensity': interactionIntensity, '--parallax-x': 0, '--parallax-y': 0 }}
       onPointerMove={handlePointerMove}
       onPointerLeave={resetParallax}
     >
       <div className="sos-chamber" aria-hidden="true" />
-      <div className="sos-depth-field" aria-hidden="true" />
-      <div className="sos-orbital-light sos-orbital-light--one" aria-hidden="true" />
-      <div className="sos-orbital-light sos-orbital-light--two" aria-hidden="true" />
-      <div className="sos-particles" aria-hidden="true" />
+      <div className="sos-atmosphere" aria-hidden="true" />
+      <div className="sos-architecture" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
+      <div className="sos-orbital-rings" aria-hidden="true" />
       <div className="sos-vignette" aria-hidden="true" />
-      <div className="sos-violet-conduits" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-      </div>
-      <div className="sos-promethean-core" aria-hidden="true">
-        <span className="sos-core-flame" />
-        <span className="sos-core-aura" />
-        <span className="sos-core-reflection" />
-        <span className="sos-core-embers" />
-      </div>
 
       <header className="sos-header">
         <div className="sos-brand-block">
           <img src="/emblem/reclamation_core_emblem.png" alt="" />
           <div>
-            <strong>Chroma Key Protocol</strong>
-            <span>Self-Directed Sovereign Mode</span>
+            <strong>The Chroma Key Protocol</strong>
+            <span>Reclamation Mainframe</span>
+            <span>Sovereign Mode</span>
           </div>
         </div>
 
-        <div className="sos-command-meta" aria-label="Sovereign system information">
-          <div><span>Sovereign ID</span><strong>CKP-7X9L-Q892</strong></div>
-          <div><span>Light Code</span><strong>{activeModule.code}-777-A</strong></div>
-          <div><span>Status</span><strong className="is-stable"><i /> Stable</strong></div>
-          <div><span>Clearance</span><strong>Omega</strong></div>
-        </div>
+        <div className="sos-system-status" role="status"><i aria-hidden="true" /> System Status: Operational</div>
 
         <div className="sos-user-block">
           <div>
-            <span>Sovereign</span>
-            <strong>{userName}</strong>
-            <span>Level {user?.level || 7} · Initiate</span>
+            <strong><span>User:</span> {userName}</strong>
+            <span>Clearance: ECP Level {user?.level || 7}</span>
           </div>
           <img src="/emblem/reclamation_core_emblem.png" alt="" />
         </div>
@@ -244,7 +266,7 @@ export default function SelfDirectedSovereignMode() {
           <ChevronLeft />
         </button>
 
-        <div className="sos-card-deck" onClick={handleDeckClick}>
+        <div className="sos-card-deck">
           {cards.map(({ module, index, offset }) => (
             <ModuleCard
               key={module.id}
@@ -256,7 +278,7 @@ export default function SelfDirectedSovereignMode() {
                   navigate(module.route);
                   return;
                 }
-                setActiveIndex(index);
+                selectModule(index);
               }}
             />
           ))}
@@ -272,57 +294,65 @@ export default function SelfDirectedSovereignMode() {
         </button>
       </section>
 
-      <aside className="sos-left-hud" aria-label="Core telemetry">
-        <HudPanel title="Promethean Core" className="sos-core-telemetry">
-          <div className="sos-core-telemetry-body">
-            <div>
-              <span>Energy Readout</span>
-              <strong>93.7%</strong>
-            </div>
-            <Flame aria-hidden="true" />
+      <section className="sos-promethean-core" aria-label="Promethean Core energy output 93 percent">
+        <div className="sos-alignment-beam" aria-hidden="true" />
+        <div className="sos-core-machine" aria-hidden="true">
+          <div className="sos-core-canvas">
+            <CoreErrorBoundary>
+              <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0.25, 4], fov: 34 }} gl={{ alpha: true, antialias: true }}>
+                <ambientLight intensity={0.75} />
+                <pointLight position={[0, 1.5, 2]} color="#ff382d" intensity={4 + interactionIntensity * 2.5} distance={8} />
+                <pointLight position={[-2, 0, -1]} color="#8d0b08" intensity={2} distance={6} />
+                <Suspense fallback={null}>
+                  <Bounds fit clip observe margin={1.18}><PrometheanModel intensity={interactionIntensity} /></Bounds>
+                </Suspense>
+              </Canvas>
+            </CoreErrorBoundary>
           </div>
-          <div className="sos-energy-cells" aria-hidden="true">
-            {Array.from({ length: 6 }, (_, index) => <i key={index} />)}
-          </div>
-          <b>Core Stability: Optimal</b>
-        </HudPanel>
+          <i className="sos-core-ring sos-core-ring--outer" />
+          <i className="sos-core-ring sos-core-ring--inner" />
+        </div>
+        <div className="sos-core-readout"><span>Promethean Core</span><div><small>Energy Output</small><i><b /></i><strong>93%</strong></div></div>
+      </section>
 
-        <HudPanel title="Active Light Code" className="sos-light-code">
+      <aside className="sos-left-hud" aria-label="Active light code">
+        <HudPanel title="Active Light Code" className="sos-light-code" key={activeModule.id}>
           <div className="sos-light-code-body">
-            <CircleGauge aria-hidden="true" />
+            <span className="sos-code-emblem"><Diamond aria-hidden="true" /><i>{activeModule.code}</i></span>
             <div>
               <strong>{activeModule.lightCode}</strong>
               <span>Code: {activeModule.code}-777-A</span>
             </div>
           </div>
           <p>Sync Status</p>
-          <b>Synchronized</b>
+          <b><Radio aria-hidden="true" /> Synchronized</b>
         </HudPanel>
       </aside>
 
-      <div className="sos-right-hud">
-        <HudPanel title="Protocol Progress">
-          <span>Track 15 of 27</span>
+      <aside className="sos-right-hud" aria-label="Protocol telemetry">
+        <HudPanel title="Protocol Progress" className="sos-protocol-progress">
+          <span>Track {PROTOCOL_PROGRESS.currentTrack} of {PROTOCOL_PROGRESS.totalTracks}</span>
           <div className="sos-progress">
-            <i style={{ width: '55%' }} />
+            <i style={{ '--progress': `${PROTOCOL_PROGRESS.percentage}%` }} />
           </div>
-          <strong>55%</strong>
+          <strong>{PROTOCOL_PROGRESS.percentage}%</strong>
         </HudPanel>
 
         <HudPanel title="Element Balance">
           <div className="sos-elements">
             {ELEMENT_LEVELS.map((element) => (
-              <div key={element.label}>
+              <div key={element.label} style={{ '--element-value': `${element.value}%`, '--element-color': element.color }}>
+                <Diamond aria-hidden="true" />
                 <span>{element.label}</span>
                 <i>
-                  <b style={{ width: `${element.value}%`, background: element.color }} />
+                  <b />
                 </i>
                 <strong>{element.value}%</strong>
               </div>
             ))}
           </div>
         </HudPanel>
-      </div>
+      </aside>
 
       <nav className="sos-control-rail" aria-label="Sovereign Mode controls">
         <button type="button" onClick={() => setActiveIndex(0)}>
