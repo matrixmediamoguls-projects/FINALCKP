@@ -21,7 +21,7 @@ const MODULES = [
     title: 'Audio Visualizer Core',
     code: 'AVC',
     lightCode: 'See The Waveform. Shape The Sound. Amplify Your Vision.',
-    route: '/visualizer-core',
+    route: '/experiencemode/sovereign/module/audio-visualizer-core',
     card: '/ui/reclamation/Module_Cards/Sovereign/visualizer_core.png',
   },
   {
@@ -29,7 +29,7 @@ const MODULES = [
     title: 'Elemental Codex',
     code: 'ECP',
     lightCode: 'The Structure Beneath The System',
-    route: '/codex',
+    route: '/experiencemode/sovereign/module/elemental-codex',
     card: '/ui/reclamation/Module_Cards/Sovereign/elemental_codex.png',
   },
   {
@@ -45,7 +45,7 @@ const MODULES = [
     title: 'Lyrical Codex',
     code: 'LCP',
     lightCode: 'Content Is Structure. Structure Is Legacy.',
-    route: '/protocol/3',
+    route: '/experiencemode/sovereign/module/lyrical-codex',
     card: '/ui/reclamation/Module_Cards/Sovereign/lyrical_codex.png',
   },
   {
@@ -53,7 +53,7 @@ const MODULES = [
     title: 'Sonic Artifacts',
     code: 'SAP',
     lightCode: 'Frequencies Hold Memory. Artifacts Hold Purpose.',
-    route: '/listen/3',
+    route: '/experiencemode/sovereign/module/sonic-artifacts',
     card: '/ui/reclamation/Module_Cards/Sovereign/sonic_artifacts.png',
   },
   {
@@ -61,7 +61,7 @@ const MODULES = [
     title: 'Archetype',
     code: 'ARC',
     lightCode: 'Know The Patterns. Master The Self. Shape Your Legacy.',
-    route: '/journal',
+    route: '/experiencemode/sovereign/module/archetype',
     card: '/ui/reclamation/Module_Cards/Sovereign/archaetypes.png',
   },
 ];

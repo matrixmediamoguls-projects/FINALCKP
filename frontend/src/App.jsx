@@ -35,6 +35,7 @@ const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistan
 const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSovereignMode'));
 const CKPVisualizerCore = lazy(() => import('./pages/CKPVisualizerCore'));
+const VisualizerCorePage = lazy(() => import('./pages/experience/VisualizerCorePage'));
 const ReclamationUniversityPage = lazy(() => import('./pages/ReclamationUniversityPage'));
 const ReclamationFacultyPage = lazy(() => import('./pages/ReclamationFacultyPage'));
 const ReclamationModulePage = lazy(() => import('./pages/ReclamationModulePage'));
@@ -210,6 +211,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute withShell={false}>
             <SelfDirectedSovereignMode />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/experiencemode/sovereign/module/:moduleSlug"
+        element={
+          <ProtectedRoute withShell={false}>
+            <VisualizerCorePage />
           </ProtectedRoute>
         }
       />
