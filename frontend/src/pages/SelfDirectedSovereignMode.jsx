@@ -355,25 +355,23 @@ export default function SelfDirectedSovereignMode() {
       </aside>
 
       <nav className="sos-control-rail" aria-label="Sovereign Mode controls">
-        <button type="button" onClick={() => setActiveIndex(0)}>
+        <button type="button" onClick={() => selectModule(2)}>
           <CircleGauge aria-hidden="true" />
           System Overview
         </button>
 
-        <div className="sos-rotate-controls">
+        <div className="sos-orbital-controls">
           <span><Orbit aria-hidden="true" /> Orbital Controls</span>
-          <button type="button" onClick={() => rotate(-1)} aria-label="Rotate left">
-            <ChevronLeft />
-          </button>
-          <strong>Rotate</strong>
-          <button type="button" onClick={() => rotate(1)} aria-label="Rotate right">
-            <ChevronRight />
-          </button>
+          <div>
+            <button type="button" onClick={() => rotate(-1)} aria-label="Rotate left"><ChevronLeft /></button>
+            <strong>Rotate</strong>
+            <button type="button" onClick={() => rotate(1)} aria-label="Rotate right"><ChevronRight /></button>
+          </div>
         </div>
 
-        <div className="sos-core-button" aria-hidden="true">
+        <button type="button" className="sos-core-button" onClick={() => selectModule(2)} aria-label="Center on Reclamation University">
           <img src="/emblem/reclamation_core_emblem.png" alt="" />
-        </div>
+        </button>
 
         <div className="sos-zoom-controls">
           <button
@@ -393,7 +391,7 @@ export default function SelfDirectedSovereignMode() {
           </button>
         </div>
 
-        <button type="button" className="sos-enter-module" onClick={() => navigate(activeModule.route)}>
+        <button type="button" className="sos-enter-module" onClick={() => navigate(activeModule.route)} aria-label={`Enter ${activeModule.title}`}>
           Enter Module
           <ChevronRight aria-hidden="true" />
         </button>
