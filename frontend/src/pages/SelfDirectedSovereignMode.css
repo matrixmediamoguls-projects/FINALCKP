@@ -150,7 +150,6 @@
 
 .sos-operating-stage {
   position: absolute;
-  z-index: 5;
   left: 50%; top: 39%;
   width: min(1140px, 76vw);
   height: min(540px, 57vh);
@@ -160,6 +159,8 @@
   pointer-events: none;
   transition: transform 180ms ease-out;
 }
+.sos-operating-stage--rear { z-index: 4; }
+.sos-operating-stage--front { z-index: 7; }
 .sos-operating-stage::after {
   content: '';
   position: absolute;
@@ -172,6 +173,7 @@
 
 .sos-module-card {
   --card-x: 0px;
+  --card-y: 0px;
   --card-z: 80px;
   --card-scale: 1;
   --card-rotate: 0deg;
@@ -185,26 +187,27 @@
   border: 0;
   color: inherit;
   background: transparent;
-  opacity: var(--card-opacity);
-  transform: translate(-50%, -50%) translate3d(var(--card-x), 0, var(--card-z)) rotateY(var(--card-rotate)) scale(var(--card-scale));
+  opacity: 0;
+  transform: translate(-50%, -50%) translate3d(var(--card-x), var(--card-y), var(--card-z)) rotateY(var(--card-rotate)) scale(var(--card-scale));
   transform-style: preserve-3d;
   transition: transform var(--sos-transition-deck) cubic-bezier(.2,.8,.2,1), opacity var(--sos-transition-deck) ease, filter var(--sos-transition-hud) ease;
-  pointer-events: auto;
+  pointer-events: none;
   cursor: pointer;
 }
-.sos-module-card[data-offset='-3'] { --card-x: clamp(-630px,-40vw,-500px); --card-z: -340px; --card-scale: .54; --card-rotate: 28deg; --card-opacity: .4; }
-.sos-module-card[data-offset='-2'] { --card-x: clamp(-520px,-32vw,-390px); --card-z: -220px; --card-scale: .66; --card-rotate: 23deg; --card-opacity: .7; }
-.sos-module-card[data-offset='-1'] { --card-x: clamp(-340px,-20vw,-260px); --card-z: -80px; --card-scale: .84; --card-rotate: 13deg; --card-opacity: .96; }
-.sos-module-card[data-offset='1'] { --card-x: clamp(260px,20vw,340px); --card-z: -80px; --card-scale: .84; --card-rotate: -13deg; --card-opacity: .96; }
-.sos-module-card[data-offset='2'] { --card-x: clamp(390px,32vw,520px); --card-z: -220px; --card-scale: .66; --card-rotate: -23deg; --card-opacity: .7; }
-.sos-module-card[data-offset='3'] { --card-x: clamp(500px,40vw,630px); --card-z: -340px; --card-scale: .54; --card-rotate: -28deg; --card-opacity: .4; }
+.sos-module-card.is-pass-visible { opacity: var(--card-opacity); pointer-events: auto; }
+.sos-module-card[data-offset='-3'] { --card-x: clamp(-630px,-40vw,-500px); --card-y: -30px; --card-z: -340px; --card-scale: .54; --card-rotate: 28deg; --card-opacity: .4; }
+.sos-module-card[data-offset='-2'] { --card-x: clamp(-520px,-32vw,-390px); --card-y: -18px; --card-z: -220px; --card-scale: .66; --card-rotate: 23deg; --card-opacity: .7; }
+.sos-module-card[data-offset='-1'] { --card-x: clamp(-340px,-20vw,-260px); --card-y: 8px; --card-z: -80px; --card-scale: .84; --card-rotate: 13deg; --card-opacity: .96; }
+.sos-module-card[data-offset='1'] { --card-x: clamp(260px,20vw,340px); --card-y: 8px; --card-z: -80px; --card-scale: .84; --card-rotate: -13deg; --card-opacity: .96; }
+.sos-module-card[data-offset='2'] { --card-x: clamp(390px,32vw,520px); --card-y: -18px; --card-z: -220px; --card-scale: .66; --card-rotate: -23deg; --card-opacity: .7; }
+.sos-module-card[data-offset='3'] { --card-x: clamp(500px,40vw,630px); --card-y: -30px; --card-z: -340px; --card-scale: .54; --card-rotate: -28deg; --card-opacity: .4; }
 .sos-card-shell { position: absolute; inset: 0; display: block; padding: 5px; background: linear-gradient(145deg, #353943, #08090b 13%, #181a1f 45%, #050506 78%, #353943); clip-path: polygon(8% 0, 92% 0, 100% 5%, 100% 95%, 92% 100%, 8% 100%, 0 95%, 0 5%); box-shadow: 0 28px 55px rgba(0,0,0,.8), inset 0 0 0 1px rgba(255,255,255,.14), 0 0 16px rgba(211,32,32,.14); overflow: hidden; }
 .sos-card-shell::before { content: ''; position: absolute; inset: 9px; z-index: 2; border: 1px solid rgba(255,52,45,.32); clip-path: inherit; pointer-events: none; }
 .sos-card-art { display: block; width: 100%; height: 100%; object-fit: cover; clip-path: inherit; filter: brightness(.76) saturate(.92) contrast(1.08); transition: filter var(--sos-transition-hud) ease; }
 .sos-card-corner { position: absolute; z-index: 3; top: 3px; width: 32px; height: 2px; background: var(--sos-red-bright); box-shadow: 0 0 8px var(--sos-red); }
 .sos-card-corner--tl { left: 24px; } .sos-card-corner--tr { right: 24px; }
 .sos-card-scanline { position: absolute; z-index: 3; left: 8%; right: 8%; top: -5%; height: 1px; opacity: 0; background: rgba(255,110,90,.9); box-shadow: 0 0 12px var(--sos-red-bright); }
-.sos-module-card.is-active { transform: translate(-50%, -52%) translate3d(var(--card-x), -10px, var(--card-z)) rotateY(0) scale(1.04); }
+.sos-module-card.is-active { transform: translate(-50%, -52%) translate3d(var(--card-x), 14px, var(--card-z)) rotateY(0) scale(1.04); }
 .sos-module-card.is-active .sos-card-shell { box-shadow: 0 0 0 1px rgba(255,91,66,.7), 0 0 30px rgba(255,42,32,.5), 0 55px 75px rgba(0,0,0,.9), inset 0 0 24px rgba(211,32,32,.14); }
 .sos-module-card.is-active .sos-card-art { filter: brightness(1.04) saturate(1.12) contrast(1.08); }
 .sos-module-card.is-active .sos-card-scanline { opacity: .5; animation: sosScan 4s linear infinite; }

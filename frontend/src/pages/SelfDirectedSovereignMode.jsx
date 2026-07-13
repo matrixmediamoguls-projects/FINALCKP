@@ -117,19 +117,23 @@ function getCircularOffset(index, activeIndex, length) {
   return offset;
 }
 
-function ModuleCard({ module, offset, index, onSelect }) {
+function ModuleCard({ module, offset, index, depthPass, onSelect }) {
   const distance = Math.abs(offset);
+  const isNearSide = distance <= 1;
+  const isVisible = depthPass === 'front' ? isNearSide : !isNearSide;
 
   return (
     <button
       type="button"
-      className={`sos-module-card ${offset === 0 ? 'is-active' : ''}`}
+      className={`sos-module-card sos-module-card--${depthPass} ${offset === 0 ? 'is-active' : ''} ${isVisible ? 'is-pass-visible' : ''}`}
       data-module-index={index}
       data-offset={offset}
       style={{ '--card-order': 20 - distance }}
       onClick={onSelect}
       aria-label={offset === 0 ? `Enter ${module.title}` : `Select ${module.title}`}
       aria-current={offset === 0 ? 'true' : undefined}
+      aria-hidden={!isVisible}
+      tabIndex={isVisible ? 0 : -1}
     >
       <span className="sos-card-shell">
         <span className="sos-card-corner sos-card-corner--tl" aria-hidden="true" />
@@ -256,7 +260,22 @@ export default function SelfDirectedSovereignMode() {
         </div>
       </header>
 
-      <section className="sos-operating-stage" aria-label="Sovereign Mode orbital operating system">
+      <div className="sos-operating-stage sos-operating-stage--rear">
+        <div className="sos-card-deck sos-card-deck--rear">
+          {cards.map(({ module, index, offset }) => (
+            <ModuleCard
+              key={`rear-${module.id}`}
+              module={module}
+              index={index}
+              offset={offset}
+              depthPass="rear"
+              onSelect={() => selectModule(index)}
+            />
+          ))}
+        </div>
+      </div>
+
+      <section className="sos-operating-stage sos-operating-stage--front" aria-label="Sovereign Mode orbital operating system">
         <button
           type="button"
           className="sos-stage-arrow sos-stage-arrow--left"
@@ -273,6 +292,7 @@ export default function SelfDirectedSovereignMode() {
               module={module}
               index={index}
               offset={offset}
+              depthPass="front"
               onSelect={() => {
                 if (offset === 0) {
                   navigate(module.route);
