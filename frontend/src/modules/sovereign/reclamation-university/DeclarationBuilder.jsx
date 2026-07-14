@@ -1,20 +1,20 @@
 const DEFAULT_FIELDS = [
-  { key: 'restriction', label: 'The restriction I am no longer allowing to define me is' },
-  { key: 'authorship', label: 'The part of my authorship I am reclaiming is' },
-  { key: 'fireLesson', label: 'The fire I once feared is now teaching me' },
-  { key: 'newLaw', label: 'The law I speak over my next chapter is' },
+  { key: 'observation', label: 'The pattern I observed is' },
+  { key: 'meaning', label: 'The meaning I retrieved is' },
+  { key: 'practice', label: 'The practice I will carry forward is' },
+  { key: 'declaration', label: 'The declaration I am authoring is' },
 ];
 
 export default function DeclarationBuilder({ declaration = {}, declarationFields = DEFAULT_FIELDS, onChange, onComplete, isComplete = false, isSealed = false }) {
   const FIELDS = declarationFields.length > 0 ? declarationFields : DEFAULT_FIELDS;
   return (
-    <section className="fire-door-panel fire-door-record">
+    <section className="rec-module-panel rec-module-record">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="fire-door-kicker">Scene 05 • First Law Declaration</p>
+          <p className="rec-module-kicker">Scene 05 • First Law Declaration</p>
           <h4 className="mt-2 text-2xl font-semibold uppercase tracking-[0.12em] text-white">Speak the law of the self that cannot be erased.</h4>
         </div>
-        <span className={`fire-door-badge ${isComplete ? 'is-hot' : ''}`}>{isSealed ? 'First Law Sealed' : isComplete ? 'Ready to Seal' : 'Four fields required'}</span>
+        <span className={`rec-module-badge ${isComplete ? 'is-hot' : ''}`}>{isSealed ? 'First Law Sealed' : isComplete ? 'Ready to Seal' : 'Four fields required'}</span>
       </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
@@ -22,8 +22,8 @@ export default function DeclarationBuilder({ declaration = {}, declarationFields
           const key = field.key || field[0];
           const label = field.label || field[1];
           return (
-          <label key={key} htmlFor={`${key}-declaration`} className="fire-door-card block p-4">
-            <span className="fire-door-badge">{label}</span>
+          <label key={key} htmlFor={`${key}-declaration`} className="rec-module-card block p-4">
+            <span className="rec-module-badge">{label}</span>
             <textarea
               id={`${key}-declaration`}
               value={declaration[key] || ''}
@@ -49,19 +49,19 @@ export default function DeclarationBuilder({ declaration = {}, declarationFields
       </div>
 
       <div className="mt-5 rounded-2xl border border-red-500/20 bg-red-950/15 p-4 text-sm leading-7 text-zinc-200">
-        I sign my own authorship. I cross the Fire Door awake.
+        I seal this declaration as a conscious record of the work completed here.
       </div>
 
       {isSealed && (
-        <div className="fire-door-sealed-record mt-5 rounded-3xl border border-red-300/35 bg-red-950/20 p-5">
-          <p className="fire-door-kicker">First Law Sealed</p>
+        <div className="rec-module-sealed-record mt-5 rounded-3xl border border-red-300/35 bg-red-950/20 p-5">
+          <p className="rec-module-kicker">First Law Sealed</p>
           <div className="mt-3 grid gap-3 md:grid-cols-2">
             {FIELDS.map((field) => {
               const key = field.key || field[0];
               const label = field.label || field[1];
               return (
               <div key={key} className="rounded-2xl border border-white/10 bg-black/35 p-3">
-                <span className="fire-door-micro text-red-200/70">{label}</span>
+                <span className="rec-module-micro text-red-200/70">{label}</span>
                 <p className="mt-2 text-sm leading-6 text-zinc-100">{declaration[key]}</p>
               </div>
             );
@@ -74,7 +74,7 @@ export default function DeclarationBuilder({ declaration = {}, declarationFields
         type="button"
         onClick={onComplete}
         disabled={!isComplete}
-        className="fire-door-action mt-5 disabled:cursor-not-allowed disabled:opacity-40"
+        className="rec-module-action mt-5 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {isSealed ? 'First Law Sealed' : 'Seal First Law'}
       </button>

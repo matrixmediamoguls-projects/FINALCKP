@@ -2,8 +2,8 @@ export default function LightCodeMapper({ mappings, selectedShadowCodes, retriev
   const activeMappings = mappings.filter((item) => selectedShadowCodes.includes(item.shadowId));
 
   return (
-    <section className="fire-door-panel">
-      <p className="fire-door-kicker">Scene 04 • Light Code Retrieval</p>
+    <section className="rec-module-panel">
+      <p className="rec-module-kicker">Scene 04 • Light Code Retrieval</p>
       <h4 className="mt-2 text-2xl font-semibold uppercase tracking-[0.12em] text-white">Convert pressure into law.</h4>
 
       {activeMappings.length === 0 ? (
@@ -13,15 +13,15 @@ export default function LightCodeMapper({ mappings, selectedShadowCodes, retriev
           {activeMappings.map((item) => {
             const retrieved = retrievedLightCodes.includes(item.lightId);
             return (
-              <article key={item.shadowId} className={`fire-door-card p-4 ${retrieved ? 'is-unlocked' : ''}`}>
-                <div className="fire-door-transmute">
+              <article key={item.shadowId} className={`rec-module-card p-4 ${retrieved ? 'is-unlocked' : ''}`}>
+                <div className="rec-module-transmute">
                   <div>
-                    <span className="fire-door-badge">Shadow Code</span>
+                    <span className="rec-module-badge">Shadow Code</span>
                     <h5 className="mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-zinc-200">{item.shadowTitle}</h5>
                   </div>
-                  <div className="fire-door-glyph" aria-hidden="true">→</div>
+                  <div className="rec-module-glyph" aria-hidden="true">→</div>
                   <div>
-                    <span className="fire-door-badge is-hot">{item.lightId}</span>
+                    <span className="rec-module-badge is-hot">{item.lightId}</span>
                     <h5 className="mt-3 text-base font-semibold uppercase tracking-[0.12em] text-white">{item.lightTitle}</h5>
                   </div>
                 </div>
@@ -32,7 +32,7 @@ export default function LightCodeMapper({ mappings, selectedShadowCodes, retriev
                 <button
                   type="button"
                   onClick={() => onRetrieveLightCode(item.lightId)}
-                  className="fire-door-action mt-4 w-full"
+                  className="rec-module-action mt-4 w-full"
                 >
                   {retrieved ? 'Code Retrieved' : 'Retrieve Code'}
                 </button>

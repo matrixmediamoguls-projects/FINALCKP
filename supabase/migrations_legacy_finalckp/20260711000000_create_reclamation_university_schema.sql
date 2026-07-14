@@ -207,29 +207,6 @@ create trigger set_rec_uni_journal_entries_updated_at
   for each row execute function public.set_updated_at();
 
 -- ============================================================================
--- COMPATIBILITY: MIGRATE EXISTING MODULE ONE DATA
--- ============================================================================
-
--- Create a view that maps old rec_uni_module_responses to new schema for backward compatibility
-create or replace view public.rec_uni_module_responses_compat as
-select
-  id,
-  user_id,
-  module_id,
-  selected_shadow_codes,
-  retrieved_light_codes,
-  declaration_json,
-  integration_key,
-  is_private,
-  completed_at,
-  created_at,
-  updated_at
-from public.rec_uni_module_responses
-where exists (
-  select 1 from public.rec_uni_module_responses
-);
-
--- ============================================================================
 -- SEED DATA: FACULTIES AND MODULES
 -- ============================================================================
 
@@ -243,21 +220,6 @@ values
   ('sovereign-mind', 'The Sovereign Mind', 'Train the mind beyond conditioned limits and programmed patterns.', 'Transcend inherited programming and conditioned responses. Develop the mental discipline to choose your thoughts and author your consciousness.', 5, 'gold', true),
   ('aftermath', 'Architect of the Aftermath', 'Learn to build, protect, and leave a legacy beyond the system.', 'Transform your personal reclamation into service. Learn to teach what you survived and build systems that protect others from repeating the damage.', 6, 'purple', true)
 on conflict (slug) do nothing;
-
--- Seed modules for Foundations faculty
-insert into public.rec_uni_modules (faculty_id, slug, title, subtitle, module_order, content, xp_reward, is_published)
-select
-  f.id,
-  'fire-door',
-  'Module 1: The Fire Door',
-  'Cross the threshold where authorship returns.',
-  1,
-  '{}'::jsonb,
-  500,
-  true
-from public.rec_uni_faculties f
-where f.slug = 'foundations'
-on conflict (faculty_id, slug) do nothing;
 
 -- Seed modules for Identity faculty
 insert into public.rec_uni_modules (faculty_id, slug, title, subtitle, module_order, content, xp_reward, is_published)

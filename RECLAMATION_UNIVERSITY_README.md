@@ -56,7 +56,7 @@ Navigate to `http://localhost:5173/experiencemode/sovereign/reclamation-universi
 | **ReclamationModuleEngine** | Generic orchestrator for any module from the curriculum |
 | **ReclamationFacultyPage** | Faculty overview with module list and unlock status |
 | **ReclamationModulePage** | Wrapper that loads and renders modules |
-| **FireDoorInitiationScene** | Entry narrative and transmission |
+| **ModuleBriefScene** | Entry brief and learning sequence |
 | **PairedTrackPortal** | Track listening interface with lyric anchors |
 | **ShadowCodeSelector** | Mark restrictions and dense material |
 | **LightCodeMapper** | Convert shadow codes to light codes |
@@ -147,7 +147,7 @@ The unlock status is checked on faculty page load and displayed to students.
 
 Comprehensive event tracking includes:
 - `module_viewed` - Student enters module
-- `fire_door_crossed` - Student crosses initiation threshold
+- `module_brief_completed` - Student completes the module brief
 - `track_listened` - Student listens to a source track
 - `shadow_code_selected` - Student marks a shadow code
 - `light_code_retrieved` - Student retrieves a light code
@@ -212,8 +212,8 @@ Modify scene components in `frontend/src/modules/sovereign/reclamation-universit
 ### Styling
 
 The implementation uses Tailwind CSS with custom CSS files:
-- `fireDoorModule.css` - Module engine styling
-- `fireDoorModuleOverrides.css` - Design language overrides
+- `reclamationModule.css` - Module engine styling
+- `reclamationModuleOverrides.css` - Design language overrides
 - `ReclamationFacultyPage.css` - Faculty page styling
 
 Customize colors, typography, and layout in these files.
@@ -285,8 +285,8 @@ await saveJournalEntry({
 ```javascript
 // Emit event
 await emitAnalyticsEvent({
-  facultySlug: 'foundations',
-  moduleSlug: 'fire-door',
+  facultySlug: 'identity',
+  moduleSlug: 'thought-form-studio',
   eventName: 'module_completed',
   eventPayload: { xpReward: 500 },
 });

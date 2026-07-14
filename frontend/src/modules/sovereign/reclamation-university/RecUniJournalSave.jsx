@@ -38,13 +38,13 @@ export default function RecUniJournalSave({ moduleId, selectedShadowCodes, retri
       }
 
       setStatus('saved');
-      setMessage('Your Module 1 declaration has been sealed to your private Reclamation University record.');
+      setMessage('Your declaration has been sealed to your private Reclamation University record.');
     }
   };
 
   return (
-    <section className="fire-door-panel">
-      <p className="fire-door-kicker">Scene 07 • Private Record</p>
+    <section className="rec-module-panel">
+      <p className="rec-module-kicker">Scene 07 • Private Record</p>
       <h4 className="mt-2 text-2xl font-semibold uppercase tracking-[0.12em] text-white">Seal the record.</h4>
       <p className="mt-3 text-sm leading-7 text-zinc-400">Store the marked Shadow Codes, retrieved Light Codes, First Law, and Integration Key as the Rising Seeker private record.</p>
 
@@ -52,7 +52,7 @@ export default function RecUniJournalSave({ moduleId, selectedShadowCodes, retri
         type="button"
         onClick={handleSave}
         disabled={disabled || status === 'saving' || externalIsSaving}
-        className="fire-door-action mt-5 disabled:cursor-not-allowed disabled:opacity-40"
+        className="rec-module-action mt-5 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {status === 'saving' ? 'Sealing...' : status === 'saved' ? 'Record Sealed' : 'Seal Private Record'}
       </button>

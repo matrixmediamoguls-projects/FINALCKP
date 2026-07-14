@@ -105,10 +105,6 @@ All tables have Row-Level Security (RLS) enabled:
 - Published faculties and modules are readable by all authenticated users
 - Events are readable by the user who triggered them
 
-#### Backward Compatibility
-
-The migration includes a view `rec_uni_module_responses_compat` that provides backward compatibility with the existing `rec_uni_module_responses` table used by Module One.
-
 ### 3. Generic Module Engine
 
 **File**: `frontend/src/modules/sovereign/reclamation-university/ReclamationModuleEngine.jsx`
@@ -170,13 +166,13 @@ All functions include error handling and user authentication checks.
 1. Navigate to `/experiencemode/sovereign/reclamation-university`
 2. Click on a faculty to view available modules
 3. Click "Start Module" to begin the experience
-4. Cross the Fire Door initiation scene
+4. Review the module brief
 5. Progress through five scenes:
    - **Signal Keys**: Listen to source tracks and select lyric anchors
    - **Shadow Code Scan**: Mark the restrictions that tried to contain the calling
    - **Light Code Retrieval**: Convert marked pressure into recoverable laws
    - **First Law Declaration**: Write the law of the self that cannot be erased
-   - **Fire Door Opens**: Receive the Integration Key and seal the record
+   - **Integration**: Receive the Integration Key and seal the record
 6. Seal the private record to save progress
 
 ### For Developers
@@ -212,7 +208,7 @@ All functions include error handling and user authentication checks.
 #### Customizing Scenes
 
 Each scene is a reusable component:
-- `FireDoorInitiationScene` - Entry narrative
+- `ModuleBriefScene` - Entry brief
 - `PairedTrackPortal` - Track listening interface
 - `ShadowCodeSelector` - Shadow code selection
 - `LightCodeMapper` - Light code retrieval
@@ -257,8 +253,8 @@ Events are automatically tracked:
 
 ```javascript
 await emitAnalyticsEvent({
-  facultySlug: 'foundations',
-  moduleSlug: 'fire-door',
+  facultySlug: 'identity',
+  moduleSlug: 'thought-form-studio',
   eventName: 'module_completed',
   eventPayload: { xpReward: 500 },
 });

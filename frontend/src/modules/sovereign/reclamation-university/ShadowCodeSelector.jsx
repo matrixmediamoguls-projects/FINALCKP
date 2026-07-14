@@ -4,19 +4,19 @@ export default function ShadowCodeSelector({ shadowCodes, selectedShadowCodes, o
   const [diagnosticFrame, setDiagnosticFrame] = useState('personal');
 
   return (
-    <section className="fire-door-panel" aria-labelledby="shadow-code-heading">
-      <p className="fire-door-kicker">Scene 03 • Shadow Code Scan</p>
+    <section className="rec-module-panel" aria-labelledby="shadow-code-heading">
+      <p className="rec-module-kicker">Scene 03 • Shadow Code Scan</p>
       <h4 id="shadow-code-heading" className="mt-2 text-2xl font-semibold uppercase tracking-[0.12em] text-white">Name the restriction.</h4>
       <p className="mt-3 text-sm leading-7 text-zinc-400">Name what attempted to restrict, redirect, or rename the signal. Each marked Shadow Code becomes material for retrieval.</p>
 
       <fieldset className="mt-4">
-        <legend className="fire-door-micro text-red-200/70">Diagnostic frame</legend>
+        <legend className="rec-module-micro text-red-200/70">Diagnostic frame</legend>
         <div className="mt-2 flex flex-wrap gap-2">
           {['personal', 'collective'].map((frame) => (
             <button
               key={frame}
               type="button"
-              className={`fire-door-secondary-action ${diagnosticFrame === frame ? 'is-active' : ''}`}
+              className={`rec-module-secondary-action ${diagnosticFrame === frame ? 'is-active' : ''}`}
               aria-pressed={diagnosticFrame === frame}
               onClick={() => setDiagnosticFrame(frame)}
             >
@@ -35,11 +35,11 @@ export default function ShadowCodeSelector({ shadowCodes, selectedShadowCodes, o
               key={code.id}
               onClick={() => onToggleShadowCode(code.id)}
               aria-pressed={active}
-              className={`fire-door-card w-full p-4 text-left transition ${active ? 'is-active' : ''}`}
+              className={`rec-module-card w-full p-4 text-left transition ${active ? 'is-active' : ''}`}
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="fire-door-badge is-hot" title={code.id}>{code.displayId || code.id}</span>
-                <span className={`fire-door-badge ${active ? 'is-hot' : ''}`}>{active ? 'Marked for Retrieval' : 'Run Scan'}</span>
+                <span className="rec-module-badge is-hot" title={code.id}>{code.displayId || code.id}</span>
+                <span className={`rec-module-badge ${active ? 'is-hot' : ''}`}>{active ? 'Marked for Retrieval' : 'Run Scan'}</span>
               </div>
               <strong className="mt-3 block text-base uppercase tracking-[0.12em] text-white">{code.title}</strong>
               <p className="mt-2 text-sm leading-7 text-zinc-400">{code.definition}</p>

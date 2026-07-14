@@ -4,7 +4,7 @@
 
 Finish Reclamation University as a production-ready, Supabase-backed learning experience inside `FINALCKP` without replacing the established Chroma Key Protocol design language or creating a disconnected second system.
 
-The completed system must turn the current visual dashboard and Module One prototype into a coherent six-faculty curriculum with persistent progress, resumable sessions, journal records, unlock logic, analytics-ready events, and secure row-level access.
+The completed system must turn the current visual dashboard into a coherent six-faculty curriculum with persistent progress, resumable sessions, journal records, unlock logic, analytics-ready events, and secure row-level access.
 
 ## Non-Negotiable Product Intent
 
@@ -37,26 +37,12 @@ Existing implementation:
   - six advertised faculties
   - hard-coded user statistics
   - routes declared for all six faculties
-- `frontend/src/modules/sovereign/ReclamationUniversity.jsx`
-  - working Module One experience titled `The Fire Door`
-  - initiation scene
-  - paired-track portal
-  - Shadow Code selector
-  - Light Code mapper
-  - declaration builder
-  - integration key reveal
-  - journal save component
 - `frontend/src/lib/supabase/reclamationUniversity.js`
   - reads track-linked university content from `reclamation_university`
   - upserts private user responses to `rec_uni_module_responses`
-- `supabase/migrations/20260622184500_create_rec_uni_module_one_responses.sql`
-  - Module One persistence migration
-- supporting Module One components under:
-  - `frontend/src/modules/sovereign/reclamation-university/`
-
 Known gap:
 
-The landing page advertises six faculty routes, but only the first interactive curriculum exists. The remaining faculty routes are not currently implemented or wired. Dashboard statistics are placeholders rather than calculated user data.
+The replacement Foundations Module 1 has not been implemented. Dashboard statistics are placeholders rather than calculated user data.
 
 ## Supabase Environment Finding
 
@@ -109,7 +95,7 @@ Each faculty must contain:
 }
 ```
 
-Move Module One content into this registry without changing its meaning. Existing UI components should consume module data through props.
+Module content should live in this registry. Existing UI components should consume module data through props.
 
 ### 2. Six faculties
 
@@ -126,7 +112,7 @@ Each faculty must have at least one fully functional module. The architecture mu
 
 ### 3. Generic module engine
 
-Refactor the current Module One orchestration into a reusable engine.
+Use a reusable engine for curriculum modules that share an interaction model.
 
 Recommended component:
 
@@ -147,7 +133,7 @@ Responsibilities:
 
 Keep the current components where possible:
 
-- `FireDoorInitiationScene`
+- `ModuleBriefScene`
 - `PairedTrackPortal`
 - `ShadowCodeSelector`
 - `LightCodeMapper`
@@ -293,7 +279,7 @@ No UI component should call `.from(...)` directly.
 
 A module is completed only when all configured gates pass.
 
-Module One currently requires:
+Published modules may configure requirements such as:
 
 - initiation transmission completed
 - both paired track signals received
@@ -392,7 +378,7 @@ At minimum, the repository must pass its existing lint, build, and test commands
 1. Confirm the Supabase project used by `getSovereignSupabase()`.
 2. Read `App.jsx`, auth context, environment configuration, and all existing Reclamation University components.
 3. Run the current application and document broken routes, console errors, missing assets, and save failures.
-4. Preserve a screenshot or written baseline of Module One behavior.
+4. Preserve a screenshot or written baseline of any working module behavior.
 
 ### Phase 2 — Data model
 
@@ -405,9 +391,9 @@ At minimum, the repository must pass its existing lint, build, and test commands
 
 ### Phase 3 — Curriculum extraction
 
-1. Move Module One content into the curriculum registry.
-2. Refactor the existing module component into `ReclamationModuleEngine`.
-3. Confirm Module One behaves exactly as before extraction.
+1. Move published module content into the curriculum registry.
+2. Refactor shared module behavior into `ReclamationModuleEngine`.
+3. Confirm existing published modules behave as before extraction.
 4. Add schema validation for curriculum objects.
 
 ### Phase 4 — Routing and faculties
@@ -442,7 +428,7 @@ The implementing agent must:
 - avoid destructive migration changes
 - never rewrite unrelated visualizer or album code
 - never commit secrets
-- preserve working Module One behavior during refactoring
+- preserve working published-module behavior during refactoring
 - report schema drift instead of guessing
 - use migrations for DDL and SQL only for inspection or data verification
 - use a feature branch and pull request
@@ -470,7 +456,7 @@ Reclamation University is finished when:
 - faculty prerequisites work
 - journal entries are private and retrievable
 - all user-data tables have correct RLS
-- existing Module One records are preserved or migrated
+- existing published-module records are preserved or migrated
 - unknown routes fail gracefully
 - reduced motion and keyboard navigation work
 - no secrets are committed
@@ -498,7 +484,7 @@ At completion, report:
 - faculties and modules implemented
 - routes added or changed
 - database policies created
-- compatibility handling for Module One records
+- compatibility handling for existing module records
 - tests run and results
 - build and lint results
 - Supabase advisor results

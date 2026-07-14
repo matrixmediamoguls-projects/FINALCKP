@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { RECLAMATION_CURRICULUM } from './reclamationUniversityCurriculum';
+import { RECLAMATION_CURRICULUM, getModuleBySlug } from './reclamationUniversityCurriculum';
 
 describe('Reclamation University curriculum integrity', () => {
+  it('does not expose the removed legacy Foundations Module 1', () => {
+    expect(getModuleBySlug('foundations', 'fire-door')).toBeUndefined();
+    expect(
+      RECLAMATION_CURRICULUM.faculties
+        .flatMap((faculty) => faculty.modules)
+        .some((module) => module.id === 'module-fire-door')
+    ).toBe(false);
+  });
+
   it('uses globally unique, faculty-namespaced Shadow Code IDs', () => {
     const ids = RECLAMATION_CURRICULUM.faculties.flatMap((faculty) =>
       faculty.modules.flatMap((module) => module.shadowCodes.map((code) => code.id))

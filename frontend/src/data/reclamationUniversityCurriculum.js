@@ -9,11 +9,6 @@
  */
 
 const LEARNING_OBJECTIVES = {
-  'module-fire-door': [
-    'Identify at least one external restriction and explain how it affected personal authorship.',
-    'Trace a selected Shadow Code to evidence from lived experience and its corresponding Light Code.',
-    'Author a specific first law that converts the named pressure into a future-facing commitment.',
-  ],
   'module-thought-form-studio': [
     'Identify a recurring pattern and distinguish its visible outcome from the hidden law beneath it.',
     'Trace one inherited or absorbed thought form to its source using concrete evidence.',
@@ -70,6 +65,8 @@ const ADVANCED_MODULES = {
 
 const buildAdvancedModules = (faculty) => {
   const base = faculty.modules[0];
+  if (!base) return [];
+
   return (ADVANCED_MODULES[faculty.slug] || []).map(([slug, title, stage, outcome], index) => {
     const codeOffset = (index + 1) * 10;
     const renumber = (id) => `${id.slice(0, 3)}${String(Number(id.slice(3)) + codeOffset).padStart(2, '0')}`;
@@ -158,108 +155,7 @@ const BASE_RECLAMATION_CURRICULUM = {
       accent: 'green',
       artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_one_card.svg',
       prerequisiteFacultyIds: [],
-      modules: [
-        {
-          id: 'module-fire-door',
-          slug: 'fire-door',
-          order: 1,
-          title: 'Module 1: The Fire Door',
-          subtitle: 'Cross the threshold where authorship returns.',
-          sourceTrackIds: ['welcome-to-the-fire', 'reclamation'],
-          sourceTracks: [
-            {
-              id: 'welcome-to-the-fire',
-              title: 'Welcome To The Fire Act Three Overture',
-              keyLabel: 'KEY I: AUTHORSHIP IGNITION',
-              function: 'The Rising Seeker stops negotiating with erasure and identifies the systems that tried to restrict the calling.',
-              lyricAnchor: 'You cannot sign away what God wrote in me.',
-            },
-            {
-              id: 'reclamation',
-              title: 'Reclamation The Day Musiq Matrix Came Back',
-              keyLabel: 'KEY II: TRUTH LIBERATION',
-              function: 'The Rising Seeker learns that a restricted season can delay movement without owning the truth.',
-              lyricAnchor: 'They can chain your body, but they will never chain your truth.',
-            },
-          ],
-          initiationCopy: [
-            'Welcome, Rising Seeker. Module 1: The Fire Door.',
-            'You are not here to learn how to become powerful. You are here to notice where power was already present and where another system attempted to restrict it, redirect it, or rename it.',
-            'The first fire often arrives disguised as betrayal. Someone takes credit. Someone stays silent. Someone benefits while you disappear. Someone tells you that your voice is too strange, too synthetic, too late, too much, or too dangerous. The old lesson says: grieve the theft and wait for the world to correct it. Reclamation teaches something sharper: audit the theft, retrieve the signal, and sign the work.',
-            'This module does not ask you to deny what happened. Denial is not light. Denial is another mask. You are asked to look directly at what tried to contain your calling, then identify the fire hidden inside the pressure.',
-            'When the lyric says the body can be chained but truth cannot, it is teaching a core Reclamation principle. Circumstances can limit movement. Systems can delay process. People can obscure a record. But the truth itself remains mobile. It moves through voice, pattern, testimony, timing, and code.',
-            'Your work in this module is to cross the Fire Door. To cross it, name the restriction, retrieve the authorship, and speak the first law of the self that cannot be erased.',
-          ],
-          lyricAnchors: [
-            { key: 'authorship', label: 'Authorship Cannot Be Signed Away', teaching: 'Divine inscription overrides counterfeit authority.', line: 'You cannot sign away what God wrote in me.' },
-            { key: 'fire', label: 'Fire as Fuel', teaching: 'Pressure becomes ignition when it is consciously metabolized.', line: 'Thank you for the fire. I did not know I needed it to rise.' },
-            { key: 'voice', label: 'Voice as Code', teaching: 'The voice is identity, evidence, transmission, and right.', line: 'They fear your voice.' },
-            { key: 'chamber', label: 'Chamber as Mirror', teaching: 'The last chamber becomes the first door.', line: 'The Chamber was reflection, not your grave.' },
-          ],
-          shadowCodes: [
-            {
-              id: 'SC-01',
-              title: 'The Contracted Calling',
-              definition: 'The belief that gatekeepers, paperwork, platforms, or social arrangements can override what the soul was built to carry.',
-              diagnostic: 'Where have I treated someone else\'s restriction as stronger than my original assignment?',
-            },
-            {
-              id: 'SC-02',
-              title: 'Stolen Authorship',
-              definition: 'The distortion where another person occupies the room, language, work, frequency, or creative DNA that originated elsewhere.',
-              diagnostic: 'What part of my story, work, or identity have I allowed to remain unsigned?',
-            },
-            {
-              id: 'SC-03',
-              title: 'Witness Silence',
-              definition: 'The shadow of people who are present to harm or distortion but protect their image by pretending neutrality.',
-              diagnostic: 'Where did silence become evidence?',
-            },
-            {
-              id: 'SC-04',
-              title: 'Restricted Light',
-              definition: 'The false idea that being unsupported, blocked, or delayed means the light has failed.',
-              diagnostic: 'Where has compression actually made my signal stronger?',
-            },
-            {
-              id: 'SC-05',
-              title: 'The Cage Narrative',
-              definition: 'The attempt to define the self through confinement, confusion, delay, or public erasure.',
-              diagnostic: 'What part of me remained free even when circumstances were not?',
-            },
-            {
-              id: 'SC-06',
-              title: 'Energy Redirect',
-              definition: 'The extraction of attention, lifeforce, vision, or spiritual signal for another person\'s advancement.',
-              diagnostic: 'Where has my energy been redirected away from my own assignment?',
-            },
-            {
-              id: 'SC-07',
-              title: 'The Smallness Script',
-              definition: 'The lie that opposition would not gather if the Seeker carried no power.',
-              diagnostic: 'What does the scale of resistance reveal about the scale of the gift?',
-            },
-          ],
-          lightMappings: [
-            { shadowId: 'SC-01', shadowTitle: 'Contracted Calling', lightId: 'LC-01', lightTitle: 'Divine Inscription', activation: 'The Rising Seeker remembers that the original text was written before the counterfeit contract.', replacementLaw: 'No external agreement can override what was originally written into me.' },
-            { shadowId: 'SC-02', shadowTitle: 'Stolen Authorship', lightId: 'LC-02', lightTitle: 'Signed Authorship', activation: 'The Rising Seeker stops waiting for validation and places their own name on the work, truth, and law they carry.', replacementLaw: 'I authorize my own name, my own work, and my own record.' },
-            { shadowId: 'SC-03', shadowTitle: 'Witness Silence', lightId: 'LC-03', lightTitle: 'Public Record', activation: 'Silence does not erase the record. It delays the reveal until the evidence has matured.', replacementLaw: 'Silence may hide truth for a season, but evidence matures in the open.' },
-            { shadowId: 'SC-04', shadowTitle: 'Restricted Light', lightId: 'LC-04', lightTitle: 'Fire Conversion', activation: 'Suppression compresses the signal until it becomes concentrated enough to ignite.', replacementLaw: 'What compressed me clarified me.' },
-            { shadowId: 'SC-05', shadowTitle: 'Cage Narrative', lightId: 'LC-05', lightTitle: 'Voice as Code', activation: 'The truth remains mobile through voice, pattern, testimony, timing, and code.', replacementLaw: 'My circumstances may have held my movement, but they never owned my truth.' },
-            { shadowId: 'SC-06', shadowTitle: 'Energy Redirect', lightId: 'LC-06', lightTitle: 'Reclaimed Signal', activation: 'The Rising Seeker identifies where attention and lifeforce were redirected, then returns the signal to its rightful assignment.', replacementLaw: 'My energy returns to the assignment it was built to power.' },
-            { shadowId: 'SC-07', shadowTitle: 'Smallness Script', lightId: 'LC-07', lightTitle: 'Bigger Cage, Louder Call', activation: 'Resistance is reframed as evidence of calling, not proof of failure.', replacementLaw: 'The scale of resistance confirms the scale of what I carry.' },
-          ],
-          declarationFields: [
-            { key: 'restriction', label: 'What restriction tried to contain the calling?', placeholder: 'Name the pressure, system, or belief...' },
-            { key: 'authorship', label: 'What authorship are you ready to reclaim?', placeholder: 'What did you build? What was redirected?' },
-            { key: 'fireLesson', label: 'What fire lesson emerges from this pressure?', placeholder: 'What did the pressure teach you?' },
-            { key: 'newLaw', label: 'Write the first law of the self that cannot be erased.', placeholder: 'I now author...' },
-          ],
-          integrationKey: 'The lock was never on the true self. The lock was on the story you were taught to believe about the true self.',
-          xpReward: 500,
-          estimatedMinutes: 45,
-        },
-      ],
+      modules: [],
     },
     {
       id: 'architecture-of-identity',
@@ -281,7 +177,7 @@ const BASE_RECLAMATION_CURRICULUM = {
           sourceTrackIds: ['thought-form', 'emerald-mode-online', 'i-create-as-i-speak'],
           initiationCopy: [
             'Welcome to the Thought Form Studio, Rising Seeker.',
-            'You have crossed the Fire Door. You have named the restriction and retrieved your authorship. Now comes the deeper work: understanding how the mind itself becomes architecture.',
+            'Begin the deeper work of understanding how the mind itself becomes architecture.',
             'A thought form is not positive thinking. It is not affirmation. It is the precise structure beneath a repeated pattern. It is the hidden law that keeps building the same wall.',
             'In this module, you will learn to trace a recurring outer wall back to its inner instruction. You will identify what thought you inherited and what thought you chose. You will dissolve what is not yours and install what you author.',
             'The work is precision. The work is not speed. The work is not force. The work is clarity.',
@@ -559,7 +455,7 @@ const BASE_RECLAMATION_CURRICULUM = {
           sourceTrackIds: ['architect-of-the-aftermath', 'coded-open', 'fire-in-my-veins'],
           initiationCopy: [
             'Welcome to Teaching Transmission, Rising Seeker.',
-            'You have crossed the Fire Door. You have named the restrictions and retrieved your authorship. You have learned the mechanics of thought. You have trained your mind to sovereignty.',
+            'You have named restrictions, retrieved authorship, learned the mechanics of thought, and trained your mind toward sovereignty.',
             'Now comes the final movement: returning as a teacher. Not to punish. Not to prove. Not to perform. But to teach.',
             'The cleanest win is not that they understand you. The cleanest win is that you can finally teach what you survived.',
             'In this module, you will learn to convert your personal fracture into a teachable protocol. You will learn to build maps so others need not suffer blindly. You will learn to leave a legacy beyond the system.',

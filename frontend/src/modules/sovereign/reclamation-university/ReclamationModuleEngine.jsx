@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SovereignModulePanel from '../../../components/sovereign/SovereignModulePanel';
-import FireDoorInitiationScene from './FireDoorInitiationScene';
+import ModuleBriefScene from './ModuleBriefScene';
 import PairedTrackPortal from './PairedTrackPortal';
 import ShadowCodeSelector from './ShadowCodeSelector';
 import LightCodeMapper from './LightCodeMapper';
@@ -9,8 +9,8 @@ import DeclarationBuilder from './DeclarationBuilder';
 import IntegrationKeyReveal from './IntegrationKeyReveal';
 import RecUniJournalSave from './RecUniJournalSave';
 import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
-import './fireDoorModule.css';
-import './fireDoorModuleOverrides.css';
+import './reclamationModule.css';
+import './reclamationModuleOverrides.css';
 
 /**
  * ReclamationModuleEngine
@@ -41,19 +41,19 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
   const isFinalScene = activeSceneIndex === SCENE_TITLES.length - 1;
 
   return (
-    <div className="fire-door-sequence-shell">
-      <header className="fire-door-command-header">
+    <div className="rec-module-sequence-shell">
+      <header className="rec-module-command-header">
         <div>
-          <p className="fire-door-kicker">Rising Seeker Protocol</p>
+          <p className="rec-module-kicker">Rising Seeker Protocol</p>
           <h2>{activeScene[1]}</h2>
           <p>{activeScene[2]}</p>
         </div>
-        <button type="button" className="fire-door-secondary-action" onClick={onExit}>
+        <button type="button" className="rec-module-secondary-action" onClick={onExit}>
           Exit to Faculty
         </button>
       </header>
 
-      <nav className="fire-door-scene-rail" aria-label="Module scene progress">
+      <nav className="rec-module-scene-rail" aria-label="Module scene progress">
         {SCENE_TITLES.map(([number, title], index) => {
           const isActive = index === activeSceneIndex;
           const isPast = index < activeSceneIndex;
@@ -73,20 +73,20 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
         })}
       </nav>
 
-      <section className="fire-door-active-scene" aria-label={activeScene[1]}>
+      <section className="rec-module-active-scene" aria-label={activeScene[1]}>
         {children}
       </section>
 
-      <footer className="fire-door-gate-controls">
-        <button type="button" className="fire-door-secondary-action" onClick={onBack} disabled={activeSceneIndex === 0}>
+      <footer className="rec-module-gate-controls">
+        <button type="button" className="rec-module-secondary-action" onClick={onBack} disabled={activeSceneIndex === 0}>
           Previous Step
         </button>
         <div>
-          <span className={`fire-door-gate-status ${canAdvance || isFinalScene ? 'is-open' : ''}`}>
+          <span className={`rec-module-gate-status ${canAdvance || isFinalScene ? 'is-open' : ''}`}>
             {isFinalScene ? 'Ready to complete' : canAdvance ? 'Step complete' : lockMessage}
           </span>
           {!isFinalScene && (
-            <button type="button" className="fire-door-action" onClick={onAdvance} disabled={!canAdvance}>
+            <button type="button" className="rec-module-action" onClick={onAdvance} disabled={!canAdvance}>
               Continue to Step {activeSceneIndex + 2}
             </button>
           )}
@@ -98,7 +98,7 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
 
 export default function ReclamationModuleEngine({ module, faculty }) {
   const navigate = useNavigate();
-  const [hasCrossedFireDoor, setHasCrossedFireDoor] = useState(false);
+  const [hasEnteredModule, setHasEnteredModule] = useState(false);
   const [activeSceneIndex, setActiveSceneIndex] = useState(0);
   const [listenedTracks, setListenedTracks] = useState([]);
   const [selectedAnchorKey, setSelectedAnchorKey] = useState(null);
@@ -120,7 +120,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
       const normalizedShadowCodes = (progress.selected_shadow_codes || [])
         .map((codeId) => shadowIdByLegacyId.get(codeId) || codeId)
         .filter((codeId) => (module?.shadowCodes || []).some((code) => code.id === codeId));
-      setHasCrossedFireDoor(true);
+      setHasEnteredModule(true);
       setActiveSceneIndex(progress.active_scene || 0);
       setListenedTracks(progress.listened_track_ids || []);
       setSelectedShadowCodes(normalizedShadowCodes);
@@ -150,8 +150,6 @@ export default function ReclamationModuleEngine({ module, faculty }) {
     }
   }, [module, declaration]);
 
-  const requiredTrackCount = module?.sourceTracks?.length || module?.sourceTrackIds?.length || 0;
-
   const isDeclarationComplete = useMemo(
     () => Object.values(declaration).every((value) => String(value || '').trim().length > 2),
     [declaration]
@@ -159,24 +157,24 @@ export default function ReclamationModuleEngine({ module, faculty }) {
 
   const moduleUnlocked = useMemo(
     () =>
-      hasCrossedFireDoor &&
-      listenedTracks.length === requiredTrackCount &&
+      hasEnteredModule &&
+      listenedTracks.length === (module?.sourceTrackIds?.length || 0) &&
       selectedShadowCodes.length > 0 &&
       retrievedLightCodes.length > 0 &&
       declarationSealed,
-    [hasCrossedFireDoor, listenedTracks, requiredTrackCount, selectedShadowCodes, retrievedLightCodes, declarationSealed]
+    [hasEnteredModule, listenedTracks, module, selectedShadowCodes, retrievedLightCodes, declarationSealed]
   );
 
   const requirements = [
-    { label: 'Transmission received', complete: hasCrossedFireDoor },
-    { label: `All track signals received (${listenedTracks.length}/${requiredTrackCount})`, complete: listenedTracks.length === requiredTrackCount },
+    { label: 'Transmission received', complete: hasEnteredModule },
+    { label: `All track signals received (${listenedTracks.length}/${module?.sourceTrackIds?.length || 0})`, complete: listenedTracks.length === (module?.sourceTrackIds?.length || 0) },
     { label: 'Shadow Code marked', complete: selectedShadowCodes.length > 0 },
     { label: 'Light Code retrieved', complete: retrievedLightCodes.length > 0 },
     { label: 'First Law sealed', complete: declarationSealed },
   ];
 
   const sceneAdvanceRules = [
-    { canAdvance: listenedTracks.length === requiredTrackCount, lockMessage: `Receive all ${requiredTrackCount} signal keys.` },
+    { canAdvance: listenedTracks.length === (module?.sourceTrackIds?.length || 0), lockMessage: `Receive all ${module?.sourceTrackIds?.length || 0} signal keys.` },
     { canAdvance: selectedShadowCodes.length > 0, lockMessage: 'Mark at least one Shadow Code.' },
     { canAdvance: retrievedLightCodes.length > 0, lockMessage: 'Retrieve at least one Light Code.' },
     { canAdvance: declarationSealed, lockMessage: 'Seal the First Law.' },
@@ -265,18 +263,12 @@ export default function ReclamationModuleEngine({ module, faculty }) {
   const activeRule = sceneAdvanceRules[activeSceneIndex];
 
   // Build source tracks for the portal
-  const sourceTrackDefinitions = module?.sourceTracks?.length
-    ? module.sourceTracks
-    : (module?.sourceTrackIds || []).map((trackId) => ({ id: trackId, title: trackId }));
-
-  const sourceTracksForPortal = sourceTrackDefinitions.map((track, index) => ({
-    trackOrder: track.id || track.trackOrder || index + 1,
-    keyLabel: track.keyLabel || `KEY ${String.fromCharCode(73 + index)}: ${module?.lyricAnchors?.[index]?.label || 'Signal Key'}`,
-    title: track.title || track.id,
-    function: track.function || module?.lyricAnchors?.[index]?.teaching || 'Receive the signal.',
-    lyricAnchor: track.lyricAnchor || module?.lyricAnchors?.[index]?.line || '',
-    unavailable: track.unavailable,
-    errorMessage: track.errorMessage,
+  const sourceTracksForPortal = (module?.sourceTrackIds || []).map((trackId, index) => ({
+    trackOrder: index + 1,
+    keyLabel: `KEY ${String.fromCharCode(73 + index)}: ${module?.lyricAnchors?.[index]?.label || 'Signal Key'}`,
+    title: trackId,
+    function: module?.lyricAnchors?.[index]?.teaching || 'Receive the signal.',
+    lyricAnchor: module?.lyricAnchors?.[index]?.line || '',
   }));
 
   const activeScene = [
@@ -315,7 +307,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
       isComplete={isDeclarationComplete}
       isSealed={declarationSealed}
     />,
-    <div key="final-unlock" className="fire-door-final-grid">
+    <div key="final-unlock" className="rec-module-final-grid">
       <IntegrationKeyReveal
         isUnlocked={moduleUnlocked}
         integrationKey={module?.integrationKey || ''}
@@ -338,7 +330,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
 
   if (!module) {
     return (
-      <div className="fire-door-module-root">
+      <div className="rec-module-root">
         <SovereignModulePanel eyebrow="Reclamation University" title="Module Not Found">
           <div style={{ padding: '2rem', textAlign: 'center' }}>
             <p>This module could not be loaded. Please return to the university.</p>
@@ -357,7 +349,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
 
   if (isLoading) {
     return (
-      <div className="fire-door-module-root">
+      <div className="rec-module-root">
         <SovereignModulePanel eyebrow="Reclamation University" title="Loading Module">
           <div style={{ padding: '2rem', textAlign: 'center' }}>
             <p>Initializing module experience...</p>
@@ -368,14 +360,14 @@ export default function ReclamationModuleEngine({ module, faculty }) {
   }
 
   return (
-    <div className="fire-door-module-root">
-      {!hasCrossedFireDoor ? (
-        <FireDoorInitiationScene
+    <div className="rec-module-root">
+      {!hasEnteredModule ? (
+        <ModuleBriefScene
           copy={module?.initiationCopy || []}
           module={module}
           onCross={() => {
-            setHasCrossedFireDoor(true);
-            trackEvent('fire_door_crossed');
+            setHasEnteredModule(true);
+            trackEvent('module_brief_completed');
             saveProgress({
               status: 'in_progress',
               activeScene: 0,

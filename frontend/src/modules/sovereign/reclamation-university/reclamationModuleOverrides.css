@@ -1,30 +1,30 @@
-.fire-door-threshold span:first-child {
+.rec-module-threshold span:first-child {
   transform: scaleX(var(--threshold-scale, 1));
 }
 
-.fire-door-embers i:nth-child(18) { left: 11%; animation-delay: -8.2s; }
-.fire-door-embers i:nth-child(19) { left: 28%; animation-delay: -1.2s; }
-.fire-door-embers i:nth-child(20) { left: 57%; animation-delay: -4.2s; }
-.fire-door-embers i:nth-child(21) { left: 82%; animation-delay: -7.2s; }
-.fire-door-embers i:nth-child(22) { left: 96%; animation-delay: -2.2s; }
+.rec-module-embers i:nth-child(18) { left: 11%; animation-delay: -8.2s; }
+.rec-module-embers i:nth-child(19) { left: 28%; animation-delay: -1.2s; }
+.rec-module-embers i:nth-child(20) { left: 57%; animation-delay: -4.2s; }
+.rec-module-embers i:nth-child(21) { left: 82%; animation-delay: -7.2s; }
+.rec-module-embers i:nth-child(22) { left: 96%; animation-delay: -2.2s; }
 
-.fire-door-panel.is-unlocked,
-.fire-door-hero.is-unlocked {
+.rec-module-panel.is-unlocked,
+.rec-module-hero.is-unlocked {
   border-color: rgba(252, 165, 165, 0.48);
   box-shadow: inset 0 0 42px rgba(127, 29, 29, 0.18), 0 0 54px rgba(239, 68, 68, 0.18);
 }
 
-.fire-door-badge {
+.rec-module-badge {
   display: inline-flex;
   align-items: center;
 }
 
-.fire-door-sequence-shell {
+.rec-module-sequence-shell {
   display: grid;
   gap: clamp(1rem, 2vw, 1.4rem);
 }
 
-.fire-door-command-header {
+.rec-module-command-header {
   position: relative;
   overflow: hidden;
   display: flex;
@@ -40,7 +40,7 @@
   box-shadow: 0 0 45px rgba(127, 29, 29, 0.2), inset 0 0 34px rgba(239, 68, 68, 0.06);
 }
 
-.fire-door-command-header::after {
+.rec-module-command-header::after {
   content: '';
   position: absolute;
   right: 1.2rem;
@@ -51,7 +51,7 @@
   box-shadow: 0 0 22px rgba(239, 68, 68, 0.34);
 }
 
-.fire-door-command-header h2 {
+.rec-module-command-header h2 {
   margin: 0.35rem 0 0;
   font-size: clamp(2.2rem, 6vw, 5.7rem);
   line-height: 0.92;
@@ -61,7 +61,7 @@
   text-shadow: 0 0 34px rgba(239, 68, 68, 0.24);
 }
 
-.fire-door-command-header p:not(.fire-door-kicker) {
+.rec-module-command-header p:not(.rec-module-kicker) {
   max-width: 720px;
   margin: 0.9rem 0 0;
   color: #d4d4d8;
@@ -69,7 +69,7 @@
   line-height: 1.65;
 }
 
-.fire-door-secondary-action {
+.rec-module-secondary-action {
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.035);
@@ -82,24 +82,24 @@
   transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
 }
 
-.fire-door-secondary-action:hover:not(:disabled) {
+.rec-module-secondary-action:hover:not(:disabled) {
   border-color: rgba(252, 165, 165, 0.48);
   color: #fee2e2;
   background: rgba(127, 29, 29, 0.18);
 }
 
-.fire-door-secondary-action:disabled {
+.rec-module-secondary-action:disabled {
   cursor: not-allowed;
   opacity: 0.38;
 }
 
-.fire-door-scene-rail {
+.rec-module-scene-rail {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.55rem;
 }
 
-.fire-door-scene-rail span {
+.rec-module-scene-rail span {
   position: relative;
   min-height: 86px;
   overflow: hidden;
@@ -111,7 +111,7 @@
   transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
-.fire-door-scene-rail span::before {
+.rec-module-scene-rail span::before {
   content: '';
   position: absolute;
   inset: auto 0 0;
@@ -119,7 +119,7 @@
   background: rgba(239, 68, 68, 0.14);
 }
 
-.fire-door-scene-rail span.is-active {
+.rec-module-scene-rail span.is-active {
   transform: translateY(-2px);
   border-color: rgba(252, 165, 165, 0.5);
   background: linear-gradient(145deg, rgba(127, 29, 29, 0.34), rgba(0, 0, 0, 0.64));
@@ -127,19 +127,19 @@
   box-shadow: 0 0 28px rgba(239, 68, 68, 0.12);
 }
 
-.fire-door-scene-rail span.is-past {
+.rec-module-scene-rail span.is-past {
   border-color: rgba(239, 68, 68, 0.22);
   color: #fca5a5;
 }
 
-.fire-door-scene-rail b {
+.rec-module-scene-rail b {
   display: block;
   font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.24em;
 }
 
-.fire-door-scene-rail small {
+.rec-module-scene-rail small {
   display: block;
   margin-top: 0.7rem;
   font-family: Rajdhani, 'Space Grotesk', system-ui, sans-serif;
@@ -149,19 +149,19 @@
   letter-spacing: 0.11em;
 }
 
-.fire-door-active-scene {
+.rec-module-active-scene {
   min-height: 540px;
   display: grid;
   align-items: stretch;
   animation: fdReveal 420ms ease both;
 }
 
-.fire-door-active-scene > .fire-door-panel,
-.fire-door-active-scene > .fire-door-final-grid {
+.rec-module-active-scene > .rec-module-panel,
+.rec-module-active-scene > .rec-module-final-grid {
   min-height: 100%;
 }
 
-.fire-door-gate-controls {
+.rec-module-gate-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -172,7 +172,7 @@
   background: rgba(0, 0, 0, 0.44);
 }
 
-.fire-door-gate-controls > div {
+.rec-module-gate-controls > div {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -180,7 +180,7 @@
   flex-wrap: wrap;
 }
 
-.fire-door-gate-status {
+.rec-module-gate-status {
   display: inline-flex;
   align-items: center;
   min-height: 36px;
@@ -194,73 +194,73 @@
   text-transform: uppercase;
 }
 
-.fire-door-gate-status.is-open {
+.rec-module-gate-status.is-open {
   border-color: rgba(252, 165, 165, 0.44);
   color: #fecaca;
   background: rgba(127, 29, 29, 0.18);
 }
 
-.fire-door-action:disabled {
+.rec-module-action:disabled {
   cursor: not-allowed;
   opacity: 0.42;
   transform: none;
 }
 
-.fire-door-module-root :where(button, textarea, summary, [tabindex]):focus-visible {
+.rec-module-root :where(button, textarea, summary, [tabindex]):focus-visible {
   outline: 3px solid #fef08a;
   outline-offset: 3px;
   box-shadow: 0 0 0 5px rgba(127, 29, 29, 0.7);
 }
 
-.fire-door-secondary-action.is-active {
+.rec-module-secondary-action.is-active {
   border-color: #fca5a5;
   color: #fff;
   background: rgba(127, 29, 29, 0.45);
 }
 
-.fire-door-final-grid {
+.rec-module-final-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.75fr);
   gap: 1rem;
 }
 
-.fire-door-active-scene .fire-door-panel {
+.rec-module-active-scene .rec-module-panel {
   border-radius: 30px;
   padding: clamp(1.25rem, 2.7vw, 2rem);
 }
 
-.fire-door-active-scene .fire-door-panel > .fire-door-kicker + h4,
-.fire-door-active-scene .fire-door-panel > div .fire-door-kicker + h4 {
+.rec-module-active-scene .rec-module-panel > .rec-module-kicker + h4,
+.rec-module-active-scene .rec-module-panel > div .rec-module-kicker + h4 {
   font-size: clamp(1.75rem, 3.8vw, 3.3rem);
   line-height: 0.96;
   letter-spacing: 0.08em;
 }
 
-.fire-door-active-scene .fire-door-card,
-.fire-door-active-scene textarea {
+.rec-module-active-scene .rec-module-card,
+.rec-module-active-scene textarea {
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
-.fire-door-active-scene .fire-door-card:hover {
+.rec-module-active-scene .rec-module-card:hover {
   transform: translateY(-1px);
 }
 
 @media (max-width: 900px) {
-  .fire-door-command-header,
-  .fire-door-gate-controls {
+  .rec-module-command-header,
+  .rec-module-gate-controls {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .fire-door-scene-rail {
+  .rec-module-scene-rail {
     grid-template-columns: 1fr;
   }
 
-  .fire-door-scene-rail span {
+  .rec-module-scene-rail span {
     min-height: auto;
   }
 
-  .fire-door-final-grid {
+  .rec-module-final-grid {
     grid-template-columns: 1fr;
   }
 }

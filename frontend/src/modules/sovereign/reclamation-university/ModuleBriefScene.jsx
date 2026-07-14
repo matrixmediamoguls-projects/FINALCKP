@@ -9,7 +9,7 @@ const MODULE_STEPS = [
   ['05', 'Integrate and save', 'Receive the Integration Key and preserve your record.'],
 ];
 
-export default function FireDoorInitiationScene({ copy = [], module, onCross }) {
+export default function ModuleBriefScene({ copy = [], module, onCross }) {
   const [showTransmission, setShowTransmission] = useState(false);
   const trackCount = module?.sourceTrackIds?.length || 0;
 
@@ -18,8 +18,8 @@ export default function FireDoorInitiationScene({ copy = [], module, onCross }) 
       <div className="module-brief-glow" aria-hidden="true" />
 
       <header className="module-brief-header">
-        <p className="fire-door-kicker">Reclamation University · Module Brief</p>
-        <h1 id="module-brief-title">{module?.title || 'The Fire Door'}</h1>
+        <p className="rec-module-kicker">Reclamation University · Module Brief</p>
+        <h1 id="module-brief-title">{module?.title || 'Module Brief'}</h1>
         <p>{module?.subtitle || 'Cross the threshold where authorship returns.'}</p>
       </header>
 
@@ -32,7 +32,7 @@ export default function FireDoorInitiationScene({ copy = [], module, onCross }) 
       <section className="module-brief-outcome" aria-labelledby="module-outcome-title">
         <span className="module-brief-icon"><BookOpen size={23} /></span>
         <div>
-          <p className="fire-door-kicker">Your outcome</p>
+          <p className="rec-module-kicker">Your outcome</p>
           <h2 id="module-outcome-title">Turn one restrictive pattern into a law you can live by.</h2>
           <p>Your work saves as you move through the sequence. You can leave and return at any point.</p>
         </div>
@@ -41,7 +41,7 @@ export default function FireDoorInitiationScene({ copy = [], module, onCross }) 
       {module?.learningObjectives?.length > 0 && (
         <section className="module-brief-roadmap" aria-labelledby="module-objectives-title">
           <div className="module-brief-section-heading">
-            <p className="fire-door-kicker">Performance targets</p>
+            <p className="rec-module-kicker">Performance targets</p>
             <h2 id="module-objectives-title">By the end of this module, you can</h2>
           </div>
           <ol>
@@ -58,7 +58,7 @@ export default function FireDoorInitiationScene({ copy = [], module, onCross }) 
 
       <section className="module-brief-roadmap" aria-labelledby="module-roadmap-title">
         <div className="module-brief-section-heading">
-          <p className="fire-door-kicker">The sequence</p>
+          <p className="rec-module-kicker">The sequence</p>
           <h2 id="module-roadmap-title">What you will do</h2>
         </div>
         <ol>
@@ -91,7 +91,7 @@ export default function FireDoorInitiationScene({ copy = [], module, onCross }) 
 
       <footer className="module-brief-footer">
         <p><strong>Progress saves automatically.</strong> Begin when you are ready.</p>
-        <button type="button" className="fire-door-action" onClick={onCross}>
+        <button type="button" className="rec-module-action" onClick={onCross}>
           Begin Module <ArrowRight size={18} />
         </button>
       </footer>
