@@ -153,7 +153,7 @@ const BASE_RECLAMATION_CURRICULUM = {
       subtitle: 'Understand the war for consciousness and the nature of power.',
       description: 'Learn the core principles of Reclamation: how to identify Shadow Codes, recover Light Codes, and understand fire as ordered pressure rather than chaos.',
       accent: 'green',
-      artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_one_card.svg',
+      artwork: null,
       prerequisiteFacultyIds: [],
       modules: [],
     },

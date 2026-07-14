@@ -9,6 +9,9 @@ describe('Reclamation University curriculum integrity', () => {
         .flatMap((faculty) => faculty.modules)
         .some((module) => module.id === 'module-fire-door')
     ).toBe(false);
+    expect(
+      RECLAMATION_CURRICULUM.faculties.find((faculty) => faculty.slug === 'foundations')?.artwork
+    ).toBeNull();
   });
 
   it('uses globally unique, faculty-namespaced Shadow Code IDs', () => {
@@ -27,7 +30,7 @@ describe('Reclamation University curriculum integrity', () => {
 
   it('provides accessible artwork and measurable assessment metadata', () => {
     RECLAMATION_CURRICULUM.faculties.forEach((faculty) => {
-      expect(faculty.artwork).toMatch(/^\/ui\/.+\.svg$/);
+      if (faculty.artwork) expect(faculty.artwork).toMatch(/^\/ui\/.+\.svg$/);
       expect(faculty.artworkAlt).toContain(faculty.title);
 
       faculty.modules.forEach((module) => {

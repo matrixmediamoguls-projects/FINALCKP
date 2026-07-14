@@ -11,7 +11,7 @@ const facultyCards = [
     subtitle: 'Understand the war for consciousness and the nature of power.',
     accent: 'green',
     route: '/experiencemode/sovereign/reclamation-university/foundations',
-    asset: '/ui/reclamation/Module_Cards/reclamation_university/module_one_card.svg',
+    asset: null,
   },
   {
     id: 'identity',
@@ -73,14 +73,16 @@ function FacultyCard({ faculty }) {
       onClick={() => navigate(faculty.route)}
       aria-label={`Explore ${faculty.title}`}
     >
-      <img
-        src={faculty.asset}
-        alt={`${faculty.title} faculty module card`}
-        className="ru-faculty-art"
-        onError={(event) => {
-          event.currentTarget.style.display = 'none';
-        }}
-      />
+      {faculty.asset && (
+        <img
+          src={faculty.asset}
+          alt={`${faculty.title} faculty module card`}
+          className="ru-faculty-art"
+          onError={(event) => {
+            event.currentTarget.style.display = 'none';
+          }}
+        />
+      )}
       <span className="ru-faculty-fallback" aria-hidden="true">
         <i className="ru-faculty-glyph"><Hexagon size={48} /></i>
         <strong>{faculty.title}</strong>
