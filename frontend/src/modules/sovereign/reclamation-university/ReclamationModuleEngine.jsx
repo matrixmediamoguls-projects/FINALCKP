@@ -150,6 +150,8 @@ export default function ReclamationModuleEngine({ module, faculty }) {
     }
   }, [module, declaration]);
 
+  const requiredTrackCount = module?.sourceTracks?.length || module?.sourceTrackIds?.length || 0;
+
   const isDeclarationComplete = useMemo(
     () => Object.values(declaration).every((value) => String(value || '').trim().length > 2),
     [declaration]
@@ -158,23 +160,23 @@ export default function ReclamationModuleEngine({ module, faculty }) {
   const moduleUnlocked = useMemo(
     () =>
       hasCrossedFireDoor &&
-      listenedTracks.length === (module?.sourceTrackIds?.length || 0) &&
+      listenedTracks.length === requiredTrackCount &&
       selectedShadowCodes.length > 0 &&
       retrievedLightCodes.length > 0 &&
       declarationSealed,
-    [hasCrossedFireDoor, listenedTracks, module, selectedShadowCodes, retrievedLightCodes, declarationSealed]
+    [hasCrossedFireDoor, listenedTracks, requiredTrackCount, selectedShadowCodes, retrievedLightCodes, declarationSealed]
   );
 
   const requirements = [
     { label: 'Transmission received', complete: hasCrossedFireDoor },
-    { label: `Both track signals received (${listenedTracks.length}/${module?.sourceTrackIds?.length || 0})`, complete: listenedTracks.length === (module?.sourceTrackIds?.length || 0) },
+    { label: `All track signals received (${listenedTracks.length}/${requiredTrackCount})`, complete: listenedTracks.length === requiredTrackCount },
     { label: 'Shadow Code marked', complete: selectedShadowCodes.length > 0 },
     { label: 'Light Code retrieved', complete: retrievedLightCodes.length > 0 },
     { label: 'First Law sealed', complete: declarationSealed },
   ];
 
   const sceneAdvanceRules = [
-    { canAdvance: listenedTracks.length === (module?.sourceTrackIds?.length || 0), lockMessage: `Receive all ${module?.sourceTrackIds?.length || 0} signal keys.` },
+    { canAdvance: listenedTracks.length === requiredTrackCount, lockMessage: `Receive all ${requiredTrackCount} signal keys.` },
     { canAdvance: selectedShadowCodes.length > 0, lockMessage: 'Mark at least one Shadow Code.' },
     { canAdvance: retrievedLightCodes.length > 0, lockMessage: 'Retrieve at least one Light Code.' },
     { canAdvance: declarationSealed, lockMessage: 'Seal the First Law.' },
@@ -263,12 +265,18 @@ export default function ReclamationModuleEngine({ module, faculty }) {
   const activeRule = sceneAdvanceRules[activeSceneIndex];
 
   // Build source tracks for the portal
-  const sourceTracksForPortal = (module?.sourceTrackIds || []).map((trackId, index) => ({
-    trackOrder: index + 1,
-    keyLabel: `KEY ${String.fromCharCode(73 + index)}: ${module?.lyricAnchors?.[index]?.label || 'Signal Key'}`,
-    title: trackId,
-    function: module?.lyricAnchors?.[index]?.teaching || 'Receive the signal.',
-    lyricAnchor: module?.lyricAnchors?.[index]?.line || '',
+  const sourceTrackDefinitions = module?.sourceTracks?.length
+    ? module.sourceTracks
+    : (module?.sourceTrackIds || []).map((trackId) => ({ id: trackId, title: trackId }));
+
+  const sourceTracksForPortal = sourceTrackDefinitions.map((track, index) => ({
+    trackOrder: track.id || track.trackOrder || index + 1,
+    keyLabel: track.keyLabel || `KEY ${String.fromCharCode(73 + index)}: ${module?.lyricAnchors?.[index]?.label || 'Signal Key'}`,
+    title: track.title || track.id,
+    function: track.function || module?.lyricAnchors?.[index]?.teaching || 'Receive the signal.',
+    lyricAnchor: track.lyricAnchor || module?.lyricAnchors?.[index]?.line || '',
+    unavailable: track.unavailable,
+    errorMessage: track.errorMessage,
   }));
 
   const activeScene = [

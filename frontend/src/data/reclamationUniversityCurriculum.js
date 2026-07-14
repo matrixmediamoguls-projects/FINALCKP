@@ -166,6 +166,22 @@ const BASE_RECLAMATION_CURRICULUM = {
           title: 'Module 1: The Fire Door',
           subtitle: 'Cross the threshold where authorship returns.',
           sourceTrackIds: ['welcome-to-the-fire', 'reclamation'],
+          sourceTracks: [
+            {
+              id: 'welcome-to-the-fire',
+              title: 'Welcome To The Fire Act Three Overture',
+              keyLabel: 'KEY I: AUTHORSHIP IGNITION',
+              function: 'The Rising Seeker stops negotiating with erasure and identifies the systems that tried to restrict the calling.',
+              lyricAnchor: 'You cannot sign away what God wrote in me.',
+            },
+            {
+              id: 'reclamation',
+              title: 'Reclamation The Day Musiq Matrix Came Back',
+              keyLabel: 'KEY II: TRUTH LIBERATION',
+              function: 'The Rising Seeker learns that a restricted season can delay movement without owning the truth.',
+              lyricAnchor: 'They can chain your body, but they will never chain your truth.',
+            },
+          ],
           initiationCopy: [
             'Welcome, Rising Seeker. Module 1: The Fire Door.',
             'You are not here to learn how to become powerful. You are here to notice where power was already present and where another system attempted to restrict it, redirect it, or rename it.',
