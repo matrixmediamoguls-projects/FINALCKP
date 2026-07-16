@@ -37,7 +37,6 @@
     "@react-three/fiber": "^8.18.0",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.107.0",
-    "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.8.4",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
