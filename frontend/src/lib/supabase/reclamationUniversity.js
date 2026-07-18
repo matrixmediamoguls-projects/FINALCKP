@@ -238,7 +238,7 @@ export async function emitAnalyticsEvent({
   const { data: userResult } = await supabase.auth.getUser();
   const userId = userResult?.user?.id;
 
-  await supabase
+  const { error } = await supabase
     .from('rec_uni_events')
     .insert({
       user_id: userId,
@@ -246,10 +246,11 @@ export async function emitAnalyticsEvent({
       module_slug: moduleSlug,
       event_name: eventName,
       event_payload: eventPayload,
-    })
-    .catch((err) => {
-      console.warn('Failed to record analytics event:', err);
     });
+
+  if (error) {
+    console.warn('Failed to record analytics event:', error);
+  }
 }
 
 /**
