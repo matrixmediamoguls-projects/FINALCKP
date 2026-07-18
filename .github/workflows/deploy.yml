@@ -32,6 +32,13 @@ jobs:
           VITE_APP_GOOGLE_CLIENT_ID: ${{ secrets.VITE_APP_GOOGLE_CLIENT_ID }}
           VITE_APP_R2_PUBLIC_BASE_URL: ${{ secrets.VITE_APP_R2_PUBLIC_BASE_URL }}
 
+      - name: Verify Cloudflare Pages project access
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFARE_ACCOUNT_ID }}
+          command: pages project list
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
