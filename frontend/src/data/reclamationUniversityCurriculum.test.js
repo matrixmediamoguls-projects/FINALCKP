@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { RECLAMATION_CURRICULUM, getModuleBySlug } from './reclamationUniversityCurriculum';
+import {
+  RECLAMATION_CURRICULUM,
+  getModuleBySlug,
+  isFacultyUnlocked,
+} from './reclamationUniversityCurriculum';
 
 describe('Reclamation University curriculum integrity', () => {
   it('does not expose the removed legacy Foundations Module 1', () => {
@@ -41,5 +45,11 @@ describe('Reclamation University curriculum integrity', () => {
         });
       });
     });
+  });
+
+  it('does not let an empty placeholder faculty deadlock the first actionable faculty', () => {
+    expect(isFacultyUnlocked('identity', [])).toBe(true);
+    expect(isFacultyUnlocked('language', [])).toBe(false);
+    expect(isFacultyUnlocked('language', ['identity'])).toBe(true);
   });
 });

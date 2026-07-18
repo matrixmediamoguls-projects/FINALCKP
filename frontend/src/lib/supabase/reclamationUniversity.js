@@ -254,9 +254,9 @@ export async function emitAnalyticsEvent({
 }
 
 /**
- * Load user's faculty progress
+ * Load the signed-in user's progress for the code-owned modules in a faculty.
  */
-export async function loadUserFacultyProgress(facultyId) {
+export async function loadUserFacultyProgress(moduleIds = []) {
   const supabase = getSovereignSupabase();
   if (!supabase) {
     return { data: null, error: new Error('Supabase client is not configured.') };
@@ -270,17 +270,8 @@ export async function loadUserFacultyProgress(facultyId) {
     return { data: null, error: new Error('Sign in is required.') };
   }
 
-  // Get all modules for this faculty
-  const { data: modules, error: modulesError } = await supabase
-    .from('rec_uni_modules')
-    .select('id')
-    .eq('faculty_id', facultyId);
+  if (moduleIds.length === 0) return { data: [], error: null };
 
-  if (modulesError) return { data: null, error: modulesError };
-
-  const moduleIds = modules?.map((m) => m.id) || [];
-
-  // Get user progress for all modules in this faculty
   const { data, error } = await supabase
     .from('rec_uni_user_progress')
     .select('*')

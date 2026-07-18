@@ -29,7 +29,8 @@ export function useReclamationFacultyUnlock() {
         // Load user's progress for each faculty
         const completedSlugs = [];
         for (const faculty of allFaculties) {
-          const { data: progress, error: progressError } = await loadUserFacultyProgress(faculty.id);
+          const moduleIds = faculty.modules.map((module) => module.id);
+          const { data: progress, error: progressError } = await loadUserFacultyProgress(moduleIds);
 
           if (!progressError && progress) {
             // Check if all modules in this faculty are completed
@@ -73,18 +74,16 @@ export function useReclamationFacultyUnlock() {
       if (!faculty) return null;
 
       // Check prerequisites based on faculty order
-      const facultyIndex = faculties.findIndex((f) => f.slug === facultySlug);
-      if (facultyIndex === 0) {
-        // First faculty has no prerequisites
-        return { isUnlocked: true, requirements: [] };
-      }
-
-      // All previous faculties must be completed
-      const requirements = faculties.slice(0, facultyIndex).map((f) => ({
-        slug: f.slug,
-        title: f.title,
-        completed: completedFacultySlugs.includes(f.slug),
-      }));
+      // Empty curriculum placeholders cannot be completed and must not deadlock
+      // the first faculty that actually contains learner work.
+      const requirements = faculty.prerequisiteFacultyIds
+        .map((facultyId) => faculties.find((candidate) => candidate.id === facultyId))
+        .filter((prerequisite) => prerequisite?.modules.length > 0)
+        .map((prerequisite) => ({
+          slug: prerequisite.slug,
+          title: prerequisite.title,
+          completed: completedFacultySlugs.includes(prerequisite.slug),
+        }));
 
       const isUnlocked = requirements.every((r) => r.completed);
 

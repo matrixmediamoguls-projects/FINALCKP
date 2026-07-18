@@ -540,8 +540,12 @@ export function isFacultyUnlocked(facultySlug, completedFacultySlugs = []) {
   const faculty = getFacultyBySlug(facultySlug);
   if (!faculty) return false;
   if (faculty.prerequisiteFacultyIds.length === 0) return true;
-  return faculty.prerequisiteFacultyIds.every((prereqId) => {
-    const prereqFaculty = RECLAMATION_CURRICULUM.faculties.find((f) => f.id === prereqId);
-    return completedFacultySlugs.includes(prereqFaculty?.slug);
-  });
+
+  const actionablePrerequisites = faculty.prerequisiteFacultyIds
+    .map((prereqId) => RECLAMATION_CURRICULUM.faculties.find((f) => f.id === prereqId))
+    .filter((prereqFaculty) => prereqFaculty?.modules.length > 0);
+
+  return actionablePrerequisites.every((prereqFaculty) =>
+    completedFacultySlugs.includes(prereqFaculty.slug)
+  );
 }
