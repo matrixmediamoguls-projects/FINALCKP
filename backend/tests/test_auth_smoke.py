@@ -75,6 +75,7 @@ def client_and_db(monkeypatch):
         return fake_db
 
     monkeypatch.setattr(server, "init_db", _fake_init_db)
+    monkeypatch.setattr(server, "verify_storage_connection", lambda: True)
 
     with TestClient(server.app) as client:
         yield client, fake_db

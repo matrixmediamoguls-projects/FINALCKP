@@ -14,6 +14,7 @@ from datetime import datetime, timezone, timedelta
 import bcrypt
 import jwt
 import boto3
+from botocore.config import Config
 import redis.asyncio as redis
 
 ROOT_DIR = Path(__file__).parent
@@ -68,27 +69,50 @@ R2_ACCOUNT_ID = os.environ.get("R2_ACCOUNT_ID")
 R2_ACCESS_KEY_ID = os.environ.get("R2_ACCESS_KEY_ID")
 R2_SECRET_ACCESS_KEY = os.environ.get("R2_SECRET_ACCESS_KEY")
 R2_BUCKET_NAME = os.environ.get("R2_BUCKET_NAME")
+R2_ENDPOINT = os.environ.get("R2_ENDPOINT")
 APP_NAME = "chroma-key-protocol"
 s3_client = None
+
+def get_r2_endpoint() -> Optional[str]:
+    if R2_ENDPOINT:
+        return R2_ENDPOINT.rstrip("/")
+    if R2_ACCOUNT_ID:
+        return f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+    return None
 
 def init_storage():
     global s3_client
     if s3_client is not None:
         return s3_client
-        
-    if not all([R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY]):
-        logger.warning("R2 Cloudflare credentials not set. Storage might fail.")
+
+    endpoint_url = get_r2_endpoint()
+    required_settings = {
+        "R2_ENDPOINT or R2_ACCOUNT_ID": endpoint_url,
+        "R2_ACCESS_KEY_ID": R2_ACCESS_KEY_ID,
+        "R2_SECRET_ACCESS_KEY": R2_SECRET_ACCESS_KEY,
+        "R2_BUCKET_NAME": R2_BUCKET_NAME,
+    }
+    missing = [name for name, value in required_settings.items() if not value]
+    if missing:
+        logger.warning("R2 storage is not configured; missing %s", ", ".join(missing))
         return None
-        
-    endpoint_url = f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
     s3_client = boto3.client(
         "s3",
         endpoint_url=endpoint_url,
         aws_access_key_id=R2_ACCESS_KEY_ID,
         aws_secret_access_key=R2_SECRET_ACCESS_KEY,
-        region_name="auto"
+        region_name="auto",
+        config=Config(signature_version="s3v4", retries={"max_attempts": 3}),
     )
     return s3_client
+
+def verify_storage_connection() -> bool:
+    client = init_storage()
+    if not client:
+        return False
+    client.head_bucket(Bucket=R2_BUCKET_NAME)
+    return True
 
 def put_object(path: str, data: bytes, content_type: str) -> dict:
     client = init_storage()
@@ -1458,7 +1482,7 @@ async def shutdown_db_client():
 async def startup_event():
     await init_db()
     try:
-        init_storage()
-        logger.info("Object storage initialized successfully")
+        if verify_storage_connection():
+            logger.info("Cloudflare R2 bucket connection verified")
     except Exception as e:
-        logger.error(f"Storage init failed (non-fatal): {e}")
+        logger.error("R2 connection verification failed (non-fatal): %s", e)
