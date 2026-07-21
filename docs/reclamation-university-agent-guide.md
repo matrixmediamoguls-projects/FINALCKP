@@ -152,7 +152,7 @@ Required route pattern:
 - `/experiencemode/sovereign/reclamation-university/:facultySlug`
 - `/experiencemode/sovereign/reclamation-university/:facultySlug/:moduleSlug`
 
-The faculty route should show faculty overview, module list, lock state, progress, and resume action.
+The base route renders Hermetic Hall. Each of its seven laws links directly to a dedicated module under the `hermetic-hall` faculty slug. The faculty-only route exists only as a non-visual compatibility redirect and must never render the retired overview layout.
 
 The module route should render the reusable module engine.
 
@@ -396,9 +396,9 @@ At minimum, the repository must pass its existing lint, build, and test commands
 ### Phase 4 — Routing and faculties
 
 1. Add parameterized faculty and module routes.
-2. Build reusable faculty overview.
-3. Implement the five missing faculties using the same engine.
-4. Add lock, resume, completed, and unavailable states.
+2. Route Hermetic Hall directly into seven dedicated law modules.
+3. Keep old faculty-only URLs as redirects, not a competing interface.
+4. Add resume, completed, and unavailable states inside the module engine.
 
 ### Phase 5 — Persistence and dashboard
 

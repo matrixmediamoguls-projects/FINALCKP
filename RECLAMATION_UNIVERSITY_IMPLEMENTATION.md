@@ -134,13 +134,13 @@ The ReclamationModuleEngine is a reusable component that orchestrates any module
 ### 4. Routing
 
 **Routes**:
-- `/experiencemode/sovereign/reclamation-university` - Main dashboard (existing)
-- `/experiencemode/sovereign/reclamation-university/:facultySlug` - Faculty overview
+- `/experiencemode/sovereign/reclamation-university` - Hermetic Hall
+- `/experiencemode/sovereign/reclamation-university/:facultySlug` - Redirect to the faculty's first active module
 - `/experiencemode/sovereign/reclamation-university/:facultySlug/:moduleSlug` - Module experience
 
 **Pages**:
-- `ReclamationUniversityPage.jsx` - Main dashboard with faculty cards
-- `ReclamationFacultyPage.jsx` - Faculty overview with module list
+- `ReclamationUniversityPage.jsx` - Hermetic Hall entry
+- `ReclamationFacultyRedirect.jsx` - Non-visual compatibility redirect for old faculty URLs
 - `ReclamationModulePage.jsx` - Module wrapper that renders ReclamationModuleEngine
 
 ### 5. Data Layer
@@ -306,7 +306,7 @@ The implementation maintains the Chroma Key Protocol design language:
 
 - Verify Tailwind CSS is configured correctly
 - Check that CSS files are imported in components
-- Review `ReclamationFacultyPage.css` for custom styles
+- Review `HermeticHallViewport.css` and the module engine styles
 
 ## References
 

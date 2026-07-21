@@ -15,9 +15,9 @@
 
 ## Phase 2: User Interface ✅
 
-- [x] Create ReclamationFacultyPage with module list
+- [x] Route Hermetic Hall directly into dedicated module experiences
 - [x] Create ReclamationModulePage wrapper
-- [x] Add CSS styling for faculty page
+- [x] Remove the obsolete faculty overview layout
 - [x] Maintain Chroma Key Protocol design language
 - [x] Implement responsive design
 
@@ -102,8 +102,8 @@
 ## Testing Checklist
 
 ### Module Loading
-- [ ] Faculty page loads correctly
-- [ ] Module list displays all modules
+- [ ] Hermetic Hall opens each of its seven dedicated modules
+- [ ] Legacy faculty-only URLs redirect without rendering an intermediate layout
 - [ ] Module page loads with correct data
 - [ ] ReclamationModuleEngine renders correctly
 

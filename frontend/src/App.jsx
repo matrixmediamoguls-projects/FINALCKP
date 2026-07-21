@@ -37,7 +37,7 @@ const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSoverei
 const CKPVisualizerCore = lazy(() => import('./pages/CKPVisualizerCore'));
 const VisualizerCorePage = lazy(() => import('./pages/experience/VisualizerCorePage'));
 const ReclamationUniversityPage = lazy(() => import('./pages/ReclamationUniversityPage'));
-const ReclamationFacultyPage = lazy(() => import('./pages/ReclamationFacultyPage'));
+const ReclamationFacultyRedirect = lazy(() => import('./pages/ReclamationFacultyRedirect'));
 const ReclamationModulePage = lazy(() => import('./pages/ReclamationModulePage'));
 
 import AppShell from './components/layout/AppShell';
@@ -237,7 +237,7 @@ function AppRoutes() {
         path="/experiencemode/sovereign/reclamation-university/:facultySlug"
         element={
           <ProtectedRoute withShell={false}>
-            <ReclamationFacultyPage />
+            <ReclamationFacultyRedirect />
           </ProtectedRoute>
         }
       />

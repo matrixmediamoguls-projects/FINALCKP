@@ -9,7 +9,7 @@ const laws = [
     axiom: 'The All is Mind. The Universe is Mental.',
     glyph: '⌁',
     accent: '#ff542e',
-    route: '/experiencemode/sovereign/reclamation-university/sovereign-mind',
+    route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/mentalism',
   },
   {
     number: 2,
@@ -17,7 +17,7 @@ const laws = [
     axiom: 'As above, so below. As below, so above.',
     glyph: '✧',
     accent: '#ff268f',
-    route: '/experiencemode/sovereign/reclamation-university/thought-forms',
+    route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/correspondence',
   },
   {
     number: 3,
@@ -25,7 +25,7 @@ const laws = [
     axiom: 'Nothing rests. Everything moves. Everything vibrates.',
     glyph: '◎',
     accent: '#e92c80',
-    route: '/experiencemode/sovereign/reclamation-university/language',
+    route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/vibration',
   },
   {
     number: 4,
@@ -33,7 +33,7 @@ const laws = [
     axiom: 'Everything is dual. Everything has poles.',
     glyph: '☯',
     accent: '#19a9ff',
-    route: '/experiencemode/sovereign/reclamation-university/identity',
+    route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/polarity',
   },
   {
     number: 5,
@@ -41,7 +41,7 @@ const laws = [
     axiom: 'Everything flows, out and in. Everything has its tides.',
     glyph: '≋',
     accent: '#a6d30c',
-    route: '/experiencemode/sovereign/reclamation-university/foundations',
+    route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/rhythm',
   },
   {
     number: 6,
@@ -49,7 +49,7 @@ const laws = [
     axiom: 'Every cause has its effect. Every effect has its cause.',
     glyph: '↬',
     accent: '#ff9d16',
-    route: '/experiencemode/sovereign/reclamation-university/aftermath',
+    route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/cause-and-effect',
   },
   {
     number: 7,
@@ -57,7 +57,7 @@ const laws = [
     axiom: 'Gender is in everything. Creation holds both principles.',
     glyph: '⚥',
     accent: '#ff4a1c',
-    route: '/experiencemode/sovereign/reclamation-university/identity',
+    route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/gender',
   },
 ];
 
@@ -127,8 +127,8 @@ export default function HermeticHallViewport() {
       <button
         type="button"
         className="hh-university-seal"
-        onClick={() => navigate('/experiencemode/sovereign/reclamation-university/foundations')}
-        aria-label="Enter Reclamation University foundations"
+        onClick={() => navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/mentalism')}
+        aria-label="Enter the first active Reclamation University module"
       >
         <span>Enter the University</span>
       </button>

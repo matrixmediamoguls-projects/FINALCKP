@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReclamationModuleEngine from '../modules/sovereign/reclamation-university/ReclamationModuleEngine';
 import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
+import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
 /**
  * ReclamationModulePage
@@ -15,8 +16,15 @@ export default function ReclamationModulePage() {
   const navigate = useNavigate();
   const { facultySlug, moduleSlug } = useParams();
 
-  const faculty = useMemo(() => getFacultyBySlug(facultySlug), [facultySlug]);
-  const module = useMemo(() => getModuleBySlug(facultySlug, moduleSlug), [facultySlug, moduleSlug]);
+  const isHermeticHall = facultySlug === HERMETIC_HALL_FACULTY.slug;
+  const faculty = useMemo(
+    () => (isHermeticHall ? HERMETIC_HALL_FACULTY : getFacultyBySlug(facultySlug)),
+    [facultySlug, isHermeticHall]
+  );
+  const module = useMemo(
+    () => (isHermeticHall ? getHermeticHallModule(moduleSlug) : getModuleBySlug(facultySlug, moduleSlug)),
+    [facultySlug, isHermeticHall, moduleSlug]
+  );
 
   if (!faculty || !module) {
     return (

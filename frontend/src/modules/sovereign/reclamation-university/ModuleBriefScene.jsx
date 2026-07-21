@@ -18,7 +18,7 @@ export default function ModuleBriefScene({ copy = [], module, onCross }) {
       <div className="module-brief-glow" aria-hidden="true" />
 
       <header className="module-brief-header">
-        <p className="rec-module-kicker">Reclamation University · Module Brief</p>
+        <p className="rec-module-kicker">{module?.programLabel || 'Reclamation University'} · Module Brief</p>
         <h1 id="module-brief-title">{module?.title || 'Module Brief'}</h1>
         <p>{module?.subtitle || 'Cross the threshold where authorship returns.'}</p>
       </header>

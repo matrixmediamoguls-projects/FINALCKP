@@ -49,7 +49,7 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
           <p>{activeScene[2]}</p>
         </div>
         <button type="button" className="rec-module-secondary-action" onClick={onExit}>
-          Exit to Faculty
+          Exit Module
         </button>
       </header>
 
@@ -386,7 +386,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
             lockMessage={activeRule.lockMessage}
             onBack={() => setActiveSceneIndex(Math.max(0, activeSceneIndex - 1))}
             onAdvance={handleSceneAdvance}
-            onExit={() => navigate(`/experiencemode/sovereign/reclamation-university/${faculty?.slug}`)}
+            onExit={() => navigate('/experiencemode/sovereign/reclamation-university')}
             onSceneSelect={setActiveSceneIndex}
           >
             {activeScene}

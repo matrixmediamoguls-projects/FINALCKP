@@ -54,7 +54,7 @@ Navigate to `http://localhost:5173/experiencemode/sovereign/reclamation-universi
 | Component | Purpose |
 |-----------|---------|
 | **ReclamationModuleEngine** | Generic orchestrator for any module from the curriculum |
-| **ReclamationFacultyPage** | Faculty overview with an openly accessible module list |
+| **HermeticHallViewport** | Seven-law module launcher with no intermediate faculty shell |
 | **ReclamationModulePage** | Wrapper that loads and renders modules |
 | **ModuleBriefScene** | Entry brief and learning sequence |
 | **PairedTrackPortal** | Track listening interface with lyric anchors |
@@ -206,7 +206,7 @@ Modify scene components in `frontend/src/modules/sovereign/reclamation-universit
 The implementation uses Tailwind CSS with custom CSS files:
 - `reclamationModule.css` - Module engine styling
 - `reclamationModuleOverrides.css` - Design language overrides
-- `ReclamationFacultyPage.css` - Faculty page styling
+- `HermeticHallViewport.css` - Hermetic Hall launcher styling
 
 Customize colors, typography, and layout in these files.
 
