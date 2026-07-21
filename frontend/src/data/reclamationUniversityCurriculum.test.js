@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import {
   RECLAMATION_CURRICULUM,
   getModuleBySlug,
-  isFacultyUnlocked,
 } from './reclamationUniversityCurriculum';
 
 describe('Reclamation University curriculum integrity', () => {
@@ -47,9 +46,9 @@ describe('Reclamation University curriculum integrity', () => {
     });
   });
 
-  it('does not let an empty placeholder faculty deadlock the first actionable faculty', () => {
-    expect(isFacultyUnlocked('identity', [])).toBe(true);
-    expect(isFacultyUnlocked('language', [])).toBe(false);
-    expect(isFacultyUnlocked('language', ['identity'])).toBe(true);
+  it('does not define faculty prerequisites', () => {
+    RECLAMATION_CURRICULUM.faculties.forEach((faculty) => {
+      expect(faculty).not.toHaveProperty('prerequisiteFacultyIds');
+    });
   });
 });

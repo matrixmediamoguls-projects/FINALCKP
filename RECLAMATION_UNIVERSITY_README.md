@@ -1,6 +1,6 @@
 # Reclamation University
 
-A production-ready, Supabase-backed educational platform for the Chroma Key Protocol. This implementation provides a complete six-faculty curriculum with persistent progress tracking, journal records, unlock logic, and comprehensive analytics.
+A production-ready, Supabase-backed educational platform for the Chroma Key Protocol. This implementation provides a complete six-faculty curriculum with persistent progress tracking, journal records, open faculty access, and comprehensive analytics.
 
 ## Quick Start
 
@@ -54,7 +54,7 @@ Navigate to `http://localhost:5173/experiencemode/sovereign/reclamation-universi
 | Component | Purpose |
 |-----------|---------|
 | **ReclamationModuleEngine** | Generic orchestrator for any module from the curriculum |
-| **ReclamationFacultyPage** | Faculty overview with module list and unlock status |
+| **ReclamationFacultyPage** | Faculty overview with an openly accessible module list |
 | **ReclamationModulePage** | Wrapper that loads and renders modules |
 | **ModuleBriefScene** | Entry brief and learning sequence |
 | **PairedTrackPortal** | Track listening interface with lyric anchors |
@@ -131,17 +131,9 @@ Progress is automatically saved to Supabase:
 
 Students can close the browser and resume where they left off.
 
-### Unlock Logic
+### Faculty Access
 
-Faculties unlock based on prerequisites:
-- **Foundations** - No prerequisites (always unlocked)
-- **Identity** - Requires Foundations completion
-- **Language** - Requires Identity completion
-- **Thought Forms** - Requires Language completion
-- **Sovereign Mind** - Requires Thought Forms completion
-- **Aftermath** - Requires Sovereign Mind completion
-
-The unlock status is checked on faculty page load and displayed to students.
+Every published faculty and module is directly accessible. Progress is still recorded for resuming work, completion, XP, and journal entries, but it does not gate entry to another faculty.
 
 ### Analytics
 
@@ -229,15 +221,6 @@ const { progress, isLoading, isSaving, saveProgress, saveCompletion, trackEvent 
   useReclamationModuleProgress(moduleId, facultySlug, moduleSlug);
 ```
 
-### useReclamationFacultyUnlock
-
-Manages faculty unlock status based on prerequisites.
-
-```javascript
-const { faculties, completedFacultySlugs, isFacultyAccessible, getFacultyRequirements } =
-  useReclamationFacultyUnlock();
-```
-
 ## API Functions
 
 ### Progress Functions
@@ -299,7 +282,7 @@ await emitAnalyticsEvent({
 1. **Module Loading**: Navigate to a module and verify it loads correctly
 2. **Scene Progression**: Click through scenes and verify gates work
 3. **Progress Saving**: Close browser and reopen to verify progress persists
-4. **Unlock Logic**: Complete a faculty and verify next faculty unlocks
+4. **Open Access**: Verify every published faculty and module can be entered directly
 5. **Analytics**: Check Supabase `rec_uni_events` table for events
 
 ### Unit Tests
@@ -328,12 +311,6 @@ npm run test:e2e
 - Check Supabase RLS policies
 - Look for errors in browser console
 
-### Faculty Locked When Should Be Unlocked
-
-- Verify prerequisite faculty is marked as completed
-- Check `rec_uni_user_progress` table for completion records
-- Ensure all modules in prerequisite faculty are marked `status: 'completed'`
-
 ## Performance
 
 - Module page load: < 2 seconds
@@ -356,7 +333,6 @@ npm run test:e2e
 - Mobile optimization
 - Accessibility audit (WCAG 2.1 AA)
 - Performance optimization
-- Module prerequisites
 - Video/audio content
 - Peer feedback system
 

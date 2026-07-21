@@ -29,13 +29,11 @@
 - [ ] Save scene state as user progresses
 - [ ] Implement auto-save functionality
 
-## Phase 4: Unlock Logic & Prerequisites
+## Phase 4: Faculty Access
 
-- [ ] Load completed faculties for current user
-- [ ] Check faculty prerequisites before allowing access
-- [ ] Display lock state on faculty overview page
-- [ ] Prevent access to locked modules
-- [ ] Show prerequisite requirements to user
+- [x] Allow direct access to every published faculty
+- [x] Allow direct access to every published module
+- [x] Keep completion progress independent from course access
 
 ## Phase 5: Journal & Records
 
@@ -61,7 +59,7 @@
 - [ ] Test module loading and rendering
 - [ ] Test scene progression and gate requirements
 - [ ] Test progress saving and loading
-- [ ] Test unlock logic and prerequisites
+- [x] Test that the curriculum defines no faculty prerequisites
 - [ ] Test journal entry creation
 - [ ] Test analytics event tracking
 - [ ] Test on mobile devices
@@ -89,13 +87,11 @@
 - [ ] Improve accessibility
 - [ ] Performance optimization
 - [ ] Add more modules to existing faculties
-- [ ] Implement module prerequisites
 - [ ] Add video/audio content
 - [ ] Implement peer feedback system
 
 ## Known Limitations
 
-- Faculty unlock logic not yet implemented (all faculties currently accessible)
 - Progress loading not yet implemented (starts fresh each time)
 - Auto-save not yet implemented (only saves on completion)
 - Analytics dashboard not yet built

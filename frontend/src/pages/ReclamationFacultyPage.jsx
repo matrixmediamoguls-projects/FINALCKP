@@ -1,35 +1,13 @@
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronRight, Lock, CheckCircle } from 'lucide-react';
+import { ChevronRight, CheckCircle } from 'lucide-react';
 import { getFacultyBySlug } from '../data/reclamationUniversityCurriculum';
-import { useReclamationFacultyUnlock } from '../hooks/useReclamationFacultyUnlock';
 import './ReclamationFacultyPage.css';
 
 export default function ReclamationFacultyPage() {
   const navigate = useNavigate();
   const { facultySlug } = useParams();
   const faculty = useMemo(() => getFacultyBySlug(facultySlug), [facultySlug]);
-
-  const { isFacultyAccessible, getFacultyRequirements, isLoading } = useReclamationFacultyUnlock();
-  const isUnlocked = useMemo(() => isFacultyAccessible(facultySlug), [facultySlug, isFacultyAccessible]);
-  const requirements = useMemo(() => getFacultyRequirements(facultySlug), [facultySlug, getFacultyRequirements]);
-
-  if (isLoading) {
-    return (
-      <main className="ru-page" aria-label="Loading faculty">
-        <div className="ru-background" aria-hidden="true">
-          <div className="ru-bg-citadel" />
-          <div className="ru-bg-grid" />
-          <div className="ru-bg-scanlines" />
-          <div className="ru-bg-vignette" />
-        </div>
-
-        <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-          <h1>Loading Faculty...</h1>
-        </div>
-      </main>
-    );
-  }
 
   if (!faculty) {
     return (
@@ -83,7 +61,7 @@ export default function ReclamationFacultyPage() {
 
         <div className="ru-access-status">
           <span />
-          {isUnlocked ? 'Faculty Unlocked' : 'Prerequisites Required'}
+          Faculty Open
           <ChevronRight size={14} />
         </div>
 
@@ -110,21 +88,6 @@ export default function ReclamationFacultyPage() {
             <p className="ru-faculty-subtitle">{faculty.subtitle}</p>
             <p className="ru-faculty-description">{faculty.description}</p>
 
-            {!isUnlocked && requirements && (
-              <div className="ru-lock-message">
-                <Lock size={20} />
-                <div>
-                  <p>Complete prerequisite faculties to unlock this faculty:</p>
-                  <ul style={{ marginTop: '0.5rem', marginLeft: '1.5rem' }}>
-                    {requirements.requirements.map((req) => (
-                      <li key={req.slug} style={{ fontSize: '0.875rem', color: req.completed ? '#86efac' : '#fca5a5' }}>
-                        {req.completed ? '✓' : '○'} {req.title}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -135,7 +98,6 @@ export default function ReclamationFacultyPage() {
               <div
                 key={module.id}
                 className="ru-module-card"
-                data-locked={!isUnlocked}
               >
                 <div className="ru-module-header">
                   <div>
@@ -143,11 +105,7 @@ export default function ReclamationFacultyPage() {
                     <h3>{module.title}</h3>
                     <p className="ru-module-subtitle">{module.subtitle}</p>
                   </div>
-                  {isUnlocked ? (
-                    <CheckCircle size={24} className="ru-module-status-icon" />
-                  ) : (
-                    <Lock size={24} className="ru-module-status-icon" />
-                  )}
+                  <CheckCircle size={24} className="ru-module-status-icon" />
                 </div>
 
                 <p className="ru-module-description">{module.subtitle}</p>
@@ -164,27 +122,13 @@ export default function ReclamationFacultyPage() {
                 <button
                   type="button"
                   className="ru-module-action"
-                  onClick={() => {
-                    if (isUnlocked) {
-                      navigate(
-                        `/experiencemode/sovereign/reclamation-university/${faculty.slug}/${module.slug}`
-                      );
-                    }
-                  }}
-                  disabled={!isUnlocked}
-                  aria-label={`${isUnlocked ? 'Start' : 'Locked'}: ${module.title}`}
-                >
-                  {isUnlocked ? (
-                    <>
-                      Start Module
-                      <ChevronRight size={16} />
-                    </>
-                  ) : (
-                    <>
-                      Locked
-                      <Lock size={16} />
-                    </>
+                  onClick={() => navigate(
+                    `/experiencemode/sovereign/reclamation-university/${faculty.slug}/${module.slug}`
                   )}
+                  aria-label={`Start: ${module.title}`}
+                >
+                  Start Module
+                  <ChevronRight size={16} />
                 </button>
               </div>
             ))}

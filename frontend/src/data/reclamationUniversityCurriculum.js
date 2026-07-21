@@ -154,7 +154,6 @@ const BASE_RECLAMATION_CURRICULUM = {
       description: 'Learn the core principles of Reclamation: how to identify Shadow Codes, recover Light Codes, and understand fire as ordered pressure rather than chaos.',
       accent: 'green',
       artwork: null,
-      prerequisiteFacultyIds: [],
       modules: [],
     },
     {
@@ -166,7 +165,6 @@ const BASE_RECLAMATION_CURRICULUM = {
       description: 'Explore how hidden laws become walls. Learn to identify the thought forms that build your reality and rewrite the instruction beneath the pattern.',
       accent: 'blue',
       artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_two_card.svg',
-      prerequisiteFacultyIds: ['foundations-of-reclamation'],
       modules: [
         {
           id: 'module-thought-form-studio',
@@ -235,7 +233,6 @@ const BASE_RECLAMATION_CURRICULUM = {
       description: 'Discover how speech is creative law. Learn to move from silence to clean declaration and understand the power of naming.',
       accent: 'red',
       artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_three_card.svg',
-      prerequisiteFacultyIds: ['foundations-of-reclamation', 'architecture-of-identity'],
       modules: [
         {
           id: 'module-voice-recovery',
@@ -304,7 +301,6 @@ const BASE_RECLAMATION_CURRICULUM = {
       description: 'Master the mechanics of manifestation. Learn how thought precedes form and how to align your inner architecture with your desired reality.',
       accent: 'amber',
       artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_four_card.svg',
-      prerequisiteFacultyIds: ['architecture-of-identity'],
       modules: [
         {
           id: 'module-manifestation-lab',
@@ -374,7 +370,6 @@ const BASE_RECLAMATION_CURRICULUM = {
       description: 'Transcend inherited programming and conditioned responses. Develop the mental discipline to choose your thoughts and author your consciousness.',
       accent: 'gold',
       artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_five_card.svg',
-      prerequisiteFacultyIds: ['thought-forms-reality'],
       modules: [
         {
           id: 'module-sovereign-training',
@@ -444,7 +439,6 @@ const BASE_RECLAMATION_CURRICULUM = {
       description: 'Transform your personal reclamation into service. Learn to teach what you survived and build systems that protect others from repeating the damage.',
       accent: 'purple',
       artwork: '/ui/reclamation/Module_Cards/reclamation_university/module_six_card.svg',
-      prerequisiteFacultyIds: ['sovereign-mind'],
       modules: [
         {
           id: 'module-teaching-transmission',
@@ -531,21 +525,4 @@ export function getModuleBySlug(facultySlug, moduleSlug) {
  */
 export function getAllFaculties() {
   return RECLAMATION_CURRICULUM.faculties;
-}
-
-/**
- * Helper function to check if a faculty is unlocked based on prerequisites
- */
-export function isFacultyUnlocked(facultySlug, completedFacultySlugs = []) {
-  const faculty = getFacultyBySlug(facultySlug);
-  if (!faculty) return false;
-  if (faculty.prerequisiteFacultyIds.length === 0) return true;
-
-  const actionablePrerequisites = faculty.prerequisiteFacultyIds
-    .map((prereqId) => RECLAMATION_CURRICULUM.faculties.find((f) => f.id === prereqId))
-    .filter((prereqFaculty) => prereqFaculty?.modules.length > 0);
-
-  return actionablePrerequisites.every((prereqFaculty) =>
-    completedFacultySlugs.includes(prereqFaculty.slug)
-  );
 }

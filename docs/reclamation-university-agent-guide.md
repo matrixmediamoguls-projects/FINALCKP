@@ -4,7 +4,7 @@
 
 Finish Reclamation University as a production-ready, Supabase-backed learning experience inside `FINALCKP` without replacing the established Chroma Key Protocol design language or creating a disconnected second system.
 
-The completed system must turn the current visual dashboard into a coherent six-faculty curriculum with persistent progress, resumable sessions, journal records, unlock logic, analytics-ready events, and secure row-level access.
+The completed system must turn the current visual dashboard into a coherent six-faculty curriculum with persistent progress, resumable sessions, journal records, open faculty access, analytics-ready events, and secure row-level access.
 
 ## Non-Negotiable Product Intent
 
@@ -74,7 +74,6 @@ Each faculty must contain:
   description,
   accent,
   artwork,
-  prerequisiteFacultyIds,
   modules: [
     {
       id,
@@ -275,7 +274,7 @@ Every function must return a consistent result shape:
 
 No UI component should call `.from(...)` directly.
 
-### 8. Progress and unlock rules
+### 8. Progress and completion rules
 
 A module is completed only when all configured gates pass.
 
@@ -289,12 +288,10 @@ Published modules may configure requirements such as:
 - declaration sealed
 - final record saved successfully
 
-Faculty unlock behavior:
+Faculty access behavior:
 
-- Faculty One is available to every authenticated user.
-- Later faculties unlock after the previous faculty’s required modules are completed.
-- Locked cards remain visible and explain the exact prerequisite.
-- Admin or development bypasses must be explicit and disabled in production.
+- Every published faculty and module is available to every authenticated user.
+- Completion and progress affect records, XP, and resumability, not access to other faculties.
 
 ### 9. Dashboard statistics
 
@@ -365,7 +362,7 @@ Add tests for:
 - module gate progression
 - progress restoration
 - completion save
-- locked faculty prerequisites
+- direct access to every published faculty and module
 - dashboard progress and XP calculations
 - RLS behavior through migration-level verification or Supabase tests
 
@@ -453,7 +450,7 @@ Reclamation University is finished when:
 - the module engine is data-driven
 - authenticated progress survives reload and device changes
 - dashboard progress and XP are live
-- faculty prerequisites work
+- every published faculty and module is directly accessible
 - journal entries are private and retrievable
 - all user-data tables have correct RLS
 - existing published-module records are preserved or migrated

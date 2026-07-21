@@ -2,7 +2,7 @@
 
 ## Overview
 
-Reclamation University is the educational arm of the Chroma Key Protocol. This document describes the complete implementation of a production-ready, Supabase-backed learning experience with a six-faculty curriculum, persistent progress tracking, journal records, unlock logic, and analytics.
+Reclamation University is the educational arm of the Chroma Key Protocol. This document describes the complete implementation of a production-ready, Supabase-backed learning experience with a six-faculty curriculum, persistent progress tracking, journal records, open faculty access, and analytics.
 
 ## Architecture
 
@@ -35,7 +35,6 @@ The curriculum registry is the single source of truth for all Reclamation Univer
 - `getFacultyBySlug(slug)` - Get faculty by slug
 - `getModuleBySlug(facultySlug, moduleSlug)` - Get module by faculty and module slug
 - `getAllFaculties()` - Get all faculties
-- `isFacultyUnlocked(facultySlug, completedFacultySlugs)` - Check if faculty is unlocked based on prerequisites
 
 ### 2. Supabase Schema
 
@@ -275,7 +274,7 @@ The implementation maintains the Chroma Key Protocol design language:
 ### Immediate Priorities
 
 1. **Load User Progress**: Implement loading of user's prior state when entering a module
-2. **Unlock Logic**: Implement faculty prerequisite checking and module unlock state
+2. **Open Faculty Access**: Keep every published faculty and module directly accessible
 3. **Analytics Dashboard**: Build dashboard to view student progress and event data
 4. **Module Expansion**: Add more modules to existing faculties
 
