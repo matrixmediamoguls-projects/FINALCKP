@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, BookOpen, ShieldCheck } from 'lucide-react';
 import SovereignModulePanel from '../../../components/sovereign/SovereignModulePanel';
 import ModuleBriefScene from './ModuleBriefScene';
 import PairedTrackPortal from './PairedTrackPortal';
@@ -36,7 +37,35 @@ const SCENE_TITLES = [
   ['05', 'Integrate and Save', 'Receive the Integration Key and preserve your record.'],
 ];
 
-function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvance, onExit, onSceneSelect, children }) {
+function UniversityMasthead({ faculty, module, activeSceneIndex, onExit }) {
+  const progress = Math.round(((activeSceneIndex + 1) / SCENE_TITLES.length) * 100);
+
+  return (
+    <header className="rec-university-masthead">
+      <button type="button" className="rec-university-back" onClick={onExit}>
+        <ArrowLeft size={16} aria-hidden="true" />
+        <span>University Hall</span>
+      </button>
+      <div className="rec-university-identity">
+        <span className="rec-university-seal" aria-hidden="true"><BookOpen size={20} /></span>
+        <div>
+          <p>Reclamation University</p>
+          <strong>The Sovereign Athenaeum</strong>
+        </div>
+      </div>
+      <div className="rec-university-context">
+        <p>{faculty?.title}</p>
+        <span>{module?.title}</span>
+      </div>
+      <div className="rec-university-progress" aria-label={`${progress}% of module sequence reached`}>
+        <div><span>Sequence</span><strong>{String(activeSceneIndex + 1).padStart(2, '0')} / 05</strong></div>
+        <i><b style={{ width: `${progress}%` }} /></i>
+      </div>
+    </header>
+  );
+}
+
+function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvance, onSceneSelect, children }) {
   const activeScene = SCENE_TITLES[activeSceneIndex];
   const isFinalScene = activeSceneIndex === SCENE_TITLES.length - 1;
 
@@ -44,13 +73,11 @@ function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvan
     <div className="rec-module-sequence-shell">
       <header className="rec-module-command-header">
         <div>
-          <p className="rec-module-kicker">Rising Seeker Protocol</p>
+          <p className="rec-module-kicker">The Reclamation Method · Guided Practicum</p>
           <h2>{activeScene[1]}</h2>
           <p>{activeScene[2]}</p>
         </div>
-        <button type="button" className="rec-module-secondary-action" onClick={onExit}>
-          Exit Module
-        </button>
+        <span className="rec-module-session-mark"><ShieldCheck size={16} /> Progress secured</span>
       </header>
 
       <nav className="rec-module-scene-rail" aria-label="Module scene progress">
@@ -361,37 +388,43 @@ export default function ReclamationModuleEngine({ module, faculty }) {
 
   return (
     <div className="rec-module-root">
+      <div className="rec-module-atmosphere" aria-hidden="true" />
       {!hasEnteredModule ? (
-        <ModuleBriefScene
-          copy={module?.initiationCopy || []}
-          module={module}
-          onCross={() => {
-            setHasEnteredModule(true);
-            trackEvent('module_brief_completed');
-            saveProgress({
-              status: 'in_progress',
-              activeScene: 0,
-              listenedTrackIds: [],
-              selectedShadowCodes: [],
-              retrievedLightCodes: [],
-              declarationJson: {},
-            });
-          }}
-        />
+        <div className="rec-module-campus-frame">
+          <UniversityMasthead faculty={faculty} module={module} activeSceneIndex={0} onExit={() => navigate('/experiencemode/sovereign/reclamation-university')} />
+          <ModuleBriefScene
+            copy={module?.initiationCopy || []}
+            module={module}
+            onCross={() => {
+              setHasEnteredModule(true);
+              trackEvent('module_brief_completed');
+              saveProgress({
+                status: 'in_progress',
+                activeScene: 0,
+                listenedTrackIds: [],
+                selectedShadowCodes: [],
+                retrievedLightCodes: [],
+                declarationJson: {},
+              });
+            }}
+          />
+        </div>
       ) : (
-        <SovereignModulePanel eyebrow={faculty?.title} title={module?.title}>
-          <SceneShell
-            activeSceneIndex={activeSceneIndex}
-            canAdvance={activeRule.canAdvance}
-            lockMessage={activeRule.lockMessage}
-            onBack={() => setActiveSceneIndex(Math.max(0, activeSceneIndex - 1))}
-            onAdvance={handleSceneAdvance}
-            onExit={() => navigate('/experiencemode/sovereign/reclamation-university')}
-            onSceneSelect={setActiveSceneIndex}
-          >
-            {activeScene}
-          </SceneShell>
-        </SovereignModulePanel>
+        <div className="rec-module-campus-frame">
+          <UniversityMasthead faculty={faculty} module={module} activeSceneIndex={activeSceneIndex} onExit={() => navigate('/experiencemode/sovereign/reclamation-university')} />
+          <SovereignModulePanel eyebrow={faculty?.title} title={module?.title}>
+            <SceneShell
+              activeSceneIndex={activeSceneIndex}
+              canAdvance={activeRule.canAdvance}
+              lockMessage={activeRule.lockMessage}
+              onBack={() => setActiveSceneIndex(Math.max(0, activeSceneIndex - 1))}
+              onAdvance={handleSceneAdvance}
+              onSceneSelect={setActiveSceneIndex}
+            >
+              {activeScene}
+            </SceneShell>
+          </SovereignModulePanel>
+        </div>
       )}
     </div>
   );
