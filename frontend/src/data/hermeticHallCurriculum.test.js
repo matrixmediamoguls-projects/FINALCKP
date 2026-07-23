@@ -15,4 +15,16 @@ describe('Hermetic Hall curriculum', () => {
       expect(module.id).toMatch(/^hermetic-law-/);
     });
   });
+
+  it('uses the authored Hermetic Hall module titles', () => {
+    expect(HERMETIC_HALL_FACULTY.modules.map((module) => module.title)).toEqual([
+      'I. Mentalism: Before the Body, The ALL-mind',
+      'II. Correspondence: As Above, So Below',
+      'III. Vibration: The Motion Manifest',
+      'IV. Polarity: Duality Decoded',
+      'Law 05: Rhythm',
+      'VI. Cause and Effect: Direct the Effect',
+      'VII. Gender: The Dual Currents of Creation',
+    ]);
+  });
 });
