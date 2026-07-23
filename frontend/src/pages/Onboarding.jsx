@@ -58,17 +58,17 @@ const Onboarding = () => {
           <div style={{ fontSize: 48, color: 'var(--act)', marginBottom: 20, opacity: 0.6, animation: 'pulse 3s ease-in-out infinite' }}>
             &#x25C8;
           </div>
-          <div style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(28px,5vw,52px)', fontWeight: 600, letterSpacing: '0.08em', lineHeight: 1.15, color: 'var(--white)', marginBottom: 20 }}>
+          <div style={{ fontFamily: "'Oxanium',serif", fontSize: 'clamp(28px,5vw,52px)', fontWeight: 600, letterSpacing: '0.08em', lineHeight: 1.15, color: 'var(--white)', marginBottom: 20 }}>
             This is not<br />an album.<br /><span style={{ color: 'var(--act)' }}>This is a system.</span>
           </div>
-          <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 18, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 48, maxWidth: 400 }}>
+          <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 18, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 48, maxWidth: 400 }}>
             You move through it. It changes based on you.
           </div>
           <button
             data-testid="begin-btn"
             onClick={() => setPhase(2)}
             style={{
-              fontFamily: "'Share Tech Mono',monospace", fontSize: 11, letterSpacing: '0.5em',
+              fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.5em',
               textTransform: 'uppercase', padding: '16px 48px', border: '1px solid var(--act)',
               background: 'transparent', color: 'var(--act)', cursor: 'pointer',
               transition: 'all 0.3s', position: 'relative', overflow: 'hidden'
@@ -86,7 +86,7 @@ const Onboarding = () => {
           textAlign: 'center', width: '100%', maxWidth: 600, padding: 40,
           animation: 'obIn 0.6s ease both'
         }}>
-          <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 32 }}>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 32 }}>
             Where are you right now?
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
@@ -97,14 +97,14 @@ const Onboarding = () => {
                 onClick={() => handleStateSelect(state.id)}
                 style={{
                   padding: '16px 24px', border: '1px solid var(--border)', background: 'transparent',
-                  fontFamily: "'Rajdhani',sans-serif", fontSize: 16, fontWeight: 500, color: 'var(--muted)',
+                  fontFamily: "'Inter',sans-serif", fontSize: 16, fontWeight: 500, color: 'var(--muted)',
                   cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left',
                   display: 'flex', alignItems: 'center', gap: 16, letterSpacing: '0.08em'
                 }}
               >
                 <span style={{ fontSize: 18, width: 24, textAlign: 'center' }}>{state.icon}</span>
                 {state.label}
-                <span style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', marginLeft: 'auto', maxWidth: 180, textAlign: 'right', lineHeight: 1.4 }}>
+                <span style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', marginLeft: 'auto', maxWidth: 180, textAlign: 'right', lineHeight: 1.4 }}>
                   {state.sub}
                 </span>
               </button>
@@ -120,15 +120,15 @@ const Onboarding = () => {
           textAlign: 'center', width: '100%', maxWidth: 600, padding: 40,
           animation: 'obIn 0.6s ease both'
         }}>
-          <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--act)', marginBottom: 16 }}>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--act)', marginBottom: 16 }}>
             The System Responds
           </div>
-          <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 20, color: 'var(--white)', lineHeight: 1.65, marginBottom: 24 }}>
+          <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 20, color: 'var(--white)', lineHeight: 1.65, marginBottom: 24 }}>
             {responses[selectedState]}
           </div>
           <div style={{
             background: 'rgba(90,176,56,0.08)', border: '1px solid var(--act)',
-            padding: '14px 24px', fontFamily: "'Share Tech Mono',monospace", fontSize: 9,
+            padding: '14px 24px', fontFamily: "'JetBrains Mono',monospace", fontSize: 9,
             letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--act)',
             marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10, width: '100%', justifyContent: 'center'
           }}>
@@ -137,14 +137,14 @@ const Onboarding = () => {
           </div>
           <div style={{
             background: 'var(--panel)', border: '1px solid var(--border)', borderLeft: '3px solid var(--act)',
-            padding: '16px 20px', fontFamily: "'IM Fell English',serif", fontStyle: 'italic',
+            padding: '16px 20px', fontFamily: "'Oxanium',serif", fontStyle: 'italic',
             fontSize: 15, color: '#8a8870', lineHeight: 1.75, textAlign: 'left', width: '100%', marginBottom: 32
           }}>
             {lyrics[selectedState]}
           </div>
 
           {/* Two Entry Options */}
-          <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
             Choose Your Entry
           </div>
           <div style={{ display: 'flex', gap: 16, width: '100%' }}>
@@ -156,10 +156,10 @@ const Onboarding = () => {
                 cursor: 'pointer', transition: 'all 0.3s', textAlign: 'center'
               }}
             >
-              <div style={{ fontFamily: "'Cinzel',serif", fontSize: 14, fontWeight: 600, color: 'var(--act)', marginBottom: 8, letterSpacing: '0.1em' }}>
+              <div style={{ fontFamily: "'Oxanium',serif", fontSize: 14, fontWeight: 600, color: 'var(--act)', marginBottom: 8, letterSpacing: '0.1em' }}>
                 Enter The Protocol
               </div>
-              <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
                 Start from Act I and follow the structured path through all acts.
               </div>
             </button>
@@ -171,10 +171,10 @@ const Onboarding = () => {
                 cursor: 'pointer', transition: 'all 0.3s', textAlign: 'center'
               }}
             >
-              <div style={{ fontFamily: "'Cinzel',serif", fontSize: 14, fontWeight: 600, color: 'var(--gold)', marginBottom: 8, letterSpacing: '0.1em' }}>
+              <div style={{ fontFamily: "'Oxanium',serif", fontSize: 14, fontWeight: 600, color: 'var(--gold)', marginBottom: 8, letterSpacing: '0.1em' }}>
                 Spin The Wheel
               </div>
-              <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
                 Let fate decide. 30 selections — 22 album tracks + 8 bonus transmissions.
               </div>
             </button>

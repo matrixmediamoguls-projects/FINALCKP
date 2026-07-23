@@ -106,20 +106,20 @@ const ProtocolChat = ({ act = 1 }) => {
       {/* Header */}
       <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
         <div>
-          <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)' }}>
             Protocol Engine · Act {['I','II','III','IV'][act - 1]} · {actElements[act]}
           </div>
-          <div style={{ fontFamily: "'Cinzel',serif", fontSize: 14, fontWeight: 600, color: actColors[act], letterSpacing: '0.06em', marginTop: 2 }}>
+          <div style={{ fontFamily: "'Oxanium',serif", fontSize: 14, fontWeight: 600, color: actColors[act], letterSpacing: '0.06em', marginTop: 2 }}>
             The Seeker Guides
           </div>
         </div>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           <button onClick={() => setShowSessions(!showSessions)} data-testid="toggle-sessions"
-            style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em', padding: '4px 10px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer' }}>
+            style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.15em', padding: '4px 10px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer' }}>
             Sessions
           </button>
           <button onClick={startNewSession} data-testid="new-session-btn"
-            style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em', padding: '4px 10px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer' }}>
+            style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.15em', padding: '4px 10px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer' }}>
             New
           </button>
         </div>
@@ -133,7 +133,7 @@ const ProtocolChat = ({ act = 1 }) => {
             background: i === phase ? 'rgba(90,176,56,0.08)' : i < phase ? 'rgba(90,176,56,0.03)' : 'transparent',
             borderBottom: i === phase ? '2px solid var(--act)' : i < phase ? '2px solid var(--g2)' : '2px solid var(--border)'
           }}>
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em', color: i <= phase ? 'var(--act)' : 'var(--muted)' }}>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.15em', color: i <= phase ? 'var(--act)' : 'var(--muted)' }}>
               {p.name}
             </div>
           </div>
@@ -144,12 +144,12 @@ const ProtocolChat = ({ act = 1 }) => {
       {showSessions && (
         <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--border)', maxHeight: 120, overflowY: 'auto', background: 'var(--surface)' }}>
           {sessions.length === 0 ? (
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, color: 'var(--muted)', padding: 8 }}>No previous sessions</div>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: 'var(--muted)', padding: 8 }}>No previous sessions</div>
           ) : sessions.map(s => (
             <div key={s.session_id} onClick={() => loadSession(s.session_id)}
               style={{ padding: '6px 8px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', fontSize: 11 }}>
               <span style={{ color: 'var(--white)' }}>Act {['I','II','III','IV'][s.act - 1]} · Phase {s.phase}</span>
-              <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--muted)' }}>{s.updated_at?.slice(0, 10)}</span>
+              <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--muted)' }}>{s.updated_at?.slice(0, 10)}</span>
             </div>
           ))}
         </div>
@@ -160,13 +160,13 @@ const ProtocolChat = ({ act = 1 }) => {
         {messages.length === 0 && (
           <div style={{ textAlign: 'center', padding: '40px 20px' }}>
             <div style={{ fontSize: 36, color: 'var(--act)', opacity: 0.3, marginBottom: 16 }}>&#x25C8;</div>
-            <div style={{ fontFamily: "'Cinzel',serif", fontSize: 16, color: 'var(--white)', marginBottom: 8, letterSpacing: '0.06em' }}>
+            <div style={{ fontFamily: "'Oxanium',serif", fontSize: 16, color: 'var(--white)', marginBottom: 8, letterSpacing: '0.06em' }}>
               Begin Your Protocol Session
             </div>
-            <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 13, color: 'var(--muted)', lineHeight: 1.65, maxWidth: 400, margin: '0 auto 20px' }}>
+            <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 13, color: 'var(--muted)', lineHeight: 1.65, maxWidth: 400, margin: '0 auto 20px' }}>
               The Seeker will guide you through a structured reflection process. Share what you're comfortable with — use general terms like "my situation" or "the pattern I recognize."
             </div>
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--act)', letterSpacing: '0.2em', textTransform: 'uppercase', padding: '6px 12px', border: '1px solid var(--g2)', display: 'inline-block' }}>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--act)', letterSpacing: '0.2em', textTransform: 'uppercase', padding: '6px 12px', border: '1px solid var(--g2)', display: 'inline-block' }}>
               Your privacy is protected. No specifics required.
             </div>
           </div>
@@ -184,13 +184,13 @@ const ProtocolChat = ({ act = 1 }) => {
               borderLeft: msg.role === 'assistant' ? '3px solid var(--act)' : undefined
             }}>
               {msg.role === 'assistant' && (
-                <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.25em', color: 'var(--act)', marginBottom: 4, textTransform: 'uppercase' }}>
+                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.25em', color: 'var(--act)', marginBottom: 4, textTransform: 'uppercase' }}>
                   The Seeker
                 </div>
               )}
               <div style={{
                 fontSize: msg.role === 'assistant' ? 13 : 14,
-                fontFamily: msg.role === 'assistant' ? "'IM Fell English',serif" : "'Rajdhani',sans-serif",
+                fontFamily: msg.role === 'assistant' ? "'Oxanium',serif" : "'Inter',sans-serif",
                 fontStyle: msg.role === 'assistant' ? 'italic' : 'normal',
                 color: msg.role === 'user' ? 'var(--white)' : 'rgba(232,228,216,0.8)',
                 lineHeight: 1.65, whiteSpace: 'pre-wrap'
@@ -204,7 +204,7 @@ const ProtocolChat = ({ act = 1 }) => {
         {sending && (
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 12 }}>
             <div style={{ padding: '10px 14px', background: 'var(--panel)', border: '1px solid var(--border)', borderLeft: '3px solid var(--act)' }}>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--act)', letterSpacing: '0.15em', animation: 'pulse 1.5s ease-in-out infinite' }}>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--act)', letterSpacing: '0.15em', animation: 'pulse 1.5s ease-in-out infinite' }}>
                 The Seeker is reflecting...
               </div>
             </div>
@@ -223,16 +223,16 @@ const ProtocolChat = ({ act = 1 }) => {
             { label: 'Ownership', val: scores.ownership },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>{s.label}</div>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 12, color: s.val >= 7 ? 'var(--act)' : 'var(--muted)' }}>{s.val}/10</div>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>{s.label}</div>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, color: s.val >= 7 ? 'var(--act)' : 'var(--muted)' }}>{s.val}/10</div>
             </div>
           ))}
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Phase</div>
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 12, color: 'var(--act)' }}>{phase}/4</div>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Phase</div>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, color: 'var(--act)' }}>{phase}/4</div>
           </div>
           {mastery && (
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--y3)', letterSpacing: '0.2em', alignSelf: 'center', padding: '2px 8px', border: '1px solid var(--y2)' }}>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--y3)', letterSpacing: '0.2em', alignSelf: 'center', padding: '2px 8px', border: '1px solid var(--y2)' }}>
               Mastery
             </div>
           )}
@@ -252,7 +252,7 @@ const ProtocolChat = ({ act = 1 }) => {
           style={{
             flex: 1, background: 'var(--panel)', border: '1px solid var(--border)',
             padding: '10px 14px', fontSize: 13, color: 'var(--white)',
-            fontFamily: "'Rajdhani',sans-serif", outline: 'none', resize: 'none',
+            fontFamily: "'Inter',sans-serif", outline: 'none', resize: 'none',
             lineHeight: 1.5
           }}
         />
@@ -263,7 +263,7 @@ const ProtocolChat = ({ act = 1 }) => {
           style={{
             width: 48, border: '1px solid var(--act)', background: 'transparent',
             color: 'var(--act)', cursor: !input.trim() || sending ? 'not-allowed' : 'pointer',
-            fontSize: 16, fontFamily: "'Share Tech Mono',monospace",
+            fontSize: 16, fontFamily: "'JetBrains Mono',monospace",
             opacity: !input.trim() || sending ? 0.3 : 1
           }}
         >

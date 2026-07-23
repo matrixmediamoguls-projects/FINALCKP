@@ -167,7 +167,7 @@ export default function VideoPlayer3D() {
     <div
       ref={containerRef}
       className="w-full min-h-screen bg-[#060405] flex flex-col items-center justify-center p-10 md:p-20 relative overflow-hidden"
-      style={{ fontFamily: "Space Grotesk, sans-serif" }}
+      style={{ fontFamily: "Inter, sans-serif" }}
     >
       {/* Background gradients */}
       <div

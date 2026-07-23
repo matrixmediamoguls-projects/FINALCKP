@@ -28,7 +28,7 @@
   overflow: hidden;
   color: var(--sos-text-primary);
   background: var(--sos-bg-0);
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -122,7 +122,7 @@
 .sos-brand-block img, .sos-user-block img { width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 9px rgba(255,42,32,.65)); }
 .sos-brand-block div, .sos-user-block div { display: flex; flex-direction: column; gap: 2px; }
 .sos-brand-block strong { color: var(--sos-text-primary); font-size: .96rem; font-weight: 500; letter-spacing: .15em; }
-.sos-brand-block span { color: var(--sos-red-bright); font: 400 .7rem 'Share Tech Mono', monospace; letter-spacing: .12em; }
+.sos-brand-block span { color: var(--sos-red-bright); font: 400 .7rem 'JetBrains Mono', monospace; letter-spacing: .12em; }
 
 .sos-system-status {
   justify-self: stretch;
@@ -133,7 +133,7 @@
   gap: 10px;
   padding: 7px 24px;
   color: var(--sos-success);
-  font: 400 .88rem 'Share Tech Mono', monospace;
+  font: 400 .88rem 'JetBrains Mono', monospace;
   letter-spacing: .18em;
   border: 1px solid rgba(211,32,32,.36);
   border-bottom-color: transparent;
@@ -146,7 +146,7 @@
 .sos-user-block div { align-items: flex-end; }
 .sos-user-block strong { color: var(--sos-red-bright); font-size: .8rem; font-weight: 500; }
 .sos-user-block strong span, .sos-user-block > div > span { color: var(--sos-text-secondary); }
-.sos-user-block > div > span { font: 400 .7rem 'Share Tech Mono', monospace; }
+.sos-user-block > div > span { font: 400 .7rem 'JetBrains Mono', monospace; }
 
 .sos-operating-stage {
   position: absolute;
@@ -248,10 +248,10 @@
 .sos-core-readout { position: absolute; left: 50%; bottom: 0; width: 350px; min-height: 64px; transform: translateX(-50%); padding: 7px 18px 10px; text-align: center; background: var(--sos-panel-strong); border: 1px solid rgba(211,32,32,.48); clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px); box-shadow: inset 0 0 20px rgba(211,32,32,.12), 0 0 18px rgba(0,0,0,.7); }
 .sos-core-readout > span { display: block; color: var(--sos-red-bright); font-size: .84rem; }
 .sos-core-readout > div { margin-top: 5px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; }
-.sos-core-readout small { color: var(--sos-text-secondary); font: .62rem 'Share Tech Mono', monospace; }
+.sos-core-readout small { color: var(--sos-text-secondary); font: .62rem 'JetBrains Mono', monospace; }
 .sos-core-readout i { height: 5px; background: #171719; box-shadow: inset 0 0 4px #000; }
 .sos-core-readout i b { display: block; width: 93%; height: 100%; background: linear-gradient(90deg, #8d0a0a, var(--sos-red-bright), #fff0e8); box-shadow: 0 0 8px var(--sos-red); }
-.sos-core-readout strong { font: 400 1rem 'Share Tech Mono', monospace; }
+.sos-core-readout strong { font: 400 1rem 'JetBrains Mono', monospace; }
 
 .sos-left-hud, .sos-right-hud { position: absolute; z-index: 7; bottom: 126px; width: clamp(230px, 18vw, 300px); }
 .sos-left-hud { left: 16px; } .sos-right-hud { right: 16px; display: grid; gap: 10px; }
@@ -262,21 +262,21 @@
 .sos-light-code-body { display: grid; grid-template-columns: 58px 1fr; align-items: center; gap: 11px; }
 .sos-code-emblem { position: relative; width: 52px; height: 52px; display: grid; place-items: center; color: var(--sos-red-bright); filter: drop-shadow(0 0 7px rgba(255,52,45,.6)); }
 .sos-code-emblem svg { position: absolute; inset: 0; width: 100%; height: 100%; stroke-width: 1; }
-.sos-code-emblem i { font: normal 500 .58rem 'Share Tech Mono', monospace; }
+.sos-code-emblem i { font: normal 500 .58rem 'JetBrains Mono', monospace; }
 .sos-light-code-body div { min-width: 0; }
-.sos-light-code-body strong { display: block; color: var(--sos-text-primary); font: 400 .67rem/1.35 'Share Tech Mono', monospace; }
-.sos-light-code-body div span { display: block; margin-top: 7px; color: var(--sos-text-secondary); font: .62rem 'Share Tech Mono', monospace; }
+.sos-light-code-body strong { display: block; color: var(--sos-text-primary); font: 400 .67rem/1.35 'JetBrains Mono', monospace; }
+.sos-light-code-body div span { display: block; margin-top: 7px; color: var(--sos-text-secondary); font: .62rem 'JetBrains Mono', monospace; }
 .sos-light-code p { margin: 12px 0 4px; padding-top: 9px; color: var(--sos-red-bright); font-size: .66rem; border-top: 1px solid rgba(211,32,32,.2); }
 .sos-light-code > b { display: flex; align-items: center; gap: 7px; color: var(--sos-success); font-size: .7rem; font-weight: 500; }
 .sos-light-code > b svg { width: 12px; height: 12px; }
 
 .sos-protocol-progress { min-height: 88px; }
-.sos-protocol-progress > span { color: var(--sos-text-secondary); font: .67rem 'Share Tech Mono', monospace; }
-.sos-protocol-progress > strong { position: absolute; right: 14px; bottom: 12px; color: var(--sos-text-secondary); font: 400 .68rem 'Share Tech Mono', monospace; }
+.sos-protocol-progress > span { color: var(--sos-text-secondary); font: .67rem 'JetBrains Mono', monospace; }
+.sos-protocol-progress > strong { position: absolute; right: 14px; bottom: 12px; color: var(--sos-text-secondary); font: 400 .68rem 'JetBrains Mono', monospace; }
 .sos-progress { width: calc(100% - 42px); height: 5px; margin-top: 10px; background: #111214; }
 .sos-progress i { display: block; width: var(--progress); height: 100%; background: linear-gradient(90deg, #9f0d0d, var(--sos-red-bright), #ffd1c7); box-shadow: 0 0 8px var(--sos-red); }
 .sos-elements { display: grid; gap: 5px; }
-.sos-elements > div { display: grid; grid-template-columns: 12px 42px 1fr 30px; align-items: center; gap: 7px; color: var(--sos-text-secondary); font: .62rem 'Share Tech Mono', monospace; }
+.sos-elements > div { display: grid; grid-template-columns: 12px 42px 1fr 30px; align-items: center; gap: 7px; color: var(--sos-text-secondary); font: .62rem 'JetBrains Mono', monospace; }
 .sos-elements svg { width: 9px; height: 9px; color: var(--element-color); fill: color-mix(in srgb, var(--element-color) 35%, transparent); }
 .sos-elements i { height: 4px; background: #111214; }
 .sos-elements i b { display: block; width: var(--element-value); height: 100%; background: var(--element-color); box-shadow: 0 0 6px color-mix(in srgb, var(--element-color) 60%, transparent); }

@@ -84,7 +84,7 @@
 .ckp-panel-title,
 .ckp-title-lockup p,
 .ckp-status-cluster {
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   letter-spacing: .16em;
 }
 
@@ -282,7 +282,7 @@
 .ckp-tracklist li {
   position: relative;
   color: rgba(255, 255, 255, .68);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 14px;
   letter-spacing: .04em;
 }
@@ -390,7 +390,7 @@
 .ckp-tracklist-status {
   margin: -8px 0 14px;
   color: rgba(var(--ckp-amber-rgb), .72);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 10px;
   letter-spacing: .08em;
   line-height: 1.5;
@@ -421,7 +421,7 @@
 .ckp-lore-module span,
 .ckp-analysis-module {
   display: block;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .ckp-lore-module,
@@ -482,7 +482,7 @@
 .ckp-audio-player__meta em,
 .ckp-audio-time,
 .ckp-audio-controls button {
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .ckp-audio-player__meta span {
@@ -600,7 +600,7 @@
   grid-template-columns: 1fr auto 1fr;
   gap: 20px;
   color: rgba(255, 255, 255, .66);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -770,7 +770,7 @@
   min-width: min(360px, 72%);
   padding: 8px 22px;
   color: rgba(255, 255, 255, .88);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: clamp(12px, 1.35vw, 20px);
   letter-spacing: .14em;
   text-align: center;
@@ -839,7 +839,7 @@
   display: block;
   margin-bottom: 8px;
   color: var(--ckp-signal);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 10px;
   letter-spacing: .22em;
   text-align: center;
@@ -852,7 +852,7 @@
   align-items: baseline;
   margin: 0 0 5px;
   color: rgba(255, 255, 255, .7);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: clamp(11px, .92vw, 15px);
   letter-spacing: .09em;
   line-height: 1.25;
@@ -895,7 +895,7 @@
   align-items: center;
   margin-top: 12px;
   color: rgba(255, 255, 255, .75);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
 }
 
@@ -1005,7 +1005,7 @@
   justify-content: space-between;
   margin-top: 10px;
   color: rgba(255, 255, 255, .64);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
 }
 
@@ -1341,7 +1341,7 @@
   gap: 12px;
   align-items: baseline;
   min-width: 0;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
 }
 

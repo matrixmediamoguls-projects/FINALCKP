@@ -8,6 +8,9 @@ module.exports = {
 				display: ['Oxanium', 'system-ui', '-apple-system', 'sans-serif'],
 				interface: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
 				data: ['JetBrains Mono', 'monospace'],
+				sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+				serif: ['Oxanium', 'system-ui', '-apple-system', 'sans-serif'],
+				monospace: ['JetBrains Mono', 'monospace'],
 				// Compatibility aliases for existing screens.
 				heading: ['Oxanium', 'system-ui', '-apple-system', 'sans-serif'],
 				primary: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],

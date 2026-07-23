@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oxanium:wght@400;600;700&family=JetBrains+Mono&display=swap");
 
 :root {
   --void: #030303;
@@ -26,7 +26,7 @@ body,
 body {
   background: var(--void);
   color: var(--text-main);
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Inter", sans-serif;
   overflow-x: hidden;
 }
 

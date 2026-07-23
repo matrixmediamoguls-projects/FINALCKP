@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap');
 
 .ruj-page {
   min-height: 100vh;
@@ -6,7 +6,7 @@
   padding: clamp(1rem, 2vw, 2rem);
   color: #f4f7fb;
   overflow: hidden;
-  font-family: 'Rajdhani', Inter, system-ui, sans-serif;
+  font-family: 'Inter', Inter, system-ui, sans-serif;
   background:
     radial-gradient(circle at 20% 78%, rgba(255, 24, 35, 0.16), transparent 28%),
     radial-gradient(circle at 87% 74%, rgba(0, 179, 255, 0.14), transparent 26%),
@@ -58,7 +58,7 @@
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 54, 58, 0.2), rgba(2, 5, 10, 0.92));
   color: #ff333d;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1.45rem;
   box-shadow: 0 0 24px rgba(255, 30, 42, 0.28), inset 0 0 18px rgba(255, 35, 45, 0.18);
 }
@@ -110,7 +110,7 @@
 .ruj-stat strong {
   display: block;
   margin-top: .35rem;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1.36rem;
   letter-spacing: .05em;
 }
@@ -136,7 +136,7 @@
 .ruj-node-block strong {
   margin-top: .25rem;
   color: rgba(244, 249, 255, .78);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .ruj-card-stage {
@@ -218,7 +218,7 @@
   align-items: center;
   gap: .55rem;
   color: rgba(235, 246, 255, .72);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: .75rem;
   letter-spacing: .08em;
 }
@@ -242,7 +242,7 @@
   border: 1px solid rgba(255, 43, 54, .55);
   border-radius: 8px;
   color: #ff2a35;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1.7rem;
   font-weight: 700;
   background: rgba(255, 26, 39, .06);
@@ -253,7 +253,7 @@
   display: flex;
   flex-direction: column;
   color: #f5f8ff;
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2.05rem, 4vw, 3.6rem);
   line-height: .94;
   letter-spacing: .045em;
@@ -306,7 +306,7 @@
   border-radius: 7px;
   background: rgba(5, 14, 22, .72);
   box-shadow: 0 0 25px rgba(49, 174, 255, .18);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   color: rgba(235,247,255,.72);
   font-size: .56rem;
 }
@@ -336,7 +336,7 @@
 .ruj-diagnostics small {
   display: block;
   color: rgba(230, 242, 255, .55);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: .56rem;
   letter-spacing: .07em;
 }
@@ -345,7 +345,7 @@
   display: block;
   margin-top: .25rem;
   color: #ff3340;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1rem;
 }
 
@@ -364,7 +364,7 @@
   border-radius: 12px;
   color: #f7fbff;
   background: linear-gradient(90deg, rgba(255, 24, 35, .08), rgba(255,255,255,.035), rgba(0, 185, 255, .08));
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(1rem, 1.65vw, 1.42rem);
   letter-spacing: .26em;
   cursor: pointer;

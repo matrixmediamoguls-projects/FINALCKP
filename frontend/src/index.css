@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700;800&display=swap');
 @import "./styles/base.css";
 @import "./styles/global.css";
 @import "./styles/acts.css";
@@ -112,7 +112,7 @@ body {
   background:black;
   color:var(--white);
 
-  font-family:'Rajdhani', sans-serif;
+  font-family:'Inter', sans-serif;
 
   overflow-x:hidden;
 }
@@ -164,17 +164,17 @@ body {
 ========================================================= */
 
 .font-cinzel {
-  font-family:'Cinzel', serif;
+  font-family:'Oxanium', serif;
 }
 
 .font-mono {
-  font-family:'Share Tech Mono', monospace;
+  font-family:'JetBrains Mono', monospace;
 }
 
 .font-fell {
-  font-family:'IM Fell English', serif;
+  font-family:'Oxanium', serif;
 }
 
 .font-raj {
-  font-family:'Rajdhani', sans-serif;
+  font-family:'Inter', sans-serif;
 }

@@ -68,7 +68,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: clamp(13px, 2vw, 18px) clamp(16px, 2.6vw, 28px);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0;
 }
@@ -131,7 +131,7 @@
   border-radius: 3px;
   background: rgba(5, 5, 4, 0.84);
   color: #f4ead4;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0;
   cursor: pointer;
@@ -157,7 +157,7 @@
   border-radius: 3px;
   background: rgba(0, 0, 0, 0.44);
   color: rgba(244, 234, 212, 0.72);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0;
   cursor: pointer;

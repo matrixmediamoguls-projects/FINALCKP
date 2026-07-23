@@ -83,7 +83,7 @@ const SpinWheel = () => {
 
   if (loading) return (
     <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase' }}>Loading The Wheel...</div>
+      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase' }}>Loading The Wheel...</div>
     </div>
   );
 
@@ -91,13 +91,13 @@ const SpinWheel = () => {
     <div style={{ padding: 24, height: '100%', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 6 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 6 }}>
           Balanced Elementals · Bonus System
         </div>
-        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(20px,3vw,32px)', fontWeight: 600, letterSpacing: '0.12em', color: 'var(--white)' }}>
+        <div style={{ fontFamily: "'Oxanium',serif", fontSize: 'clamp(20px,3vw,32px)', fontWeight: 600, letterSpacing: '0.12em', color: 'var(--white)' }}>
           The Wheel of Transmissions
         </div>
-        <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 14, color: 'var(--muted)', marginTop: 6, maxWidth: 440 }}>
+        <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 14, color: 'var(--muted)', marginTop: 6, maxWidth: 440 }}>
           12 bonus transmissions. Each unlocked through your journey. Spin to discover what awaits.
         </div>
       </div>
@@ -161,13 +161,13 @@ const SpinWheel = () => {
                 {/* Segment number */}
                 <text x={numX} y={numY} textAnchor="middle" dominantBaseline="middle"
                   transform={`rotate(${midAngle}, ${numX}, ${numY})`}
-                  style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, fill: `${color}88`, letterSpacing: '0.1em' }}>
+                  style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, fill: `${color}88`, letterSpacing: '0.1em' }}>
                   {String(i + 1).padStart(2, '0')}
                 </text>
                 {/* Track name */}
                 <text x={textX} y={textY} textAnchor="middle" dominantBaseline="middle"
                   transform={`rotate(${midAngle}, ${textX}, ${textY})`}
-                  style={{ fontFamily: "'Cinzel',serif", fontSize: 8, fill: color, fontWeight: 600, letterSpacing: '0.04em' }}>
+                  style={{ fontFamily: "'Oxanium',serif", fontSize: 8, fill: color, fontWeight: 600, letterSpacing: '0.04em' }}>
                   {track.name.length > 16 ? track.name.slice(0, 14) + '..' : track.name}
                 </text>
               </g>
@@ -178,11 +178,11 @@ const SpinWheel = () => {
           <circle cx="220" cy="220" r="44" fill="var(--void)" stroke="#FFD70066" strokeWidth="2" />
           <circle cx="220" cy="220" r="38" fill="var(--surface)" stroke="#FFD70033" strokeWidth="1" />
           <text x="220" y="215" textAnchor="middle" dominantBaseline="middle"
-            style={{ fontFamily: "'Cinzel',serif", fontSize: 9, fill: '#FFD700', letterSpacing: '0.1em', fontWeight: 600 }}>
+            style={{ fontFamily: "'Oxanium',serif", fontSize: 9, fill: '#FFD700', letterSpacing: '0.1em', fontWeight: 600 }}>
             BALANCED
           </text>
           <text x="220" y="228" textAnchor="middle" dominantBaseline="middle"
-            style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, fill: 'var(--muted)', letterSpacing: '0.25em' }}>
+            style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, fill: 'var(--muted)', letterSpacing: '0.25em' }}>
             ELEMENTALS
           </text>
         </svg>
@@ -195,7 +195,7 @@ const SpinWheel = () => {
           onClick={spinWheel}
           disabled={spinning || (spinsAvailable <= 0 && !user?.is_admin)}
           style={{
-            fontFamily: "'Share Tech Mono',monospace", fontSize: 11, letterSpacing: '0.5em',
+            fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: '0.5em',
             textTransform: 'uppercase', padding: '16px 56px',
             border: '2px solid #FFD700', background: spinning ? 'rgba(255,215,0,0.06)' : 'transparent',
             color: (spinsAvailable <= 0 && !user?.is_admin) ? 'var(--muted)' : '#FFD700',
@@ -207,7 +207,7 @@ const SpinWheel = () => {
         >
           {spinning ? 'Spinning...' : spinsAvailable > 0 || user?.is_admin ? 'Spin The Wheel' : 'No Spins Available'}
         </button>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.2em', color: 'var(--muted)', marginTop: 8 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.2em', color: 'var(--muted)', marginTop: 8 }}>
           {user?.is_admin ? 'Admin · Unlimited spins' : `${spinsAvailable} spin${spinsAvailable !== 1 ? 's' : ''} available · Complete an Act to earn more`}
         </div>
       </div>
@@ -220,30 +220,30 @@ const SpinWheel = () => {
           borderLeft: `3px solid ${WHEEL_COLORS[result.index % 12]}`,
           padding: '20px 24px', animation: 'fadeUp 0.4s ease both'
         }}>
-          <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: WHEEL_COLORS[result.index % 12], marginBottom: 6 }}>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: WHEEL_COLORS[result.index % 12], marginBottom: 6 }}>
             Transmission #{String(result.index + 1).padStart(2, '0')} · Bonus Track
           </div>
-          <div style={{ fontFamily: "'Cinzel',serif", fontSize: 22, fontWeight: 600, color: 'var(--white)', marginBottom: 8, letterSpacing: '0.06em' }}>
+          <div style={{ fontFamily: "'Oxanium',serif", fontSize: 22, fontWeight: 600, color: 'var(--white)', marginBottom: 8, letterSpacing: '0.06em' }}>
             {result.name}
           </div>
-          <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 14, color: 'var(--muted)', lineHeight: 1.65, marginBottom: 16 }}>
+          <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 14, color: 'var(--muted)', lineHeight: 1.65, marginBottom: 16 }}>
             The Wheel has spoken. This transmission is yours to explore.
           </div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
             <button onClick={() => { setResult(null); }} style={{
-              fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase',
+              fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase',
               padding: '8px 16px', border: '1px solid #FFD700', background: 'transparent', color: '#FFD700', cursor: 'pointer'
             }}>
               Spin Again
             </button>
             <button data-testid="enter-track" style={{
-              fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase',
+              fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase',
               padding: '8px 16px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer'
             }}>
               Explore Transmission &#x2192;
             </button>
             <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, alignItems: 'center' }}>
-              <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Share</span>
+              <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Share</span>
               <button data-testid="wheel-share-x" onClick={() => {
                 const text = `The Wheel spoke: "${result.name}" — Balanced Elementals`;
                 window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank', 'width=550,height=420');
@@ -266,7 +266,7 @@ const SpinWheel = () => {
 export default SpinWheel;
 
 const shareStyle = {
-  fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.1em',
+  fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.1em',
   padding: '3px 8px', border: '1px solid var(--border2)', background: 'transparent',
   color: 'var(--muted)', cursor: 'pointer'
 };

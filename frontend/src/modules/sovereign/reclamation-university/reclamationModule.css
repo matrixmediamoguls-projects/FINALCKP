@@ -6,7 +6,7 @@
   --fd-hot: #ef4444;
   --fd-gold: #c98b3c;
   color: #f8fafc;
-  font-family: Rajdhani, 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
+  font-family: Inter, 'Inter', 'Inter', system-ui, sans-serif;
   width: 100%;
   min-height: 100svh;
   padding: clamp(1rem, 3vw, 3rem);
@@ -91,7 +91,7 @@
   border-radius: 999px;
   color: #a1a1aa;
   background: rgba(255, 255, 255, 0.025);
-  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -175,7 +175,7 @@
 
 .module-brief-roadmap li > span {
   color: #fca5a5;
-  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
   font-size: 0.72rem;
   letter-spacing: 0.16em;
 }
@@ -381,7 +381,7 @@
   display: grid;
   gap: 0.55rem;
   margin-bottom: 1.1rem;
-  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
 }
 
 .rec-module-status-grid span {
@@ -451,7 +451,7 @@
 .rec-module-copy {
   min-height: clamp(360px, 42vh, 520px);
   color: #f4f4f5;
-  font-family: 'Space Grotesk', 'IBM Plex Sans', Rajdhani, system-ui, sans-serif;
+  font-family: 'Inter', 'Inter', Inter, system-ui, sans-serif;
   font-size: clamp(0.98rem, 1.45vw, 1.14rem);
   line-height: 1.74;
   letter-spacing: 0.01em;
@@ -490,7 +490,7 @@
 .rec-module-completion strong,
 .rec-module-kicker,
 .rec-module-micro {
-  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
   text-transform: uppercase;
   letter-spacing: 0.22em;
 }
@@ -512,7 +512,7 @@
   border-radius: 999px;
   background: linear-gradient(135deg, rgba(127, 29, 29, 0.9), rgba(220, 38, 38, 0.54));
   color: #fff;
-  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
   text-transform: uppercase;
   letter-spacing: 0.19em;
   font-size: 0.72rem;
@@ -541,7 +541,7 @@
 .rec-module-hero h3,
 .rec-module-panel h4,
 .rec-module-panel h5 {
-  font-family: Rajdhani, 'Space Grotesk', system-ui, sans-serif;
+  font-family: Inter, 'Inter', system-ui, sans-serif;
 }
 
 .rec-module-kicker {
@@ -574,7 +574,7 @@
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 999px;
   padding: 0.4rem 0.62rem;
-  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -607,7 +607,7 @@
 }
 
 .rec-module-record textarea {
-  font-family: 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
+  font-family: 'Inter', 'Inter', system-ui, sans-serif;
 }
 
 .rec-module-sealed-record {

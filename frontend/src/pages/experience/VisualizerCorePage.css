@@ -6,7 +6,7 @@
     radial-gradient(circle at 50% 34%, rgba(255, 0, 0, 0.16), transparent 32%),
     linear-gradient(180deg, #020202 0%, #070202 52%, #020202 100%);
   color: #f8fafc;
-  font-family: Inter, Rajdhani, system-ui, sans-serif;
+  font-family: Inter, Inter, system-ui, sans-serif;
 }
 
 .ckp-visualizer-shell {
@@ -668,7 +668,7 @@
     radial-gradient(circle at 50% 28%, rgba(211,32,32,.18), transparent 38%),
     url('/media/sovereign-mode/reclamation-mainframe-chamber.png') center/cover fixed,
     #020203;
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .sovereign-module-page.is-visualizer { padding: 0; }
@@ -703,7 +703,7 @@
   color: #aaa7a4;
   border: 1px solid rgba(239,43,37,.34);
   background: #050506;
-  font: 500 .72rem 'Share Tech Mono', monospace;
+  font: 500 .72rem 'JetBrains Mono', monospace;
   text-transform: uppercase;
   letter-spacing: .08em;
   cursor: pointer;
@@ -719,11 +719,11 @@
 
 .sovereign-module-command button svg { width: 15px; height: 15px; color: var(--module-red); }
 .sovereign-module-command > div { text-align: center; }
-.sovereign-module-command > div span { display: block; color: var(--module-red); font: .58rem 'Share Tech Mono', monospace; }
+.sovereign-module-command > div span { display: block; color: var(--module-red); font: .58rem 'JetBrains Mono', monospace; }
 .sovereign-module-command > div strong { display: block; margin-top: 2px; color: #e7e3df; font-size: .88rem; font-weight: 500; letter-spacing: .18em; }
 .sovereign-module-command label { justify-self: end; display: flex; align-items: center; gap: 10px; }
-.sovereign-module-command label span { color: #77777b; font: .58rem 'Share Tech Mono', monospace; }
-.sovereign-module-command select { max-width: 230px; height: 36px; padding: 0 30px 0 10px; color: #d7d3cf; border: 1px solid rgba(239,43,37,.34); background: #050506; font: .68rem 'Share Tech Mono', monospace; text-transform: uppercase; }
+.sovereign-module-command label span { color: #77777b; font: .58rem 'JetBrains Mono', monospace; }
+.sovereign-module-command select { max-width: 230px; height: 36px; padding: 0 30px 0 10px; color: #d7d3cf; border: 1px solid rgba(239,43,37,.34); background: #050506; font: .68rem 'JetBrains Mono', monospace; text-transform: uppercase; }
 
 .sovereign-module-workspace {
   width: min(1120px, 100%);

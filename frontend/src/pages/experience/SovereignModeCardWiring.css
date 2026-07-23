@@ -27,7 +27,7 @@
   border: 1px solid rgba(255, 54, 43, 0.34);
   background: rgba(0, 0, 0, 0.74);
   color: rgba(255, 235, 229, 0.95);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: clamp(0.58rem, 0.78vw, 0.76rem);
   letter-spacing: 0.12em;
   line-height: 1.35;

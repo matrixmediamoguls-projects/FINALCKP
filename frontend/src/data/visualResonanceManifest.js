@@ -72,7 +72,7 @@ export const visualResonanceTracks = Object.freeze([
     "events": [
       "artifactLoaded",
       "warning",
-      "truthImpact",
+      "truthOxanium",
       "signalLock"
     ],
     "sourceNote": "Source: Reclamation codex Key III and lyric source; name/authority theme supports evidence and buried-truth treatment."
@@ -217,7 +217,7 @@ export const visualResonanceTracks = Object.freeze([
     "events": [
       "override",
       "systemBreak",
-      "truthImpact"
+      "truthOxanium"
     ],
     "sourceNote": "Source: lyric source Hostile Rewrite; existing manipulation/override signals preserved; title whitespace cleaned."
   },
@@ -407,7 +407,7 @@ export const visualResonanceTracks = Object.freeze([
       "glyphs"
     ],
     "events": [
-      "truthImpact",
+      "truthOxanium",
       "pulseBurst",
       "signalLock"
     ],
@@ -456,7 +456,7 @@ export const visualResonanceTracks = Object.freeze([
     ],
     "events": [
       "warning",
-      "truthImpact",
+      "truthOxanium",
       "pulseBurst"
     ],
     "sourceNote": "No direct source match found; cautious fill from existing truth-broadcast/red-flag framing."
@@ -623,7 +623,7 @@ export const visualResonanceTracks = Object.freeze([
       "burningPaper"
     ],
     "events": [
-      "truthImpact",
+      "truthOxanium",
       "shockwave",
       "systemBreak"
     ],
@@ -1204,7 +1204,7 @@ export const visualResonanceTaxonomy = Object.freeze({
 
 export const visualResonanceEventGroups = Object.freeze({
   "impact_events": [
-    "truthImpact",
+    "truthOxanium",
     "shockwave",
     "rupture",
     "detonation",

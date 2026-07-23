@@ -146,7 +146,7 @@ const ActProtocol = () => {
         <div style={{ width: 64, height: 64, border: `1px solid ${actDef.color}`, borderRadius: '50%', margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontSize: 28, color: actDef.color }}>&#x2726;</span>
         </div>
-        <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: 24, fontWeight: 900, color: 'var(--bone, #E8E0D0)', marginBottom: 12 }}>Protocol Complete</h2>
+        <h2 style={{ fontFamily: "'Oxanium',serif", fontSize: 24, fontWeight: 900, color: 'var(--bone, #E8E0D0)', marginBottom: 12 }}>Protocol Complete</h2>
         <p style={{ fontStyle: 'italic', color: 'rgba(232,228,216,0.6)', lineHeight: 1.8, marginBottom: 24 }}>
           Act {actDef.roman} closes. What the {actDef.element.toLowerCase()} revealed is yours to carry forward. You have earned a spin on the Wheel.
         </p>
@@ -170,7 +170,7 @@ const ActProtocol = () => {
       {/* Header */}
       <div style={{ textAlign: 'center', paddingBottom: 20, borderBottom: '1px solid rgba(232,228,216,0.12)', marginBottom: 28 }}>
         <div style={{ ...monoStyle, color: actDef.color, marginBottom: 8 }}>Act {actDef.roman} · {actDef.element} · {actDef.title}</div>
-        <h1 style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(18px,3vw,28px)', fontWeight: 900, color: 'var(--bone, #E8E0D0)', lineHeight: 1.2, marginBottom: 8 }}>The Five-Step Initiatory Engine</h1>
+        <h1 style={{ fontFamily: "'Oxanium',serif", fontSize: 'clamp(18px,3vw,28px)', fontWeight: 900, color: 'var(--bone, #E8E0D0)', lineHeight: 1.2, marginBottom: 8 }}>The Five-Step Initiatory Engine</h1>
         <p style={{ fontStyle: 'italic', color: 'rgba(232,228,216,0.5)' }}>{actDef.principle}</p>
       </div>
 
@@ -180,7 +180,7 @@ const ActProtocol = () => {
           <div key={i} data-testid={`step-pip-${i}`} onClick={() => { saveStep(currentStep, false); setCurrentStep(i); }}
             style={{
               flex: 1, padding: '10px 4px', textAlign: 'center', cursor: 'pointer',
-              fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase',
+              fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase',
               color: i === currentStep ? 'var(--bone, #E8E0D0)' : savedSteps.includes(i) ? actDef.color : 'rgba(232,228,216,0.3)',
               background: i === currentStep ? 'rgba(232,228,216,0.04)' : 'transparent',
               borderRight: i < 4 ? '1px solid rgba(232,228,216,0.12)' : 'none',
@@ -196,7 +196,7 @@ const ActProtocol = () => {
       {/* Step Content */}
       <div key={currentStep} style={{ animation: 'fadeUp 0.4s ease' }}>
         <div style={{ ...monoStyle, color: actDef.color, marginBottom: 6 }}>Step {String(currentStep + 1).padStart(2, '0')} of 05</div>
-        <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: 20, fontWeight: 600, color: 'var(--bone, #E8E0D0)', marginBottom: 12 }}>{stepDef.name}</h2>
+        <h2 style={{ fontFamily: "'Oxanium',serif", fontSize: 20, fontWeight: 600, color: 'var(--bone, #E8E0D0)', marginBottom: 12 }}>{stepDef.name}</h2>
         <blockquote style={{ fontStyle: 'italic', color: 'rgba(232,228,216,0.55)', lineHeight: 1.7, borderLeft: `2px solid ${actDef.dim}`, paddingLeft: 16, marginBottom: 16 }}>
           {stepDef.lyric}<br /><span style={{ fontSize: 12, opacity: 0.5 }}>— {stepDef.lyricSource}</span>
         </blockquote>
@@ -368,7 +368,7 @@ const PillGrid = ({ stepDef, state, update, color }) => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
         {stepDef.options.map(opt => (
           <button key={opt} onClick={() => toggle(opt)} style={{
-            fontFamily: "'Share Tech Mono',monospace", fontSize: 10, letterSpacing: '0.08em', padding: '6px 14px',
+            fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: '0.08em', padding: '6px 14px',
             border: `1px solid ${pills.includes(opt) ? color : 'rgba(232,228,216,0.12)'}`,
             background: pills.includes(opt) ? `${color}14` : 'transparent',
             color: pills.includes(opt) ? color : 'rgba(232,228,216,0.4)', cursor: 'pointer', textTransform: 'uppercase', transition: 'all 0.15s'
@@ -447,32 +447,32 @@ const Declaration = ({ stepDef, state, update, color }) => {
 const MetricCard = ({ label, value, sub, small, color }) => (
   <div style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(232,228,216,0.12)', padding: 14 }}>
     <div style={{ ...monoStyle, fontSize: 8, color: 'rgba(232,228,216,0.3)', marginBottom: 4 }}>{label}</div>
-    <div style={{ fontFamily: small ? "'IM Fell English',serif" : "'Cinzel',serif", fontSize: small ? 13 : 28, color: small ? 'rgba(232,228,216,0.6)' : color, fontStyle: small ? 'italic' : 'normal', lineHeight: small ? 1.5 : 1, marginTop: small ? 4 : 0 }}>{value}</div>
+    <div style={{ fontFamily: small ? "'Oxanium',serif" : "'Oxanium',serif", fontSize: small ? 13 : 28, color: small ? 'rgba(232,228,216,0.6)' : color, fontStyle: small ? 'italic' : 'normal', lineHeight: small ? 1.5 : 1, marginTop: small ? 4 : 0 }}>{value}</div>
     {sub && <div style={{ fontStyle: 'italic', fontSize: 12, color: 'rgba(232,228,216,0.5)', marginTop: 4, lineHeight: 1.5 }}>{sub}</div>}
   </div>
 );
 
 /* ── Styles ── */
-const monoStyle = { fontFamily: "'Share Tech Mono',monospace", fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase' };
+const monoStyle = { fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase' };
 const centerStyle = { height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' };
 const exerciseBlock = { background: 'rgba(232,228,216,0.04)', border: '1px solid rgba(232,228,216,0.12)', padding: '20px', marginBottom: 0 };
 const textareaStyle = {
   width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(232,228,216,0.12)',
-  padding: 14, color: 'var(--bone, #E8E0D0)', fontFamily: "'IM Fell English',serif", fontSize: 15,
+  padding: 14, color: 'var(--bone, #E8E0D0)', fontFamily: "'Oxanium',serif", fontSize: 15,
   lineHeight: 1.7, resize: 'vertical', minHeight: 90, outline: 'none', boxSizing: 'border-box'
 };
 const rangeStyle = { width: '100%', accentColor: 'var(--fire, #D85A30)' };
 const btnPrimary = (color) => ({
-  fontFamily: "'Share Tech Mono',monospace", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase',
+  fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase',
   padding: '10px 24px', background: color, color: '#1A1917', border: 'none', cursor: 'pointer'
 });
 const btnSecondary = {
-  fontFamily: "'Share Tech Mono',monospace", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase',
+  fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase',
   padding: '10px 24px', background: 'transparent', color: 'rgba(232,228,216,0.5)',
   border: '1px solid rgba(232,228,216,0.12)', cursor: 'pointer'
 };
 const btnGhost = (color) => ({
-  fontFamily: "'Share Tech Mono',monospace", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase',
+  fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase',
   padding: '10px 18px', background: 'transparent', color, border: `1px solid ${color}44`, cursor: 'pointer'
 });
 

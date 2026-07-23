@@ -10,7 +10,7 @@ const C = {
   foreground: '#edf2f7',
 };
 
-const fontHeadings = "'Space Grotesk', sans-serif";
+const fontHeadings = "'Inter', sans-serif";
 
 export default function ChromaKeyProtocolPremium() {
   return (

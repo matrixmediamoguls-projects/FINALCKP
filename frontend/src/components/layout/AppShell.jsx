@@ -200,7 +200,7 @@ const AppShell = ({ children }) => {
               border: "1px solid var(--border)",
               background: "var(--panel)",
               color: "var(--white)",
-              fontFamily: "'Share Tech Mono',monospace",
+              fontFamily: "'JetBrains Mono',monospace",
               fontSize: 12,
               padding: "6px 8px",
               cursor: "pointer",
@@ -214,7 +214,7 @@ const AppShell = ({ children }) => {
           onClick={() => handleNavigate("/dashboard")}
           className="cursor-pointer"
           style={{
-            fontFamily: "'Cinzel',serif",
+            fontFamily: "'Oxanium',serif",
             fontSize: 12,
             letterSpacing: "0.2em",
             color: "var(--act)",
@@ -259,7 +259,7 @@ const AppShell = ({ children }) => {
               background: "var(--panel)",
               border: "1px solid var(--border)",
               padding: "8px 14px 8px 32px",
-              fontFamily: "'Share Tech Mono',monospace",
+              fontFamily: "'JetBrains Mono',monospace",
               fontSize: 12,
               color: "var(--muted)",
               letterSpacing: "0.08em",
@@ -274,7 +274,7 @@ const AppShell = ({ children }) => {
           data-testid="cta-continue"
           onClick={() => handleNavigate(nextStep.path)}
           style={{
-            fontFamily: "'Share Tech Mono',monospace",
+            fontFamily: "'JetBrains Mono',monospace",
             fontSize: 10,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
@@ -329,7 +329,7 @@ const AppShell = ({ children }) => {
           {!isMobile && (
             <div
               style={{
-                fontFamily: "'Share Tech Mono',monospace",
+                fontFamily: "'JetBrains Mono',monospace",
                 fontSize: 10,
               }}
             >
@@ -350,7 +350,7 @@ const AppShell = ({ children }) => {
               color: "var(--muted)",
               cursor: "pointer",
               fontSize: 11,
-              fontFamily: "'Share Tech Mono',monospace",
+              fontFamily: "'JetBrains Mono',monospace",
               letterSpacing: "0.12em",
             }}
           >
@@ -451,7 +451,7 @@ const AppShell = ({ children }) => {
                 <div
                   data-testid="profile-name"
                   style={{
-                    fontFamily: "'Share Tech Mono',monospace",
+                    fontFamily: "'JetBrains Mono',monospace",
                     fontSize: 10,
                     color: "var(--white)",
                     letterSpacing: "0.08em",
@@ -465,7 +465,7 @@ const AppShell = ({ children }) => {
                 <div
                   data-testid="profile-email"
                   style={{
-                    fontFamily: "'Share Tech Mono',monospace",
+                    fontFamily: "'JetBrains Mono',monospace",
                     fontSize: 9,
                     color: "var(--muted)",
                     letterSpacing: "0.04em",
@@ -489,7 +489,7 @@ const AppShell = ({ children }) => {
               <span
                 data-testid="profile-tier"
                 style={{
-                  fontFamily: "'Share Tech Mono',monospace",
+                  fontFamily: "'JetBrains Mono',monospace",
                   fontSize: 8,
                   letterSpacing: "0.16em",
                   textTransform: "uppercase",
@@ -504,7 +504,7 @@ const AppShell = ({ children }) => {
               <span
                 data-testid="profile-level"
                 style={{
-                  fontFamily: "'Share Tech Mono',monospace",
+                  fontFamily: "'JetBrains Mono',monospace",
                   fontSize: 8,
                   letterSpacing: "0.1em",
                   color: "var(--muted)",
@@ -524,7 +524,7 @@ const AppShell = ({ children }) => {
           >
             <span
               style={{
-                fontFamily: "'Share Tech Mono',monospace",
+                fontFamily: "'JetBrains Mono',monospace",
                 fontSize: 8,
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
@@ -584,7 +584,7 @@ const AppShell = ({ children }) => {
           >
             <span
               style={{
-                fontFamily: "'Share Tech Mono',monospace",
+                fontFamily: "'JetBrains Mono',monospace",
                 fontSize: 8,
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
@@ -626,7 +626,7 @@ const AppShell = ({ children }) => {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Share Tech Mono',monospace",
+                        fontFamily: "'JetBrains Mono',monospace",
                         fontSize: 8,
                         letterSpacing: "0.2em",
                         color: `var(${act.colorVar})`,
@@ -636,7 +636,7 @@ const AppShell = ({ children }) => {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Cinzel',serif",
+                        fontFamily: "'Oxanium',serif",
                         fontSize: 11,
                         fontWeight: 600,
                         color: `var(${act.colorVar})`,
@@ -647,7 +647,7 @@ const AppShell = ({ children }) => {
                   </div>
                   <div
                     style={{
-                      fontFamily: "'Share Tech Mono',monospace",
+                      fontFamily: "'JetBrains Mono',monospace",
                       fontSize: 8,
                       letterSpacing: "0.08em",
                       color: "var(--muted)",
@@ -659,7 +659,7 @@ const AppShell = ({ children }) => {
                   {locked && (
                     <div
                       style={{
-                        fontFamily: "'Share Tech Mono',monospace",
+                        fontFamily: "'JetBrains Mono',monospace",
                         fontSize: 8,
                         color: "var(--gold)",
                         letterSpacing: "0.08em",
@@ -685,7 +685,7 @@ const AppShell = ({ children }) => {
           >
             <span
               style={{
-                fontFamily: "'Share Tech Mono',monospace",
+                fontFamily: "'JetBrains Mono',monospace",
                 fontSize: 8,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
@@ -709,7 +709,7 @@ const AppShell = ({ children }) => {
                       alignItems: "center",
                       gap: 8,
                       padding: "5px 8px",
-                      fontFamily: "'Share Tech Mono',monospace",
+                      fontFamily: "'JetBrains Mono',monospace",
                       fontSize: 9,
                       letterSpacing: "0.1em",
                       color: isCurrent ? "var(--act)" : "var(--muted)",
@@ -754,7 +754,7 @@ const AppShell = ({ children }) => {
           >
             <span
               style={{
-                fontFamily: "'Share Tech Mono',monospace",
+                fontFamily: "'JetBrains Mono',monospace",
                 fontSize: 8,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
@@ -784,7 +784,7 @@ const AppShell = ({ children }) => {
             </div>
             <div
               style={{
-                fontFamily: "'Share Tech Mono',monospace",
+                fontFamily: "'JetBrains Mono',monospace",
                 fontSize: 9,
                 color: "var(--act)",
                 letterSpacing: "0.1em",

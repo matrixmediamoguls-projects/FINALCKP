@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Marcellus&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700&display=swap');
 
 .hermetic-hall {
   --hall-gold: #ffb329;
@@ -9,7 +9,7 @@
   overflow: hidden;
   color: #ffd978;
   background: #020000;
-  font-family: 'Marcellus', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   isolation: isolate;
 }
 
@@ -121,7 +121,7 @@
 .hh-display-copy b {
   display: block;
   color: color-mix(in srgb, var(--active-law) 70%, #ffe69b);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(0.46rem, 0.7vw, 0.72rem);
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -131,7 +131,7 @@
 .hh-display-copy h1 {
   margin: 4px 0;
   color: #ffe2a0;
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(0.8rem, 1.75vw, 1.85rem);
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -185,7 +185,7 @@
 .hh-curriculum-reader header span,
 .hh-curriculum-reader footer span {
   color: color-mix(in srgb, var(--active-law) 62%, #ffe69b);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(.38rem, .48vw, .57rem);
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -194,7 +194,7 @@
 .hh-curriculum-reader h1 {
   margin: 3px 0 0;
   color: #ffe2a0;
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(.72rem, 1.18vw, 1.3rem);
   line-height: 1.05;
   text-transform: uppercase;
@@ -229,7 +229,7 @@
 .hh-curriculum-scroll h2 {
   margin: 1.05rem 0 .55rem;
   color: #ffd37c;
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(.5rem, .68vw, .75rem);
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -242,7 +242,7 @@
 
 .hh-curriculum-axiom {
   color: #ffe8b5;
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(.58rem, .82vw, .9rem) !important;
   text-align: center;
 }
@@ -250,7 +250,7 @@
 .hh-curriculum-end {
   margin-top: 1.5rem !important;
   color: color-mix(in srgb, var(--active-law) 70%, #ffe39c);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   letter-spacing: .12em;
   text-align: center;
   text-transform: uppercase;
@@ -274,7 +274,7 @@
   border: 1px solid color-mix(in srgb, var(--active-law) 65%, #ffd36c);
   color: #ffe7ad;
   background: rgba(75, 12, 5, .76);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(.38rem, .48vw, .55rem);
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -321,7 +321,7 @@
   color: #ffd572;
   background: rgba(0, 0, 0, 0.78);
   border: 1px solid rgba(255, 190, 65, 0.58);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(0.42rem, 0.54vw, 0.62rem);
   letter-spacing: 0.13em;
   opacity: 0;
@@ -431,7 +431,7 @@
   color: #ffe199;
   background: rgba(0, 0, 0, 0.83);
   border: 1px solid color-mix(in srgb, var(--law-accent) 68%, #ffd36c);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Oxanium', Oxanium, serif;
   font-size: clamp(0.42rem, 0.54vw, 0.6rem);
   letter-spacing: 0.08em;
   opacity: 0;
@@ -635,7 +635,7 @@
     display: block;
     grid-column: 1 / -1;
     color: rgba(255, 225, 169, 0.66);
-    font-family: 'Marcellus', Georgia, serif;
+    font-family: 'Oxanium', Oxanium, serif;
     font-size: 0.72rem;
     line-height: 1.35;
     text-transform: none;
@@ -645,7 +645,7 @@
     display: block;
     margin: 0 0 16px;
     color: #dc9340;
-    font-family: 'Cinzel', Georgia, serif;
+    font-family: 'Oxanium', Oxanium, serif;
     font-size: 0.7rem;
     letter-spacing: 0.16em;
     text-align: center;

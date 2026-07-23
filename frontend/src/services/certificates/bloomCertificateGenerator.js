@@ -117,7 +117,7 @@ function generateTypstTemplate({
   ],
 )
 
-#set text(font: "Courier New", size: 11pt, fill: rgb("#1f2937"))
+#set text(font: "JetBrains Mono", size: 11pt, fill: rgb("#1f2937"))
 
 // Header
 #align(center)[
@@ -179,11 +179,11 @@ function generateTypstTemplate({
   ],
   [
     #text(size: 10pt, weight: "bold", fill: rgb("#6b7280"))[INTEGRATION KEY]
-    #text(size: 9pt, font: "Courier New")[${integrationKey}]
+    #text(size: 9pt, font: "JetBrains Mono")[${integrationKey}]
   ],
   [
     #text(size: 10pt, weight: "bold", fill: rgb("#6b7280"))[CERTIFICATE ID]
-    #text(size: 9pt, font: "Courier New")[${certificateId}]
+    #text(size: 9pt, font: "JetBrains Mono")[${certificateId}]
   ],
 )
 

@@ -151,7 +151,7 @@
 
 .ru-brand strong {
   display: block;
-  font-family: Rajdhani, "Arial Narrow", sans-serif;
+  font-family: Inter, "Inter", sans-serif;
   font-size: 1.3rem;
   letter-spacing: 0.18em;
   line-height: 0.9;
@@ -163,7 +163,7 @@
 .ru-stat small {
   display: block;
   color: var(--ru-muted);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -173,7 +173,7 @@
   justify-content: center;
   gap: 8px;
   color: var(--ru-green);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -205,7 +205,7 @@
   position: relative;
   padding: 16px 0;
   color: #d8d8d8;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.77rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -235,7 +235,7 @@
 
 .ru-user-cluster strong {
   display: block;
-  font-family: Rajdhani, sans-serif;
+  font-family: Inter, sans-serif;
   font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -271,7 +271,7 @@
   align-items: center;
   gap: 16px;
   color: #909090;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.86rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -287,7 +287,7 @@
 
 .ru-hero h1 {
   margin: 14px 0 18px;
-  font-family: Rajdhani, Impact, "Arial Narrow", sans-serif;
+  font-family: Inter, Oxanium, "Inter", sans-serif;
   font-size: clamp(4rem, 8.4vw, 9.8rem);
   line-height: 0.72;
   letter-spacing: -0.055em;
@@ -338,7 +338,7 @@
   background: linear-gradient(90deg, rgba(70,0,0,0.7), rgba(0,0,0,0.72));
   clip-path: polygon(0 18px, 18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
   box-shadow: inset 0 0 18px rgba(255, 0, 0, 0.12), 0 0 22px rgba(255, 0, 0, 0.17);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
@@ -539,7 +539,7 @@
 .ru-faculty-card[data-accent='purple'] .ru-faculty-glyph { color: #c956ff; }
 
 .ru-faculty-fallback strong {
-  font-family: Rajdhani, sans-serif;
+  font-family: Inter, sans-serif;
   font-size: 1rem;
   line-height: 1.05;
   letter-spacing: 0.08em;
@@ -557,7 +557,7 @@
   align-items: center;
   gap: 8px;
   color: #ffd6d6;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -594,7 +594,7 @@
 .ru-footer-brand strong {
   display: block;
   color: #bcbcbc;
-  font-family: Rajdhani, sans-serif;
+  font-family: Inter, sans-serif;
   font-size: 1.05rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -616,7 +616,7 @@
   display: block;
   margin-top: 4px;
   color: var(--ru-red);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 1rem;
   text-transform: uppercase;
 }
@@ -629,7 +629,7 @@
 .ru-footer blockquote {
   margin: 0;
   color: var(--ru-red);
-  font-family: Rajdhani, sans-serif;
+  font-family: Inter, sans-serif;
   font-size: clamp(0.95rem, 1.2vw, 1.2rem);
   font-weight: 700;
   line-height: 1.2;

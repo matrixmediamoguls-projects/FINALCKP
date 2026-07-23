@@ -115,7 +115,7 @@
   display: grid;
   place-content: center;
   color: rgba(var(--vrc-signal-rgb), .58);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 10px;
   letter-spacing: .2em;
   text-transform: uppercase;
@@ -267,7 +267,7 @@
 .vrc-title {
   position: absolute;
   z-index: 11;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 9px;
   letter-spacing: .16em;
   color: rgba(220, 253, 255, .72);

@@ -9,7 +9,7 @@
   background:
     radial-gradient(circle at 50% 24%, rgba(24, 100, 73, 0.12), transparent 34rem),
     #020504;
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .act-nav-bg,
@@ -80,7 +80,7 @@
 
 .act-nav-brand strong {
   color: #b8bfbc;
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 2.15rem;
   font-weight: 700;
   font-style: italic;
@@ -91,7 +91,7 @@
 
 .act-nav-brand span,
 .act-nav-console small {
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
 }
 
@@ -239,7 +239,7 @@
   border-right: 1px solid var(--chrome);
   color: #d2d8d5;
   background: linear-gradient(90deg, #080d0b, #101613 52%, #050907);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 1.35rem;
   font-weight: 700;
 }
@@ -323,7 +323,7 @@
   align-items: center;
   gap: 10px;
   color: #48e376;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
 }
@@ -333,7 +333,7 @@
   width: max-content;
   margin: 18px 0 10px;
   color: #c9cdcb;
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: clamp(4rem, 5.8vw, 6.2rem);
   font-weight: 600;
   line-height: 0.76;
@@ -345,7 +345,7 @@
 .act-nav-hero p {
   margin: 21px 0 0;
   color: #8b9490;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.9rem;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -522,7 +522,7 @@
 .act-nav-card__header span,
 .act-nav-card__subtitle,
 .act-nav-card__tags span {
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
 }
 
@@ -537,7 +537,7 @@
   border-radius: 3px;
   color: var(--act-color);
   background: rgba(0, 0, 0, 0.25);
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.62rem;
   font-weight: 400;
   text-transform: uppercase;
@@ -612,7 +612,7 @@
   border-radius: 50%;
   color: var(--act-color);
   background: #030706;
-  font-family: "Share Tech Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.68rem;
   font-weight: 700;
 }
@@ -628,7 +628,7 @@
   overflow: hidden;
   margin: 0;
   color: #e9ecea;
-  font-family: "Cinzel", serif;
+  font-family: "Oxanium", serif;
   font-size: clamp(1rem, 1.25vw, 1.35rem);
   font-weight: 600;
   line-height: 1.05;
@@ -660,7 +660,7 @@
   border-radius: 3px;
   color: #e6ebe8;
   background: linear-gradient(90deg, rgba(var(--act-rgb), 0.15), rgba(0, 0, 0, 0.12));
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.74rem;
   font-weight: 600;
   text-transform: uppercase;

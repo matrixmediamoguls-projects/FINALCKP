@@ -14,7 +14,7 @@ const actMeta = [
 ];
 
 const shareBtnStyle = {
-  fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.1em',
+  fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.1em',
   padding: '3px 8px', border: '1px solid var(--border2)', background: 'transparent',
   color: 'var(--muted)', cursor: 'pointer', transition: 'all 0.15s'
 };
@@ -24,7 +24,7 @@ const ShareButtons = ({ track, act }) => {
   const url = window.location.href;
   return (
     <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-      <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Share</span>
+      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Share</span>
       <button data-testid="share-twitter" onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420')} style={shareBtnStyle}>X</button>
       <button data-testid="share-facebook" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`, '_blank', 'width=550,height=420')} style={shareBtnStyle}>FB</button>
       <button data-testid="share-copy" onClick={() => { navigator.clipboard.writeText(`${text}\n${url}`); alert('Copied to clipboard!'); }} style={shareBtnStyle}>&#x2398;</button>
@@ -61,12 +61,12 @@ const ImmersionLanding = () => {
   return (
     <div style={{ padding: 24, height: '100%', overflowY: 'auto' }}>
       <div style={{ textAlign: 'center', padding: '16px 0 28px' }}>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 6 }}>Musiq Matrix</div>
-        <div data-testid="immersion-title" style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(18px,3vw,30px)', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--act)' }}>Balanced Elementals</div>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)', marginTop: 4 }}>The Chroma Key Protocol</div>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 6 }}>Musiq Matrix</div>
+        <div data-testid="immersion-title" style={{ fontFamily: "'Oxanium',serif", fontSize: 'clamp(18px,3vw,30px)', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--act)' }}>Balanced Elementals</div>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)', marginTop: 4 }}>The Chroma Key Protocol</div>
         <div style={{ width: 60, height: 1, background: 'var(--border2)', margin: '16px auto 0' }} />
-        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(14px,2vw,20px)', fontWeight: 600, letterSpacing: '0.12em', color: 'var(--white)', marginTop: 16 }}>The Immersion Protocol</div>
-        <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 13, color: 'var(--muted)', marginTop: 6, maxWidth: 520, margin: '6px auto 0' }}>Select an Act to begin your sonic immersion. Each element carries its own frequency, mythology, and revelation.</div>
+        <div style={{ fontFamily: "'Oxanium',serif", fontSize: 'clamp(14px,2vw,20px)', fontWeight: 600, letterSpacing: '0.12em', color: 'var(--white)', marginTop: 16 }}>The Immersion Protocol</div>
+        <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 13, color: 'var(--muted)', marginTop: 6, maxWidth: 520, margin: '6px auto 0' }}>Select an Act to begin your sonic immersion. Each element carries its own frequency, mythology, and revelation.</div>
       </div>
       <div data-testid="immersion-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6, maxWidth: 1100, margin: '0 auto' }}>
         {actMeta.map(act => {
@@ -75,13 +75,13 @@ const ImmersionLanding = () => {
           return (
             <div key={act.num} data-testid={`immersion-card-${act.num}`} onClick={() => !locked && navigate(`/listen/${act.num}`)} style={{ position: 'relative', overflow: 'hidden', cursor: locked ? 'not-allowed' : 'pointer', background: act.surfGrad, border: '1px solid var(--border)', padding: '24px 18px', opacity: locked ? 0.4 : 1, transition: 'all 0.25s', minHeight: 260, display: 'flex', flexDirection: 'column' }}>
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: act.borderGrad }} />
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.4em', textTransform: 'uppercase', color: act.color, marginBottom: 12 }}>Act {act.roman} · {act.element}</div>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.4em', textTransform: 'uppercase', color: act.color, marginBottom: 12 }}>Act {act.roman} · {act.element}</div>
               <div style={{ fontSize: 36, color: act.color, marginBottom: 12, lineHeight: 1, filter: `drop-shadow(0 0 12px ${act.hex}44)` }}>{act.num === 1 ? '\u2295' : act.num === 2 ? '\u224B' : act.num === 3 ? '\u25B3' : '\u2726'}</div>
-              <div style={{ fontFamily: "'Cinzel',serif", fontSize: 14, fontWeight: 600, color: act.color, letterSpacing: '0.06em', marginBottom: 8 }}>{act.title}</div>
-              <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 11, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 16, flex: 1 }}>{act.desc}</div>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.15em', marginBottom: 10 }}>{locked ? '' : `${count} tracks · Immersive experience`}</div>
-              <button data-testid={`immersion-enter-${act.num}`} style={{ width: '100%', fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', padding: '8px 0', border: `1px solid ${locked ? 'var(--border)' : act.color}`, background: 'transparent', cursor: locked ? 'not-allowed' : 'pointer', color: locked ? 'var(--muted)' : act.color, transition: 'all 0.2s' }}>{locked ? (act.num === 4 ? 'Coming Soon' : 'Locked') : 'Enter Immersion \u2192'}</button>
-              {locked && <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(6,6,4,0.55)', backdropFilter: 'blur(3px)' }}><span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: act.color }}>{act.num === 4 ? 'Coming Soon' : 'Unlock to Access'}</span></div>}
+              <div style={{ fontFamily: "'Oxanium',serif", fontSize: 14, fontWeight: 600, color: act.color, letterSpacing: '0.06em', marginBottom: 8 }}>{act.title}</div>
+              <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 11, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 16, flex: 1 }}>{act.desc}</div>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.15em', marginBottom: 10 }}>{locked ? '' : `${count} tracks · Immersive experience`}</div>
+              <button data-testid={`immersion-enter-${act.num}`} style={{ width: '100%', fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', padding: '8px 0', border: `1px solid ${locked ? 'var(--border)' : act.color}`, background: 'transparent', cursor: locked ? 'not-allowed' : 'pointer', color: locked ? 'var(--muted)' : act.color, transition: 'all 0.2s' }}>{locked ? (act.num === 4 ? 'Coming Soon' : 'Locked') : 'Enter Immersion \u2192'}</button>
+              {locked && <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(6,6,4,0.55)', backdropFilter: 'blur(3px)' }}><span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: act.color }}>{act.num === 4 ? 'Coming Soon' : 'Unlock to Access'}</span></div>}
             </div>
           );
         })}

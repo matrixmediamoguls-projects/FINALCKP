@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap');
 
 .visualizer-core-page {
   min-height: 100vh;
@@ -28,7 +28,7 @@
     inset 0 0 0 1px rgba(255, 70, 70, .28),
     inset 0 0 4.6vw rgba(255, 0, 0, .13),
     0 0 2vw rgba(255, 0, 0, .55);
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Inter', sans-serif;
   animation: ckp-interface-online .7s cubic-bezier(.2, .8, .2, 1) both;
 }
 
@@ -161,7 +161,7 @@
   border-top: 1px solid rgba(255, 43, 43, .46);
   border-bottom: 1px solid rgba(255, 43, 43, .18);
   background: linear-gradient(90deg, rgba(0, 0, 0, .7), transparent);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   text-transform: uppercase;
 }
 
@@ -331,7 +331,7 @@
 .ckp-live-status p { font-size: clamp(6px, .55vw, 10px); }
 .ckp-footer-controls strong,
 .ckp-live-status strong { font-size: clamp(7px, .65vw, 12px); }
-.ckp-live-status time { font-family: 'Share Tech Mono', monospace; font-size: clamp(8px, .8vw, 15px); }
+.ckp-live-status time { font-family: 'JetBrains Mono', monospace; font-size: clamp(8px, .8vw, 15px); }
 
 @keyframes ckp-interface-online {
   from { opacity: 0; transform: scale(.985); filter: brightness(.35) saturate(.4); }

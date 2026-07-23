@@ -90,7 +90,7 @@ const TracksTab = () => {
       <div style={{ display: 'flex', gap: 4, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
         {[{ v: 'all', l: 'All' }, { v: '1', l: 'Act I' }, { v: '2', l: 'Act II' }, { v: '3', l: 'Act III' }, { v: 'bonus', l: 'Bonus' }].map(f => (
           <button key={f.v} onClick={() => setFilter(f.v)} style={{
-            padding: '6px 14px', fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.2em',
+            padding: '6px 14px', fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.2em',
             textTransform: 'uppercase', border: `1px solid ${filter === f.v ? 'var(--act)' : 'var(--border)'}`,
             background: filter === f.v ? 'rgba(90,176,56,0.1)' : 'transparent',
             color: filter === f.v ? 'var(--act)' : 'var(--muted)', cursor: 'pointer'
@@ -99,7 +99,7 @@ const TracksTab = () => {
           </button>
         ))}
         <button onClick={() => setNewTrack(true)} style={{
-          marginLeft: 'auto', padding: '6px 14px', fontFamily: "'Share Tech Mono',monospace", fontSize: 8,
+          marginLeft: 'auto', padding: '6px 14px', fontFamily: "'JetBrains Mono',monospace", fontSize: 8,
           letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid var(--act)',
           background: 'transparent', color: 'var(--act)', cursor: 'pointer'
         }}>
@@ -110,7 +110,7 @@ const TracksTab = () => {
       {/* New track form */}
       {newTrack && (
         <div data-testid="new-track-form" style={{ background: 'var(--panel)', border: '1px solid var(--act)', padding: 16, marginBottom: 16 }}>
-          <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', color: 'var(--act)', marginBottom: 12, textTransform: 'uppercase' }}>New Track</div>
+          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.3em', color: 'var(--act)', marginBottom: 12, textTransform: 'uppercase' }}>New Track</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: 8, marginBottom: 8 }}>
             <input value={newForm.name} onChange={e => setNewForm(p => ({ ...p, name: e.target.value }))} placeholder="Track name"
               style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '6px 10px', color: 'var(--white)', fontSize: 13, outline: 'none' }} />
@@ -127,8 +127,8 @@ const TracksTab = () => {
           <textarea value={newForm.lyrics} onChange={e => setNewForm(p => ({ ...p, lyrics: e.target.value }))} placeholder="Lyrics (optional)"
             rows={3} style={{ width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', padding: '6px 10px', color: 'var(--white)', fontSize: 12, outline: 'none', resize: 'vertical', marginBottom: 8 }} />
           <div style={{ display: 'flex', gap: 6 }}>
-            <button onClick={handleCreateTrack} style={{ padding: '6px 16px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.2em' }}>Create</button>
-            <button onClick={() => setNewTrack(false)} style={{ padding: '6px 16px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.2em' }}>Cancel</button>
+            <button onClick={handleCreateTrack} style={{ padding: '6px 16px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.2em' }}>Create</button>
+            <button onClick={() => setNewTrack(false)} style={{ padding: '6px 16px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.2em' }}>Cancel</button>
           </div>
         </div>
       )}
@@ -152,14 +152,14 @@ const TracksTab = () => {
                   <textarea value={editForm.lyrics ?? ''} onChange={e => setEditForm(p => ({ ...p, lyrics: e.target.value }))} placeholder="Lyrics"
                     rows={3} style={{ width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', padding: '4px 8px', color: 'var(--white)', fontSize: 11, outline: 'none', resize: 'vertical' }} />
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <button onClick={handleSaveEdit} style={{ padding: '4px 12px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 8 }}>Save</button>
-                    <button onClick={() => setEditingTrack(null)} style={{ padding: '4px 12px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 8 }}>Cancel</button>
+                    <button onClick={handleSaveEdit} style={{ padding: '4px 12px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 8 }}>Save</button>
+                    <button onClick={() => setEditingTrack(null)} style={{ padding: '4px 12px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 8 }}>Cancel</button>
                   </div>
                 </div>
               ) : (
                 <>
                   <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--white)', marginBottom: 2 }}>{track.name}</div>
-                  <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.15em', color: 'var(--muted)' }}>
+                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.15em', color: 'var(--muted)' }}>
                     {track.act === 0 ? 'Bonus' : `Act ${['I', 'II', 'III'][track.act - 1]}`} · {track.type} · {track.audio_filename ? track.audio_filename : 'No audio'}
                   </div>
                 </>
@@ -168,11 +168,11 @@ const TracksTab = () => {
             {/* Audio status */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
               {track.audio_filename ? (
-                <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--act)', letterSpacing: '0.1em' }}>
+                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--act)', letterSpacing: '0.1em' }}>
                   &#x2713; Audio
                 </span>
               ) : (
-                <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--r3)', letterSpacing: '0.1em' }}>
+                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--r3)', letterSpacing: '0.1em' }}>
                   No Audio
                 </span>
               )}
@@ -185,16 +185,16 @@ const TracksTab = () => {
                 style={{
                   padding: '4px 10px', border: '1px solid var(--act)', background: 'transparent',
                   color: 'var(--act)', cursor: uploading === track.track_id ? 'wait' : 'pointer',
-                  fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em', textTransform: 'uppercase'
+                  fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.15em', textTransform: 'uppercase'
                 }}>
                 {uploading === track.track_id ? 'Uploading...' : 'Upload'}
               </label>
               <button onClick={() => { setEditingTrack(track.track_id); setEditForm({ name: track.name, act: track.act, lyrics: track.lyrics || '' }); }}
-                style={{ padding: '4px 10px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em' }}>
+                style={{ padding: '4px 10px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.15em' }}>
                 Edit
               </button>
               <button onClick={() => handleDeleteTrack(track.track_id)}
-                style={{ padding: '4px 10px', border: '1px solid var(--r2)', background: 'transparent', color: 'var(--r3)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em' }}>
+                style={{ padding: '4px 10px', border: '1px solid var(--r2)', background: 'transparent', color: 'var(--r3)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.15em' }}>
                 Del
               </button>
             </div>
@@ -202,7 +202,7 @@ const TracksTab = () => {
         ))}
       </div>
 
-      <div style={{ marginTop: 16, fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.15em' }}>
+      <div style={{ marginTop: 16, fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.15em' }}>
         {filtered.length} tracks · {tracks.filter(t => t.audio_filename).length} with audio
       </div>
     </div>
@@ -249,9 +249,9 @@ const KeysTab = () => {
       <div style={{ display: 'flex', gap: 6, marginBottom: 16 }}>
         <input value={newKey} onChange={e => setNewKey(e.target.value.toUpperCase())} placeholder="Custom key (or leave blank for auto-generated)"
           data-testid="new-key-input"
-          style={{ flex: 1, background: 'var(--panel)', border: '1px solid var(--border)', padding: '8px 12px', color: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: "'Share Tech Mono',monospace", letterSpacing: '0.15em' }} />
+          style={{ flex: 1, background: 'var(--panel)', border: '1px solid var(--border)', padding: '8px 12px', color: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.15em' }} />
         <button onClick={handleCreate} data-testid="create-key-btn"
-          style={{ padding: '8px 20px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+          style={{ padding: '8px 20px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
           Generate Key
         </button>
       </div>
@@ -261,30 +261,30 @@ const KeysTab = () => {
         {keys.map(k => (
           <div key={k.key} data-testid={`key-row-${k.key}`} style={{ background: 'var(--panel)', border: '1px solid var(--border)', padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 14, color: k.used ? 'var(--muted)' : 'var(--act)', letterSpacing: '0.15em' }}>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 14, color: k.used ? 'var(--muted)' : 'var(--act)', letterSpacing: '0.15em' }}>
                 {k.key}
               </div>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.1em', marginTop: 2 }}>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.1em', marginTop: 2 }}>
                 {k.used ? `Used by ${k.used_by || 'unknown'} · ${k.used_at || ''}` : 'Available'}
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{
-                fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.15em',
+                fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.15em',
                 padding: '3px 8px', border: `1px solid ${k.used ? 'var(--r2)' : 'var(--g2)'}`,
                 color: k.used ? 'var(--r3)' : 'var(--g3)'
               }}>
                 {k.used ? 'Used' : 'Active'}
               </span>
               <button onClick={() => handleDelete(k.key)}
-                style={{ padding: '3px 8px', border: '1px solid var(--r2)', background: 'transparent', color: 'var(--r3)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 7 }}>
+                style={{ padding: '3px 8px', border: '1px solid var(--r2)', background: 'transparent', color: 'var(--r3)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 7 }}>
                 Delete
               </button>
             </div>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 16, fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--muted)' }}>
+      <div style={{ marginTop: 16, fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--muted)' }}>
         {keys.length} keys · {keys.filter(k => !k.used).length} available · {keys.filter(k => k.used).length} used
       </div>
     </div>
@@ -322,7 +322,7 @@ const UsersTab = () => {
           <div key={u.user_id} data-testid={`user-row-${u.user_id}`} style={{ background: 'var(--panel)', border: '1px solid var(--border)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--white)' }}>{u.name || u.email}</div>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.1em', marginTop: 2 }}>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '0.1em', marginTop: 2 }}>
                 {u.email} · Level {u.level || 1} · Act {u.current_act || 1}
               </div>
             </div>
@@ -330,7 +330,7 @@ const UsersTab = () => {
               style={{
                 padding: '4px 10px', border: `1px solid ${u.act3_unlocked ? 'var(--g2)' : 'var(--r2)'}`,
                 background: 'transparent', color: u.act3_unlocked ? 'var(--g3)' : 'var(--r3)',
-                cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.1em'
+                cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.1em'
               }}>
               {u.act3_unlocked ? 'Unlocked' : 'Locked'}
             </button>
@@ -338,14 +338,14 @@ const UsersTab = () => {
               style={{
                 padding: '4px 10px', border: `1px solid ${u.is_admin ? 'var(--y2)' : 'var(--border)'}`,
                 background: 'transparent', color: u.is_admin ? 'var(--y3)' : 'var(--muted)',
-                cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.1em'
+                cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.1em'
               }}>
               {u.is_admin ? 'Admin' : 'User'}
             </button>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 16, fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--muted)' }}>
+      <div style={{ marginTop: 16, fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--muted)' }}>
         {users.length} users · {users.filter(u => u.is_admin).length} admins · {users.filter(u => u.act3_unlocked).length} unlocked
       </div>
     </div>
@@ -393,7 +393,7 @@ const ContentTab = () => {
 
   return (
     <div>
-      <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', marginBottom: 16, lineHeight: 1.6 }}>
+      <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', marginBottom: 16, lineHeight: 1.6 }}>
         Add lightcodes, shadowcodes, backstory, system role, and Spotify URI for each track. This content appears in the Guided Listening Experience.
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -404,19 +404,19 @@ const ContentTab = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{ width: 4, height: 20, background: track.color, flexShrink: 0 }} />
                   <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--white)' }}>{track.name}</span>
-                  <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, color: 'var(--muted)', letterSpacing: '0.1em' }}>
+                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, color: 'var(--muted)', letterSpacing: '0.1em' }}>
                     Act {['I','II','III'][track.act - 1]}
                   </span>
                 </div>
                 {editing !== track.track_id && (
-                  <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, color: 'var(--muted)', marginTop: 2, paddingLeft: 12, letterSpacing: '0.1em' }}>
+                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, color: 'var(--muted)', marginTop: 2, paddingLeft: 12, letterSpacing: '0.1em' }}>
                     {track.lore ? '\u2713 Lore' : '\u2717 Lore'} · {track.lightcodes ? '\u2713 Lightcodes' : '\u2717 Lightcodes'} · {track.shadowcodes ? '\u2713 Shadowcodes' : '\u2717 Shadowcodes'} · {track.spotify_uri ? '\u2713 Spotify' : '\u2717 Spotify'}
                   </div>
                 )}
               </div>
               {editing !== track.track_id && (
                 <button onClick={() => startEdit(track)} style={{
-                  fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.15em',
+                  fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.15em',
                   padding: '4px 10px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer'
                 }}>Edit Content</button>
               )}
@@ -430,8 +430,8 @@ const ContentTab = () => {
                 <FieldArea label="Shadowcodes" placeholder="The shadow patterns this track illuminates..." value={form.shadowcodes} onChange={v => setForm(p => ({ ...p, shadowcodes: v }))} />
                 <FieldArea label="System Role" placeholder="How this track contributes to the overall protocol..." value={form.system_role} onChange={v => setForm(p => ({ ...p, system_role: v }))} />
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button onClick={saveContent} style={{ padding: '6px 16px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 8 }}>Save</button>
-                  <button onClick={() => setEditing(null)} style={{ padding: '6px 16px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'Share Tech Mono',monospace", fontSize: 8 }}>Cancel</button>
+                  <button onClick={saveContent} style={{ padding: '6px 16px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 8 }}>Save</button>
+                  <button onClick={() => setEditing(null)} style={{ padding: '6px 16px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', fontFamily: "'JetBrains Mono',monospace", fontSize: 8 }}>Cancel</button>
                 </div>
               </div>
             )}
@@ -444,15 +444,15 @@ const ContentTab = () => {
 
 const FieldInput = ({ label, placeholder, value, onChange, mono }) => (
   <div>
-    <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase' }}>{label}</div>
+    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase' }}>{label}</div>
     <input value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-      style={{ width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', padding: '6px 10px', color: 'var(--white)', fontSize: 11, outline: 'none', fontFamily: mono ? "'Share Tech Mono',monospace" : 'inherit', letterSpacing: mono ? '0.1em' : 'normal' }} />
+      style={{ width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', padding: '6px 10px', color: 'var(--white)', fontSize: 11, outline: 'none', fontFamily: mono ? "'JetBrains Mono',monospace" : 'inherit', letterSpacing: mono ? '0.1em' : 'normal' }} />
   </div>
 );
 
 const FieldArea = ({ label, placeholder, value, onChange }) => (
   <div>
-    <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase' }}>{label}</div>
+    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase' }}>{label}</div>
     <textarea value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={3}
       style={{ width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', padding: '6px 10px', color: 'var(--white)', fontSize: 11, outline: 'none', resize: 'vertical', lineHeight: 1.5 }} />
   </div>
@@ -477,16 +477,16 @@ const WheelConfigTab = () => {
 
   return (
     <div>
-      <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', marginBottom: 16, lineHeight: 1.6 }}>
+      <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 12, color: 'var(--muted)', marginBottom: 16, lineHeight: 1.6 }}>
         The Wheel shows 12 bonus tracks. Manage them in the Audio Bank tab (type: Bonus Track). The wheel automatically pulls the first 12 bonus tracks. To change wheel content, edit bonus tracks in the Audio Bank.
       </div>
-      <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.15em', color: 'var(--act)', marginBottom: 12 }}>
+      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.15em', color: 'var(--act)', marginBottom: 12 }}>
         Current wheel tracks ({tracks.length} bonus tracks):
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3 }}>
         {tracks.slice(0, 12).map((t, i) => (
           <div key={t.track_id} style={{ background: 'var(--panel)', border: '1px solid var(--border)', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 10, color: 'var(--muted)', width: 20, flexShrink: 0 }}>
+            <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: 'var(--muted)', width: 20, flexShrink: 0 }}>
               {String(i + 1).padStart(2, '0')}
             </span>
             <span style={{ fontSize: 12, color: 'var(--white)' }}>{t.name}</span>
@@ -494,7 +494,7 @@ const WheelConfigTab = () => {
         ))}
       </div>
       {tracks.length < 12 && (
-        <div style={{ marginTop: 12, fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--r3)', letterSpacing: '0.1em' }}>
+        <div style={{ marginTop: 12, fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--r3)', letterSpacing: '0.1em' }}>
           Need {12 - tracks.length} more bonus tracks. Add them in the Audio Bank tab with type "Bonus Track".
         </div>
       )}
@@ -523,32 +523,32 @@ const SettingsTab = () => {
 
   return (
     <div>
-      <h3 style={{ fontFamily: "'Cinzel',serif", fontSize: 16, color: 'var(--act)', marginBottom: 16 }}>App Settings</h3>
+      <h3 style={{ fontFamily: "'Oxanium',serif", fontSize: 16, color: 'var(--act)', marginBottom: 16 }}>App Settings</h3>
 
       <div style={{ background: 'var(--panel)', border: '1px solid var(--border)', padding: 20, marginBottom: 16 }}>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
           Pricing & Access Tiers
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           <div style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', padding: 14 }}>
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--g3)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Full Access (Stripe)</div>
-            <div style={{ fontFamily: "'Cinzel',serif", fontSize: 20, color: 'var(--white)' }}>$29.99</div>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--g3)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Full Access (Stripe)</div>
+            <div style={{ fontFamily: "'Oxanium',serif", fontSize: 20, color: 'var(--white)' }}>$29.99</div>
             <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4, lineHeight: 1.5 }}>All 4 Acts + Streaming + Ownership of all digital files</div>
           </div>
           <div style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', padding: 14 }}>
-            <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: 'var(--b3)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>License Key</div>
-            <div style={{ fontFamily: "'Cinzel',serif", fontSize: 20, color: 'var(--white)' }}>$17.99</div>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: 'var(--b3)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>License Key</div>
+            <div style={{ fontFamily: "'Oxanium',serif", fontSize: 20, color: 'var(--white)' }}>$17.99</div>
             <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4, lineHeight: 1.5 }}>All 4 Acts + Streaming + Act III album ownership</div>
           </div>
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <label style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+          <label style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
             Album Ownership Add-On Price (for $17.99 license key users)
           </label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontFamily: "'Cinzel',serif", fontSize: 18, color: 'var(--white)' }}>$</span>
+            <span style={{ fontFamily: "'Oxanium',serif", fontSize: 18, color: 'var(--white)' }}>$</span>
             <input
               data-testid="addon-price-input"
               type="number"
@@ -556,14 +556,14 @@ const SettingsTab = () => {
               min="0"
               value={settings.addon_price || ''}
               onChange={e => setSettings({ ...settings, addon_price: parseFloat(e.target.value) || 0 })}
-              style={{ width: 100, background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', padding: '8px 12px', color: 'var(--white)', fontFamily: "'Share Tech Mono',monospace", fontSize: 14 }}
+              style={{ width: 100, background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', padding: '8px 12px', color: 'var(--white)', fontFamily: "'JetBrains Mono',monospace", fontSize: 14 }}
             />
             <span style={{ fontSize: 11, color: 'var(--muted)' }}>per album · upgrade to full ownership</span>
           </div>
         </div>
 
         <button data-testid="save-settings-btn" onClick={save} disabled={saving} style={{
-          fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase',
+          fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase',
           padding: '8px 24px', border: '1px solid var(--act)', background: 'transparent',
           color: 'var(--act)', cursor: 'pointer'
         }}>
@@ -572,12 +572,12 @@ const SettingsTab = () => {
       </div>
 
       <div style={{ background: 'var(--panel)', border: '1px solid var(--border)', padding: 20 }}>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
           Access Summary
         </div>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
-            <tr style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+            <tr style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted)' }}>
               <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid var(--border)' }}>Feature</th>
               <th style={{ textAlign: 'center', padding: 8, borderBottom: '1px solid var(--border)' }}>Free</th>
               <th style={{ textAlign: 'center', padding: 8, borderBottom: '1px solid var(--border)' }}>$17.99</th>
@@ -610,7 +610,7 @@ const SettingsTab = () => {
 
 const GuideTab = () => (
   <div style={{ maxWidth: 700 }}>
-    <div style={{ fontFamily: "'Cinzel',serif", fontSize: 18, fontWeight: 600, color: 'var(--act)', marginBottom: 20, letterSpacing: '0.08em' }}>
+    <div style={{ fontFamily: "'Oxanium',serif", fontSize: 18, fontWeight: 600, color: 'var(--act)', marginBottom: 20, letterSpacing: '0.08em' }}>
       Admin Setup Guide
     </div>
 
@@ -666,14 +666,14 @@ const GuideTab = () => (
 
 const Section = ({ title, color, children }) => (
   <div style={{ marginBottom: 24, background: 'var(--panel)', border: '1px solid var(--border)', borderLeft: `3px solid ${color}`, padding: '16px 20px' }}>
-    <div style={{ fontFamily: "'Cinzel',serif", fontSize: 13, fontWeight: 600, color, marginBottom: 12, letterSpacing: '0.06em' }}>{title}</div>
+    <div style={{ fontFamily: "'Oxanium',serif", fontSize: 13, fontWeight: 600, color, marginBottom: 12, letterSpacing: '0.06em' }}>{title}</div>
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>{children}</div>
   </div>
 );
 
 const Step = ({ n, children }) => (
   <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-    <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 9, color: 'var(--act)', width: 16, flexShrink: 0, textAlign: 'right' }}>{n}.</span>
+    <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: 'var(--act)', width: 16, flexShrink: 0, textAlign: 'right' }}>{n}.</span>
     <span style={{ fontSize: 13, color: 'var(--white)', lineHeight: 1.55 }}>{children}</span>
   </div>
 );
@@ -687,8 +687,8 @@ const AdminPanel = () => {
   if (!user?.is_admin) {
     return (
       <div style={{ padding: 40, textAlign: 'center' }}>
-        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 20, color: 'var(--r3)', marginBottom: 12 }}>Access Denied</div>
-        <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 15, color: 'var(--muted)' }}>
+        <div style={{ fontFamily: "'Oxanium',serif", fontSize: 20, color: 'var(--r3)', marginBottom: 12 }}>Access Denied</div>
+        <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 15, color: 'var(--muted)' }}>
           You need admin privileges to access this panel.
         </div>
       </div>
@@ -699,10 +699,10 @@ const AdminPanel = () => {
     <div style={{ padding: 24, height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(16px,2vw,22px)', fontWeight: 600, letterSpacing: '0.15em', color: 'var(--act)' }}>
+        <div style={{ fontFamily: "'Oxanium',serif", fontSize: 'clamp(16px,2vw,22px)', fontWeight: 600, letterSpacing: '0.15em', color: 'var(--act)' }}>
           Admin Control Panel
         </div>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginTop: 4 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginTop: 4 }}>
           Manage tracks, audio, license keys, and users
         </div>
       </div>
@@ -715,7 +715,7 @@ const AdminPanel = () => {
             data-testid={`admin-tab-${tab.id}`}
             onClick={() => setActiveTab(tab.id)}
             style={{
-              padding: '8px 16px', fontFamily: "'Share Tech Mono',monospace", fontSize: 9,
+              padding: '8px 16px', fontFamily: "'JetBrains Mono',monospace", fontSize: 9,
               letterSpacing: '0.2em', textTransform: 'uppercase', cursor: 'pointer',
               border: `1px solid ${activeTab === tab.id ? 'var(--act)' : 'var(--border)'}`,
               borderBottom: activeTab === tab.id ? '1px solid var(--void)' : '1px solid var(--border)',

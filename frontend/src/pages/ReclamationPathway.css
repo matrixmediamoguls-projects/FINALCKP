@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono&display=swap');
 
 .rp-page {
   --rp-red: #ff2033;
@@ -11,7 +11,7 @@
   overflow-x: hidden;
   padding: clamp(1.6rem, 3vw, 3.25rem) clamp(1.4rem, 3.5vw, 4rem) 0;
   color: #f3f7fb;
-  font-family: 'Rajdhani', Inter, system-ui, sans-serif;
+  font-family: 'Inter', Inter, system-ui, sans-serif;
   background:
     radial-gradient(circle at 50% 7%, rgba(14, 64, 94, .13), transparent 29%),
     radial-gradient(circle at 4% 54%, rgba(255, 20, 35, .1), transparent 25%),
@@ -93,7 +93,7 @@
 .rp-integrity span,
 .rp-footer {
   color: rgba(195, 214, 228, .55);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: .62rem;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -104,7 +104,7 @@
   align-items: center;
   gap: .55rem;
   color: #24f0ab;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: .68rem;
   font-weight: 500;
   letter-spacing: .22em;
@@ -137,7 +137,7 @@
 .rp-hero div {
   margin: 0;
   color: rgba(202, 215, 226, .62);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: clamp(.64rem, .85vw, .82rem);
   letter-spacing: .34em;
   text-transform: uppercase;
@@ -156,7 +156,7 @@
 .rp-hero h1 span {
   margin-right: .35rem;
   color: var(--rp-red);
-  font-family: Georgia, serif;
+  font-family: Oxanium, serif;
   font-size: .65em;
 }
 
@@ -194,7 +194,7 @@
 
 .rp-integrity strong {
   color: var(--rp-red);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: .85rem;
   font-weight: 500;
 }
@@ -337,7 +337,7 @@
   padding: 1rem 2.1rem;
   color: rgba(203, 215, 225, .5);
   border-inline: 1px solid var(--rp-red);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: clamp(.65rem, .8vw, .8rem);
   font-style: normal;
   letter-spacing: .32em;
@@ -367,7 +367,7 @@
 .rp-mission span {
   margin-right: .65rem;
   color: rgba(255, 37, 54, .3);
-  font-family: Georgia, serif;
+  font-family: Oxanium, serif;
 }
 
 .rp-footer {
@@ -389,7 +389,7 @@
 
 .rp-footer-brand strong {
   color: var(--rp-red);
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: .95rem;
   letter-spacing: .35em;
 }

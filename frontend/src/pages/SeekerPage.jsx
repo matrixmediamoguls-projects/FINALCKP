@@ -33,30 +33,30 @@ const SeekerPage = () => {
         <div style={{ fontSize: 48, color: 'var(--act)', opacity: 0.5, marginBottom: 12, animation: 'pulse 3s ease-in-out infinite' }}>
           &#x25C8;
         </div>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>
           The Mythology · The Mirrorwalker
         </div>
-        <h1 style={{ fontFamily: "'Cinzel',serif", fontSize: 'clamp(28px,4vw,44px)', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--white)', margin: '0 0 12px', lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: "'Oxanium',serif", fontSize: 'clamp(28px,4vw,44px)', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--white)', margin: '0 0 12px', lineHeight: 1.2 }}>
           The Seeker
         </h1>
-        <p style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 16, color: 'var(--muted)', lineHeight: 1.65, maxWidth: 500, margin: '0 auto' }}>
+        <p style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 16, color: 'var(--muted)', lineHeight: 1.65, maxWidth: 500, margin: '0 auto' }}>
           A Chronicle of the Mirrorwalker
         </p>
       </div>
 
       {/* Introduction */}
       <div style={{ background: 'var(--panel)', border: '1px solid var(--border)', borderLeft: '3px solid var(--act)', padding: '20px 24px', marginBottom: 32 }}>
-        <p style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 15, color: 'var(--white)', lineHeight: 1.75, margin: '0 0 12px' }}>
+        <p style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 15, color: 'var(--white)', lineHeight: 1.75, margin: '0 0 12px' }}>
           Before you can understand the music, you must understand the archetype at its center. The Seeker is not a character invented for aesthetic. <span style={{ color: 'var(--act)' }}>The Seeker is a frequency</span> — a principle that has existed across every culture that has ever had a word for the one who walks between worlds so others can stay rooted in theirs.
         </p>
-        <p style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 15, color: 'rgba(232,228,216,0.6)', lineHeight: 1.75, margin: 0 }}>
+        <p style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 15, color: 'rgba(232,228,216,0.6)', lineHeight: 1.75, margin: 0 }}>
           The Seeker inherits real experiences, documented trauma, hard-won lessons, and identity traits drawn directly from the creator's own journey. The mythic register is the container. The contents are lived truth.
         </p>
       </div>
 
       {/* Chapters */}
       <div style={{ marginBottom: 40 }}>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
           The Chronicle · Six Chapters
         </div>
         {chapters.map((ch, i) => (
@@ -66,14 +66,14 @@ const SeekerPage = () => {
             animation: `fadeUp 0.4s ease ${i * 0.08}s both`
           }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
-              <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.3em', color: 'var(--act)' }}>
+              <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.3em', color: 'var(--act)' }}>
                 Chapter {ch.num}
               </span>
-              <span style={{ fontFamily: "'Cinzel',serif", fontSize: 14, fontWeight: 600, color: 'var(--white)', letterSpacing: '0.06em' }}>
+              <span style={{ fontFamily: "'Oxanium',serif", fontSize: 14, fontWeight: 600, color: 'var(--white)', letterSpacing: '0.06em' }}>
                 {ch.title}
               </span>
             </div>
-            <p style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 14, color: 'rgba(232,228,216,0.65)', lineHeight: 1.75, margin: 0 }}>
+            <p style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 14, color: 'rgba(232,228,216,0.65)', lineHeight: 1.75, margin: 0 }}>
               {ch.body}
             </p>
           </div>
@@ -82,16 +82,16 @@ const SeekerPage = () => {
 
       {/* Framework */}
       <div style={{ marginBottom: 40 }}>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
           The Framework At A Glance
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 3 }}>
           {framework.map((f, i) => (
             <div key={i} style={{ background: 'var(--panel)', border: '1px solid var(--border)', padding: '16px 14px', textAlign: 'center' }}>
-              <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 7, letterSpacing: '0.3em', color: 'var(--muted)', marginBottom: 6, textTransform: 'uppercase' }}>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, letterSpacing: '0.3em', color: 'var(--muted)', marginBottom: 6, textTransform: 'uppercase' }}>
                 {f.label}
               </div>
-              <div style={{ fontFamily: "'Cinzel',serif", fontSize: 12, fontWeight: 600, color: 'var(--act)', marginBottom: 6 }}>
+              <div style={{ fontFamily: "'Oxanium',serif", fontSize: 12, fontWeight: 600, color: 'var(--act)', marginBottom: 6 }}>
                 {f.title}
               </div>
               <div style={{ fontSize: 11, color: 'rgba(232,228,216,0.5)', lineHeight: 1.55 }}>
@@ -104,15 +104,15 @@ const SeekerPage = () => {
 
       {/* How to Navigate */}
       <div style={{ marginBottom: 40 }}>
-        <div style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 4 }}>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 4 }}>
           Listener Companion · Field Manual
         </div>
-        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 18, fontWeight: 600, color: 'var(--white)', marginBottom: 16, letterSpacing: '0.06em' }}>
+        <div style={{ fontFamily: "'Oxanium',serif", fontSize: 18, fontWeight: 600, color: 'var(--white)', marginBottom: 16, letterSpacing: '0.06em' }}>
           How To Navigate The Protocol
         </div>
         {howTo.map((step, i) => (
           <div key={i} style={{ display: 'flex', gap: 14, marginBottom: 10, background: 'var(--panel)', border: '1px solid var(--border)', padding: '12px 16px' }}>
-            <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 12, color: 'var(--act)', width: 20, flexShrink: 0, textAlign: 'center' }}>
+            <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, color: 'var(--act)', width: 20, flexShrink: 0, textAlign: 'center' }}>
               {i + 1}
             </span>
             <span style={{ fontSize: 13, color: 'rgba(232,228,216,0.7)', lineHeight: 1.6 }}>{step}</span>
@@ -122,12 +122,12 @@ const SeekerPage = () => {
 
       {/* CTA */}
       <div style={{ textAlign: 'center', padding: '24px 0 40px' }}>
-        <div style={{ fontFamily: "'IM Fell English',serif", fontStyle: 'italic', fontSize: 15, color: 'var(--muted)', marginBottom: 20, lineHeight: 1.65 }}>
+        <div style={{ fontFamily: "'Oxanium',serif", fontStyle: 'italic', fontSize: 15, color: 'var(--muted)', marginBottom: 20, lineHeight: 1.65 }}>
           "Reality responds to structure."<br />
           We do not just make art. We build the architecture for others to survive their own collapse and engineer their own rebirth.
         </div>
         <button onClick={() => navigate('/dashboard')} style={{
-          fontFamily: "'Share Tech Mono',monospace", fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase',
+          fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase',
           padding: '14px 40px', border: '1px solid var(--act)', background: 'transparent', color: 'var(--act)', cursor: 'pointer'
         }}>
           Enter The Protocol
