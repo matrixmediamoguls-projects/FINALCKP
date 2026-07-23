@@ -483,3 +483,98 @@
     grid-template-columns: 1fr;
   }
 }
+/* Reclamation University high-tech type system */
+.rec-module-page,
+.rec-module-sequence-shell,
+.rec-module-campus-frame {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.rec-university-identity strong,
+.rec-module-campus-frame > section > div:first-child h2,
+.rec-module-command-header h2,
+.module-brief-header h1,
+.module-brief-outcome h2,
+.module-brief-section-heading h2,
+.rec-module-hero h3,
+.rec-module-panel h4,
+.rec-module-panel h5 {
+  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+}
+
+.rec-module-command-header h2,
+.module-brief-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 44px;
+  letter-spacing: normal;
+  text-transform: none;
+  text-shadow: 0 0 12px rgba(255,115,0,.3);
+}
+
+.rec-module-kicker,
+.module-brief-eyebrow {
+  color: #ff9f1c;
+  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.module-brief-outcome h2,
+.module-brief-section-heading h2,
+.rec-module-hero h3,
+.rec-module-panel h4,
+.rec-module-panel h5 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.rec-module-command-header > div > p:last-child,
+.module-brief p,
+.rec-module-panel p,
+.rec-module-panel li {
+  color: rgba(255,255,255,.85);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: .01em;
+}
+
+.rec-university-progress span,
+.rec-university-progress strong,
+.rec-module-scene-rail b,
+.rec-module-scene-rail small,
+.rec-module-session-mark,
+.rec-module-gate-status,
+.rec-university-context p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.rec-module-scene-rail button {
+  min-height: 40px;
+}
+
+.rec-module-panel blockquote,
+.module-brief blockquote {
+  padding: 12px 0 12px 16px;
+  border-left: 2px solid #ff5722;
+  color: rgba(255,255,255,.95);
+  background: linear-gradient(90deg,rgba(255,87,34,.06),transparent);
+  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}

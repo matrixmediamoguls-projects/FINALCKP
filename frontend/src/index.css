@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 @import "./styles/base.css";
 @import "./styles/global.css";
 @import "./styles/acts.css";
@@ -7,12 +7,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  body {
-    @apply bg-black text-occult-secondary antialiased font-interface selection:bg-occult-amber/30;
-  }
-}
 
 @layer utilities {
   .font-tabular {
@@ -118,7 +112,7 @@ body {
   background:black;
   color:var(--white);
 
-  font-family:'Inter', system-ui, -apple-system, sans-serif;
+  font-family:'Rajdhani', sans-serif;
 
   overflow-x:hidden;
 }

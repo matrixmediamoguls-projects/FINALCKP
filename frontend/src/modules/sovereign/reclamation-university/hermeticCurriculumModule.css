@@ -823,3 +823,101 @@
 @media (prefers-reduced-motion: reduce) {
   .hcm-root * { scroll-behavior: auto !important; transition-duration: 1ms !important; }
 }
+
+/* Shared Reclamation University high-tech type system */
+.hcm-root { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+.hcm-brand strong,
+.hcm-stage h1,
+.hcm-lesson-catalog > h1,
+.hcm-lesson-grid h2,
+.hcm-reader h1,
+.hcm-library-view h1,
+.hcm-diagnostic h1,
+.hcm-artifact h1,
+.hcm-assessment h1 {
+  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+}
+
+.hcm-stage h1,
+.hcm-reader h1,
+.hcm-lesson-catalog > h1,
+.hcm-library-view h1,
+.hcm-diagnostic h1,
+.hcm-artifact h1,
+.hcm-assessment h1 {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 44px;
+  letter-spacing: normal;
+  text-shadow: 0 0 12px rgba(255,115,0,.3);
+}
+
+.hcm-eyebrow {
+  color: #ff9f1c;
+  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.hcm-lesson-grid h2,
+.hcm-content-block h2,
+.hcm-content-block h3,
+.hcm-reflection > label,
+.hcm-lyrics h2,
+.hcm-context h2 {
+  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.hcm-intro,
+.hcm-content-block p,
+.hcm-content-block li,
+.hcm-lesson-grid p,
+.hcm-artifact > p:not(.hcm-eyebrow) {
+  color: rgba(255,255,255,.85);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: .01em;
+}
+
+.hcm-progress span,
+.hcm-progress strong,
+.hcm-module-mark span,
+.hcm-index li > span,
+.hcm-lesson-grid button > span,
+.hcm-meta-grid span,
+.hcm-context span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.hcm-index li,
+.hcm-context > div {
+  min-height: 40px;
+}
+
+.hcm-content-block blockquote {
+  padding: 12px 0 12px 16px;
+  border-left: 2px solid #ff5722;
+  color: rgba(255,255,255,.95);
+  background: linear-gradient(90deg,rgba(255,87,34,.06),transparent);
+  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
