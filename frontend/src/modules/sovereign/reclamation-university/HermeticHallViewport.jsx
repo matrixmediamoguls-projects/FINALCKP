@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { HERMETIC_HALL_FACULTY } from '../../../data/hermeticHallCurriculum';
 import './HermeticHallViewport.css';
+
+const moduleTitleBySlug = new Map(
+  HERMETIC_HALL_FACULTY.modules.map((module) => [module.slug, module.title])
+);
 
 const laws = [
   {
     number: 1,
+    slug: 'mentalism',
     name: 'Mentalism',
     axiom: 'The All is Mind. The Universe is Mental.',
     glyph: '⌁',
@@ -13,6 +19,7 @@ const laws = [
   },
   {
     number: 2,
+    slug: 'correspondence',
     name: 'Correspondence',
     axiom: 'As above, so below. As below, so above.',
     glyph: '✧',
@@ -21,6 +28,7 @@ const laws = [
   },
   {
     number: 3,
+    slug: 'vibration',
     name: 'Vibration',
     axiom: 'Nothing rests. Everything moves. Everything vibrates.',
     glyph: '◎',
@@ -29,6 +37,7 @@ const laws = [
   },
   {
     number: 4,
+    slug: 'polarity',
     name: 'Polarity',
     axiom: 'Everything is dual. Everything has poles.',
     glyph: '☯',
@@ -37,6 +46,7 @@ const laws = [
   },
   {
     number: 5,
+    slug: 'rhythm',
     name: 'Rhythm',
     axiom: 'Everything flows, out and in. Everything has its tides.',
     glyph: '≋',
@@ -45,6 +55,7 @@ const laws = [
   },
   {
     number: 6,
+    slug: 'cause-and-effect',
     name: 'Cause and Effect',
     axiom: 'Every cause has its effect. Every effect has its cause.',
     glyph: '↬',
@@ -53,13 +64,17 @@ const laws = [
   },
   {
     number: 7,
+    slug: 'gender',
     name: 'Gender',
     axiom: 'Gender is in everything. Creation holds both principles.',
     glyph: '⚥',
     accent: '#ff4a1c',
     route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/gender',
   },
-];
+].map((law) => ({
+  ...law,
+  title: moduleTitleBySlug.get(law.slug) || law.name,
+}));
 
 function LawButton({ law, active, onActivate }) {
   return (
@@ -68,12 +83,12 @@ function LawButton({ law, active, onActivate }) {
       className={`hh-law hh-law-${law.number}${active ? ' is-active' : ''}`}
       style={{ '--law-accent': law.accent }}
       onClick={() => onActivate(law)}
-      aria-label={`Enter the Law of ${law.name}: ${law.axiom}`}
+      aria-label={`Enter ${law.title}: ${law.axiom}`}
       aria-current={active ? 'step' : undefined}
     >
       <span className="hh-law-accessible-copy">
         <b>{law.number}</b>
-        <span>The Law of {law.name}</span>
+        <span>{law.title}</span>
         <small>{law.axiom}</small>
         <i aria-hidden="true">{law.glyph}</i>
       </span>
@@ -118,7 +133,9 @@ export default function HermeticHallViewport() {
         <div className="hh-display-glass" />
         <div className="hh-display-copy">
           <span>{activeLaw ? `Hermetic Law ${activeLaw.number}` : 'Reclamation University'}</span>
-          <h1>{activeLaw ? activeLaw.name : 'The Hermetic Hall'}</h1>
+          <h1 className={activeLaw ? 'is-module-title' : undefined}>
+            {activeLaw ? activeLaw.title : 'The Hermetic Hall'}
+          </h1>
           <p>{activeLaw ? activeLaw.axiom : 'Select an illuminated law to begin the transmission.'}</p>
           {activeLaw && <b>Opening faculty protocol…</b>}
         </div>
