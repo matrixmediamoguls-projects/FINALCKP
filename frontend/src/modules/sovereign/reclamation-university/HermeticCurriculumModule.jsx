@@ -412,14 +412,6 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           )}
         </section>
 
-        <aside className="hcm-context">
-          <p className="hcm-eyebrow">Module Intelligence</p>
-          <div><span>Law</span><strong>{courseModule.law}</strong></div>
-          <div><span>Primary track</span><strong>{courseModule.primaryTrack}</strong></div>
-          <div><span>Seal</span><strong>{courseModule.seal}</strong></div>
-          <div><span>Lessons complete</span><strong>{record.completedLessons.length} / {lessons.length}</strong></div>
-          <blockquote>{courseModule.modernOutcome}</blockquote>
-        </aside>
       </div>
     </main>
   );
