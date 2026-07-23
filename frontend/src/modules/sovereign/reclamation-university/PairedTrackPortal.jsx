@@ -6,11 +6,11 @@ export default function PairedTrackPortal({ sourceTracks, lyricAnchors, listened
   const receiveTrack = async (track) => {
     try {
       if (track.unavailable) throw new Error(track.errorMessage || 'Track unavailable — check your connection.');
-      await onMarkListened(track.trackOrder);
-      setTrackErrors((current) => ({ ...current, [track.trackOrder]: null }));
+      await onMarkListened(track.id);
+      setTrackErrors((current) => ({ ...current, [track.id]: null }));
     } catch (error) {
       const message = error?.message || 'Track unavailable — check your connection.';
-      setTrackErrors((current) => ({ ...current, [track.trackOrder]: message }));
+      setTrackErrors((current) => ({ ...current, [track.id]: message }));
       onTrackError?.(track, error);
     }
   };
@@ -28,10 +28,10 @@ export default function PairedTrackPortal({ sourceTracks, lyricAnchors, listened
 
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
         {sourceTracks.map((track) => {
-          const isComplete = listenedTracks.includes(track.trackOrder);
-          const trackError = trackErrors[track.trackOrder];
+          const isComplete = listenedTracks.includes(track.id);
+          const trackError = trackErrors[track.id];
           return (
-            <article key={track.trackOrder} className={`rec-module-card p-4 ${isComplete ? 'is-complete' : ''}`}>
+            <article key={track.id} className={`rec-module-card p-4 ${isComplete ? 'is-complete' : ''}`}>
               <div className="flex h-full flex-col justify-between gap-5">
                 <div>
                   <div className="flex flex-wrap items-center justify-between gap-3">

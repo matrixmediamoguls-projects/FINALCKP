@@ -149,7 +149,21 @@ export default function ReclamationModuleEngine({ module, faculty }) {
         .filter((codeId) => (module?.shadowCodes || []).some((code) => code.id === codeId));
       setHasEnteredModule(true);
       setActiveSceneIndex(progress.active_scene || 0);
-      setListenedTracks(progress.listened_track_ids || []);
+      const sourceTrackIds = module?.sourceTrackIds || [];
+      const normalizedListenedTracks = (progress.listened_track_ids || [])
+        .map((trackId) => {
+          const legacyPosition = Number(trackId);
+          if (
+            Number.isInteger(legacyPosition)
+            && legacyPosition > 0
+            && legacyPosition <= sourceTrackIds.length
+          ) {
+            return sourceTrackIds[legacyPosition - 1];
+          }
+          return String(trackId);
+        })
+        .filter((trackId) => sourceTrackIds.includes(trackId));
+      setListenedTracks([...new Set(normalizedListenedTracks)]);
       setSelectedShadowCodes(normalizedShadowCodes);
       setRetrievedLightCodes(progress.retrieved_light_codes || []);
       setDeclaration(progress.declaration_json || {});
@@ -208,16 +222,17 @@ export default function ReclamationModuleEngine({ module, faculty }) {
     { canAdvance: moduleUnlocked, lockMessage: 'Final chamber active.' },
   ];
 
-  const toggleListenedTrack = (trackId) => {
-    const newListenedTracks = listenedTracks.includes(trackId)
-      ? listenedTracks.filter((item) => item !== trackId)
-      : [...listenedTracks, trackId];
+  const markListenedTrack = async (trackId) => {
+    if (listenedTracks.includes(trackId)) return;
+
+    const newListenedTracks = [...listenedTracks, trackId];
     setListenedTracks(newListenedTracks);
-    saveProgress({
+    const saveResult = await saveProgress({
       status: 'in_progress', activeScene: activeSceneIndex, listenedTrackIds: newListenedTracks,
       selectedShadowCodes, retrievedLightCodes, declarationJson: declaration,
     });
-    trackEvent('track_listened', { trackId, listened: !listenedTracks.includes(trackId) });
+    trackEvent('track_listened', { trackId, listened: true });
+    return saveResult;
   };
 
   const toggleShadowCode = (codeId) => {
@@ -291,6 +306,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
 
   // Build source tracks for the portal
   const sourceTracksForPortal = (module?.sourceTrackIds || []).map((trackId, index) => ({
+    id: trackId,
     trackOrder: index + 1,
     keyLabel: `KEY ${String.fromCharCode(73 + index)}: ${module?.lyricAnchors?.[index]?.label || 'Signal Key'}`,
     title: trackId,
@@ -305,7 +321,7 @@ export default function ReclamationModuleEngine({ module, faculty }) {
       lyricAnchors={module?.lyricAnchors || []}
       listenedTracks={listenedTracks}
       selectedAnchorKey={selectedAnchorKey}
-      onMarkListened={toggleListenedTrack}
+      onMarkListened={markListenedTrack}
       onAnchorSelect={setSelectedAnchorKey}
       onTrackError={(track, error) => trackEvent('track_load_failed', {
         trackId: track.title,
