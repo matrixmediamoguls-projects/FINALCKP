@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ChevronLeft, ChevronRight, List, LockKeyhole, Maximize2, Pause, Play,
-  Settings, Shuffle, SkipBack, SkipForward, Volume1, Volume2,
+  ArrowLeft, ChevronLeft, ChevronRight, Disc3, Maximize2, Pause, Play,
+  Radio, Settings, Shuffle, SkipBack, SkipForward, Volume1, Volume2,
 } from 'lucide-react';
 import { getTrackById } from '../../lib/supabase/tracks';
 import { getVisualizerRequirementsByTrack } from '../../lib/supabase/visualizerRequirements';
@@ -22,11 +22,15 @@ function formatTime(seconds) {
   return `${String(Math.floor(value / 60)).padStart(2, '0')}:${String(Math.floor(value % 60)).padStart(2, '0')}`;
 }
 
-function Card({ title, className = '', children }) {
-  return <section className={`sav-card ${className}`}><header><i />{title}</header>{children}</section>;
-}
-
-export default function AudioVisualizerCore({ selectedTrackId, activeTrackData, tracks = [], onTrackChange, isPlaying, onPlayStateChange }) {
+export default function AudioVisualizerCore({
+  selectedTrackId,
+  activeTrackData,
+  tracks = [],
+  onTrackChange,
+  isPlaying,
+  onPlayStateChange,
+  onExit,
+}) {
   const audioRef = useRef(null);
   const [track, setTrack] = useState(activeTrackData || null);
   const [requirements, setRequirements] = useState(null);
@@ -54,7 +58,10 @@ export default function AudioVisualizerCore({ selectedTrackId, activeTrackData, 
     const audio = audioRef.current;
     if (!audio) return;
     if (isPlaying && track?.audio_url) audio.play().then(start).catch(() => onPlayStateChange?.(false));
-    else { audio.pause(); stop(); }
+    else {
+      audio.pause();
+      stop();
+    }
   }, [isPlaying, track?.audio_url, start, stop, onPlayStateChange]);
 
   const queue = tracks.length ? tracks.slice(0, 10) : FALLBACK_TRACKS;
@@ -80,61 +87,68 @@ export default function AudioVisualizerCore({ selectedTrackId, activeTrackData, 
   return (
     <section className={`sav-shell ${isPlaying ? 'is-playing' : ''}`} style={{ '--sav-energy': Math.max(.12, audioLevel / 100) }}>
       <div className="sav-atmosphere" aria-hidden="true" />
+
       <header className="sav-museum-header">
-        <div className="sav-wordmark"><span>MM</span><strong>MUSIQ MATRIX</strong></div>
-        <p>SOVEREIGN MODE · ACT III</p>
+        <button type="button" className="sav-exit" onClick={onExit}><ArrowLeft /> Sovereign Chamber</button>
+        <div className="sav-wordmark"><span>MM</span><div><strong>MUSIQ MATRIX</strong><small>Private listening archive</small></div></div>
+        <div className="sav-session"><i /> Live session · Act III</div>
       </header>
 
-      <section className="sav-dashboard">
-        <aside className="sav-stack">
-          <Card title="NOW PLAYING" className="sav-now-playing">
-            <div className="sav-track-summary"><img src={cover} alt="" /><div><h2>{activeTrack?.title || 'Reclamation'}</h2><p>{activeTrack?.artist || 'Musiq Matrix'}</p><span className="sav-mini-progress" style={{ '--progress': `${progress}%` }} /><small>{formatTime(elapsed)} <b>{formatTime(duration)}</b></small></div></div>
-          </Card>
-          <Card title="AUDIO REACTOR" className="sav-meter-card">
-            <div className="sav-meter" aria-hidden="true">{bars.map((height, index) => <i key={index} style={{ height: `${height}%`, animationDelay: `${index * -37}ms` }} />)}</div>
-            <div className="sav-bands"><span>BASS</span><span>MID</span><span>TREBLE</span></div>
-          </Card>
-          <Card title="ALBUM STATUS" className="sav-status-card">
-            <div className="sav-status"><LockKeyhole /><div><p>ACCESS &amp; PROTOCOL</p><h3>UNLOCKED</h3><small>ALL SYSTEMS OPERATIONAL</small></div></div>
-          </Card>
+      <section className="sav-listening-room">
+        <aside className="sav-record-notes">
+          <p className="sav-kicker">Now transmitting · {String(activeIndex + 1).padStart(2, '0')}</p>
+          <h1>{activeTrack?.title || 'Reclamation'}</h1>
+          <p className="sav-artist">{activeTrack?.artist || 'Musiq Matrix'} · Act III</p>
+          <div className="sav-cover-wrap"><img src={cover} alt="" /><span>MMR–III / {String(activeIndex + 1).padStart(2, '0')}</span></div>
+          <dl>
+            <div><dt>Light code</dt><dd>The Flame Remembers. The Signal Returns.</dd></div>
+            <div><dt>Shadow code</dt><dd>Erasure · Distortion · Falsehood</dd></div>
+          </dl>
         </aside>
 
-        <section className="sav-stage" aria-label="Primary audio visualizer">
-          <div className="sav-title"><p>CHROMA KEY / ACT THREE</p><h1>RECLAMATION</h1></div>
+        <section className="sav-stage" aria-label="Audio-reactive frequency sculpture">
+          <div className="sav-stage-heading"><span>Audio-reactive sculpture</span><strong>{isPlaying ? 'Signal active' : 'Awaiting playback'}</strong></div>
           <div className="sav-reactor-wrap">
             <div className="sav-reactor-halo" />
             <img src={REACTOR} alt="Musiq Matrix Reclamation frequency reactor" />
             <div className="sav-reactor-pulse" />
           </div>
-          <div className="sav-plaque"><strong>RECLAMATION ARCHIVE</strong><span>MMR-III</span></div>
+          <div className="sav-meter" aria-hidden="true">{bars.map((height, index) => <i key={index} style={{ height: `${height}%`, animationDelay: `${index * -37}ms` }} />)}</div>
+          <div className="sav-bands"><span>Low frequency</span><span>Mid field</span><span>High frequency</span></div>
         </section>
 
-        <aside className="sav-stack sav-stack-right">
-          <Card title="RECLAMATION UNIVERSITY">
-            <div className="sav-copy"><h3>PRIMARY LIGHT CODE</h3><p>The Flame Remembers.<br />The Signal Returns.</p><h3>PRIMARY SHADOW CODE</h3><p>Erasure, Distortion, Falsehood</p></div>
-            <button className="sav-action" type="button">ENTER UNIVERSITY <ChevronRight /></button>
-          </Card>
-          <Card title="LYRICS PROTOCOL">
-            <blockquote>{lyrics.map((line, index) => <p key={`${line}-${index}`}>{line}</p>)}</blockquote>
-            <button className="sav-action" type="button">VIEW FULL LYRICS <ChevronRight /></button>
-          </Card>
+        <aside className="sav-transmission">
+          <p className="sav-kicker">Lyrical transmission</p>
+          <blockquote>{lyrics.map((line, index) => <p key={`${line}-${index}`}>{line}</p>)}</blockquote>
+          <div className="sav-signal-card"><Radio /><div><span>Archive status</span><strong>{activeTrack?.audio_url ? 'Audio source online' : 'Text transmission only'}</strong></div></div>
+          <div className="sav-signal-card"><Disc3 /><div><span>Reactor state</span><strong>{isPlaying ? 'Analyzing live signal' : 'Ready for playback'}</strong></div></div>
         </aside>
       </section>
 
       <section className="sav-tracklist">
-        <header><h2>TRACKLIST: ACT III — RECLAMATION</h2><button type="button"><List /> VIEW FULL LIST</button></header>
-        <div className="sav-track-rail"><button type="button" onClick={() => selectRelative(-1)} aria-label="Previous track"><ChevronLeft /></button><div>
-          {queue.map((item, index) => <button type="button" key={item.id} className={item.id === activeId ? 'active' : ''} onClick={() => { onTrackChange?.(item.id); onPlayStateChange?.(true); }}><img src={item.cover_url || item.cover_image_url || cover} alt="" /><span>{String(item.track_order || index + 1).padStart(2, '0')}</span><strong>{item.title}</strong><i /></button>)}
-        </div><button type="button" onClick={() => selectRelative(1)} aria-label="Next track"><ChevronRight /></button></div>
+        <header><div><p className="sav-kicker">The Reclamation archive</p><h2>Choose a transmission</h2></div><span>{queue.length} recordings</span></header>
+        <div className="sav-track-rail">
+          <button type="button" onClick={() => selectRelative(-1)} aria-label="Previous track"><ChevronLeft /></button>
+          <div>
+            {queue.map((item, index) => (
+              <button type="button" key={item.id} className={item.id === activeId ? 'active' : ''} onClick={() => { onTrackChange?.(item.id); onPlayStateChange?.(true); }}>
+                <img src={item.cover_url || item.cover_image_url || cover} alt="" />
+                <span>{String(item.track_order || index + 1).padStart(2, '0')}</span>
+                <strong>{item.title}</strong><i />
+              </button>
+            ))}
+          </div>
+          <button type="button" onClick={() => selectRelative(1)} aria-label="Next track"><ChevronRight /></button>
+        </div>
       </section>
 
       <section className="sav-controls" aria-label="Playback controls">
         <div><button type="button" aria-label="Shuffle"><Shuffle /></button><button type="button" onClick={() => selectRelative(-1)} aria-label="Previous"><SkipBack /></button><button className="sav-play" type="button" onClick={() => onPlayStateChange?.(!isPlaying)} aria-label={isPlaying ? 'Pause' : 'Play'}>{isPlaying ? <Pause /> : <Play />}</button><button type="button" onClick={() => selectRelative(1)} aria-label="Next"><SkipForward /></button></div>
-        <div className="sav-seek"><b>{formatTime(elapsed)}</b><input type="range" aria-label="Track progress" min="0" max={duration || 1} value={elapsed} onChange={(event) => { audioRef.current.currentTime = Number(event.target.value); }} style={{ '--progress': `${progress}%` }} /><b>{formatTime(duration)}</b></div>
+        <div className="sav-seek"><b>{formatTime(elapsed)}</b><input type="range" aria-label="Track progress" min="0" max={duration || 1} value={elapsed} onChange={(event) => { if (audioRef.current) audioRef.current.currentTime = Number(event.target.value); }} style={{ '--progress': `${progress}%` }} /><b>{formatTime(duration)}</b></div>
         <div className="sav-utility" aria-hidden="true"><Volume1 /><span /><Volume2 /><Settings /><Maximize2 /></div>
       </section>
 
-      <footer className="sav-footer"><div><span className="sav-seeker-mark" /><p>SEEKER ID<br /><b>MM-7777</b></p></div><nav><span>DASHBOARD</span><span>ELEMENTAL PROTOCOLS</span><span>ARCHIVE</span><span>INTEL</span></nav><strong>SUPABASE · CONNECTED</strong></footer>
+      <footer className="sav-footer"><div><span className="sav-seeker-mark" /><p>MUSIQ MATRIX<br /><b>SOVEREIGN ARCHIVE</b></p></div><strong>{activeTrack?.audio_url ? 'MEDIA · CONNECTED' : 'ARCHIVE · READY'}</strong></footer>
       <audio ref={audioRef} src={activeTrack?.audio_url || undefined} crossOrigin="anonymous" preload="metadata" onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)} onTimeUpdate={(event) => setElapsed(event.currentTarget.currentTime)} onEnded={() => selectRelative(1)} />
     </section>
   );

@@ -49,15 +49,15 @@ export default function VisualizerCorePage() {
 
   return (
     <main className={`sovereign-module-page ${isVisualizer ? 'is-visualizer' : ''}`}>
-      <header className="sovereign-module-command">
-        <button type="button" onClick={() => navigate('/experiencemode/sovereign')}>
-          <ChevronLeft aria-hidden="true" /> Sovereign Chamber
-        </button>
-        <div>
-          <span>Reclamation Mainframe</span>
-          <strong>{moduleView.title}</strong>
-        </div>
-        {!isVisualizer && (
+      {!isVisualizer && (
+        <header className="sovereign-module-command">
+          <button type="button" onClick={() => navigate('/experiencemode/sovereign')}>
+            <ChevronLeft aria-hidden="true" /> Sovereign Chamber
+          </button>
+          <div>
+            <span>Reclamation Mainframe</span>
+            <strong>{moduleView.title}</strong>
+          </div>
           <label>
             <span>Active Track</span>
             <select value={selectedTrackId || ''} onChange={(event) => setSelectedTrackId(event.target.value)} disabled={!tracks.length}>
@@ -65,8 +65,8 @@ export default function VisualizerCorePage() {
               {tracks.map((track) => <option key={track.id} value={track.id}>{track.track_order}. {track.title}</option>)}
             </select>
           </label>
-        )}
-      </header>
+        </header>
+      )}
 
       <section className="sovereign-module-workspace" aria-label={moduleView.title}>
         {isVisualizer ? (
@@ -77,6 +77,7 @@ export default function VisualizerCorePage() {
             onTrackChange={setSelectedTrackId}
             isPlaying={isPlaying}
             onPlayStateChange={setIsPlaying}
+            onExit={() => navigate('/experiencemode/sovereign')}
           />
         ) : (
           <Component selectedTrackId={selectedTrackId} />
