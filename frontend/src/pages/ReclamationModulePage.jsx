@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReclamationModuleEngine from '../modules/sovereign/reclamation-university/ReclamationModuleEngine';
+import HermeticCurriculumModule from '../modules/sovereign/reclamation-university/HermeticCurriculumModule';
 import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
 import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
@@ -50,6 +51,10 @@ export default function ReclamationModulePage() {
         </button>
       </div>
     );
+  }
+
+  if (isHermeticHall) {
+    return <HermeticCurriculumModule module={module} faculty={faculty} />;
   }
 
   return <ReclamationModuleEngine module={module} faculty={faculty} />;
