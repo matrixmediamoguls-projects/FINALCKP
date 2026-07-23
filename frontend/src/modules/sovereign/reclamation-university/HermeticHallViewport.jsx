@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HERMETIC_HALL_FACULTY } from '../../../data/hermeticHallCurriculum';
 import './HermeticHallViewport.css';
 
-const moduleTitleBySlug = new Map(
-  HERMETIC_HALL_FACULTY.modules.map((module) => [module.slug, module.title])
+const moduleBySlug = new Map(
+  HERMETIC_HALL_FACULTY.modules.map((module) => [module.slug, module])
 );
 
 const laws = [
@@ -73,7 +73,8 @@ const laws = [
   },
 ].map((law) => ({
   ...law,
-  title: moduleTitleBySlug.get(law.slug) || law.name,
+  module: moduleBySlug.get(law.slug),
+  title: moduleBySlug.get(law.slug)?.title || law.name,
 }));
 
 function LawButton({ law, active, onActivate }) {
@@ -100,15 +101,10 @@ export default function HermeticHallViewport() {
   const navigate = useNavigate();
   const [activeLaw, setActiveLaw] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const navigationTimer = useRef(null);
 
-  useEffect(() => () => window.clearTimeout(navigationTimer.current), []);
-
-  const activateLaw = (law) => {
-    window.clearTimeout(navigationTimer.current);
-    setActiveLaw(law);
+  const enterLaw = (law) => {
     setIsTransitioning(true);
-    navigationTimer.current = window.setTimeout(() => navigate(law.route), 760);
+    window.setTimeout(() => navigate(law.route), 420);
   };
 
   return (
@@ -129,16 +125,45 @@ export default function HermeticHallViewport() {
         ))}
       </div>
 
-      <section className="hh-display" aria-live="polite" aria-atomic="true">
+      <section className={`hh-display${activeLaw ? ' has-curriculum' : ''}`} aria-live="polite">
         <div className="hh-display-glass" />
-        <div className="hh-display-copy">
-          <span>{activeLaw ? `Hermetic Law ${activeLaw.number}` : 'Reclamation University'}</span>
-          <h1 className={activeLaw ? 'is-module-title' : undefined}>
-            {activeLaw ? activeLaw.title : 'The Hermetic Hall'}
-          </h1>
-          <p>{activeLaw ? activeLaw.axiom : 'Select an illuminated law to begin the transmission.'}</p>
-          {activeLaw && <b>Opening faculty protocol…</b>}
-        </div>
+        {activeLaw ? (
+          <article key={activeLaw.slug} className="hh-curriculum-reader" aria-label={`${activeLaw.title} curriculum`}>
+            <header>
+              <span>Hermetic Curriculum · Chamber {activeLaw.number}</span>
+              <h1>{activeLaw.title}</h1>
+            </header>
+            <div className="hh-curriculum-window" tabIndex={0}>
+              <div className="hh-curriculum-scroll">
+                <p className="hh-curriculum-axiom">{activeLaw.axiom}</p>
+                {(activeLaw.module?.initiationCopy || []).map((paragraph, index) => (
+                  <p key={`${activeLaw.slug}-reading-${index}`}>{paragraph}</p>
+                ))}
+                <h2>Field of Inquiry</h2>
+                <p>{activeLaw.module?.lyricAnchors?.[0]?.line}</p>
+                <h2>Curriculum Outcomes</h2>
+                <ol>
+                  {(activeLaw.module?.learningObjectives || []).map((objective) => (
+                    <li key={objective}>{objective}</li>
+                  ))}
+                </ol>
+                <h2>Integration Practice</h2>
+                <p>{activeLaw.module?.integrationKey}</p>
+                <p className="hh-curriculum-end">End of transmission · Enter the practicum when ready</p>
+              </div>
+            </div>
+            <footer>
+              <span>Scroll or hover to pause transmission</span>
+              <button type="button" onClick={() => enterLaw(activeLaw)}>Enter Module</button>
+            </footer>
+          </article>
+        ) : (
+          <div className="hh-display-copy">
+            <span>Reclamation University</span>
+            <h1>The Hermetic Hall</h1>
+            <p>Select an illuminated law to receive its curriculum transmission.</p>
+          </div>
+        )}
       </section>
 
       <button
@@ -156,7 +181,7 @@ export default function HermeticHallViewport() {
             key={law.number}
             law={law}
             active={activeLaw?.number === law.number}
-            onActivate={activateLaw}
+            onActivate={setActiveLaw}
           />
         ))}
       </nav>
