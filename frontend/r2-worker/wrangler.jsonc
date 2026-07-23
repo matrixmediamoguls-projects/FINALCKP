@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "chroma-key-media-gateway",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-01",
+  "routes": [
+    {
+      "pattern": "media.chromakeyprotocol.com/*",
+      "zone_name": "chromakeyprotocol.com"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "chromakeyprotocol"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

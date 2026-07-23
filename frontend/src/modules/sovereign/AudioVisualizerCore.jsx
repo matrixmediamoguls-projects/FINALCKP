@@ -69,6 +69,7 @@ export default function AudioVisualizerCore({
   const activeTrack = track || activeTrackData || queue.find((item) => item.id === activeId) || queue[0];
   const activeIndex = Math.max(0, queue.findIndex((item) => item.id === activeId));
   const cover = activeTrack?.cover_url || activeTrack?.cover_image_url || requirements?.cover_image_url || FALLBACK_COVER;
+  const palette = requirements?.palette_json || activeTrack?.visual_preset?.palette_json || {};
   const lyrics = String(activeTrack?.display_text || activeTrack?.lyrics || 'THE FLAME REMEMBERS.\nTHE SIGNAL RETURNS.\nRECLAIM WHAT WAS ALWAYS YOURS.')
     .split('\n').filter(Boolean).slice(0, 4);
   const bars = useMemo(() => Array.from({ length: 42 }, (_, index) => {
@@ -85,7 +86,14 @@ export default function AudioVisualizerCore({
   };
 
   return (
-    <section className={`sav-shell ${isPlaying ? 'is-playing' : ''}`} style={{ '--sav-energy': Math.max(.12, audioLevel / 100) }}>
+    <section
+      className={`sav-shell ${isPlaying ? 'is-playing' : ''}`}
+      style={{
+        '--sav-energy': Math.max(.12, audioLevel / 100),
+        '--red': palette.primary || '#a72c33',
+        '--bronze': palette.secondary || '#bd9360',
+      }}
+    >
       <div className="sav-atmosphere" aria-hidden="true" />
 
       <header className="sav-museum-header">
@@ -121,7 +129,7 @@ export default function AudioVisualizerCore({
           <p className="sav-kicker">Lyrical transmission</p>
           <blockquote>{lyrics.map((line, index) => <p key={`${line}-${index}`}>{line}</p>)}</blockquote>
           <div className="sav-signal-card"><Radio /><div><span>Archive status</span><strong>{activeTrack?.audio_url ? 'Audio source online' : 'Text transmission only'}</strong></div></div>
-          <div className="sav-signal-card"><Disc3 /><div><span>Reactor state</span><strong>{isPlaying ? 'Analyzing live signal' : 'Ready for playback'}</strong></div></div>
+          <div className="sav-signal-card"><Disc3 /><div><span>Reactor state</span><strong>{isPlaying ? 'Analyzing live signal' : requirements?.name || 'Ready for playback'}</strong></div></div>
         </aside>
       </section>
 

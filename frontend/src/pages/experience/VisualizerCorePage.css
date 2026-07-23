@@ -671,7 +671,7 @@
   font-family: 'Inter', sans-serif;
 }
 
-.sovereign-module-page.is-visualizer { padding: 0; }
+.sovereign-module-page.is-visualizer { width: 100%; height: 100svh; min-height: 0; overflow: hidden; padding: 0; }
 
 .sovereign-module-command {
   position: fixed;
@@ -738,7 +738,7 @@
   clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px), 0 16px);
 }
 
-.sovereign-module-page.is-visualizer .sovereign-module-workspace { width: 100%; min-height: 100svh; padding: 0; border: 0; clip-path: none; }
+.sovereign-module-page.is-visualizer .sovereign-module-workspace { width: 100%; height: 100%; min-height: 0; overflow: hidden; padding: 0; border: 0; clip-path: none; }
 
 @media (max-width: 760px) {
   .sovereign-module-page { padding: 132px 12px 18px; }

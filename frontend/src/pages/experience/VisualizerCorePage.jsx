@@ -30,7 +30,7 @@ export default function VisualizerCorePage() {
     getActThreeTracks().then((items) => {
       if (!active) return;
       setTracks(items);
-      setSelectedTrackId((current) => current || items[2]?.id || items[0]?.id || null);
+      setSelectedTrackId((current) => current || items[0]?.id || null);
     });
     return () => { active = false; };
   }, []);

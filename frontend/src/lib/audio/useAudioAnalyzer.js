@@ -28,11 +28,14 @@ export function useAudioAnalyzer(audioElementRef) {
     sourceRef.current = source;
   }, [audioElementRef]);
 
-  const start = useCallback(() => {
+  const start = useCallback(async () => {
     connect();
 
     const analyzer = analyzerRef.current;
     if (!analyzer) return;
+    if (audioContextRef.current?.state === 'suspended') {
+      await audioContextRef.current.resume();
+    }
 
     const buffer = new Uint8Array(analyzer.frequencyBinCount);
 
@@ -53,7 +56,13 @@ export function useAudioAnalyzer(audioElementRef) {
     frameRef.current = null;
   }, []);
 
-  useEffect(() => stop, [stop]);
+  useEffect(() => () => {
+    stop();
+    audioContextRef.current?.close();
+    audioContextRef.current = null;
+    analyzerRef.current = null;
+    sourceRef.current = null;
+  }, [stop]);
 
   return { connect, start, stop, frequencyData, audioLevel };
 }
