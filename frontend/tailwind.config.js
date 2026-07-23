@@ -5,9 +5,17 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				heading: ['Unbounded', 'sans-serif'],
-				primary: ['Outfit', 'sans-serif'],
+				display: ['Oxanium', 'system-ui', '-apple-system', 'sans-serif'],
+				interface: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+				data: ['JetBrains Mono', 'monospace'],
+				// Compatibility aliases for existing screens.
+				heading: ['Oxanium', 'system-ui', '-apple-system', 'sans-serif'],
+				primary: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace'],
+			},
+			letterSpacing: {
+				'tech-wide': '0.10em',
+				'tech-widest': '0.20em',
 			},
 
 			colors: {
@@ -76,6 +84,13 @@ module.exports = {
 
 					error: "#FF5A5F",
 					success: "#4ADE80"
+				},
+				occult: {
+					primary: 'rgba(255, 255, 255, 0.95)',
+					secondary: 'rgba(255, 255, 255, 0.70)',
+					muted: 'rgba(255, 255, 255, 0.45)',
+					amber: '#FF9F1C',
+					orange: '#FF5722',
 				}
 			},
 
@@ -86,5 +101,17 @@ module.exports = {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function ({ addUtilities }) {
+			addUtilities({
+				'.text-glow-orange': {
+					'text-shadow': '0 0 12px rgba(255, 115, 0, 0.25)',
+				},
+				'.text-glow-strong': {
+					'text-shadow': '0 0 16px rgba(255, 115, 0, 0.4)',
+				},
+			})
+		},
+	],
 }

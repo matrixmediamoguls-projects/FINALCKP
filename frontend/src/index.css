@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap');
 @import "./styles/base.css";
 @import "./styles/global.css";
 @import "./styles/acts.css";
@@ -7,6 +7,74 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-occult-secondary antialiased font-interface selection:bg-occult-amber/30;
+  }
+}
+
+@layer utilities {
+  .font-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .type-main-title {
+    font-family:'Oxanium',system-ui,sans-serif;
+    font-size:36px;
+    font-weight:700;
+    line-height:44px;
+    text-shadow:0 0 12px rgba(255,115,0,.3);
+  }
+
+  .type-section-eyebrow {
+    color:var(--gold-accent);
+    font-family:'Oxanium',system-ui,sans-serif;
+    font-size:14px;
+    font-weight:600;
+    line-height:14px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+  }
+
+  .type-widget-title {
+    font-family:'Oxanium',system-ui,sans-serif;
+    font-size:16px;
+    font-weight:500;
+    line-height:20px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+
+  .type-body {
+    color:rgba(255,255,255,.85);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:14px;
+    font-weight:400;
+    line-height:22px;
+    letter-spacing:.01em;
+  }
+
+  .type-data {
+    font-family:'JetBrains Mono',monospace;
+    font-size:28px;
+    font-weight:500;
+    line-height:28px;
+    letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .type-micro-label {
+    color:var(--orange-glow);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:400;
+    line-height:14px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    font-variant-numeric:tabular-nums;
+  }
+}
 
 /* =========================================================
    ROOT VARIABLES
@@ -24,6 +92,9 @@
   --reflection-blue:#5ab6ff;
   --reclamation-red:#ff4d4d;
   --crucible-gold:#ffc857;
+  --gold-accent:#FF9F1C;
+  --orange-glow:#FF5722;
+  --muted-gray:rgba(255,255,255,.45);
 }
 
 /* =========================================================
@@ -47,7 +118,7 @@ body {
   background:black;
   color:var(--white);
 
-  font-family:'Rajdhani', sans-serif;
+  font-family:'Inter', system-ui, -apple-system, sans-serif;
 
   overflow-x:hidden;
 }
