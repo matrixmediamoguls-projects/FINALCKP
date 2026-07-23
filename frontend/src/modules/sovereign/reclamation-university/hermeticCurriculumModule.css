@@ -164,7 +164,7 @@
   width: min(1720px, 100%);
   min-height: calc(100svh - 128px);
   display: grid;
-  grid-template-columns: minmax(235px, 285px) minmax(0, 1fr) minmax(210px, 260px);
+  grid-template-columns: minmax(275px, 315px) minmax(0, 1fr) minmax(240px, 285px);
   margin-inline: auto;
 }
 
@@ -464,13 +464,197 @@
 .hcm-context strong { display: block; margin-top: .45rem; color: #d7d0c4; font: 600 .78rem/1.5 'Cormorant Garamond', serif; }
 .hcm-context blockquote { margin: 2rem 0 0; padding-left: .8rem; border-left: 1px solid var(--hcm-gold); color: var(--hcm-muted); font-size: .9rem; line-height: 1.6; }
 
+/* Readability pass: instructional content must never use decorative microtype. */
+.hcm-root {
+  font-size: 16px;
+}
+
+.hcm-back,
+.hcm-nav button,
+.hcm-reader header button,
+.hcm-primary,
+.hcm-secondary {
+  font-size: .76rem;
+  line-height: 1.25;
+}
+
+.hcm-brand span,
+.hcm-module-mark span,
+.hcm-progress span,
+.hcm-eyebrow,
+.hcm-meta-grid span,
+.hcm-context span,
+.hcm-artifact label > span,
+.hcm-doctrine span,
+.hcm-content-label,
+.hcm-library-view section header span,
+.hcm-library-view dt {
+  font-size: .72rem;
+  line-height: 1.35;
+}
+
+.hcm-brand strong {
+  font-size: 1.35rem;
+}
+
+.hcm-module-mark strong,
+.hcm-save-state {
+  font-size: .78rem;
+  line-height: 1.4;
+}
+
+.hcm-index {
+  font-size: 1rem;
+}
+
+.hcm-index > p:not(.hcm-eyebrow) {
+  font-size: .88rem;
+  line-height: 1.65;
+}
+
+.hcm-index li strong {
+  font-size: .88rem;
+  line-height: 1.35;
+}
+
+.hcm-index li small {
+  font-size: .76rem;
+  line-height: 1.4;
+}
+
+.hcm-index li button > span {
+  font-size: .72rem;
+}
+
+.hcm-meta-grid strong {
+  font-size: .95rem;
+  line-height: 1.6;
+}
+
+.hcm-doctrine p {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.hcm-track-list span {
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+.hcm-lesson-grid button > span,
+.hcm-lesson-grid b,
+.hcm-reader header span {
+  font-size: .76rem;
+}
+
+.hcm-lesson-grid h2 {
+  font-size: 2.1rem;
+  line-height: 1.08;
+}
+
+.hcm-lesson-grid p {
+  font-size: .95rem;
+  line-height: 1.75;
+  -webkit-line-clamp: 5;
+}
+
+.hcm-reader > h2 {
+  font-size: 1.55rem;
+  line-height: 1.35;
+}
+
+.hcm-intro {
+  font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+  line-height: 1.85;
+}
+
+.hcm-content-block h3 {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.hcm-content-block p,
+.hcm-content-block li {
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.hcm-content-block blockquote {
+  font-size: 1.25rem;
+  line-height: 1.65;
+}
+
+.hcm-reflection > label {
+  font-size: 1.65rem;
+  line-height: 1.25;
+}
+
+.hcm-reflection p,
+.hcm-artifact > p:not(.hcm-eyebrow),
+.hcm-artifact label p {
+  font-size: .95rem;
+  line-height: 1.7;
+}
+
+.hcm-reflection textarea,
+.hcm-artifact textarea {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.hcm-library-view section header p {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.hcm-lyrics q {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.hcm-lyrics p,
+.hcm-library-view dd,
+.hcm-code-columns p {
+  font-size: .95rem;
+  line-height: 1.7;
+}
+
+.hcm-code-columns strong {
+  font-size: 1.05rem;
+}
+
+.hcm-assessment legend {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.hcm-assessment fieldset label {
+  font-size: .98rem;
+  line-height: 1.65;
+}
+
+.hcm-assessment fieldset > p {
+  font-size: .92rem;
+  line-height: 1.7;
+}
+
+.hcm-context strong {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.hcm-context blockquote {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
 .hcm-root :where(button, textarea, input):focus-visible {
   outline: 2px solid var(--hcm-gold-pale);
   outline-offset: 3px;
 }
 
 @media (max-width: 1180px) {
-  .hcm-layout { grid-template-columns: 230px minmax(0, 1fr); }
+  .hcm-layout { grid-template-columns: 270px minmax(0, 1fr); }
   .hcm-context { display: none; }
   .hcm-meta-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -494,7 +678,15 @@
   .hcm-topbar { grid-template-columns: 1fr; }
   .hcm-progress { display: none; }
   .hcm-index ol { grid-template-columns: 1fr; }
-  .hcm-stage h1 { font-size: 2.7rem; }
+  .hcm-stage h1 { font-size: 2.85rem; line-height: .98; }
+  .hcm-content-block p,
+  .hcm-content-block li,
+  .hcm-lesson-grid p,
+  .hcm-reflection textarea,
+  .hcm-artifact textarea,
+  .hcm-assessment fieldset label {
+    font-size: 1rem;
+  }
   .hcm-reader-footer { flex-direction: column; }
   .hcm-reader-footer button { width: 100%; }
 }
