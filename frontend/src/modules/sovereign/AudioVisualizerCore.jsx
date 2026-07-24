@@ -8,6 +8,8 @@ import { getVisualizerRequirementsByTrack } from '../../lib/supabase/visualizerR
 import { useAudioAnalyzer } from '../../lib/audio/useAudioAnalyzer';
 import { getAdjacentTrackIndex, orderVisualizerQueue } from './visualizerQueue';
 import './SovereignArchiveVisualizer.css';
+import EmblemReactorCore from './EmblemReactorCore';
+
 
 const FALLBACK_TRACKS = [
   'Welcome To The Fire', 'Reclamation', 'Know Your Names', 'Hold On',
@@ -15,15 +17,18 @@ const FALLBACK_TRACKS = [
   'Blueprint Of The Divine', 'Hostile Rewrite',
 ].map((title, index) => ({ id: `fallback-${index + 1}`, title, track_order: index + 1 }));
 
+
 const REACTOR = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
 const FALLBACK_COVER = REACTOR;
 const FALLBACK_VIEWPORT_BACKGROUND = '/media/visualizer/RECLAMATION.png';
 const TRACKS_PER_PAGE = 8;
 
+
 function formatTime(seconds) {
   const value = Number(seconds) || 0;
   return `${String(Math.floor(value / 60)).padStart(2, '0')}:${String(Math.floor(value % 60)).padStart(2, '0')}`;
 }
+
 
 export default function AudioVisualizerCore({
   selectedTrackId,
@@ -50,6 +55,7 @@ export default function AudioVisualizerCore({
   const { start, stop, frequencyData, audioLevel } = useAudioAnalyzer(audioRef);
   const playbackTrack = (track?.id === selectedTrackId ? track : null) || activeTrackData;
 
+
   useEffect(() => {
     if (!selectedTrackId || String(selectedTrackId).startsWith('fallback-')) {
       setTrack(activeTrackData || null);
@@ -66,6 +72,7 @@ export default function AudioVisualizerCore({
     return () => { active = false; };
   }, [selectedTrackId, activeTrackData]);
 
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -81,6 +88,7 @@ export default function AudioVisualizerCore({
     }
   }, [isPlaying, playbackTrack?.audio_url, stop, onPlayStateChange]);
 
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -89,11 +97,13 @@ export default function AudioVisualizerCore({
     audio.playbackRate = playbackRate;
   }, [volume, isMuted, playbackRate, playbackTrack?.audio_url]);
 
+
   useEffect(() => {
     const updateFullscreenState = () => setIsFullscreen(document.fullscreenElement === shellRef.current);
     document.addEventListener('fullscreenchange', updateFullscreenState);
     return () => document.removeEventListener('fullscreenchange', updateFullscreenState);
   }, []);
+
 
   const queue = tracks.length
     ? orderVisualizerQueue(tracks)
@@ -117,6 +127,7 @@ export default function AudioVisualizerCore({
   const lyrics = useMemo(() => {
     if (track?.id !== activeId) return ['Loading the correct track transmission…'];
 
+
     const timedLyrics = lyricTrack?.timed_lyrics || [];
     if (timedLyrics.length) {
       const currentIndex = timedLyrics.findIndex((line) => (
@@ -125,6 +136,7 @@ export default function AudioVisualizerCore({
       const windowStart = Math.max(0, currentIndex < 0 ? 0 : currentIndex);
       return timedLyrics.slice(windowStart, windowStart + 4).map((line) => line.line_text);
     }
+
 
     const text = String(lyricTrack?.display_text || lyricTrack?.lyrics || '');
     return text
@@ -137,9 +149,11 @@ export default function AudioVisualizerCore({
   }), [frequencyData, audioLevel, isPlaying]);
   const progress = duration ? Math.min(100, elapsed / duration * 100) : 0;
 
+
   useEffect(() => {
     setTrackPage(Math.floor(activeIndex / TRACKS_PER_PAGE));
   }, [activeIndex]);
+
 
   const togglePlayback = async () => {
     const audio = audioRef.current;
@@ -151,6 +165,7 @@ export default function AudioVisualizerCore({
       return;
     }
 
+
     try {
       await audio.play();
       onPlayStateChange?.(true);
@@ -159,6 +174,7 @@ export default function AudioVisualizerCore({
       onPlayStateChange?.(false);
     }
   };
+
 
   const selectRelative = (direction, fromEnded = false) => {
     if (!queue.length) return;
@@ -183,6 +199,7 @@ export default function AudioVisualizerCore({
     onPlayStateChange?.(true);
   };
 
+
   const toggleFullscreen = async () => {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
@@ -191,6 +208,7 @@ export default function AudioVisualizerCore({
       console.error('Unable to change fullscreen state.', error);
     }
   };
+
 
   return (
     <section
@@ -204,11 +222,13 @@ export default function AudioVisualizerCore({
     >
       <div className="sav-atmosphere" aria-hidden="true" />
 
+
       <header className="sav-museum-header">
         <button type="button" className="sav-exit" onClick={onExit}><ArrowLeft /> Sovereign Chamber</button>
         <div className="sav-wordmark"><span>MM</span><div><strong>MUSIQ MATRIX</strong><small>Private listening archive</small></div></div>
         <div className="sav-session"><i /> Live session · Act III</div>
       </header>
+
 
       <section className="sav-listening-room">
         <aside className="sav-record-notes">
@@ -221,6 +241,7 @@ export default function AudioVisualizerCore({
             <div><dt>Shadow code</dt><dd>Erasure · Distortion · Falsehood</dd></div>
           </dl>
         </aside>
+
 
         <section className="sav-stage" aria-label="Audio-reactive frequency sculpture">
           {viewportBackground && activeTrack?.viewport_background_type === 'video' ? (
@@ -249,12 +270,13 @@ export default function AudioVisualizerCore({
           <div className="sav-stage-heading"><span>Audio-reactive sculpture</span><strong>{isPlaying ? 'Signal active' : 'Awaiting playback'}</strong></div>
           <div className="sav-reactor-wrap">
             <div className="sav-reactor-halo" />
-            <img src={REACTOR} alt="Musiq Matrix Reclamation frequency reactor" />
+            <EmblemReactorCore frequencyData={frequencyData} audioLevel={audioLevel} />
             <div className="sav-reactor-pulse" />
           </div>
           <div className="sav-meter" aria-hidden="true">{bars.map((height, index) => <i key={index} style={{ height: `${height}%`, animationDelay: `${index * -37}ms` }} />)}</div>
           <div className="sav-bands"><span>Low frequency</span><span>Mid field</span><span>High frequency</span></div>
         </section>
+
 
         <aside className="sav-transmission">
           <p className="sav-kicker">Lyrical transmission</p>
@@ -263,6 +285,7 @@ export default function AudioVisualizerCore({
           <div className="sav-signal-card"><Disc3 /><div><span>Reactor state</span><strong>{isPlaying ? 'Analyzing live signal' : requirements?.name || 'Ready for playback'}</strong></div></div>
         </aside>
       </section>
+
 
       <section className="sav-tracklist">
         <header><div><p className="sav-kicker">The Reclamation archive</p><h2>Choose a transmission</h2></div><span>{trackPage * TRACKS_PER_PAGE + 1}–{Math.min((trackPage + 1) * TRACKS_PER_PAGE, queue.length)} of {queue.length}</span></header>
@@ -280,6 +303,7 @@ export default function AudioVisualizerCore({
           <button type="button" onClick={() => setTrackPage((page) => Math.min(trackPageCount - 1, page + 1))} aria-label="Next track page" disabled={trackPage === trackPageCount - 1}><ChevronRight /></button>
         </div>
       </section>
+
 
       <section className="sav-controls" aria-label="Playback controls">
         <div><button type="button" className={isShuffle ? 'is-active' : ''} onClick={() => setIsShuffle((value) => !value)} aria-label="Shuffle" aria-pressed={isShuffle}><Shuffle /></button><button type="button" onClick={() => selectRelative(-1)} aria-label="Previous" disabled={activeIndex === 0}><SkipBack /></button><button className="sav-play" type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Pause' : 'Play'}>{isPlaying ? <Pause /> : <Play />}</button><button type="button" onClick={() => selectRelative(1)} aria-label="Next" disabled={!isShuffle && activeIndex === queue.length - 1}><SkipForward /></button></div>
