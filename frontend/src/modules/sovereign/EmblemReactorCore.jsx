@@ -1,7 +1,7 @@
 // src/modules/sovereign/EmblemReactorCore.jsx
 import { Component, useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, Center } from '@react-three/drei';
+import { Bounds, useGLTF } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
@@ -94,7 +94,13 @@ function EmblemMesh({ frequencyData, audioLevel }) {
   });
 
 
-  return <group ref={groupRef}><Center><primitive object={scene} /></Center></group>;
+  return (
+    <Bounds fit clip observe margin={1.1}>
+      <group ref={groupRef}>
+        <primitive object={scene} />
+      </group>
+    </Bounds>
+  );
 }
 
 
@@ -103,7 +109,7 @@ export default function EmblemReactorCore({ frequencyData, audioLevel }) {
     <ReactorErrorBoundary
       fallback={<img src={REACTOR_FALLBACK} alt="Musiq Matrix Reclamation frequency reactor" />}
     >
-      <Canvas camera={{ position: [0, 0, 4], fov: 45 }} gl={{ alpha: true, antialias: true }} style={{ position: 'absolute', inset: 0 }}>
+      <Canvas camera={{ position: [0, 0, 4], fov: 45 }} gl={{ alpha: true, antialias: true }} style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
         <ambientLight intensity={0.35} />
         <pointLight position={[2, 2, 3]} intensity={2.2} color="#00e0ff" />
         <pointLight position={[-2, -1, 2]} intensity={1.1} color="#6a5cff" />
