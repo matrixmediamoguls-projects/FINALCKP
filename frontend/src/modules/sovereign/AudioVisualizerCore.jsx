@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowLeft, ChevronLeft, ChevronRight, Disc3, Maximize2, Pause, Play,
+  ArrowLeft, ChevronLeft, ChevronRight, Disc3, Maximize2, Minimize2, Pause, Play,
   Radio, Settings, Shuffle, SkipBack, SkipForward, Volume1, Volume2,
 } from 'lucide-react';
 import { getTrackById } from '../../lib/supabase/tracks';
 import { getVisualizerRequirementsByTrack } from '../../lib/supabase/visualizerRequirements';
 import { useAudioAnalyzer } from '../../lib/audio/useAudioAnalyzer';
+import { getAdjacentTrackIndex, orderVisualizerQueue } from './visualizerQueue';
 import './SovereignArchiveVisualizer.css';
 
 const FALLBACK_TRACKS = [
@@ -32,10 +33,17 @@ export default function AudioVisualizerCore({
   onExit,
 }) {
   const audioRef = useRef(null);
+  const shellRef = useRef(null);
   const [track, setTrack] = useState(activeTrackData || null);
   const [requirements, setRequirements] = useState(null);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(.8);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const [showSettings, setShowSettings] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const { connect, start, stop, frequencyData, audioLevel } = useAudioAnalyzer(audioRef);
   const playbackTrack = (track?.id === selectedTrackId ? track : null) || activeTrackData;
 
@@ -68,7 +76,23 @@ export default function AudioVisualizerCore({
     }
   }, [isPlaying, playbackTrack?.audio_url, start, stop, onPlayStateChange]);
 
-  const queue = tracks.length ? tracks.slice(0, 10) : FALLBACK_TRACKS;
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = volume;
+    audio.muted = isMuted;
+    audio.playbackRate = playbackRate;
+  }, [volume, isMuted, playbackRate, playbackTrack?.audio_url]);
+
+  useEffect(() => {
+    const updateFullscreenState = () => setIsFullscreen(document.fullscreenElement === shellRef.current);
+    document.addEventListener('fullscreenchange', updateFullscreenState);
+    return () => document.removeEventListener('fullscreenchange', updateFullscreenState);
+  }, []);
+
+  const queue = tracks.length
+    ? orderVisualizerQueue(tracks)
+    : FALLBACK_TRACKS;
   const activeId = selectedTrackId || queue[0]?.id;
   const activeTrack = (track?.id === activeId ? track : null)
     || activeTrackData
@@ -123,15 +147,41 @@ export default function AudioVisualizerCore({
     }
   };
 
-  const selectRelative = (direction) => {
+  const selectRelative = (direction, fromEnded = false) => {
     if (!queue.length) return;
-    const next = queue[(activeIndex + direction + queue.length) % queue.length];
+    const nextIndex = getAdjacentTrackIndex({
+      activeIndex,
+      direction,
+      queueLength: queue.length,
+      shuffle: isShuffle,
+    });
+    if (nextIndex < 0) {
+      if (fromEnded || direction > 0) {
+        stop();
+        onPlayStateChange?.(false);
+      } else if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        setElapsed(0);
+      }
+      return;
+    }
+    const next = queue[nextIndex];
     onTrackChange?.(next.id);
     onPlayStateChange?.(true);
   };
 
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await shellRef.current?.requestFullscreen();
+    } catch (error) {
+      console.error('Unable to change fullscreen state.', error);
+    }
+  };
+
   return (
     <section
+      ref={shellRef}
       className={`sav-shell ${isPlaying ? 'is-playing' : ''}`}
       style={{
         '--sav-energy': Math.max(.12, audioLevel / 100),
@@ -204,7 +254,7 @@ export default function AudioVisualizerCore({
       <section className="sav-tracklist">
         <header><div><p className="sav-kicker">The Reclamation archive</p><h2>Choose a transmission</h2></div><span>{queue.length} recordings</span></header>
         <div className="sav-track-rail">
-          <button type="button" onClick={() => selectRelative(-1)} aria-label="Previous track"><ChevronLeft /></button>
+          <button type="button" onClick={() => selectRelative(-1)} aria-label="Previous track" disabled={activeIndex === 0}><ChevronLeft /></button>
           <div>
             {queue.map((item, index) => (
               <button type="button" key={item.id} className={item.id === activeId ? 'active' : ''} onClick={() => { onTrackChange?.(item.id); onPlayStateChange?.(true); }}>
@@ -214,18 +264,31 @@ export default function AudioVisualizerCore({
               </button>
             ))}
           </div>
-          <button type="button" onClick={() => selectRelative(1)} aria-label="Next track"><ChevronRight /></button>
+          <button type="button" onClick={() => selectRelative(1)} aria-label="Next track" disabled={!isShuffle && activeIndex === queue.length - 1}><ChevronRight /></button>
         </div>
       </section>
 
       <section className="sav-controls" aria-label="Playback controls">
-        <div><button type="button" aria-label="Shuffle"><Shuffle /></button><button type="button" onClick={() => selectRelative(-1)} aria-label="Previous"><SkipBack /></button><button className="sav-play" type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Pause' : 'Play'}>{isPlaying ? <Pause /> : <Play />}</button><button type="button" onClick={() => selectRelative(1)} aria-label="Next"><SkipForward /></button></div>
+        <div><button type="button" className={isShuffle ? 'is-active' : ''} onClick={() => setIsShuffle((value) => !value)} aria-label="Shuffle" aria-pressed={isShuffle}><Shuffle /></button><button type="button" onClick={() => selectRelative(-1)} aria-label="Previous" disabled={activeIndex === 0}><SkipBack /></button><button className="sav-play" type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Pause' : 'Play'}>{isPlaying ? <Pause /> : <Play />}</button><button type="button" onClick={() => selectRelative(1)} aria-label="Next" disabled={!isShuffle && activeIndex === queue.length - 1}><SkipForward /></button></div>
         <div className="sav-seek"><b>{formatTime(elapsed)}</b><input type="range" aria-label="Track progress" min="0" max={duration || 1} value={elapsed} onChange={(event) => { if (audioRef.current) audioRef.current.currentTime = Number(event.target.value); }} style={{ '--progress': `${progress}%` }} /><b>{formatTime(duration)}</b></div>
-        <div className="sav-utility" aria-hidden="true"><Volume1 /><span /><Volume2 /><Settings /><Maximize2 /></div>
+        <div className="sav-utility">
+          <button type="button" onClick={() => setIsMuted((value) => !value)} aria-label={isMuted ? 'Unmute' : 'Mute'}>{isMuted || volume === 0 ? <Volume1 /> : <Volume2 />}</button>
+          <input type="range" aria-label="Volume" min="0" max="1" step=".05" value={isMuted ? 0 : volume} onChange={(event) => { setVolume(Number(event.target.value)); setIsMuted(false); }} />
+          <button type="button" className={showSettings ? 'is-active' : ''} onClick={() => setShowSettings((value) => !value)} aria-label="Playback settings" aria-expanded={showSettings}><Settings /></button>
+          <button type="button" onClick={toggleFullscreen} aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}>{isFullscreen ? <Minimize2 /> : <Maximize2 />}</button>
+          {showSettings && (
+            <div className="sav-settings-panel">
+              <span>Playback speed</span>
+              {[.75, 1, 1.25, 1.5].map((rate) => (
+                <button type="button" key={rate} className={playbackRate === rate ? 'is-active' : ''} onClick={() => setPlaybackRate(rate)}>{rate}×</button>
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       <footer className="sav-footer"><div><span className="sav-seeker-mark" /><p>MUSIQ MATRIX<br /><b>SOVEREIGN ARCHIVE</b></p></div><strong>{activeTrack?.audio_url ? 'MEDIA · CONNECTED' : 'ARCHIVE · READY'}</strong></footer>
-      <audio ref={audioRef} src={activeTrack?.audio_url || undefined} crossOrigin="anonymous" preload="metadata" onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)} onTimeUpdate={(event) => setElapsed(event.currentTarget.currentTime)} onEnded={() => selectRelative(1)} />
+      <audio ref={audioRef} crossOrigin="anonymous" src={activeTrack?.audio_url || undefined} preload="metadata" onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)} onTimeUpdate={(event) => setElapsed(event.currentTarget.currentTime)} onEnded={() => selectRelative(1, true)} />
     </section>
   );
 }
