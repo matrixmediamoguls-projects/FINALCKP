@@ -79,8 +79,24 @@ export default function AudioVisualizerCore({
   const viewportBackground = activeTrack?.viewport_background_url;
   const viewportPosition = `${activeTrack?.viewport_background_focal_x ?? 50}% ${activeTrack?.viewport_background_focal_y ?? 50}%`;
   const palette = requirements?.palette_json || activeTrack?.visual_preset?.palette_json || {};
-  const lyrics = String(activeTrack?.display_text || activeTrack?.lyrics || 'THE FLAME REMEMBERS.\nTHE SIGNAL RETURNS.\nRECLAIM WHAT WAS ALWAYS YOURS.')
-    .split('\n').filter(Boolean).slice(0, 4);
+  const lyricTrack = track?.id === activeId && track?.lyrics_track_id === activeId ? track : null;
+  const lyrics = useMemo(() => {
+    if (track?.id !== activeId) return ['Loading the correct track transmission…'];
+
+    const timedLyrics = lyricTrack?.timed_lyrics || [];
+    if (timedLyrics.length) {
+      const currentIndex = timedLyrics.findIndex((line) => (
+        elapsed >= line.start_ms / 1000 && elapsed < line.end_ms / 1000
+      ));
+      const windowStart = Math.max(0, currentIndex < 0 ? 0 : currentIndex);
+      return timedLyrics.slice(windowStart, windowStart + 4).map((line) => line.line_text);
+    }
+
+    const text = String(lyricTrack?.display_text || lyricTrack?.lyrics || '');
+    return text
+      ? text.split('\n').filter(Boolean).slice(0, 4)
+      : ['No lyrics are assigned to this track.'];
+  }, [track?.id, activeId, lyricTrack, elapsed]);
   const bars = useMemo(() => Array.from({ length: 42 }, (_, index) => {
     const sampled = frequencyData[index * 2] ?? 30 + Math.abs(Math.sin(index * .67)) * 90;
     return Math.max(12, Math.min(100, sampled * .52 + (isPlaying ? audioLevel * .25 : 0)));

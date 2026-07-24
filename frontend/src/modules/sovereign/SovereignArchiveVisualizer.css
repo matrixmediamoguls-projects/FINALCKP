@@ -18,13 +18,13 @@
 .sav-wordmark div { display:grid; padding-left:14px; border-left:1px solid var(--line); }.sav-wordmark strong{font-family:'Oxanium',system-ui,sans-serif;font-size:11px;letter-spacing:.2em}.sav-wordmark small{margin-top:4px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;line-height:14px;letter-spacing:.15em;text-transform:uppercase}
 .sav-session { justify-self:end; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:400; line-height:14px; letter-spacing:.15em; text-transform:uppercase; font-variant-numeric:tabular-nums; }.sav-session i{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#6eb079;box-shadow:0 0 12px #6eb079}
 
-.sav-listening-room { position:relative; z-index:2; display:grid; grid-template-columns:minmax(230px,300px) minmax(430px,1fr) minmax(230px,290px); width:min(100%,1500px); align-items:stretch; gap:clamp(18px,2.4vw,38px); margin:0 auto; }
+.sav-listening-room { position:relative; z-index:2; display:grid; grid-template-columns:minmax(250px,320px) minmax(430px,1fr) minmax(230px,290px); width:min(100%,1500px); align-items:stretch; gap:clamp(18px,2.4vw,38px); margin:0 auto; }
 .sav-record-notes,.sav-transmission,.sav-stage { border:1px solid var(--line); background:linear-gradient(150deg,rgba(22,20,17,.91),rgba(8,8,7,.78)); box-shadow:0 24px 70px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.025); }
 .sav-record-notes,.sav-transmission { padding:clamp(22px,2.2vw,34px); }
 .sav-kicker { margin:0; color:#ff9f1c; font-family:'Oxanium',system-ui,sans-serif; font-size:14px; font-weight:600; line-height:14px; letter-spacing:.2em; text-transform:uppercase; }
 .sav-record-notes h1 { max-width:11ch; margin:28px 0 12px; font-family:'Oxanium',system-ui,sans-serif; font-size:36px; font-weight:700; line-height:44px; letter-spacing:normal; text-wrap:balance; text-shadow:0 0 12px rgba(255,115,0,.3); }
 .sav-artist { margin:0 0 26px; color:var(--muted); font-size:14px; font-weight:400; line-height:22px; letter-spacing:.01em; }
-.sav-cover-wrap { position:relative; width:min(100%,210px); margin-bottom:28px; }.sav-cover-wrap img{display:block;width:100%;aspect-ratio:1;object-fit:cover;filter:saturate(.72) contrast(1.06) brightness(.75)}.sav-cover-wrap::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}.sav-cover-wrap span{display:block;margin-top:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;line-height:14px;letter-spacing:.15em;font-variant-numeric:tabular-nums}
+.sav-cover-wrap { position:relative; width:min(100%,240px); margin-bottom:28px; }.sav-cover-wrap img{display:block;width:100%;aspect-ratio:1;object-fit:cover;filter:saturate(.72) contrast(1.06) brightness(.75)}.sav-cover-wrap::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 18px 42px rgba(0,0,0,.34)}.sav-cover-wrap span{display:block;margin-top:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;line-height:14px;letter-spacing:.15em;font-variant-numeric:tabular-nums}
 .sav-record-notes dl{margin:0}.sav-record-notes dl div{padding:16px 0;border-top:1px solid var(--line)}.sav-record-notes dt{margin-bottom:8px;color:#ff5722;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:400;line-height:14px;letter-spacing:.15em;text-transform:uppercase}.sav-record-notes dd{margin:0;color:rgba(255,255,255,.85);font-size:14px;font-weight:400;line-height:22px;letter-spacing:.01em}
 
 .sav-stage { position:relative; display:grid; min-height:580px; min-width:0; grid-template-rows:auto 1fr 84px auto; overflow:hidden; padding:23px clamp(22px,3vw,48px) 20px; background:radial-gradient(circle at 50% 44%,rgba(112,24,29,.27),transparent 33%),rgba(5,5,4,.62); }
@@ -84,7 +84,7 @@
   width: 100%;
   height: 100%;
   min-height: 0;
-  grid-template-columns: minmax(190px, 250px) minmax(340px, 1fr) minmax(190px, 250px);
+  grid-template-columns: minmax(220px, 280px) minmax(340px, 1fr) minmax(190px, 250px);
   gap: clamp(8px, 1.2vw, 18px);
   margin: 0;
 }
@@ -104,7 +104,7 @@
 }
 
 .sav-artist { margin-bottom: 12px; }
-.sav-cover-wrap { width: clamp(82px, 12vh, 116px); margin-bottom: 10px; }
+.sav-cover-wrap { width: clamp(132px, 19vh, 176px); margin-bottom: 10px; }
 .sav-cover-wrap span { margin-top: 5px; font-size: 8px; line-height: 10px; }
 .sav-record-notes dl div { padding: 7px 0; }
 .sav-record-notes dt { margin-bottom: 3px; font-size: 8px; line-height: 10px; }

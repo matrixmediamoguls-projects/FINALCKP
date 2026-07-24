@@ -28,8 +28,8 @@ function groupAssetsByTrack(rows = []) {
 
 function normalizeTrack(row, position = null, lyricData = null, visualAssets = null) {
   if (!row) return null;
-  const timedLyrics = lyricData?.timedLyrics || [];
-  const protocol = lyricData?.protocol || null;
+  const timedLyrics = (lyricData?.timedLyrics || []).filter((line) => line.track_id === row.id);
+  const protocol = lyricData?.protocol?.track_id === row.id ? lyricData.protocol : null;
   const coverArt = newestActiveAsset(visualAssets?.coverArt);
   const viewportBackground = newestActiveAsset(visualAssets?.viewportBackground);
   const lyrics = timedLyrics.length
@@ -52,6 +52,7 @@ function normalizeTrack(row, position = null, lyricData = null, visualAssets = n
     viewport_overlay: viewportBackground?.overlay_config || {},
     display_text: lyrics,
     lyrics,
+    lyrics_track_id: lyrics ? row.id : null,
     light_code: protocol?.primary_light_code || null,
     lyric_summary: protocol?.lyric_summary || null,
     timed_lyrics: timedLyrics,
@@ -151,12 +152,12 @@ export async function getTrackById(trackId) {
     supabase.from('tracks').select(TRACK_COLUMNS).eq('id', trackId).maybeSingle(),
     supabase
       .from('track_lyrics')
-      .select('line_order, line_text, start_ms, end_ms')
+      .select('track_id, line_order, line_text, start_ms, end_ms')
       .eq('track_id', trackId)
       .order('line_order', { ascending: true }),
     supabase
       .from('lyrics_protocol')
-      .select('lyrics_full, lyrics_clean, primary_light_code, lyric_summary, display_mode')
+      .select('track_id, lyrics_full, lyrics_clean, primary_light_code, lyric_summary, display_mode')
       .eq('track_id', trackId)
       .maybeSingle(),
     supabase
