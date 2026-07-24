@@ -19,9 +19,27 @@ export function useAudioAnalyzer(audioElementRef) {
     const analyzer = context.createAnalyser();
     analyzer.fftSize = 256;
 
-    const source = context.createMediaElementSource(audio);
-    source.connect(analyzer);
-    analyzer.connect(context.destination);
+    const captureStream = audio.captureStream || audio.mozCaptureStream;
+    let source;
+
+    try {
+      if (captureStream) {
+        // Analyze a copy of the media stream. The audio element keeps its own
+        // direct speaker output, so a suspended AudioContext can never mute it.
+        source = context.createMediaStreamSource(captureStream.call(audio));
+        source.connect(analyzer);
+      } else {
+        // Safari does not expose captureStream. Its MediaElementSource must be
+        // connected back to the destination to preserve audible output.
+        source = context.createMediaElementSource(audio);
+        source.connect(analyzer);
+        analyzer.connect(context.destination);
+      }
+    } catch (error) {
+      console.warn('Audio analysis unavailable; continuing direct playback.', error);
+      context.close();
+      return null;
+    }
 
     audioContextRef.current = context;
     analyzerRef.current = analyzer;
