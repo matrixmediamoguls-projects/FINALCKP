@@ -29,11 +29,11 @@ export function useAudioAnalyzer(audioElementRef) {
         source = context.createMediaStreamSource(captureStream.call(audio));
         source.connect(analyzer);
       } else {
-        // Safari does not expose captureStream. Its MediaElementSource must be
-        // connected back to the destination to preserve audible output.
-        source = context.createMediaElementSource(audio);
-        source.connect(analyzer);
-        analyzer.connect(context.destination);
+        // Never reroute the media element through an AudioContext. Direct
+        // element playback is the source of truth, even when analysis is not
+        // supported by the browser.
+        context.close();
+        return null;
       }
     } catch (error) {
       console.warn('Audio analysis unavailable; continuing direct playback.', error);

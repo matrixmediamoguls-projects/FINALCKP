@@ -47,7 +47,7 @@ export default function AudioVisualizerCore({
   const [showSettings, setShowSettings] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [trackPage, setTrackPage] = useState(0);
-  const { connect, start, stop, frequencyData, audioLevel } = useAudioAnalyzer(audioRef);
+  const { start, stop, frequencyData, audioLevel } = useAudioAnalyzer(audioRef);
   const playbackTrack = (track?.id === selectedTrackId ? track : null) || activeTrackData;
 
   useEffect(() => {
@@ -69,15 +69,17 @@ export default function AudioVisualizerCore({
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (isPlaying && playbackTrack?.audio_url) audio.play().then(start).catch((error) => {
-      console.error('Visualizer playback failed.', error);
-      onPlayStateChange?.(false);
-    });
+    if (isPlaying && playbackTrack?.audio_url) {
+      audio.play().catch((error) => {
+        console.error('Visualizer playback failed.', error);
+        onPlayStateChange?.(false);
+      });
+    }
     else {
       audio.pause();
       stop();
     }
-  }, [isPlaying, playbackTrack?.audio_url, start, stop, onPlayStateChange]);
+  }, [isPlaying, playbackTrack?.audio_url, stop, onPlayStateChange]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -150,8 +152,7 @@ export default function AudioVisualizerCore({
     }
 
     try {
-      connect();
-      await Promise.all([audio.play(), start()]);
+      await audio.play();
       onPlayStateChange?.(true);
     } catch (error) {
       console.error('Visualizer playback failed.', error);
@@ -300,7 +301,20 @@ export default function AudioVisualizerCore({
       </section>
 
       <footer className="sav-footer"><div><span className="sav-seeker-mark" /><p>MUSIQ MATRIX<br /><b>SOVEREIGN ARCHIVE</b></p></div><strong>{activeTrack?.audio_url ? 'MEDIA · CONNECTED' : 'ARCHIVE · READY'}</strong></footer>
-      <audio ref={audioRef} crossOrigin="anonymous" src={activeTrack?.audio_url || undefined} preload="metadata" onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)} onTimeUpdate={(event) => setElapsed(event.currentTarget.currentTime)} onEnded={() => selectRelative(1, true)} />
+      <audio
+        ref={audioRef}
+        crossOrigin="anonymous"
+        src={activeTrack?.audio_url || undefined}
+        preload="metadata"
+        onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)}
+        onTimeUpdate={(event) => setElapsed(event.currentTarget.currentTime)}
+        onPlaying={() => {
+          start().catch((error) => {
+            console.warn('Audio analysis unavailable; playback will continue.', error);
+          });
+        }}
+        onEnded={() => selectRelative(1, true)}
+      />
     </section>
   );
 }
