@@ -17,6 +17,7 @@ const FALLBACK_TRACKS = [
 
 const REACTOR = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
 const FALLBACK_COVER = REACTOR;
+const FALLBACK_VIEWPORT_BACKGROUND = '/media/visualizer/RECLAMATION.png';
 
 function formatTime(seconds) {
   const value = Number(seconds) || 0;
@@ -100,7 +101,7 @@ export default function AudioVisualizerCore({
     || queue[0];
   const activeIndex = Math.max(0, queue.findIndex((item) => item.id === activeId));
   const cover = activeTrack?.cover_url || activeTrack?.cover_image_url || requirements?.cover_image_url || FALLBACK_COVER;
-  const viewportBackground = activeTrack?.viewport_background_url;
+  const viewportBackground = activeTrack?.viewport_background_url || FALLBACK_VIEWPORT_BACKGROUND;
   const viewportPosition = `${activeTrack?.viewport_background_focal_x ?? 50}% ${activeTrack?.viewport_background_focal_y ?? 50}%`;
   const palette = requirements?.palette_json || activeTrack?.visual_preset?.palette_json || {};
   const lyricTrack = track?.id === activeId && track?.lyrics_track_id === activeId ? track : null;
