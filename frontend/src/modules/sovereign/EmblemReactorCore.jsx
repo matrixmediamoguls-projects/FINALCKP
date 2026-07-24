@@ -4,9 +4,9 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, Center } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
-import { supabase } from '../../lib/supabase/supabaseClient';
 
 const REACTOR_FALLBACK = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
+const REACTOR_MODEL = 'https://pub-7db585eeeb464a9d9f749f0307532c22.r2.dev/act_three/objects/texturized-new.glb';
 
 class ReactorErrorBoundary extends Component {
   constructor(props) {
@@ -28,18 +28,10 @@ class ReactorErrorBoundary extends Component {
 }
 
 
-function getModelUrl() {
-  const { data } = supabase.storage
-    .from('chromakeyprotocol')
-    .getPublicUrl('act_three/objects/texturized-new.glb');
-  return data.publicUrl;
-}
-
-
 function EmblemMesh({ frequencyData, audioLevel }) {
   const groupRef = useRef();
   const meshRef = useRef();
-  const { scene } = useGLTF(getModelUrl());
+  const { scene } = useGLTF(REACTOR_MODEL);
   const uniforms = useMemo(() => ({
     uBass: { value: 0 }, uMid: { value: 0 }, uTreble: { value: 0 }, uTime: { value: 0 },
     uRimColor: { value: new THREE.Color('#00e0ff') },
