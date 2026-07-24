@@ -10,10 +10,10 @@ export function useAudioAnalyzer(audioElementRef) {
 
   const connect = useCallback(() => {
     const audio = audioElementRef.current;
-    if (!audio || analyzerRef.current) return;
+    if (!audio || analyzerRef.current) return audioContextRef.current;
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
+    if (!AudioContext) return null;
 
     const context = new AudioContext();
     const analyzer = context.createAnalyser();
@@ -26,6 +26,7 @@ export function useAudioAnalyzer(audioElementRef) {
     audioContextRef.current = context;
     analyzerRef.current = analyzer;
     sourceRef.current = source;
+    return context;
   }, [audioElementRef]);
 
   const start = useCallback(async () => {
@@ -48,6 +49,7 @@ export function useAudioAnalyzer(audioElementRef) {
       frameRef.current = requestAnimationFrame(tick);
     };
 
+    if (frameRef.current) cancelAnimationFrame(frameRef.current);
     tick();
   }, [connect]);
 

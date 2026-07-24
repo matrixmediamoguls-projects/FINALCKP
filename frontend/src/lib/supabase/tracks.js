@@ -11,10 +11,27 @@ function buildR2Url(objectKey) {
   return `${R2_PUBLIC_BASE_URL}/${String(objectKey).replace(/^\/+/, '')}`;
 }
 
-function normalizeTrack(row, position = null, lyricData = null) {
+function resolveAssetUrl(asset) {
+  return asset?.source_url || buildR2Url(asset?.r2_object_key) || null;
+}
+
+function newestActiveAsset(rows = []) {
+  return rows.find((row) => row?.is_active) || null;
+}
+
+function groupAssetsByTrack(rows = []) {
+  return rows.reduce((grouped, row) => {
+    (grouped[row.track_id] ||= []).push(row);
+    return grouped;
+  }, {});
+}
+
+function normalizeTrack(row, position = null, lyricData = null, visualAssets = null) {
   if (!row) return null;
   const timedLyrics = lyricData?.timedLyrics || [];
   const protocol = lyricData?.protocol || null;
+  const coverArt = newestActiveAsset(visualAssets?.coverArt);
+  const viewportBackground = newestActiveAsset(visualAssets?.viewportBackground);
   const lyrics = timedLyrics.length
     ? timedLyrics.map((line) => line.line_text).join('\n')
     : protocol?.lyrics_clean || protocol?.lyrics_full || '';
@@ -24,8 +41,15 @@ function normalizeTrack(row, position = null, lyricData = null) {
     track_order: position ?? row.queue_index ?? 0,
     duration_seconds: row.duration_ms ? row.duration_ms / 1000 : null,
     audio_url: buildR2Url(row.r2_audio_key),
-    cover_url: buildR2Url(row.r2_cover_key),
-    cover_image_url: buildR2Url(row.r2_cover_key),
+    cover_url: resolveAssetUrl(coverArt) || buildR2Url(row.r2_cover_key),
+    cover_image_url: resolveAssetUrl(coverArt) || buildR2Url(row.r2_cover_key),
+    cover_alt: coverArt?.alt_text || `${row.title} cover art`,
+    viewport_background_url: resolveAssetUrl(viewportBackground),
+    viewport_background_alt: viewportBackground?.alt_text || `${row.title} visualizer background`,
+    viewport_background_type: viewportBackground?.media_type || 'image',
+    viewport_background_focal_x: viewportBackground?.focal_x ?? 50,
+    viewport_background_focal_y: viewportBackground?.focal_y ?? 50,
+    viewport_overlay: viewportBackground?.overlay_config || {},
     display_text: lyrics,
     lyrics,
     light_code: protocol?.primary_light_code || null,
@@ -83,19 +107,38 @@ export async function getActThreeTracks() {
   }
 
   const ids = playlistRows.map((row) => row.track_id);
-  const { data: trackRows, error: tracksError } = await supabase
-    .from('tracks')
-    .select(TRACK_COLUMNS)
-    .in('id', ids);
+  const [tracksResult, coversResult, backgroundsResult] = await Promise.all([
+    supabase.from('tracks').select(TRACK_COLUMNS).in('id', ids),
+    supabase
+      .from('track_cover_art')
+      .select('track_id, source_url, r2_object_key, alt_text, is_active, updated_at')
+      .in('track_id', ids)
+      .eq('is_active', true)
+      .order('updated_at', { ascending: false }),
+    supabase
+      .from('visualizer_viewport_backgrounds')
+      .select('track_id, source_url, r2_object_key, alt_text, media_type, focal_x, focal_y, overlay_config, is_active, updated_at')
+      .in('track_id', ids)
+      .eq('is_active', true)
+      .order('updated_at', { ascending: false }),
+  ]);
 
-  if (tracksError) {
-    console.error('Unable to load visualizer tracks.', tracksError);
+  if (tracksResult.error) {
+    console.error('Unable to load visualizer tracks.', tracksResult.error);
     return [];
   }
 
-  const tracksById = new Map((trackRows || []).map((row) => [row.id, row]));
+  if (coversResult.error) console.error('Unable to load assigned track cover art.', coversResult.error);
+  if (backgroundsResult.error) console.error('Unable to load assigned viewport backgrounds.', backgroundsResult.error);
+
+  const tracksById = new Map((tracksResult.data || []).map((row) => [row.id, row]));
+  const coversByTrack = groupAssetsByTrack(coversResult.data);
+  const backgroundsByTrack = groupAssetsByTrack(backgroundsResult.data);
   return playlistRows
-    .map((item) => normalizeTrack(tracksById.get(item.track_id), item.position))
+    .map((item) => normalizeTrack(tracksById.get(item.track_id), item.position, null, {
+      coverArt: coversByTrack[item.track_id],
+      viewportBackground: backgroundsByTrack[item.track_id],
+    }))
     .filter(Boolean);
 }
 
@@ -104,7 +147,7 @@ export async function getTrackById(trackId) {
   const supabase = getSovereignSupabase();
   if (!supabase) return null;
 
-  const [trackResult, timedLyricsResult, protocolResult] = await Promise.all([
+  const [trackResult, timedLyricsResult, protocolResult, coverResult, backgroundResult] = await Promise.all([
     supabase.from('tracks').select(TRACK_COLUMNS).eq('id', trackId).maybeSingle(),
     supabase
       .from('track_lyrics')
@@ -116,6 +159,20 @@ export async function getTrackById(trackId) {
       .select('lyrics_full, lyrics_clean, primary_light_code, lyric_summary, display_mode')
       .eq('track_id', trackId)
       .maybeSingle(),
+    supabase
+      .from('track_cover_art')
+      .select('source_url, r2_object_key, alt_text, is_active, updated_at')
+      .eq('track_id', trackId)
+      .eq('is_active', true)
+      .order('updated_at', { ascending: false })
+      .limit(1),
+    supabase
+      .from('visualizer_viewport_backgrounds')
+      .select('source_url, r2_object_key, alt_text, media_type, focal_x, focal_y, overlay_config, is_active, updated_at')
+      .eq('track_id', trackId)
+      .eq('is_active', true)
+      .order('updated_at', { ascending: false })
+      .limit(1),
   ]);
 
   if (trackResult.error) {
@@ -126,5 +183,8 @@ export async function getTrackById(trackId) {
   return normalizeTrack(trackResult.data, trackResult.data?.queue_index, {
     timedLyrics: timedLyricsResult.data || [],
     protocol: protocolResult.data || null,
+  }, {
+    coverArt: coverResult.data || [],
+    viewportBackground: backgroundResult.data || [],
   });
 }

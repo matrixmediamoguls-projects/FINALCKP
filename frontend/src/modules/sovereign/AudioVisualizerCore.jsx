@@ -15,7 +15,7 @@ const FALLBACK_TRACKS = [
 ].map((title, index) => ({ id: `fallback-${index + 1}`, title, track_order: index + 1 }));
 
 const REACTOR = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
-const FALLBACK_COVER = '/media/visualizer/foolish-pride-cover.png';
+const FALLBACK_COVER = REACTOR;
 
 function formatTime(seconds) {
   const value = Number(seconds) || 0;
@@ -36,7 +36,8 @@ export default function AudioVisualizerCore({
   const [requirements, setRequirements] = useState(null);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
-  const { start, stop, frequencyData, audioLevel } = useAudioAnalyzer(audioRef);
+  const { connect, start, stop, frequencyData, audioLevel } = useAudioAnalyzer(audioRef);
+  const playbackTrack = (track?.id === selectedTrackId ? track : null) || activeTrackData;
 
   useEffect(() => {
     if (!selectedTrackId || String(selectedTrackId).startsWith('fallback-')) {
@@ -57,18 +58,26 @@ export default function AudioVisualizerCore({
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (isPlaying && track?.audio_url) audio.play().then(start).catch(() => onPlayStateChange?.(false));
+    if (isPlaying && playbackTrack?.audio_url) audio.play().then(start).catch((error) => {
+      console.error('Visualizer playback failed.', error);
+      onPlayStateChange?.(false);
+    });
     else {
       audio.pause();
       stop();
     }
-  }, [isPlaying, track?.audio_url, start, stop, onPlayStateChange]);
+  }, [isPlaying, playbackTrack?.audio_url, start, stop, onPlayStateChange]);
 
   const queue = tracks.length ? tracks.slice(0, 10) : FALLBACK_TRACKS;
   const activeId = selectedTrackId || queue[0]?.id;
-  const activeTrack = track || activeTrackData || queue.find((item) => item.id === activeId) || queue[0];
+  const activeTrack = (track?.id === activeId ? track : null)
+    || activeTrackData
+    || queue.find((item) => item.id === activeId)
+    || queue[0];
   const activeIndex = Math.max(0, queue.findIndex((item) => item.id === activeId));
   const cover = activeTrack?.cover_url || activeTrack?.cover_image_url || requirements?.cover_image_url || FALLBACK_COVER;
+  const viewportBackground = activeTrack?.viewport_background_url;
+  const viewportPosition = `${activeTrack?.viewport_background_focal_x ?? 50}% ${activeTrack?.viewport_background_focal_y ?? 50}%`;
   const palette = requirements?.palette_json || activeTrack?.visual_preset?.palette_json || {};
   const lyrics = String(activeTrack?.display_text || activeTrack?.lyrics || 'THE FLAME REMEMBERS.\nTHE SIGNAL RETURNS.\nRECLAIM WHAT WAS ALWAYS YOURS.')
     .split('\n').filter(Boolean).slice(0, 4);
@@ -77,6 +86,26 @@ export default function AudioVisualizerCore({
     return Math.max(12, Math.min(100, sampled * .52 + (isPlaying ? audioLevel * .25 : 0)));
   }), [frequencyData, audioLevel, isPlaying]);
   const progress = duration ? Math.min(100, elapsed / duration * 100) : 0;
+
+  const togglePlayback = async () => {
+    const audio = audioRef.current;
+    if (!audio || !activeTrack?.audio_url) return;
+    if (isPlaying) {
+      audio.pause();
+      stop();
+      onPlayStateChange?.(false);
+      return;
+    }
+
+    try {
+      connect();
+      await Promise.all([audio.play(), start()]);
+      onPlayStateChange?.(true);
+    } catch (error) {
+      console.error('Visualizer playback failed.', error);
+      onPlayStateChange?.(false);
+    }
+  };
 
   const selectRelative = (direction) => {
     if (!queue.length) return;
@@ -107,7 +136,7 @@ export default function AudioVisualizerCore({
           <p className="sav-kicker">Now transmitting · {String(activeIndex + 1).padStart(2, '0')}</p>
           <h1>{activeTrack?.title || 'Reclamation'}</h1>
           <p className="sav-artist">{activeTrack?.artist || 'Musiq Matrix'} · Act III</p>
-          <div className="sav-cover-wrap"><img src={cover} alt="" /><span>MMR–III / {String(activeIndex + 1).padStart(2, '0')}</span></div>
+          <div className="sav-cover-wrap"><img src={cover} alt={activeTrack?.cover_alt || `${activeTrack?.title || 'Current track'} cover art`} /><span>MMR–III / {String(activeIndex + 1).padStart(2, '0')}</span></div>
           <dl>
             <div><dt>Light code</dt><dd>The Flame Remembers. The Signal Returns.</dd></div>
             <div><dt>Shadow code</dt><dd>Erasure · Distortion · Falsehood</dd></div>
@@ -115,6 +144,29 @@ export default function AudioVisualizerCore({
         </aside>
 
         <section className="sav-stage" aria-label="Audio-reactive frequency sculpture">
+          {viewportBackground && activeTrack?.viewport_background_type === 'video' ? (
+            <video
+              key={viewportBackground}
+              className="sav-stage-media"
+              src={viewportBackground}
+              style={{ objectPosition: viewportPosition }}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-label={activeTrack?.viewport_background_alt}
+            />
+          ) : viewportBackground ? (
+            <img
+              key={viewportBackground}
+              className="sav-stage-media"
+              src={viewportBackground}
+              style={{ objectPosition: viewportPosition }}
+              alt=""
+              aria-hidden="true"
+            />
+          ) : null}
+          <div className="sav-stage-veil" aria-hidden="true" />
           <div className="sav-stage-heading"><span>Audio-reactive sculpture</span><strong>{isPlaying ? 'Signal active' : 'Awaiting playback'}</strong></div>
           <div className="sav-reactor-wrap">
             <div className="sav-reactor-halo" />
@@ -140,7 +192,7 @@ export default function AudioVisualizerCore({
           <div>
             {queue.map((item, index) => (
               <button type="button" key={item.id} className={item.id === activeId ? 'active' : ''} onClick={() => { onTrackChange?.(item.id); onPlayStateChange?.(true); }}>
-                <img src={item.cover_url || item.cover_image_url || cover} alt="" />
+                {item.cover_url || item.cover_image_url ? <img src={item.cover_url || item.cover_image_url} alt="" /> : <span className="sav-track-placeholder" aria-hidden="true">MM</span>}
                 <span>{String(item.track_order || index + 1).padStart(2, '0')}</span>
                 <strong>{item.title}</strong><i />
               </button>
@@ -151,7 +203,7 @@ export default function AudioVisualizerCore({
       </section>
 
       <section className="sav-controls" aria-label="Playback controls">
-        <div><button type="button" aria-label="Shuffle"><Shuffle /></button><button type="button" onClick={() => selectRelative(-1)} aria-label="Previous"><SkipBack /></button><button className="sav-play" type="button" onClick={() => onPlayStateChange?.(!isPlaying)} aria-label={isPlaying ? 'Pause' : 'Play'}>{isPlaying ? <Pause /> : <Play />}</button><button type="button" onClick={() => selectRelative(1)} aria-label="Next"><SkipForward /></button></div>
+        <div><button type="button" aria-label="Shuffle"><Shuffle /></button><button type="button" onClick={() => selectRelative(-1)} aria-label="Previous"><SkipBack /></button><button className="sav-play" type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Pause' : 'Play'}>{isPlaying ? <Pause /> : <Play />}</button><button type="button" onClick={() => selectRelative(1)} aria-label="Next"><SkipForward /></button></div>
         <div className="sav-seek"><b>{formatTime(elapsed)}</b><input type="range" aria-label="Track progress" min="0" max={duration || 1} value={elapsed} onChange={(event) => { if (audioRef.current) audioRef.current.currentTime = Number(event.target.value); }} style={{ '--progress': `${progress}%` }} /><b>{formatTime(duration)}</b></div>
         <div className="sav-utility" aria-hidden="true"><Volume1 /><span /><Volume2 /><Settings /><Maximize2 /></div>
       </section>
