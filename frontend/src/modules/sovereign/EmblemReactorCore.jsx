@@ -1,10 +1,31 @@
 // src/modules/sovereign/EmblemReactorCore.jsx
-import { useRef, useMemo, useEffect } from 'react';
+import { Component, useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, Center } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { supabase } from '../../lib/supabase/supabaseClient';
+
+const REACTOR_FALLBACK = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
+
+class ReactorErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error) {
+    console.error('The 3D reactor could not load; using the static reactor.', error);
+  }
+
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
 
 
 function getModelUrl() {
@@ -87,14 +108,18 @@ function EmblemMesh({ frequencyData, audioLevel }) {
 
 export default function EmblemReactorCore({ frequencyData, audioLevel }) {
   return (
-    <Canvas camera={{ position: [0, 0, 4], fov: 45 }} gl={{ alpha: true, antialias: true }} style={{ position: 'absolute', inset: 0 }}>
-      <ambientLight intensity={0.35} />
-      <pointLight position={[2, 2, 3]} intensity={2.2} color="#00e0ff" />
-      <pointLight position={[-2, -1, 2]} intensity={1.1} color="#6a5cff" />
-      <EmblemMesh frequencyData={frequencyData} audioLevel={audioLevel} />
-      <EffectComposer>
-        <Bloom intensity={1.5} luminanceThreshold={0.12} luminanceSmoothing={0.6} />
-      </EffectComposer>
-    </Canvas>
+    <ReactorErrorBoundary
+      fallback={<img src={REACTOR_FALLBACK} alt="Musiq Matrix Reclamation frequency reactor" />}
+    >
+      <Canvas camera={{ position: [0, 0, 4], fov: 45 }} gl={{ alpha: true, antialias: true }} style={{ position: 'absolute', inset: 0 }}>
+        <ambientLight intensity={0.35} />
+        <pointLight position={[2, 2, 3]} intensity={2.2} color="#00e0ff" />
+        <pointLight position={[-2, -1, 2]} intensity={1.1} color="#6a5cff" />
+        <EmblemMesh frequencyData={frequencyData} audioLevel={audioLevel} />
+        <EffectComposer>
+          <Bloom intensity={1.5} luminanceThreshold={0.12} luminanceSmoothing={0.6} />
+        </EffectComposer>
+      </Canvas>
+    </ReactorErrorBoundary>
   );
 }
