@@ -18,6 +18,7 @@ const FALLBACK_TRACKS = [
 const REACTOR = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
 const FALLBACK_COVER = REACTOR;
 const FALLBACK_VIEWPORT_BACKGROUND = '/media/visualizer/RECLAMATION.png';
+const TRACKS_PER_PAGE = 8;
 
 function formatTime(seconds) {
   const value = Number(seconds) || 0;
@@ -45,6 +46,7 @@ export default function AudioVisualizerCore({
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showSettings, setShowSettings] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [trackPage, setTrackPage] = useState(0);
   const { connect, start, stop, frequencyData, audioLevel } = useAudioAnalyzer(audioRef);
   const playbackTrack = (track?.id === selectedTrackId ? track : null) || activeTrackData;
 
@@ -100,6 +102,11 @@ export default function AudioVisualizerCore({
     || queue.find((item) => item.id === activeId)
     || queue[0];
   const activeIndex = Math.max(0, queue.findIndex((item) => item.id === activeId));
+  const trackPageCount = Math.max(1, Math.ceil(queue.length / TRACKS_PER_PAGE));
+  const visibleQueue = queue.slice(
+    trackPage * TRACKS_PER_PAGE,
+    (trackPage + 1) * TRACKS_PER_PAGE,
+  );
   const cover = activeTrack?.cover_url || activeTrack?.cover_image_url || requirements?.cover_image_url || FALLBACK_COVER;
   const viewportBackground = activeTrack?.viewport_background_url || FALLBACK_VIEWPORT_BACKGROUND;
   const viewportPosition = `${activeTrack?.viewport_background_focal_x ?? 50}% ${activeTrack?.viewport_background_focal_y ?? 50}%`;
@@ -127,6 +134,10 @@ export default function AudioVisualizerCore({
     return Math.max(12, Math.min(100, sampled * .52 + (isPlaying ? audioLevel * .25 : 0)));
   }), [frequencyData, audioLevel, isPlaying]);
   const progress = duration ? Math.min(100, elapsed / duration * 100) : 0;
+
+  useEffect(() => {
+    setTrackPage(Math.floor(activeIndex / TRACKS_PER_PAGE));
+  }, [activeIndex]);
 
   const togglePlayback = async () => {
     const audio = audioRef.current;
@@ -253,19 +264,19 @@ export default function AudioVisualizerCore({
       </section>
 
       <section className="sav-tracklist">
-        <header><div><p className="sav-kicker">The Reclamation archive</p><h2>Choose a transmission</h2></div><span>{queue.length} recordings</span></header>
+        <header><div><p className="sav-kicker">The Reclamation archive</p><h2>Choose a transmission</h2></div><span>{trackPage * TRACKS_PER_PAGE + 1}–{Math.min((trackPage + 1) * TRACKS_PER_PAGE, queue.length)} of {queue.length}</span></header>
         <div className="sav-track-rail">
-          <button type="button" onClick={() => selectRelative(-1)} aria-label="Previous track" disabled={activeIndex === 0}><ChevronLeft /></button>
+          <button type="button" onClick={() => setTrackPage((page) => Math.max(0, page - 1))} aria-label="Previous track page" disabled={trackPage === 0}><ChevronLeft /></button>
           <div>
-            {queue.map((item, index) => (
+            {visibleQueue.map((item, index) => (
               <button type="button" key={item.id} className={item.id === activeId ? 'active' : ''} onClick={() => { onTrackChange?.(item.id); onPlayStateChange?.(true); }}>
                 {item.cover_url || item.cover_image_url ? <img src={item.cover_url || item.cover_image_url} alt="" /> : <span className="sav-track-placeholder" aria-hidden="true">MM</span>}
-                <span>{String(item.track_order || index + 1).padStart(2, '0')}</span>
+                <span>{String(item.track_order || trackPage * TRACKS_PER_PAGE + index + 1).padStart(2, '0')}</span>
                 <strong>{item.title}</strong><i />
               </button>
             ))}
           </div>
-          <button type="button" onClick={() => selectRelative(1)} aria-label="Next track" disabled={!isShuffle && activeIndex === queue.length - 1}><ChevronRight /></button>
+          <button type="button" onClick={() => setTrackPage((page) => Math.min(trackPageCount - 1, page + 1))} aria-label="Next track page" disabled={trackPage === trackPageCount - 1}><ChevronRight /></button>
         </div>
       </section>
 
