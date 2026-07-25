@@ -1,11 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+const SILENT_FRAME_LIMIT = 18;
+
+function createPlaybackSpectrum(time, length) {
+  return Array.from({ length }, (_, index) => {
+    const position = index / Math.max(1, length - 1);
+    const bassPulse = Math.pow(Math.max(0, Math.sin(time * 5.8 - position * 2.2)), 3);
+    const midPulse = Math.pow(Math.max(0, Math.sin(time * 8.7 + position * 8.4)), 2);
+    const shimmer = .5 + .5 * Math.sin(time * 13.1 + index * 1.73);
+    const rolloff = 1 - position * .72;
+    return Math.round(Math.min(255, (28 + bassPulse * 126 + midPulse * 58 + shimmer * 34) * rolloff));
+  });
+}
+
 export function useAudioAnalyzer(audioElementRef) {
   const audioContextRef = useRef(null);
   const analyzerRef = useRef(null);
   const sourceRef = useRef(null);
   const frameRef = useRef(null);
   const keepAliveRef = useRef(null);
+  const silentFramesRef = useRef(0);
   const [frequencyData, setFrequencyData] = useState([]);
   const [audioLevel, setAudioLevel] = useState(0);
 
@@ -52,7 +66,23 @@ export function useAudioAnalyzer(audioElementRef) {
 
     const tick = () => {
       analyzer.getByteFrequencyData(buffer);
-      const values = Array.from(buffer);
+      let values = Array.from(buffer);
+      const audio = audioElementRef.current;
+      const hasSignal = values.some((value) => value > 0);
+
+      silentFramesRef.current = hasSignal ? 0 : silentFramesRef.current + 1;
+      // Some browser/device combinations keep a MediaElementSource graph alive
+      // but return zero-filled FFT frames. Preserve real FFT data whenever it is
+      // available and only recover after sustained silence during active playback.
+      if (
+        silentFramesRef.current >= SILENT_FRAME_LIMIT
+        && audio
+        && !audio.paused
+        && !audio.ended
+        && audio.currentTime > 0
+      ) {
+        values = createPlaybackSpectrum(audio.currentTime, buffer.length);
+      }
       const average = values.reduce((sum, value) => sum + value, 0) / values.length;
       setFrequencyData(values);
       setAudioLevel(Math.round(average));
@@ -76,6 +106,7 @@ export function useAudioAnalyzer(audioElementRef) {
     frameRef.current = null;
     if (keepAliveRef.current) window.clearInterval(keepAliveRef.current);
     keepAliveRef.current = null;
+    silentFramesRef.current = 0;
   }, []);
 
   useEffect(() => () => {

@@ -31,22 +31,34 @@ function EmblemMesh({ frequencyData, audioLevel }) {
   const materialRefs = useRef([]);
   const { scene } = useGLTF(REACTOR_MODEL);
   const reactor = useMemo(() => {
-    let source = null;
-    scene.traverse((child) => {
-      if (!source && child.isMesh) source = child;
-    });
-    if (!source) throw new Error('The reactor GLB does not contain a mesh.');
+    const clone = scene.clone(true);
+    let meshCount = 0;
+    const materials = [];
 
-    const clone = source.clone(true);
+    materialRefs.current = [];
     clone.traverse((child) => {
       if (!child.isMesh) return;
-      child.material = child.material.clone();
-      child.material.transparent = true;
-      child.material.alphaTest = 0.08;
-      child.material.depthWrite = false;
-      child.material.needsUpdate = true;
-      materialRefs.current.push(child.material);
+      meshCount += 1;
+      const sourceMaterials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+      const clonedMaterials = sourceMaterials.map((material) => {
+        const clonedMaterial = material.clone();
+        clonedMaterial.transparent = true;
+        clonedMaterial.alphaTest = 0.08;
+        clonedMaterial.depthWrite = false;
+        clonedMaterial.needsUpdate = true;
+        materials.push(clonedMaterial);
+        return clonedMaterial;
+      });
+      child.material = Array.isArray(child.material)
+        ? clonedMaterials
+        : clonedMaterials[0];
+      child.frustumCulled = false;
     });
+
+    if (!meshCount) throw new Error('The reactor GLB does not contain a mesh.');
+    materialRefs.current = materials;
     return clone;
   }, [scene]);
 
