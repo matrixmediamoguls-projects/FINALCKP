@@ -1,13 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft,
+  Activity,
+  AudioLines,
   ArrowRight,
   BookOpen,
   Check,
   ChevronLeft,
+  ChevronRight,
+  CircleDot,
+  Eye,
   FileText,
+  Focus,
+  Home,
+  Infinity,
   Library,
+  PenLine,
+  Radio,
   ScrollText,
   ShieldCheck,
   Sparkles,
@@ -104,6 +113,19 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const completionPercent = lessons.length
     ? Math.round((record.completedLessons.length / lessons.length) * 100)
     : 0;
+  const lawNumber = String(courseModule?.number || module.order).padStart(2, '0');
+  const relatedLaws = COURSE_MODULES.filter((item) => item.number !== courseModule?.number).slice(0, 3);
+  const lawSlug = (law) => law.law.toLowerCase().replaceAll(' ', '-');
+  const methodStages = [
+    { number: '01', title: 'Receive the Signal', detail: 'Listen & Observe', view: 'lessons', Icon: AudioLines },
+    { number: '02', title: 'Discern the Pattern', detail: 'Recognize the Teaching', view: hasFullCurriculum ? 'caseFiles' : 'lessons', Icon: Eye },
+    { number: '03', title: 'Align the Principle', detail: 'Integrate the Law', view: hasFullCurriculum ? 'codes' : 'lesson', Icon: Focus },
+    { number: '04', title: 'Apply the Law', detail: 'Live the Frequency', view: 'artifact', Icon: CircleDot },
+    { number: '05', title: 'Transmit the Signal', detail: 'Become the Teaching', view: hasFullCurriculum ? 'assessment' : 'artifact', Icon: Infinity },
+  ];
+  const activeMethodIndex = view === 'orientation'
+    ? 0
+    : Math.max(0, methodStages.findLastIndex((stage) => stage.view === view));
 
   const persistRecord = async (nextRecord) => {
     setRecord(nextRecord);
@@ -150,25 +172,23 @@ export default function HermeticCurriculumModule({ module, faculty }) {
       <div className="hcm-atmosphere" aria-hidden="true" />
 
       <header className="hcm-topbar">
-        <button
-          type="button"
-          className="hcm-back"
-          onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}
-        >
-          <ArrowLeft size={16} /> Hermetic Hall
-        </button>
         <div className="hcm-brand">
-          <span>Reclamation University</span>
-          <strong>The Hermetic Matrix</strong>
+          <span className="hcm-brand-mark"><Library size={22} /></span>
+          <strong>Reclamation<br />University</strong>
         </div>
-        <div className="hcm-module-mark">
-          <span>Module {String(courseModule.number).padStart(2, '0')}</span>
-          <strong>{module.title}</strong>
+        <div className="hcm-breadcrumbs">
+          <button type="button" onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}>University Hall</button>
+          <ChevronRight size={13} />
+          <button type="button" onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}>The Hermetic Hall</button>
+          <ChevronRight size={13} />
+          <strong>Law {lawNumber}: {courseModule.law}</strong>
         </div>
         <div className="hcm-progress" aria-label={`${completionPercent}% complete`}>
-          <span>{completionPercent}% complete</span>
+          <span>Your progress</span>
+          <strong>{completionPercent}% complete</strong>
           <i><b style={{ width: `${completionPercent}%` }} /></i>
         </div>
+        <div className="hcm-seal"><Sparkles size={20} /></div>
       </header>
 
       <nav className="hcm-nav" aria-label="Module curriculum sections">
@@ -188,6 +208,36 @@ export default function HermeticCurriculumModule({ module, faculty }) {
       </nav>
 
       <div className="hcm-layout">
+        <aside className="hcm-campus-nav">
+          <button type="button" onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}><Home size={18} /><span>University Hall<small>Dashboard</small></span></button>
+          <div className="hcm-campus-nav__group">
+            <p>The Hermetic Hall<small>7 Universal Laws</small></p>
+            {COURSE_MODULES.map((law) => (
+              <button
+                type="button"
+                key={law.number}
+                className={law.number === courseModule.number ? 'is-active' : ''}
+                onClick={() => navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${lawSlug(law)}`)}
+              >
+                <span>{String(law.number).padStart(2, '0')}</span>{law.law}
+              </button>
+            ))}
+          </div>
+          <nav aria-label="Curriculum sections">
+            {navItems.map(([id, label]) => (
+              <button
+                type="button"
+                key={id}
+                className={view === id || (view === 'lesson' && id === 'lessons') ? 'is-current' : ''}
+                onClick={() => setView(id)}
+              >
+                {id === 'lessons' ? <BookOpen size={17} /> : id === 'artifact' ? <PenLine size={17} /> : <Radio size={17} />}
+                <span>{label}</span>
+              </button>
+            ))}
+          </nav>
+          <div className="hcm-campus-motto"><Sparkles size={25} /><strong>Who R U?</strong><span>You are the curriculum.</span></div>
+        </aside>
         <aside className="hcm-index">
           <p className="hcm-eyebrow">Lesson Index</p>
           <h2>{courseModule.title}</h2>
@@ -214,9 +264,47 @@ export default function HermeticCurriculumModule({ module, faculty }) {
         <section className="hcm-stage" aria-label={VIEW_LABELS[view]}>
           {view === 'orientation' && (
             <article className="hcm-orientation">
-              <p className="hcm-eyebrow">The {courseModule.law} Chamber</p>
-              <h1>{module.title}</h1>
-              <blockquote>{courseModule.centralQuestion}</blockquote>
+              <section className="hcm-law-hero">
+                <div className="hcm-law-hero__copy">
+                  <p className="hcm-eyebrow">The Hermetic Hall</p>
+                  <h1>Law {lawNumber}: {courseModule.law}</h1>
+                  <p className="hcm-law-summary">{courseModule.centralQuestion}</p>
+                  <div className="hcm-law-badges">
+                    <span><ShieldCheck size={14} /> Foundational Law</span>
+                    <span><Sparkles size={14} /> {courseModule.discipline}</span>
+                  </div>
+                </div>
+                <div className="hcm-resonance-visual" aria-hidden="true">
+                  <img src="/reclamation-university/hermetic-resonance-field.png" alt="" />
+                  <strong>{lawNumber}</strong>
+                </div>
+              </section>
+
+              <section className="hcm-method">
+                <p className="hcm-eyebrow">The Reclamation Method · Guided Practicum</p>
+                <div className="hcm-method__steps">
+                  {methodStages.map(({ number, title, detail, view: targetView, Icon }, index) => (
+                    <button
+                      type="button"
+                      key={number}
+                      className={index === activeMethodIndex ? 'is-active' : ''}
+                      onClick={() => targetView === 'lesson' ? openLesson(lessons[0]?.id) : setView(targetView)}
+                    >
+                      <small>{number}</small><span><Icon size={25} /></span><strong>{title}</strong><em>{detail}</em>
+                    </button>
+                  ))}
+                </div>
+                <footer>
+                  <div>
+                    <p className="hcm-eyebrow">Lesson Overview</p>
+                    <span>{courseModule.modernOutcome}</span>
+                    <button type="button" className="hcm-primary" onClick={() => setView('lessons')}>
+                      Continue Lesson <ArrowRight size={16} />
+                    </button>
+                  </div>
+                  <blockquote><small>Key Insight</small>“{courseModule.subtitle}”</blockquote>
+                </footer>
+              </section>
               <div className="hcm-meta-grid">
                 <div><span>Discipline</span><strong>{courseModule.discipline}</strong></div>
                 <div><span>Stage</span><strong>{courseModule.stage}</strong></div>
@@ -412,6 +500,37 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           )}
         </section>
 
+        <aside className="hcm-context">
+          <section>
+            <header><span>Sequence</span><strong>{String(activeMethodIndex + 1).padStart(2, '0')} / 05</strong></header>
+            <i className="hcm-context-track"><b style={{ width: `${((activeMethodIndex + 1) / 5) * 100}%` }} /></i>
+            <p>Current Step</p>
+            <h2>{methodStages[activeMethodIndex]?.title}</h2>
+            <span>{methodStages[activeMethodIndex]?.detail}</span>
+            <Activity className="hcm-context-wave" size={64} />
+          </section>
+          <section>
+            <header><span>Law Progress</span><strong>{completionPercent}%</strong></header>
+            <ul>
+              {methodStages.map((stage, index) => (
+                <li key={stage.number} className={index <= activeMethodIndex ? 'is-complete' : ''}>
+                  <i>{index < activeMethodIndex ? <Check size={10} /> : null}</i>{stage.title}
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section>
+            <header><span>Related Laws</span></header>
+            {relatedLaws.map((law) => (
+              <button type="button" key={law.number} onClick={() => navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${lawSlug(law)}`)}>
+                Law {String(law.number).padStart(2, '0')}: {law.law}<ChevronRight size={14} />
+              </button>
+            ))}
+          </section>
+          <span className={`hcm-save-state is-${saveState}`} aria-live="polite">
+            {saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Progress saved' : saveState === 'local' ? 'Saved in this session' : ''}
+          </span>
+        </aside>
       </div>
     </main>
   );
