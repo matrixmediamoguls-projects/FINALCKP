@@ -6,8 +6,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
 const REACTOR_FALLBACK = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
-const REACTOR_MODEL = 'https://pub-7db585eeeb464a9d9f749f0307532c22.r2.dev/act_three/objects/texturized-new.glb?v=21e94531b56448b33df10f75bc20696c';
-const REACTOR_NODE_NAME = 'audio reactor with neon red...';
+const REACTOR_MODEL = '/media/visualizer/texturized-new.optimized.glb';
 
 class ReactorErrorBoundary extends Component {
   constructor(props) {
@@ -38,8 +37,11 @@ function EmblemMesh({ frequencyData, audioLevel }) {
     uRimColor: { value: new THREE.Color('#00e0ff') },
   }), []);
   const reactor = useMemo(() => {
-    const source = scene.getObjectByName(REACTOR_NODE_NAME);
-    if (!source) throw new Error(`Reactor node "${REACTOR_NODE_NAME}" is missing from the GLB.`);
+    let source = null;
+    scene.traverse((child) => {
+      if (!source && child.isMesh) source = child;
+    });
+    if (!source) throw new Error('The reactor GLB does not contain a mesh.');
 
     const clone = source.clone(true);
     clone.traverse((child) => {
@@ -105,7 +107,7 @@ function EmblemMesh({ frequencyData, audioLevel }) {
   return (
     <group ref={groupRef}>
       <Center>
-        <primitive object={reactor} scale={0.01} />
+        <primitive object={reactor} />
       </Center>
     </group>
   );
