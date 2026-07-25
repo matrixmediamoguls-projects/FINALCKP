@@ -5,6 +5,7 @@ export function useAudioAnalyzer(audioElementRef) {
   const analyzerRef = useRef(null);
   const sourceRef = useRef(null);
   const frameRef = useRef(null);
+  const keepAliveRef = useRef(null);
   const [frequencyData, setFrequencyData] = useState([]);
   const [audioLevel, setAudioLevel] = useState(0);
 
@@ -59,12 +60,22 @@ export function useAudioAnalyzer(audioElementRef) {
     };
 
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    if (keepAliveRef.current) window.clearInterval(keepAliveRef.current);
+    keepAliveRef.current = window.setInterval(() => {
+      const context = audioContextRef.current;
+      const audio = audioElementRef.current;
+      if (context?.state === 'suspended' && audio && !audio.paused && !audio.ended) {
+        context.resume().catch(() => {});
+      }
+    }, 1000);
     tick();
-  }, [connect]);
+  }, [audioElementRef, connect]);
 
   const stop = useCallback(() => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
     frameRef.current = null;
+    if (keepAliveRef.current) window.clearInterval(keepAliveRef.current);
+    keepAliveRef.current = null;
   }, []);
 
   useEffect(() => () => {

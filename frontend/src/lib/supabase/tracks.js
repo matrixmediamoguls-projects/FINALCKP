@@ -1,4 +1,5 @@
 import { getSovereignSupabase } from './sovereignHelpers';
+import { getSuppliedVisualizerLyrics } from '../../data/suppliedVisualizerLyrics';
 
 const VISUALIZER_PLAYLIST_SLUG = 'reclamation-visualizer-preview';
 const R2_PUBLIC_BASE_URL = (
@@ -32,9 +33,10 @@ function normalizeTrack(row, position = null, lyricData = null, visualAssets = n
   const protocol = lyricData?.protocol?.track_id === row.id ? lyricData.protocol : null;
   const coverArt = newestActiveAsset(visualAssets?.coverArt);
   const viewportBackground = newestActiveAsset(visualAssets?.viewportBackground);
-  const lyrics = timedLyrics.length
+  const storedLyrics = timedLyrics.length
     ? timedLyrics.map((line) => line.line_text).join('\n')
     : protocol?.lyrics_clean || protocol?.lyrics_full || '';
+  const lyrics = storedLyrics || getSuppliedVisualizerLyrics(row.title);
 
   return {
     ...row,
@@ -179,6 +181,12 @@ export async function getTrackById(trackId) {
   if (trackResult.error) {
     console.error('Unable to load visualizer track.', trackResult.error);
     return null;
+  }
+  if (timedLyricsResult.error) {
+    console.error('Unable to load timed lyrics for the selected track.', timedLyricsResult.error);
+  }
+  if (protocolResult.error) {
+    console.error('Unable to load the lyric protocol for the selected track.', protocolResult.error);
   }
 
   return normalizeTrack(trackResult.data, trackResult.data?.queue_index, {

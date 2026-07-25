@@ -28,6 +28,7 @@ class ReactorErrorBoundary extends Component {
 
 function EmblemMesh({ frequencyData, audioLevel }) {
   const groupRef = useRef();
+  const materialRefs = useRef([]);
   const { scene } = useGLTF(REACTOR_MODEL);
   const reactor = useMemo(() => {
     let source = null;
@@ -44,6 +45,7 @@ function EmblemMesh({ frequencyData, audioLevel }) {
       child.material.alphaTest = 0.08;
       child.material.depthWrite = false;
       child.material.needsUpdate = true;
+      materialRefs.current.push(child.material);
     });
     return clone;
   }, [scene]);
@@ -54,13 +56,28 @@ function EmblemMesh({ frequencyData, audioLevel }) {
     let bass = 0;
     for (let i = 0; i < bassEnd; i++) bass += data[i] || 0;
     bass = bass / (bassEnd * 255) || 0;
+    const midStart = bassEnd;
+    const midEnd = Math.max(midStart + 1, Math.floor(data.length * .55));
+    let mid = 0;
+    for (let i = midStart; i < midEnd; i++) mid += data[i] || 0;
+    mid = mid / (Math.max(1, midEnd - midStart) * 255) || 0;
+    let treble = 0;
+    for (let i = midEnd; i < data.length; i++) treble += data[i] || 0;
+    treble = treble / (Math.max(1, data.length - midEnd) * 255) || 0;
 
     if (groupRef.current) {
-      const targetScale = 1 + Math.max(bass, audioLevel / 72) * 0.14;
+      const energy = Math.min(1, Math.max(bass, audioLevel / 72));
+      const targetScale = 1 + energy * 0.24;
       const nextScale = groupRef.current.scale.x
-        + (targetScale - groupRef.current.scale.x) * Math.min(1, delta * 7);
+        + (targetScale - groupRef.current.scale.x) * Math.min(1, delta * 10);
       groupRef.current.scale.setScalar(nextScale);
+      groupRef.current.rotation.z += delta * (.025 + treble * .3);
+      groupRef.current.rotation.y += ((mid - .12) * .12 - groupRef.current.rotation.y) * Math.min(1, delta * 5);
+      groupRef.current.position.y += ((bass - .12) * .09 - groupRef.current.position.y) * Math.min(1, delta * 8);
     }
+    materialRefs.current.forEach((material) => {
+      material.opacity = .78 + Math.min(1, bass + mid) * .22;
+    });
   });
 
 
@@ -92,13 +109,13 @@ function ReactiveSceneLights({ frequencyData, audioLevel }) {
     const smoothing = Math.min(1, delta * 6);
 
     if (ambientRef.current) {
-      ambientRef.current.intensity += (1.05 + mid * .3 - ambientRef.current.intensity) * smoothing;
+      ambientRef.current.intensity += (.9 + mid * 1.25 - ambientRef.current.intensity) * smoothing;
     }
     if (keyRef.current) {
-      keyRef.current.intensity += (1 + bass * .85 - keyRef.current.intensity) * smoothing;
+      keyRef.current.intensity += (.85 + bass * 3.2 - keyRef.current.intensity) * smoothing;
     }
     if (fillRef.current) {
-      fillRef.current.intensity += (.4 + mid * .45 - fillRef.current.intensity) * smoothing;
+      fillRef.current.intensity += (.25 + mid * 2.2 - fillRef.current.intensity) * smoothing;
     }
   });
 

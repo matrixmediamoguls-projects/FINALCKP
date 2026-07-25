@@ -7,6 +7,7 @@ import { getTrackById } from '../../lib/supabase/tracks';
 import { getVisualizerRequirementsByTrack } from '../../lib/supabase/visualizerRequirements';
 import { useAudioAnalyzer } from '../../lib/audio/useAudioAnalyzer';
 import { getAdjacentTrackIndex, orderVisualizerQueue } from './visualizerQueue';
+import { getVisibleLyricLines } from './visualizerLyrics';
 import './SovereignArchiveVisualizer.css';
 import EmblemReactorCore from './EmblemReactorCore';
 
@@ -130,11 +131,7 @@ export default function AudioVisualizerCore({
 
     const timedLyrics = lyricTrack?.timed_lyrics || [];
     if (timedLyrics.length) {
-      const currentIndex = timedLyrics.findIndex((line) => (
-        elapsed >= line.start_ms / 1000 && elapsed < line.end_ms / 1000
-      ));
-      const windowStart = Math.max(0, currentIndex < 0 ? 0 : currentIndex);
-      return timedLyrics.slice(windowStart, windowStart + 4).map((line) => line.line_text);
+      return getVisibleLyricLines(timedLyrics, elapsed);
     }
 
 
@@ -296,6 +293,9 @@ export default function AudioVisualizerCore({
           <div className="sav-stage-veil" aria-hidden="true" />
           <div className="sav-stage-heading"><span>Audio-reactive sculpture</span><strong>{isPlaying ? 'Signal active' : 'Awaiting playback'}</strong></div>
           <div className="sav-reactor-wrap">
+            <div className="sav-reactor-aura" aria-hidden="true">
+              <i /><i /><i />
+            </div>
             <EmblemReactorCore frequencyData={frequencyData} audioLevel={audioLevel} />
             <div className="sav-reactor-pulse" />
           </div>
@@ -356,6 +356,13 @@ export default function AudioVisualizerCore({
         crossOrigin="anonymous"
         src={activeTrack?.audio_url || undefined}
         preload="metadata"
+        onLoadedData={() => {
+          if (isPlaying) {
+            start().catch((error) => {
+              console.warn('Audio analysis could not re-arm for the loaded track.', error);
+            });
+          }
+        }}
         onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)}
         onTimeUpdate={(event) => setElapsed(event.currentTarget.currentTime)}
         onPlaying={() => {
