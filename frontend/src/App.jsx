@@ -18,7 +18,6 @@ const Register = lazy(() => import('./pages/Register'));
 const ActNavigation = lazy(() => import('./pages/ActNavigation'));
 const ActOneEntry = lazy(() => import('./pages/ActOneEntry'));
 const LaunchModule = lazy(() => import('./pages/LaunchModule'));
-const ReclamationPathway = lazy(() => import('./pages/ReclamationPathway'));
 const Reclamation_User_Journey = lazy(() => import('./pages/Reclamation_User_Journey'));
 const ActPage = lazy(() => import('./pages/ActPage'));
 const LockedAct = lazy(() => import('./pages/LockedAct'));
@@ -176,11 +175,7 @@ function AppRoutes() {
 
       <Route
         path="/reclamation_pathway"
-        element={
-          <ProtectedRoute withShell={false}>
-            <ReclamationPathway />
-          </ProtectedRoute>
-        }
+        element={<Navigate to="/experiencemode/sovereign" replace />}
       />
 
       <Route

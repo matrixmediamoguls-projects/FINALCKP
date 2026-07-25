@@ -224,7 +224,7 @@ const LaunchModule = () => {
       return;
     }
     if (warpDest === 3) {
-      navigate("/reclamation_pathway");
+      navigate("/experiencemode/sovereign");
       return;
     }
     navigate(`/activation?act=${warpDest}`, { state: { act: warpDest } });

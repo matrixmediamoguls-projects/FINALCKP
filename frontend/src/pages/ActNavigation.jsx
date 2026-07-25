@@ -58,7 +58,7 @@ const acts = [
     color: '#ff4d4d',
     rgb: '255, 77, 77',
     emblem: '/emblem/act_three_module_emblem.png',
-    route: '/reclamation_pathway',
+    route: '/experiencemode/sovereign',
     status: 'Active',
     signal: '03',
   },
@@ -259,7 +259,7 @@ export default function ActNavigation() {
             </div>
             <div>
               <Waveform size={32} aria-hidden="true" />
-              <span><small>Mode</small><strong>Immersive</strong></span>
+              <span><small>Mode</small><strong>Sovereign</strong></span>
               <CaretRight size={21} />
             </div>
             <div className="act-nav-telemetry__access">
