@@ -7,8 +7,6 @@ import {
   CaretRight,
   ChartLineUp,
   Circuitry,
-  EnvelopeSimple,
-  GearSix,
   LockKey,
   Play,
   SignOut,
@@ -152,7 +150,7 @@ function ActCard({ act }) {
 
 const commandLinks = [
   { label: 'Elemental Protocols', icon: Circuitry, route: '/acts', active: true },
-  { label: 'Analytics', icon: ChartLineUp, route: '/seeker' },
+  { label: 'Archaetypes', icon: ChartLineUp, route: '/experiencemode/sovereign/module/archetype' },
   { label: 'Archive', icon: Stack, route: '/journal' },
   { label: 'Intel', icon: SlidersHorizontal, route: '/vma' },
 ];
@@ -212,12 +210,6 @@ export default function ActNavigation() {
             </div>
             <button type="button" aria-label="Notifications">
               <Bell size={19} />
-            </button>
-            <button type="button" aria-label="Messages" onClick={() => navigate('/seeker')}>
-              <EnvelopeSimple size={20} />
-            </button>
-            <button type="button" aria-label="Settings" onClick={() => navigate('/onboarding')}>
-              <GearSix size={20} />
             </button>
             <button className="act-nav-logout" type="button" onClick={handleLogout}>
               <span>Logout</span>

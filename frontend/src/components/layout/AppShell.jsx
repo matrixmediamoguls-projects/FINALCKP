@@ -10,7 +10,6 @@ const sidebarNav = [
     icon: "\u25C8",
     path: "/protocol",
   },
-  { id: "seeker", label: "The Seeker", icon: "\u25C7", path: "/seeker" },
   { id: "vma", label: "VMA Assistant", icon: "V", path: "/vma" },
   {
     id: "listen",

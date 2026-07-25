@@ -1,0 +1,158 @@
+.archaetype-archive {
+  --arc-red: #ef2d2d;
+  --arc-gold: #b88a45;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  color: #d8d4ce;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.archaetype-hero {
+  position: relative;
+  min-height: 230px;
+  display: grid;
+  grid-template-columns: 150px 1fr 160px;
+  align-items: center;
+  gap: clamp(20px, 4vw, 52px);
+  padding: clamp(30px, 5vw, 64px);
+  overflow: hidden;
+  border: 1px solid rgba(239, 45, 45, .28);
+  background:
+    linear-gradient(100deg, rgba(36, 4, 4, .86), rgba(5, 5, 6, .94) 52%, rgba(18, 13, 9, .88)),
+    repeating-linear-gradient(90deg, transparent 0 74px, rgba(255,255,255,.025) 75px);
+  clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+}
+
+.archaetype-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .5;
+  background: radial-gradient(circle at 12% 50%, rgba(239,45,45,.22), transparent 22%);
+}
+
+.archaetype-sigil {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(239,45,45,.42);
+  border-radius: 50%;
+  box-shadow: inset 0 0 40px rgba(239,45,45,.1), 0 0 45px rgba(239,45,45,.12);
+}
+
+.archaetype-sigil::before,
+.archaetype-sigil::after {
+  content: '';
+  position: absolute;
+  inset: 13px;
+  border: 1px solid rgba(184,138,69,.35);
+  transform: rotate(45deg);
+}
+
+.archaetype-sigil::after { inset: 31px; border-color: rgba(239,45,45,.55); }
+.archaetype-sigil span { color: #f5e8d5; font: 42px 'Oxanium', serif; filter: drop-shadow(0 0 12px var(--arc-red)); }
+
+.archaetype-hero__copy { position: relative; z-index: 1; }
+.archaetype-hero__copy p,
+.archaetype-index small,
+.archaetype-track-signal small,
+.archaetype-section header small,
+.archaetype-chapters small,
+.archaetype-framework small {
+  color: #9e8e7a;
+  font-size: 9px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+.archaetype-hero__copy h1 { margin: 8px 0 5px; color: #f2eee8; font: 500 clamp(42px, 7vw, 82px)/.95 'Oxanium', serif; letter-spacing: .08em; text-transform: uppercase; }
+.archaetype-hero__copy > span { color: #b9aea0; font: italic 15px 'Oxanium', serif; letter-spacing: .06em; }
+.archaetype-index { position: relative; z-index: 1; padding-left: 18px; border-left: 1px solid rgba(184,138,69,.32); }
+.archaetype-index strong { display: block; margin: 8px 0 15px; color: #d5c5af; font-size: 12px; letter-spacing: .14em; }
+.archaetype-index i { display: block; width: 100%; height: 3px; background: repeating-linear-gradient(90deg, var(--arc-red) 0 2px, transparent 2px 6px); }
+
+.archaetype-prologue {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1px;
+  margin: 14px 0 48px;
+  background: rgba(255,255,255,.08);
+}
+.archaetype-prologue p { margin: 0; padding: clamp(22px, 3vw, 34px); color: #aaa19a; background: rgba(5,5,6,.94); font: italic 15px/1.85 'Oxanium', serif; }
+.archaetype-prologue strong { color: #f15b52; font-weight: 500; }
+
+.archaetype-track-signal {
+  display: grid;
+  grid-template-columns: .8fr 1.4fr .9fr;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 58px;
+  padding: 22px 26px;
+  border-block: 1px solid rgba(239,45,45,.24);
+  background: linear-gradient(90deg, rgba(239,45,45,.1), rgba(255,255,255,.025), transparent);
+}
+.archaetype-track-signal h2 { margin: 6px 0 0; color: #f0e9df; font: 500 19px 'Oxanium', serif; }
+.archaetype-track-signal p { margin: 0; color: #aaa39a; font: 13px/1.7 'Oxanium', serif; }
+.archaetype-track-signal aside { padding-left: 20px; border-left: 1px solid rgba(184,138,69,.3); }
+.archaetype-track-signal aside strong { display: block; margin-top: 7px; color: #d9c5aa; font: 13px/1.55 'Oxanium', serif; }
+
+.archaetype-section { margin: 0 0 64px; }
+.archaetype-section > header { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+.archaetype-section > header > span { color: var(--arc-red); font-size: 11px; letter-spacing: .18em; }
+.archaetype-section > header > div { padding-left: 18px; border-left: 1px solid rgba(239,45,45,.35); }
+.archaetype-section h2 { margin: 5px 0 0; color: #e7e1d8; font: 500 clamp(19px, 3vw, 28px) 'Oxanium', serif; letter-spacing: .04em; }
+
+.archaetype-chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; }
+.archaetype-chapters article {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+  padding: 26px;
+  border: 1px solid rgba(255,255,255,.075);
+  background: linear-gradient(125deg, rgba(255,255,255,.035), rgba(0,0,0,.24));
+  animation: arcReveal .55s ease var(--chapter-delay) both;
+  transition: border-color .25s ease, transform .25s ease;
+}
+.archaetype-chapters article:hover { border-color: rgba(239,45,45,.32); transform: translateY(-2px); }
+.archaetype-chapters article > span { color: rgba(239,45,45,.75); font: 22px 'Oxanium', serif; }
+.archaetype-chapters h3,
+.archaetype-framework h3 { margin: 7px 0 10px; color: #e3dcd3; font: 500 16px 'Oxanium', serif; }
+.archaetype-chapters p,
+.archaetype-framework p { margin: 0; color: #9f9992; font: 13px/1.75 'Oxanium', serif; }
+
+.archaetype-framework { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.archaetype-framework article { position: relative; min-height: 190px; padding: 26px; overflow: hidden; border: 1px solid rgba(184,138,69,.16); background: rgba(9,8,7,.75); }
+.archaetype-framework article > span { position: absolute; right: 15px; top: 5px; color: rgba(184,138,69,.09); font: 70px 'Oxanium', serif; }
+
+.archaetype-manual ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid rgba(255,255,255,.08); }
+.archaetype-manual li { display: grid; grid-template-columns: 55px 1fr; align-items: center; border-bottom: 1px solid rgba(255,255,255,.08); }
+.archaetype-manual li span { align-self: stretch; display: grid; place-items: center; color: var(--arc-red); border-right: 1px solid rgba(239,45,45,.22); font-size: 10px; }
+.archaetype-manual li p { margin: 0; padding: 18px 22px; color: #aaa39b; font: 13px/1.65 'Oxanium', serif; }
+
+.archaetype-closing { position: relative; padding: 56px 10%; text-align: center; border-top: 1px solid rgba(184,138,69,.28); background: radial-gradient(circle at 50% 0, rgba(184,138,69,.1), transparent 65%); }
+.archaetype-closing > span { color: rgba(239,45,45,.35); font: 60px/0 'Oxanium', serif; }
+.archaetype-closing p { margin: 18px 0 10px; color: #eee5d9; font: italic 25px 'Oxanium', serif; }
+.archaetype-closing small { display: block; max-width: 720px; margin: auto; color: #887f75; font: 12px/1.7 'JetBrains Mono', monospace; }
+
+@keyframes arcReveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 800px) {
+  .archaetype-hero { grid-template-columns: 90px 1fr; }
+  .archaetype-index { display: none; }
+  .archaetype-prologue, .archaetype-track-signal { grid-template-columns: 1fr; }
+  .archaetype-track-signal aside { padding: 16px 0 0; border-left: 0; border-top: 1px solid rgba(184,138,69,.3); }
+  .archaetype-chapters { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .archaetype-hero { grid-template-columns: 1fr; text-align: center; }
+  .archaetype-sigil { width: 92px; margin: auto; }
+  .archaetype-framework { grid-template-columns: 1fr; }
+  .archaetype-chapters article { grid-template-columns: 32px 1fr; padding: 20px 16px; gap: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archaetype-chapters article { animation: none; transition: none; }
+}

@@ -8,7 +8,6 @@ import {
   Headphones,
   BookBookmark,
   CircleHalf,
-  MagnifyingGlass,
   Robot,
   ShieldCheck,
 } from "@phosphor-icons/react";
@@ -79,7 +78,6 @@ export const JOURNEY_MODULES = [
   { id: "listen",   label: "Listen",   icon: Headphones,     path: "/listen" },
   { id: "journal",  label: "Journal",  icon: BookBookmark,   path: "/journal" },
   { id: "wheel",    label: "Wheel",    icon: CircleHalf,     path: "/wheel" },
-  { id: "seeker",   label: "Seeker",   icon: MagnifyingGlass, path: "/seeker" },
   { id: "vma",      label: "VMA",      icon: Robot,          path: "/vma" },
   { id: "admin",    label: "Admin",    icon: ShieldCheck,    path: "/admin" },
 ];

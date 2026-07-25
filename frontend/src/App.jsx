@@ -24,7 +24,6 @@ const LockedAct = lazy(() => import('./pages/LockedAct'));
 const Journal = lazy(() => import('./pages/Journal'));
 const SpinWheel = lazy(() => import('./pages/SpinWheel'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
-const SeekerPage = lazy(() => import('./pages/SeekerPage'));
 const ProtocolChat = lazy(() => import('./pages/ProtocolChat'));
 const GuidedListen = lazy(() => import('./pages/GuidedListen'));
 const ActProtocol = lazy(() => import('./pages/ActProtocol'));
@@ -317,11 +316,7 @@ function AppRoutes() {
 
       <Route
         path="/seeker"
-        element={
-          <ProtectedRoute>
-            <SeekerPage />
-          </ProtectedRoute>
-        }
+        element={<Navigate to="/experiencemode/sovereign/module/archetype" replace />}
       />
 
       <Route
