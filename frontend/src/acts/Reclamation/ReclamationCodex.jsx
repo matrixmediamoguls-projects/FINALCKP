@@ -101,11 +101,23 @@ function clampPercent(value, fallback = 78) {
   return Math.max(0, Math.min(100, Math.round(n)));
 }
 
-function ReactorBars({ intensity, bass, mid, treble }) {
+export function buildReactorBarHeights(frequencies, { intensity, bass, mid, treble }) {
+  const data = frequencies?.length ? frequencies : null;
+  return Array.from({ length: 128 }, (_, index) => {
+    const mirroredIndex = index < 64 ? index : 127 - index;
+    const sampledIndex = data
+      ? Math.min(data.length - 1, Math.floor((mirroredIndex / 63) * data.length * 0.78))
+      : -1;
+    const aggregate = index % 4 === 0 ? bass : index % 4 === 1 ? mid : index % 4 === 2 ? treble : intensity;
+    const value = sampledIndex >= 0 ? data[sampledIndex] / 255 : aggregate / 100;
+    return 8 + Math.pow(Math.max(0, Math.min(1, value)), 0.58) * 64;
+  });
+}
+
+function ReactorBars({ frequencies, intensity, bass, mid, treble }) {
+  const heights = buildReactorBarHeights(frequencies, { intensity, bass, mid, treble });
   const bars = Array.from({ length: 128 }, (_, index) => {
-    const band = index % 4 === 0 ? bass : index % 4 === 1 ? mid : index % 4 === 2 ? treble : intensity;
-    const height = 12 + ((band + (index * 7) % 31) % 100) * 0.34;
-    return <i key={index} style={{ "--bar-index": index, "--bar-height": `${height}px` }} />;
+    return <i key={index} style={{ "--bar-index": index, "--bar-height": `${heights[index]}px` }} />;
   });
 
   return <div className="pva-reactor-bars" aria-hidden="true">{bars}</div>;
@@ -219,7 +231,7 @@ export default function ReclamationCodex() {
 
         <section className="pva-center pva-center--reference-match" style={{ "--pva-viewport-image": `url("${viewportImage}")` }} aria-label={activeTrack?.viewport_alt_text || "Chroma Key Protocol visualizer viewport"}>
           <div className="pva-hud-ring pva-hud-ring--outer" aria-hidden="true" /><div className="pva-hud-ring pva-hud-ring--inner" aria-hidden="true" />
-          <ReactorBars intensity={intensity} bass={bass} mid={mid} treble={treble} />
+          <ReactorBars frequencies={analysis.frequencies} intensity={intensity} bass={bass} mid={mid} treble={treble} />
           <div className="pva-crosshair pva-crosshair--horizontal" aria-hidden="true" /><div className="pva-crosshair pva-crosshair--vertical" aria-hidden="true" />
           <div className="pva-center-chip pva-center-chip--bpm"><span>BPM</span><b>{activeTrack?.bpm || 128}</b></div>
           <div className="pva-center-chip pva-center-chip--key"><span>KEY</span><b>{activeTrack?.key_signature || "C# MINOR"}</b></div>

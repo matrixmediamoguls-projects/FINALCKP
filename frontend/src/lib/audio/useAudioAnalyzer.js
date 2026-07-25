@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const SILENT_FRAME_LIMIT = 18;
+const SILENT_FRAME_LIMIT = 4;
 
-function createPlaybackSpectrum(time, length) {
+export function createPlaybackSpectrum(time, length) {
   return Array.from({ length }, (_, index) => {
     const position = index / Math.max(1, length - 1);
     const bassPulse = Math.pow(Math.max(0, Math.sin(time * 5.8 - position * 2.2)), 3);
@@ -57,15 +57,14 @@ export function useAudioAnalyzer(audioElementRef) {
     connect();
 
     const analyzer = analyzerRef.current;
-    if (!analyzer) return;
     if (audioContextRef.current?.state === 'suspended') {
       await audioContextRef.current.resume();
     }
 
-    const buffer = new Uint8Array(analyzer.frequencyBinCount);
+    const buffer = new Uint8Array(analyzer?.frequencyBinCount || 128);
 
     const tick = () => {
-      analyzer.getByteFrequencyData(buffer);
+      if (analyzer) analyzer.getByteFrequencyData(buffer);
       let values = Array.from(buffer);
       const audio = audioElementRef.current;
       const hasSignal = values.some((value) => value > 0);
@@ -79,9 +78,9 @@ export function useAudioAnalyzer(audioElementRef) {
         && audio
         && !audio.paused
         && !audio.ended
-        && audio.currentTime > 0
       ) {
-        values = createPlaybackSpectrum(audio.currentTime, buffer.length);
+        const playbackClock = Math.max(audio.currentTime || 0, performance.now() / 1000);
+        values = createPlaybackSpectrum(playbackClock, buffer.length);
       }
       const average = values.reduce((sum, value) => sum + value, 0) / values.length;
       setFrequencyData(values);
