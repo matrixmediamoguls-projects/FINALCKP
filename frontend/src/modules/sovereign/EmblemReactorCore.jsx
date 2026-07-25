@@ -1,12 +1,13 @@
 // src/modules/sovereign/EmblemReactorCore.jsx
 import { Component, useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Bounds, useGLTF } from '@react-three/drei';
+import { Center, useGLTF } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
 const REACTOR_FALLBACK = '/media/visualizer/audio-reactive-healthy-frequency-sun.svg';
-const REACTOR_MODEL = 'https://pub-7db585eeeb464a9d9f749f0307532c22.r2.dev/act_three/objects/texturized-new.glb';
+const REACTOR_MODEL = 'https://pub-7db585eeeb464a9d9f749f0307532c22.r2.dev/act_three/objects/texturized-new.glb?v=21e94531b56448b33df10f75bc20696c';
+const REACTOR_NODE_NAME = 'audio reactor with neon red...';
 
 class ReactorErrorBoundary extends Component {
   constructor(props) {
@@ -36,10 +37,17 @@ function EmblemMesh({ frequencyData, audioLevel }) {
     uBass: { value: 0 }, uMid: { value: 0 }, uTreble: { value: 0 }, uTime: { value: 0 },
     uRimColor: { value: new THREE.Color('#00e0ff') },
   }), []);
+  const reactor = useMemo(() => {
+    const source = scene.getObjectByName(REACTOR_NODE_NAME);
+    if (!source) throw new Error(`Reactor node "${REACTOR_NODE_NAME}" is missing from the GLB.`);
 
-
-  useEffect(() => {
-    scene.traverse((child) => { if (child.isMesh && !meshRef.current) meshRef.current = child; });
+    const clone = source.clone(true);
+    clone.traverse((child) => {
+      if (!child.isMesh) return;
+      child.material = child.material.clone();
+      if (!meshRef.current) meshRef.current = child;
+    });
+    return clone;
   }, [scene]);
 
 
@@ -59,7 +67,7 @@ function EmblemMesh({ frequencyData, audioLevel }) {
       mesh.material.userData.shader = shader;
     };
     mesh.material.needsUpdate = true;
-  }, [meshRef.current]);
+  }, [reactor, uniforms]);
 
 
   useFrame((state, delta) => {
@@ -95,11 +103,11 @@ function EmblemMesh({ frequencyData, audioLevel }) {
 
 
   return (
-    <Bounds fit clip observe margin={1.1}>
-      <group ref={groupRef}>
-        <primitive object={scene} />
-      </group>
-    </Bounds>
+    <group ref={groupRef}>
+      <Center>
+        <primitive object={reactor} scale={0.01} />
+      </Center>
+    </group>
   );
 }
 
@@ -109,7 +117,7 @@ export default function EmblemReactorCore({ frequencyData, audioLevel }) {
     <ReactorErrorBoundary
       fallback={<img src={REACTOR_FALLBACK} alt="Musiq Matrix Reclamation frequency reactor" />}
     >
-      <Canvas camera={{ position: [0, 0, 4], fov: 45 }} gl={{ alpha: true, antialias: true }} style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
+      <Canvas camera={{ position: [0, 0, 2.7], fov: 45 }} gl={{ alpha: true, antialias: true }} style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
         <ambientLight intensity={0.35} />
         <pointLight position={[2, 2, 3]} intensity={2.2} color="#00e0ff" />
         <pointLight position={[-2, -1, 2]} intensity={1.1} color="#6a5cff" />
