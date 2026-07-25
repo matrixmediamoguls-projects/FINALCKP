@@ -240,6 +240,10 @@ export default function AudioVisualizerCore({
         '--sav-pulse-border-alpha': .22 + frequencyBands.bass * .44,
         '--sav-pulse-opacity': .32 + frequencyBands.bass * .5,
         '--sav-pulse-duration': `${2.2 - frequencyBands.bass * .8}s`,
+        '--sav-bass-light': .22 + frequencyBands.bass * .78,
+        '--sav-mid-light': .18 + frequencyBands.mid * .82,
+        '--sav-treble-light': .16 + frequencyBands.treble * .84,
+        '--sav-transport-light': .28 + Math.max(frequencyBands.mid, audioLevel / 100) * .72,
         '--red': palette.primary || '#a72c33',
         '--bronze': palette.secondary || '#bd9360',
       }}
@@ -291,6 +295,11 @@ export default function AudioVisualizerCore({
             />
           ) : null}
           <div className="sav-stage-veil" aria-hidden="true" />
+          <div className="sav-frequency-lights" aria-hidden="true">
+            <i className="sav-frequency-light sav-frequency-light--treble" />
+            <i className="sav-frequency-light sav-frequency-light--bass" />
+            <i className="sav-frequency-light sav-frequency-light--mid" />
+          </div>
           <div className="sav-stage-heading"><span>Audio-reactive sculpture</span><strong>{isPlaying ? 'Signal active' : 'Awaiting playback'}</strong></div>
           <div className="sav-reactor-wrap">
             <div className="sav-reactor-aura" aria-hidden="true">

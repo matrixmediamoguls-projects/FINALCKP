@@ -1,71 +1,65 @@
-# Hermetic Curriculum Design QA
+# Design QA
 
-- Source visual truth: `C:\Users\matri\Downloads\ChatGPT Image Jul 22, 2026, 11_36_01 PM.png`
-- Source dimensions: 1536 × 1024 px
-- Implementation route: `http://localhost:3000/experiencemode/sovereign/reclamation-university/hermetic-hall/mentalism`
-- Intended viewport: 1536 × 1024 CSS px at device scale factor 1
-- State: Mentalism orientation, no completed lessons required
+- Source visual truth: `C:\Users\matri\Desktop\2e0b5205-dddf-452e-b4a0-f6183fb36acf.png`
+- Source dimensions: 1672 x 941 px
+- Implementation route: `http://localhost:3000/experiencemode/sovereign/module/audio-visualizer-core`
+- Intended viewport: 1672 x 941 CSS px at 1x density
+- State: first track selected; playback active for frequency response
 - Implementation screenshot: unavailable
 
 ## Full-view comparison evidence
 
-Blocked. The supplied source visual was opened at original resolution and used as the implementation target. The rebuilt application passed a production Vite build, but neither the in-app browser nor Chrome browser surface was connected, so a browser-rendered implementation screenshot could not be captured.
+The source image was opened from the supplied attachment and used to place the
+red stage perimeter lights, three frequency-specific rails, the segmented
+frequency meter, and cyan transport illumination. Browser discovery returned no
+available browser backend, so a matching browser-rendered implementation
+screenshot could not be captured.
 
-## Focused-region comparison evidence
+## Focused region comparison evidence
 
-Blocked for the same reason. The planned focused regions were the top institutional bar, law hero/resonance artwork, five-stage practicum, left curriculum navigation, and right progress rail.
-
-## Required fidelity surfaces
-
-- Fonts and typography: implemented with the established project guidelines—Oxanium for display hierarchy, Inter for instructional copy, and JetBrains Mono for system/progress labels. Browser rendering remains unverified.
-- Spacing and layout rhythm: implemented as a 270 px campus rail, fluid central curriculum stage, and 310 px progress rail at desktop. Browser rendering remains unverified.
-- Colors and visual tokens: implemented with near-black, antique gold, ember red, warm paper, and muted stone tokens derived from the source. Browser rendering remains unverified.
-- Image quality and asset fidelity: a dedicated 1600 × 900 Hermetic resonance-field asset was generated and placed in the law hero. Browser crop and sharpness remain unverified.
-- Copy and content: existing curriculum data, lesson content, progress persistence, reflections, artifacts, case files, codes, and assessment behavior were preserved.
+Focused comparison of the reactor stage and transport bar is blocked by the same
+missing browser-rendered implementation capture.
 
 ## Findings
 
-- [P1] Browser-rendered fidelity cannot be evaluated.
-  - Location: full Mentalism orientation and shared seven-law curriculum shell.
-  - Evidence: no connected browser surface was available for implementation capture.
-  - Impact: viewport overflow, precise wrapping, crop behavior, and interaction states cannot be visually confirmed.
-  - Fix: open the implementation at 1536 × 1024, capture the orientation state, compare it alongside the source, and correct any visible P1/P2 drift.
+- [P2] Visual verification is unavailable.
+  - Location: reactor stage and transport bar.
+  - Evidence: the source is available, but no implementation screenshot can be
+    captured because the browser runtime reports no available browser.
+  - Impact: placement, glow strength, responsive clipping, and live pulse behavior
+    cannot be visually compared against the supplied target.
+  - Fix: capture the route at 1672 x 941 with playback active once a browser
+    backend is available, then compare both images together.
 
-## Primary interactions to test
+## Required fidelity surfaces
 
-- Navigate between all seven Hermetic laws from the campus rail.
-- Open each curriculum section from the left navigation.
-- Open a lesson, save a reflection, and complete the lesson.
-- Save an integration artifact.
-- Complete a Vibration assessment item.
-- Confirm progress and save-state feedback update.
-- Check the browser console for runtime errors.
+- Fonts and typography: unchanged by this scoped lighting implementation.
+- Spacing and layout rhythm: existing layout retained; browser comparison blocked.
+- Colors and visual tokens: red/orange frequency lighting and cyan transport
+  lighting follow the supplied source; rendered comparison blocked.
+- Image quality and asset fidelity: existing supplied track and reactor assets
+  retained without replacement.
+- Copy and content: unchanged.
 
 ## Comparison history
 
-- Pass 1: source opened and inspected; implementation build completed; browser capture blocked because no browser backend was connected.
+- Initial pass: source opened; implementation capture blocked before comparison.
+- Fixes implemented from the source: frequency-specific stage rails, reactive
+  perimeter glow, stronger segmented meter lighting, cyan transport illumination,
+  and removal of the reactor's continuous spin.
+- Post-fix evidence: build and automated tests pass; browser-rendered evidence
+  remains unavailable.
+
+## Primary interactions and console
+
+- Playback interaction: not browser-tested.
+- Frequency response: not browser-tested.
+- Console errors: not browser-checked.
+
+## Implementation checklist
+
+- Capture the live visualizer at the target viewport.
+- Start playback and verify independent bass, mid, treble, and transport response.
+- Compare the source and implementation together and tune glow intensity if needed.
 
 final result: blocked
-
----
-
-## Previous QA Record: Sovereign Mode
-
-- Reference: `outputs/sovereign-mode-design/sovereign-mode-depth-concept.png`
-- Target: `http://localhost:3000/experiencemode/sovereign`
-- Build: passed with Vite 8
-- Source checks: passed (`git diff --check`)
-- Browser capture: blocked because the in-app browser runtime reported no available browser targets
-- Reference comparison: blocked until a same-viewport application screenshot can be captured
-
-### Implemented comparison points
-
-- Three-plane composition: chamber background, orbital card stage, foreground control deck
-- Saturated crimson, violet, cyan, ember, and graphite palette
-- Left Promethean Core and Active Light Code telemetry stack
-- Centered sovereign metadata header and user identity panel
-- Receding six-card carousel with active-card focus and functional rotation
-- Right Protocol Progress and Element Balance telemetry stack
-- Responsive desktop, compact desktop, and mobile layout rules
-
-Previous final result: blocked

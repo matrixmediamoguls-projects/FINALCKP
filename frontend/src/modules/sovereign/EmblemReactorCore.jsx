@@ -83,7 +83,8 @@ function EmblemMesh({ frequencyData, audioLevel }) {
       const nextScale = groupRef.current.scale.x
         + (targetScale - groupRef.current.scale.x) * Math.min(1, delta * 10);
       groupRef.current.scale.setScalar(nextScale);
-      groupRef.current.rotation.z += delta * (.025 + treble * .3);
+      const targetTilt = (treble - .12) * .045;
+      groupRef.current.rotation.z += (targetTilt - groupRef.current.rotation.z) * Math.min(1, delta * 7);
       groupRef.current.rotation.y += ((mid - .12) * .12 - groupRef.current.rotation.y) * Math.min(1, delta * 5);
       groupRef.current.position.y += ((bass - .12) * .09 - groupRef.current.position.y) * Math.min(1, delta * 8);
     }
