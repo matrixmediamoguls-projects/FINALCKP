@@ -44,19 +44,21 @@ export default function useAudioAnalyzer(audioTarget, enabled = true) {
     mid: 0,
     treble: 0,
     intensity: 0,
+    isActive: false,
   });
 
   useEffect(() => {
     const audioElement = resolveAudioElement(audioTarget);
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
-    if (!enabled || !audioElement) {
+    if (!audioElement) {
       setSnapshot((current) => ({
         frequencies: current.frequencies,
         bass: current.bass * 0.86,
         mid: current.mid * 0.86,
         treble: current.treble * 0.86,
         intensity: current.intensity * 0.86,
+        isActive: false,
       }));
       return undefined;
     }
@@ -91,17 +93,21 @@ export default function useAudioAnalyzer(audioTarget, enabled = true) {
     let silentFrames = 0;
 
     const update = () => {
+      const isActive = !audioElement.paused && !audioElement.ended;
+      if (isActive && graph.ctx?.state === "suspended") {
+        graph.ctx.resume?.().catch(() => {});
+      }
       if (graph.analyser) graph.analyser.getByteFrequencyData(data);
 
       const hasSignal = data.some((value) => value > 1);
-      silentFrames = hasSignal ? 0 : silentFrames + 1;
-      const frameData = silentFrames >= SILENT_FRAME_LIMIT
+      silentFrames = hasSignal || !isActive ? 0 : silentFrames + 1;
+      const frameData = isActive && silentFrames >= SILENT_FRAME_LIMIT
         ? createPlaybackSpectrum(Math.max(audioElement.currentTime || 0, performance.now() / 1000), data.length)
         : data;
 
-      const bass = averageRange(frameData, 0, 0.12);
-      const mid = averageRange(frameData, 0.12, 0.48);
-      const treble = averageRange(frameData, 0.48, 1);
+      const bass = isActive ? averageRange(frameData, 0, 0.12) : 0;
+      const mid = isActive ? averageRange(frameData, 0.12, 0.48) : 0;
+      const treble = isActive ? averageRange(frameData, 0.48, 1) : 0;
       const intensity = clamp01(bass * 0.48 + mid * 0.34 + treble * 0.18);
 
       setSnapshot({
@@ -110,6 +116,7 @@ export default function useAudioAnalyzer(audioTarget, enabled = true) {
         mid,
         treble,
         intensity,
+        isActive,
       });
 
       frameId = window.requestAnimationFrame(update);
@@ -120,7 +127,7 @@ export default function useAudioAnalyzer(audioTarget, enabled = true) {
     return () => {
       if (frameId) window.cancelAnimationFrame(frameId);
     };
-  }, [audioTarget, enabled]);
+  }, [audioTarget]);
 
   return useMemo(() => snapshot, [snapshot]);
 }

@@ -157,10 +157,11 @@ export default function ReclamationCodex() {
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 37;
 
   const analysis = useAudioAnalyzer(audio?.audioElement, isPlaying);
-  const intensity = clampPercent((isPlaying ? analysis.intensity : 0.78) * 100, activeTrack?.intensity || 78);
-  const bass = clampPercent((isPlaying ? analysis.bass : 0.82) * 100, 82);
-  const mid = clampPercent((isPlaying ? analysis.mid : 0.64) * 100, 64);
-  const treble = clampPercent((isPlaying ? analysis.treble : 0.71) * 100, 71);
+  const signalActive = isPlaying || analysis.isActive;
+  const intensity = clampPercent((signalActive ? analysis.intensity : 0.78) * 100, activeTrack?.intensity || 78);
+  const bass = clampPercent((signalActive ? analysis.bass : 0.82) * 100, 82);
+  const mid = clampPercent((signalActive ? analysis.mid : 0.64) * 100, 64);
+  const treble = clampPercent((signalActive ? analysis.treble : 0.71) * 100, 71);
   const viewportImage = getViewportImage(activeTrack);
 
   const lyricLines = useMemo(() => buildTimedLyrics(activeTrack, duration), [activeTrack, duration]);
@@ -241,7 +242,7 @@ export default function ReclamationCodex() {
 
         <aside className="pva-panel pva-sync-core">
           <div className="pva-panel-heading"><h2>SYNC CORE</h2><p>REAL TIME PROTOCOL</p></div>
-          <div className="pva-sync-list">{[["VOCAL DETECTION", "ACTIVE"], ["BEAT LOCK", isPlaying ? "LOCKED" : "ARMED"], ["BPM", activeTrack?.bpm || 128], ["KEY", activeTrack?.key_signature || "C# MINOR"], ["CHORUS DETECTED", progress > 30 && progress < 70 ? "YES" : "SCAN"], ["INTENSITY STATE", intensity > 80 ? "ASCENDING" : "CHARGING"], ["SYNC ACCURACY", `${Math.max(91, Math.min(99, Math.round(90 + intensity / 9)))}%`]].map(([label, value]) => <p key={label}><span>{label}</span><b>{value}</b></p>)}</div>
+          <div className="pva-sync-list">{[["VOCAL DETECTION", "ACTIVE"], ["BEAT LOCK", signalActive ? "LOCKED" : "ARMED"], ["BPM", activeTrack?.bpm || 128], ["KEY", activeTrack?.key_signature || "C# MINOR"], ["CHORUS DETECTED", progress > 30 && progress < 70 ? "YES" : "SCAN"], ["INTENSITY STATE", intensity > 80 ? "ASCENDING" : "CHARGING"], ["SYNC ACCURACY", `${Math.max(91, Math.min(99, Math.round(90 + intensity / 9)))}%`]].map(([label, value]) => <p key={label}><span>{label}</span><b>{value}</b></p>)}</div>
           <div className="pva-intensity-monitor"><h3>INTENSITY MONITOR</h3><MiniSparkline /><strong>{intensity}%<span>CURRENT</span></strong></div>
           <div className="pva-frequency-core"><h3>FREQUENCY CORE</h3><div className="pva-radar" aria-hidden="true"><i /></div>{[["SUB BASS", bass], ["BASS", Math.round((bass + intensity) / 2)], ["MIDS", mid], ["HIGHS", treble]].map(([label, value]) => <p key={label}><span>{label}</span><i style={{ width: `${value}%` }} /><b>{value}%</b></p>)}</div>
         </aside>
