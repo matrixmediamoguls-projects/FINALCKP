@@ -40,6 +40,10 @@ function EmblemMesh({ frequencyData, audioLevel }) {
     clone.traverse((child) => {
       if (!child.isMesh) return;
       child.material = child.material.clone();
+      child.material.transparent = true;
+      child.material.alphaTest = 0.08;
+      child.material.depthWrite = false;
+      child.material.needsUpdate = true;
     });
     return clone;
   }, [scene]);
@@ -69,6 +73,43 @@ function EmblemMesh({ frequencyData, audioLevel }) {
   );
 }
 
+function ReactiveSceneLights({ frequencyData, audioLevel }) {
+  const ambientRef = useRef();
+  const keyRef = useRef();
+  const fillRef = useRef();
+
+  useFrame((_, delta) => {
+    const data = frequencyData || [];
+    const average = (start, end) => {
+      let total = 0;
+      for (let index = start; index < end; index += 1) total += data[index] || 0;
+      return total / Math.max(1, end - start) / 255;
+    };
+    const bassEnd = Math.max(1, Math.floor(data.length * .14));
+    const midEnd = Math.max(bassEnd + 1, Math.floor(data.length * .55));
+    const bass = data.length ? average(0, bassEnd) : audioLevel / 100;
+    const mid = data.length ? average(bassEnd, midEnd) : 0;
+    const smoothing = Math.min(1, delta * 6);
+
+    if (ambientRef.current) {
+      ambientRef.current.intensity += (1.05 + mid * .3 - ambientRef.current.intensity) * smoothing;
+    }
+    if (keyRef.current) {
+      keyRef.current.intensity += (1 + bass * .85 - keyRef.current.intensity) * smoothing;
+    }
+    if (fillRef.current) {
+      fillRef.current.intensity += (.4 + mid * .45 - fillRef.current.intensity) * smoothing;
+    }
+  });
+
+  return (
+    <>
+      <ambientLight ref={ambientRef} intensity={1.05} />
+      <pointLight ref={keyRef} position={[2, 2, 3]} intensity={1} color="#fff7ed" />
+      <pointLight ref={fillRef} position={[-2, -1, 2]} intensity={.4} color="#ffd7b5" />
+    </>
+  );
+}
 
 export default function EmblemReactorCore({ frequencyData, audioLevel }) {
   return (
@@ -76,9 +117,7 @@ export default function EmblemReactorCore({ frequencyData, audioLevel }) {
       fallback={<img src={REACTOR_FALLBACK} alt="Musiq Matrix Reclamation frequency reactor" />}
     >
       <Canvas camera={{ position: [0, 0, 2.7], fov: 45 }} gl={{ alpha: true, antialias: true }} style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
-        <ambientLight intensity={1.15} />
-        <pointLight position={[2, 2, 3]} intensity={1.1} color="#fff4e8" />
-        <pointLight position={[-2, -1, 2]} intensity={0.55} color="#ffd2ad" />
+        <ReactiveSceneLights frequencyData={frequencyData} audioLevel={audioLevel} />
         <EmblemMesh frequencyData={frequencyData} audioLevel={audioLevel} />
       </Canvas>
     </ReactorErrorBoundary>

@@ -147,6 +147,21 @@ export default function AudioVisualizerCore({
     const sampled = frequencyData[index * 2] ?? 30 + Math.abs(Math.sin(index * .67)) * 90;
     return Math.max(12, Math.min(100, sampled * .52 + (isPlaying ? audioLevel * .25 : 0)));
   }), [frequencyData, audioLevel, isPlaying]);
+  const frequencyBands = useMemo(() => {
+    if (!frequencyData.length) return { bass: 0, mid: 0, treble: 0 };
+    const average = (start, end) => {
+      let total = 0;
+      for (let index = start; index < end; index += 1) total += frequencyData[index] || 0;
+      return total / Math.max(1, end - start) / 255;
+    };
+    const bassEnd = Math.max(1, Math.floor(frequencyData.length * .14));
+    const midEnd = Math.max(bassEnd + 1, Math.floor(frequencyData.length * .55));
+    return {
+      bass: average(0, bassEnd),
+      mid: average(bassEnd, midEnd),
+      treble: average(midEnd, frequencyData.length),
+    };
+  }, [frequencyData]);
   const progress = duration ? Math.min(100, elapsed / duration * 100) : 0;
 
 
@@ -216,6 +231,16 @@ export default function AudioVisualizerCore({
       className={`sav-shell ${isPlaying ? 'is-playing' : ''}`}
       style={{
         '--sav-energy': Math.max(.12, audioLevel / 100),
+        '--sav-bass': frequencyBands.bass,
+        '--sav-mid': frequencyBands.mid,
+        '--sav-treble': frequencyBands.treble,
+        '--sav-bass-alpha': .1 + frequencyBands.bass * .28,
+        '--sav-bass-spread': `${24 + frequencyBands.bass * 8}%`,
+        '--sav-mid-alpha': .025 + frequencyBands.mid * .11,
+        '--sav-treble-alpha': .018 + frequencyBands.treble * .07,
+        '--sav-pulse-border-alpha': .22 + frequencyBands.bass * .44,
+        '--sav-pulse-opacity': .32 + frequencyBands.bass * .5,
+        '--sav-pulse-duration': `${2.2 - frequencyBands.bass * .8}s`,
         '--red': palette.primary || '#a72c33',
         '--bronze': palette.secondary || '#bd9360',
       }}
@@ -269,7 +294,6 @@ export default function AudioVisualizerCore({
           <div className="sav-stage-veil" aria-hidden="true" />
           <div className="sav-stage-heading"><span>Audio-reactive sculpture</span><strong>{isPlaying ? 'Signal active' : 'Awaiting playback'}</strong></div>
           <div className="sav-reactor-wrap">
-            <div className="sav-reactor-halo" />
             <EmblemReactorCore frequencyData={frequencyData} audioLevel={audioLevel} />
             <div className="sav-reactor-pulse" />
           </div>
