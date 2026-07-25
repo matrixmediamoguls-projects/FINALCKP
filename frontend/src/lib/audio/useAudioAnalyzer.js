@@ -19,32 +19,23 @@ export function useAudioAnalyzer(audioElementRef) {
     const analyzer = context.createAnalyser();
     analyzer.fftSize = 256;
 
-    const captureStream = audio.captureStream || audio.mozCaptureStream;
-    let source;
-
     try {
-      if (captureStream) {
-        // Analyze a copy of the media stream. The audio element keeps its own
-        // direct speaker output, so a suspended AudioContext can never mute it.
-        source = context.createMediaStreamSource(captureStream.call(audio));
-        source.connect(analyzer);
-      } else {
-        // Never reroute the media element through an AudioContext. Direct
-        // element playback is the source of truth, even when analysis is not
-        // supported by the browser.
-        context.close();
-        return null;
-      }
+      // A captured MediaStream stays associated with the first resource loaded
+      // by an audio element in Chromium. A MediaElementSource follows `src`
+      // changes, so the same graph keeps analyzing every track in the queue.
+      const source = context.createMediaElementSource(audio);
+      source.connect(analyzer);
+      analyzer.connect(context.destination);
+
+      audioContextRef.current = context;
+      analyzerRef.current = analyzer;
+      sourceRef.current = source;
+      return context;
     } catch (error) {
       console.warn('Audio analysis unavailable; continuing direct playback.', error);
       context.close();
       return null;
     }
-
-    audioContextRef.current = context;
-    analyzerRef.current = analyzer;
-    sourceRef.current = source;
-    return context;
   }, [audioElementRef]);
 
   const start = useCallback(async () => {

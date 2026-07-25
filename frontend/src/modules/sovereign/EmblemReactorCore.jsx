@@ -56,7 +56,7 @@ function EmblemMesh({ frequencyData, audioLevel }) {
     bass = bass / (bassEnd * 255) || 0;
 
     if (groupRef.current) {
-      const targetScale = 1 + Math.max(bass, audioLevel / 100) * 0.045;
+      const targetScale = 1 + Math.max(bass, audioLevel / 72) * 0.14;
       const nextScale = groupRef.current.scale.x
         + (targetScale - groupRef.current.scale.x) * Math.min(1, delta * 7);
       groupRef.current.scale.setScalar(nextScale);

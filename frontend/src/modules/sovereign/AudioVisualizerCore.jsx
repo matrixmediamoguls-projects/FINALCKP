@@ -144,8 +144,10 @@ export default function AudioVisualizerCore({
       : ['No lyrics are assigned to this track.'];
   }, [track?.id, activeId, lyricTrack, elapsed]);
   const bars = useMemo(() => Array.from({ length: 42 }, (_, index) => {
-    const sampled = frequencyData[index * 2] ?? 30 + Math.abs(Math.sin(index * .67)) * 90;
-    return Math.max(12, Math.min(100, sampled * .52 + (isPlaying ? audioLevel * .25 : 0)));
+    if (!frequencyData.length) return 12;
+    const sampled = frequencyData[index * 2] || 0;
+    const normalized = sampled / 255;
+    return Math.max(8, Math.min(100, 8 + Math.pow(normalized, .62) * 92));
   }), [frequencyData, audioLevel, isPlaying]);
   const frequencyBands = useMemo(() => {
     if (!frequencyData.length) return { bass: 0, mid: 0, treble: 0 };
@@ -230,7 +232,7 @@ export default function AudioVisualizerCore({
       ref={shellRef}
       className={`sav-shell ${isPlaying ? 'is-playing' : ''}`}
       style={{
-        '--sav-energy': Math.max(.12, audioLevel / 100),
+        '--sav-energy': Math.max(.08, Math.min(1, audioLevel / 72)),
         '--sav-bass': frequencyBands.bass,
         '--sav-mid': frequencyBands.mid,
         '--sav-treble': frequencyBands.treble,
