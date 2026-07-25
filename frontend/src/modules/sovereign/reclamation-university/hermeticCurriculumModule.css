@@ -1106,10 +1106,19 @@
   color: #8e877f;
 }
 
-.hcm-campus-nav__group button > span {
+.hcm-campus-nav__group button > span:first-child {
   width: 28px;
+  flex: 0 0 28px;
   color: #735f42;
   font: 10px 'JetBrains Mono', monospace;
+}
+
+.hcm-campus-nav__group button > span:last-child {
+  width: auto;
+  color: inherit;
+  font: 500 10px/1.35 'Oxanium', system-ui, sans-serif;
+  letter-spacing: .035em;
+  text-transform: none;
 }
 
 .hcm-campus-nav__group button.is-active {

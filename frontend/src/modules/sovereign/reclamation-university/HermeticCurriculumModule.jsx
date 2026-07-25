@@ -114,8 +114,8 @@ export default function HermeticCurriculumModule({ module, faculty }) {
     ? Math.round((record.completedLessons.length / lessons.length) * 100)
     : 0;
   const lawNumber = String(courseModule?.number || module.order).padStart(2, '0');
-  const relatedLaws = COURSE_MODULES.filter((item) => item.number !== courseModule?.number).slice(0, 3);
-  const lawSlug = (law) => law.law.toLowerCase().replaceAll(' ', '-');
+  const hallModules = faculty.modules || [];
+  const relatedLaws = hallModules.filter((item) => item.order !== module.order).slice(0, 3);
   const methodStages = [
     { number: '01', title: 'Receive the Signal', detail: 'Listen & Observe', view: 'lessons', Icon: AudioLines },
     { number: '02', title: 'Discern the Pattern', detail: 'Recognize the Teaching', view: hasFullCurriculum ? 'caseFiles' : 'lessons', Icon: Eye },
@@ -181,7 +181,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           <ChevronRight size={13} />
           <button type="button" onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}>The Hermetic Hall</button>
           <ChevronRight size={13} />
-          <strong>Law {lawNumber}: {courseModule.law}</strong>
+          <strong>{module.title}</strong>
         </div>
         <div className="hcm-progress" aria-label={`${completionPercent}% complete`}>
           <span>Your progress</span>
@@ -212,14 +212,14 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           <button type="button" onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}><Home size={18} /><span>University Hall<small>Dashboard</small></span></button>
           <div className="hcm-campus-nav__group">
             <p>The Hermetic Hall<small>7 Universal Laws</small></p>
-            {COURSE_MODULES.map((law) => (
+            {hallModules.map((law) => (
               <button
                 type="button"
-                key={law.number}
-                className={law.number === courseModule.number ? 'is-active' : ''}
-                onClick={() => navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${lawSlug(law)}`)}
+                key={law.id}
+                className={law.id === module.id ? 'is-active' : ''}
+                onClick={() => navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${law.slug}`)}
               >
-                <span>{String(law.number).padStart(2, '0')}</span>{law.law}
+                <span>{String(law.order).padStart(2, '0')}</span><span>{law.title}</span>
               </button>
             ))}
           </div>
@@ -267,7 +267,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
               <section className="hcm-law-hero">
                 <div className="hcm-law-hero__copy">
                   <p className="hcm-eyebrow">The Hermetic Hall</p>
-                  <h1>Law {lawNumber}: {courseModule.law}</h1>
+                  <h1>{module.title}</h1>
                   <p className="hcm-law-summary">{courseModule.centralQuestion}</p>
                   <div className="hcm-law-badges">
                     <span><ShieldCheck size={14} /> Foundational Law</span>
@@ -522,8 +522,8 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           <section>
             <header><span>Related Laws</span></header>
             {relatedLaws.map((law) => (
-              <button type="button" key={law.number} onClick={() => navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${lawSlug(law)}`)}>
-                Law {String(law.number).padStart(2, '0')}: {law.law}<ChevronRight size={14} />
+              <button type="button" key={law.id} onClick={() => navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${law.slug}`)}>
+                {law.title}<ChevronRight size={14} />
               </button>
             ))}
           </section>
