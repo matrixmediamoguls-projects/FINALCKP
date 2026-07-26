@@ -128,4 +128,33 @@ describe('Hermetic Hall curriculum', () => {
     expect(rhythm.lightMappings).toHaveLength(3);
     expect(rhythm.integrationKey).toContain('protect my baseline');
   });
+
+  it('delivers the complete Cause and Effect curriculum through the Hall practicum', () => {
+    const causeAndEffect = getHermeticHallModule('cause-and-effect');
+
+    expect(causeAndEffect.sourceTrackIds).toEqual([
+      'Welcome To The Fire',
+      'Know Your Names',
+      'Demonic Schemes',
+      'Flowers',
+      'Misguided Priorities',
+      'The Hierophant',
+      'The Reckoning Already Rolled',
+    ]);
+    expect(causeAndEffect.curriculumSections).toHaveLength(3);
+    causeAndEffect.curriculumSections.forEach((section) => {
+      expect(section).toEqual(expect.objectContaining({
+        hook: expect.any(String),
+        scenario: expect.any(String),
+        chromaLens: expect.any(String),
+        timelessContext: expect.any(String),
+        practicalTranslation: expect.any(String),
+        value: expect.any(String),
+        coherence: expect.any(String),
+      }));
+    });
+    expect(causeAndEffect.shadowCodes).toHaveLength(3);
+    expect(causeAndEffect.lightMappings).toHaveLength(3);
+    expect(causeAndEffect.integrationKey).toContain('preserve chronology');
+  });
 });

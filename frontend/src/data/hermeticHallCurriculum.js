@@ -728,6 +728,189 @@ const rhythmCurriculum = {
   estimatedMinutes: 65,
 };
 
+const causeAndEffectCurriculum = {
+  curriculumTitle: 'Cause and Effect through the Chroma Key lens',
+  sourceTrackIds: [
+    'Welcome To The Fire',
+    'Know Your Names',
+    'Demonic Schemes',
+    'Flowers',
+    'Misguided Priorities',
+    'The Hierophant',
+    'The Reckoning Already Rolled',
+  ],
+  initiationCopy: [
+    'Every result has a history. Cause and Effect begins when you stop arguing with the final frame and reconstruct the sequence that produced it.',
+    'In 2026, consequences travel through screenshots, contracts, recommendation systems, synthetic media, delayed disclosures, and searchable archives. A cause may be small, distributed, or hidden for years before its effect becomes visible.',
+    'This chamber rejects both helplessness and simplistic blame. It teaches causal literacy: preserve chronology, distinguish contribution from total responsibility, identify system incentives, and introduce a new cause whose effect can be observed.',
+  ],
+  learningObjectives: [
+    'Reconstruct a causal chain using chronology, evidence, decisions, omissions, incentives, and resulting effects.',
+    'Distinguish correlation, influence, contribution, and direct causation without laundering responsibility or inventing certainty.',
+    'Identify how repeated small causes compound into reputation, relationship, creative, or institutional outcomes.',
+    'Choose one ethical, observable intervention capable of producing a different downstream effect.',
+  ],
+  curriculumSections: [
+    {
+      title: '01 · The Timeline Beneath the Result',
+      anchor: 'Anchor statement: The effect is the final frame of a sequence, not the whole story.',
+      hook: 'When the outcome arrives, the causes may already be old.',
+      scenario: 'A creator is publicly accused through a convincing synthetic clip. The clip is the visible effect, but the causal chain includes source footage, model access, editing choices, anonymous distribution, platform amplification, unverified reposts, and delayed correction. Treating the viral moment as one isolated event hides where intervention and responsibility actually live.',
+      chromaLens: 'Key out the dominant final frame and reveal the layers beneath it. Separate original signal, manipulated overlay, distribution mechanism, and audience response. Reclaim the broadcast by preserving source files, timestamps, contracts, messages, and corrections so chronology can carry more authority than spectacle.',
+      timelessContext: 'The Hermetic principle states that every cause has an effect and every effect has a cause. Historical inquiry, law, medicine, and craft all depend on the same discipline: reconstruct sequence rather than mistaking the visible result for an origin.',
+      practicalTranslation: 'Build a timeline with five columns: event, verified evidence, actor or condition, immediate effect, and next consequence. Mark gaps as unknown instead of filling them with motive. Then distinguish what initiated the chain, what amplified it, and what merely appeared nearby.',
+      value: 'Without chronology, the loudest narrator can reverse cause and effect, blame the response for the injury, or present consequence as persecution. Timeline literacy protects memory, credit, accountability, and strategic response.',
+      coherence: 'Performance controls the final frame. Signal integrity preserves the sequence. Identity and reputation are better read through accumulated evidence than through the most viral interpretation.',
+    },
+    {
+      title: '02 · Compounding Causes and System Design',
+      anchor: 'Anchor statement: What repeats quietly can govern what collapses publicly.',
+      hook: 'Most systems do not fail in one moment. They rehearse the failure in small permissions.',
+      scenario: 'A creative company rewards speed, tolerates unclear ownership, lets powerful people bypass review, and measures success only through reach. Months later, stolen work, fabricated credits, and a public trust crisis appear. The scandal is not a random interruption of the culture; it is the compounded effect of what the culture repeatedly rewarded and omitted.',
+      chromaLens: 'Key out the bad-actor-only overlay and reveal the enabling field: incentives, silence, access, normalized exceptions, and missing safeguards. This does not dilute individual responsibility. It shows why removing one person may leave the causal machinery intact. Reclaim the system by changing the conditions that keep reproducing the result.',
+      timelessContext: 'Older teachings often expressed compounding consequence through sowing and harvest: the seed, soil, repetition, and season precede the visible crop. Modern systems theory uses different language but confirms the pattern—feedback, incentives, and accumulated small decisions shape large outcomes.',
+      practicalTranslation: 'Take one recurring effect and ask five times, “What made this easier to happen?” Include actions and omissions. Audit what the system rewards, what it punishes, what it fails to record, and who benefits from ambiguity. Select one leverage point rather than issuing a general promise.',
+      value: 'If you focus only on dramatic effects, you remain reactive and the system regenerates the problem. Causal design lets you prevent recurrence, direct resources toward leverage, and make accountability structural rather than ceremonial.',
+      coherence: 'Performance announces values after collapse. Signal integrity encodes values into incentives, permissions, records, and repeated behavior before the next test arrives.',
+    },
+    {
+      title: '03 · Causal Agency Without Total-Control Mythology',
+      anchor: 'Anchor statement: Responsibility becomes useful when it is accurate enough to guide the next cause.',
+      hook: 'You are not the cause of everything that reaches you. You are still a cause in what happens next.',
+      scenario: 'Someone is ghosted after months of consistent communication and is told they must have “attracted” it. That explanation erases another person’s agency and converts harm into metaphysical self-blame. The useful inquiry is narrower and stronger: What did each person choose? What conditions shaped the choices? What effect followed? What boundary, question, or exit can now become a new cause?',
+      chromaLens: 'Key out both overlays: total helplessness and total personal causation. Reveal layered agency—your decisions, another person’s decisions, institutional constraints, chance, history, and available leverage. Reclaim the broadcast by owning your contribution precisely while refusing responsibility that belongs elsewhere.',
+      timelessContext: 'Hermetic teaching distinguishes being carried by effects from becoming a conscious cause, but conscious causation is not omnipotence. Ethical traditions across time pair agency with proportion: responsibility follows action, knowledge, capacity, and power.',
+      practicalTranslation: 'Divide the chain into four zones: caused by me, influenced by me, outside my control, and available to me now. Repair the first, negotiate the second, stop claiming the third, and act on the fourth. Define the effect you expect and when you will evaluate it.',
+      value: 'Inaccurate responsibility creates either shame without leverage or innocence without learning. Proportional agency supports repair, boundaries, strategy, and a reputation for telling the truth even when the truth distributes responsibility unevenly.',
+      coherence: 'Signal integrity means causal claims match evidence and ownership matches agency. Identity is not declared innocence or total blame; it is the pattern of causes you knowingly continue, interrupt, repair, and introduce.',
+    },
+  ],
+  lyricAnchors: [
+    {
+      key: 'cause-effect-fire',
+      label: 'Welcome To The Fire',
+      teaching: 'Suppression and silence can accumulate pressure until exposure becomes a downstream effect.',
+      line: 'What was compressed into the dark can become fuel for visible authorship. Trace the pressure before the ignition.',
+    },
+    {
+      key: 'cause-effect-names',
+      label: 'Know Your Names',
+      teaching: 'Chronology prevents consequence from being relabeled as the original cause.',
+      line: 'Do not launder cause with effect. Let the timeline establish which domino moved first.',
+    },
+    {
+      key: 'cause-effect-schemes',
+      label: 'Demonic Schemes',
+      teaching: 'Distorted counsel and manipulated perception become causal inputs with relational consequences.',
+      line: 'Identify the message, incentive, or interference that redirected perception before the collapse.',
+    },
+    {
+      key: 'cause-effect-flowers',
+      label: 'Flowers',
+      teaching: 'Credit, memory, and consequence require accounting for what was carried, erased, and survived.',
+      line: 'Give the labor and the cost a record. Moral accounting begins where convenient memory ends.',
+    },
+    {
+      key: 'cause-effect-priorities',
+      label: 'Misguided Priorities',
+      teaching: 'Repeated priorities sow conditions whose costs eventually become visible.',
+      line: 'Control chosen over healing produces its own harvest. Name what the system has been rewarding.',
+    },
+    {
+      key: 'cause-effect-hierophant',
+      label: 'The Hierophant',
+      teaching: 'A denied pattern can return as lawful consequence rather than mysterious punishment.',
+      line: 'This is not a curse. Reconstruct the pattern whose continuation made the effect increasingly likely.',
+    },
+    {
+      key: 'cause-effect-reckoning',
+      label: 'The Reckoning Already Rolled',
+      teaching: 'Timestamps, repetition, and archives can show that consequence was in motion before recognition arrived.',
+      line: 'The reckoning may already be rolling. Locate the earliest point where a different cause can still enter.',
+    },
+  ],
+  shadowCodes: [
+    {
+      id: 'cause-and-effect-SC-01',
+      displayId: 'SC-01',
+      title: 'Chronology Laundering',
+      definition: 'The visible response or consequence is presented as the original cause while the preceding actions and conditions are removed from view.',
+      diagnostic: 'Where are you reacting to a final frame without reconstructing what happened before it?',
+      collectiveDiagnostic: 'Which public narrative begins the timeline late enough to protect the actor or system that initiated the chain?',
+    },
+    {
+      id: 'cause-and-effect-SC-02',
+      displayId: 'SC-02',
+      title: 'Compounded Permission',
+      definition: 'Small repeated actions, omissions, incentives, or exceptions accumulate until a predictable system-level effect appears.',
+      diagnostic: 'Which recurring result is being rehearsed by a behavior you keep treating as too small to matter?',
+      collectiveDiagnostic: 'What does the system repeatedly reward, tolerate, or fail to record that makes the public failure easier to reproduce?',
+    },
+    {
+      id: 'cause-and-effect-SC-03',
+      displayId: 'SC-03',
+      title: 'Distorted Responsibility',
+      definition: 'Responsibility is assigned as total blame or total innocence instead of being distributed according to evidence, agency, power, and contribution.',
+      diagnostic: 'Where are you claiming responsibility that belongs elsewhere—or refusing the specific contribution that is yours to repair?',
+      collectiveDiagnostic: 'Whose agency is erased when a structural outcome is blamed entirely on an individual with the least power?',
+    },
+  ],
+  lightMappings: [
+    {
+      shadowId: 'cause-and-effect-SC-01',
+      shadowTitle: 'Chronology Laundering',
+      lightId: 'cause-and-effect-LC-01',
+      lightTitle: 'Forensic Sequence',
+      activation: 'Construct an evidence-based timeline, preserve unknowns, and separate initiators, amplifiers, responses, and consequences.',
+      replacementLaw: 'I do not let the final frame rewrite the sequence. I preserve chronology until cause and effect can be named accurately.',
+    },
+    {
+      shadowId: 'cause-and-effect-SC-02',
+      shadowTitle: 'Compounded Permission',
+      lightId: 'cause-and-effect-LC-02',
+      lightTitle: 'Causal Design',
+      activation: 'Identify one repeated incentive, omission, or permission and replace it with a safeguard whose downstream effect can be measured.',
+      replacementLaw: 'I change the condition that reproduces the result, not only the language used after it appears.',
+    },
+    {
+      shadowId: 'cause-and-effect-SC-03',
+      shadowTitle: 'Distorted Responsibility',
+      lightId: 'cause-and-effect-LC-03',
+      lightTitle: 'Proportional Agency',
+      activation: 'Assign ownership according to evidence and power, repair your contribution, and introduce one new cause within your actual control.',
+      replacementLaw: 'I own precisely what is mine, refuse what is not, and become a conscious cause in what happens next.',
+    },
+  ],
+  declarationFields: [
+    {
+      key: 'observation',
+      label: 'Which effect requires its full causal history?',
+      placeholder: 'Name the visible result, then identify the earliest known event or condition in the sequence...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'evidence',
+      label: 'What does the chronology prove, and what remains unknown?',
+      placeholder: 'List timestamps, actions, omissions, incentives, amplifiers, consequences, and gaps...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'practice',
+      label: 'What new cause will you introduce, and what effect should it produce?',
+      placeholder: 'State one action or system change, its expected downstream effect, and when you will evaluate it...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'declaration',
+      label: 'What law will govern your causal agency?',
+      placeholder: 'I preserve the sequence, own my contribution, and introduce causes aligned with the effects I claim to value...',
+      feedbackCopy: responseGuidance,
+    },
+  ],
+  integrationKey: 'I preserve chronology, assign responsibility in proportion to evidence and agency, and introduce causes aligned with the effects I am willing to own.',
+  estimatedMinutes: 75,
+};
+
 const buildModule = (law) => ({
   id: `hermetic-law-${law.number}-${law.slug}`,
   slug: law.slug,
@@ -789,6 +972,7 @@ const buildModule = (law) => ({
   ...(law.slug === 'correspondence' ? correspondenceCurriculum : {}),
   ...(law.slug === 'polarity' ? polarityCurriculum : {}),
   ...(law.slug === 'rhythm' ? rhythmCurriculum : {}),
+  ...(law.slug === 'cause-and-effect' ? causeAndEffectCurriculum : {}),
 });
 
 export const HERMETIC_HALL_FACULTY = {
