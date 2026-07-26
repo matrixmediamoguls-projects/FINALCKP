@@ -27,4 +27,29 @@ describe('Hermetic Hall curriculum', () => {
       'VII. Gender: The Dual Currents of Creation',
     ]);
   });
+
+  it('delivers the complete Mentalism curriculum through the Hall practicum', () => {
+    const mentalism = getHermeticHallModule('mentalism');
+
+    expect(mentalism.sourceTrackIds).toEqual([
+      'Adjacent (Reroute It)',
+      'Thought Form',
+      'I Create As I Speak',
+    ]);
+    expect(mentalism.curriculumSections).toHaveLength(3);
+    mentalism.curriculumSections.forEach((section) => {
+      expect(section).toEqual(expect.objectContaining({
+        hook: expect.any(String),
+        scenario: expect.any(String),
+        chromaLens: expect.any(String),
+        timelessContext: expect.any(String),
+        practicalTranslation: expect.any(String),
+        value: expect.any(String),
+        coherence: expect.any(String),
+      }));
+    });
+    expect(mentalism.shadowCodes).toHaveLength(3);
+    expect(mentalism.lightMappings).toHaveLength(3);
+    expect(mentalism.integrationKey).toContain('behavior authenticates the signal');
+  });
 });

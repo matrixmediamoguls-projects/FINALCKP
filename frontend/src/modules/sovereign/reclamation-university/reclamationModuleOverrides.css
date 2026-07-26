@@ -389,6 +389,8 @@
 .rec-module-gate-controls,
 .module-brief-outcome,
 .module-brief-roadmap,
+.module-brief-curriculum,
+.module-curriculum-section,
 .module-transmission,
 .rec-module-card {
   border-color: rgba(201, 164, 97, .16);
@@ -419,6 +421,10 @@
 .module-brief-icon { border-color: rgba(201,164,97,.38); border-radius: 2px; color: var(--rec-gold); background: rgba(201,164,97,.06); }
 .module-brief-roadmap li { border-radius: 2px; }
 .module-brief-roadmap li > span, .module-brief-meta svg { color: var(--rec-gold); }
+.module-curriculum-section header { border-color: rgba(201,164,97,.16); }
+.module-curriculum-section header p { color: var(--rec-gold-light); }
+.module-curriculum-section h3 { font-family: 'Oxanium', serif; }
+.module-curriculum-section h4 { color: var(--rec-gold); }
 
 @media (max-width: 980px) {
   .rec-university-masthead { grid-template-columns: 1fr 1fr; }

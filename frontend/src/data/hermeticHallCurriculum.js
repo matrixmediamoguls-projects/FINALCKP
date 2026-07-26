@@ -113,6 +113,156 @@ const buildDeclarationFields = (law) => [
   },
 ];
 
+const mentalismCurriculum = {
+  sourceTrackIds: ['Adjacent (Reroute It)', 'Thought Form', 'I Create As I Speak'],
+  initiationCopy: [
+    'Before an identity becomes visible, it is rehearsed in thought. Mentalism is the discipline of noticing which rehearsals have become instructions—and deciding which ones deserve embodiment.',
+    'In 2026, a convincing image, voice, caption, or AI-generated persona can be produced in seconds. The scarce resource is no longer appearance. It is coherence: the match between what you claim, what you repeatedly do, and what others can verify.',
+    'This chamber does not teach that thought magically controls every event. It teaches that perception organizes attention, attention influences choice, and repeated choices accumulate into identity. Reclaim the broadcast at the point where interpretation becomes behavior.',
+  ],
+  learningObjectives: [
+    'Distinguish an original signal—observable values, choices, and evidence—from an inherited or algorithmic mental overlay.',
+    'Trace one repeated thought through attention, behavior, and reputation without confusing mindset with total control of circumstance.',
+    'Use a pause, evidence check, and chosen instruction to interrupt an automatic identity performance.',
+    'Write a Mentalism declaration whose truth can be tested across private conduct, digital expression, and public consequence.',
+  ],
+  curriculumSections: [
+    {
+      title: '01 · The Thought Before the Form',
+      anchor: 'Anchor statement: Every visible pattern has an invisible rehearsal.',
+      hook: 'The feed shows the result. Mentalism asks what instruction kept running before the result appeared.',
+      scenario: 'A creative professional opens a platform to post new work, sees a polished AI-generated campaign, and thinks, “I am already behind.” That sentence changes the next hour: they compare instead of create, imitate instead of decide, and publish a version optimized for approval. The audience sees content; the deeper event is a thought becoming a production brief.',
+      chromaLens: 'Key out the overlay that says visibility equals value. Reveal the original signal: the work you intended to make, the standard you can defend, and the behavior that supports it. Reclamation begins when you stop letting an algorithm supply the meaning of your own evidence.',
+      timelessContext: 'The Hermetic principle of Mentalism places mind before manifested form. Older traditions used different language, but humans have always acted through interpretation: an event is perceived, given meaning, and converted into response. The interface is new; the sequence is not.',
+      practicalTranslation: 'Watch for compressed instructions such as “I am late,” “no one cares,” or “I must look certain.” Record the next observable behavior each thought produces: abandoning a draft, copying a trend, delaying a message, or overstating success. The thought is not yet truth; its behavioral trail is evidence.',
+      value: 'If the instruction stays unnamed, it can direct your labor while pretending to be reality. When you identify it, you recover a decision point before time, trust, and creative energy are spent.',
+      coherence: 'Signal integrity starts before publication. Identity is not the sentence you repeat about yourself; it is the pattern your repeated instructions train you to perform.',
+    },
+    {
+      title: '02 · Overlay, Evidence, and the Constructed Self',
+      anchor: 'Anchor statement: A believable image is not the same as a trustworthy signal.',
+      hook: 'When anything can be generated, credibility moves from appearance to continuity.',
+      scenario: 'A deepfake clip, synthetic testimonial, or carefully edited founder story circulates faster than its verification. In private, the same mechanism appears through texting: a delayed reply becomes “rejection,” a read receipt becomes “disrespect,” and silence is filled with a complete narrative before any evidence arrives.',
+      chromaLens: 'Treat the first interpretation as an overlay, not a verdict. Key out what was added: imagined motive, borrowed fear, platform incentive, or identity performance. Reveal what remains: timestamp, wording, prior pattern, direct observation, and what is still unknown. Reclaiming perception means refusing to broadcast certainty you have not earned.',
+      timelessContext: 'Hermetic study distinguishes the causal power of mind from careless fantasy. Long before synthetic media, rumor, masks, propaganda, and reputation shaped collective reality. Technology has accelerated construction; it has not removed the duty of discernment.',
+      practicalTranslation: 'Separate observation from interpretation in two columns. “The reply arrived two days later” is observation. “They wanted to diminish me” is interpretation. Then test the interpretation through pattern, context, and direct inquiry before converting it into accusation, withdrawal, or public content.',
+      value: 'Ignoring this distinction makes you easy to provoke and easy to manipulate. Mastering it protects relationships, decisions, and audience trust because your claims remain proportional to your evidence.',
+      coherence: 'Performance asks, “What story will land?” Signal integrity asks, “What can I honestly support across every channel?” A coherent identity does not require perfect certainty; it requires truthful calibration.',
+    },
+    {
+      title: '03 · Conscious Authorship as Observable Practice',
+      anchor: 'Anchor statement: You reclaim the broadcast by changing the instruction and proving it in behavior.',
+      hook: 'A new thought matters only when it survives contact with action.',
+      scenario: 'A creator says authenticity matters but buys engagement, disappears when challenged, and lets an AI assistant imitate expertise they have not earned. Another creator states what is known, labels what is assisted, corrects errors visibly, and keeps commitments when attention drops. Both have a brand; only one is building signal integrity.',
+      chromaLens: 'Key out the performed identity—the version designed only for reaction. Reveal the operational self: choices made without applause, disclosures made when concealment would be easier, and standards maintained across private and public rooms. Reclamation is control of the broadcast through aligned conduct, not control of everyone’s perception.',
+      timelessContext: 'Hermetic Mentalism concerns disciplined direction of mind, not denial of material conditions or other people’s agency. Across older ethical systems, character is formed through repeated practice. Thought initiates direction; habit gives it weight.',
+      practicalTranslation: 'Use the Mentalism loop: pause before reaction, name the active instruction, test it against evidence, choose a replacement, and perform one observable act within twenty-four hours. Repeat until the new instruction has a behavioral record.',
+      value: 'Without practice, reflection becomes another aesthetic. With practice, you gain earlier intervention, cleaner decisions, and a reputation that does not collapse when the performance layer is removed.',
+      coherence: 'The doctrine is simple: signal over performance, evidence over overlay, accumulated behavior over announced identity. The mind authors direction; aligned action authenticates the signal.',
+    },
+  ],
+  lyricAnchors: [
+    {
+      key: 'mentalism-adjacent',
+      label: 'Adjacent (Reroute It)',
+      teaching: 'Vision precedes construction; tools extend authorship but do not replace it.',
+      line: 'Cities are drawn from a mind, then built from within. Identify the plan beneath the visible structure.',
+    },
+    {
+      key: 'mentalism-thought-form',
+      label: 'Thought Form',
+      teaching: 'A repeated thought becomes a medium through which life is interpreted and organized.',
+      line: 'The thought form came first; the life came second. Trace the instruction before judging the outcome.',
+    },
+    {
+      key: 'mentalism-speech',
+      label: 'I Create As I Speak',
+      teaching: 'Speech converts mental direction into a signal others can receive, test, and remember.',
+      line: 'Each line is a law. Speak only what you are prepared to support through behavior.',
+    },
+  ],
+  shadowCodes: [
+    {
+      id: 'mentalism-SC-01',
+      displayId: 'SC-01',
+      title: 'Inherited Instruction',
+      definition: 'A repeated belief borrowed from family, culture, trauma, or an algorithm is mistaken for an original conclusion.',
+      diagnostic: 'Which sentence about who you are keeps directing behavior even though you have never tested it against present evidence?',
+      collectiveDiagnostic: 'Which identity script does your community repeat because the platform, institution, or dominant story rewards it?',
+    },
+    {
+      id: 'mentalism-SC-02',
+      displayId: 'SC-02',
+      title: 'Overlay as Evidence',
+      definition: 'An interpretation, fear, or generated image is treated as proof before observable facts are separated from added meaning.',
+      diagnostic: 'Where have you converted a post, delay, silence, or facial expression into certainty about another person’s intent?',
+      collectiveDiagnostic: 'Which viral claim or synthetic artifact is shaping group behavior before provenance and context are verified?',
+    },
+    {
+      id: 'mentalism-SC-03',
+      displayId: 'SC-03',
+      title: 'Performed Authorship',
+      definition: 'The identity being broadcast is optimized for reaction but unsupported by repeated conduct.',
+      diagnostic: 'Where does your public claim exceed the private behavior available to prove it?',
+      collectiveDiagnostic: 'Which public values are rewarded as language while the system’s repeated behavior contradicts them?',
+    },
+  ],
+  lightMappings: [
+    {
+      shadowId: 'mentalism-SC-01',
+      shadowTitle: 'Inherited Instruction',
+      lightId: 'mentalism-LC-01',
+      lightTitle: 'Examined Direction',
+      activation: 'Pause, name the inherited sentence, identify its source, and compare it with current evidence before obeying it.',
+      replacementLaw: 'I do not confuse repetition with truth. I test the instruction before I animate it.',
+    },
+    {
+      shadowId: 'mentalism-SC-02',
+      shadowTitle: 'Overlay as Evidence',
+      lightId: 'mentalism-LC-02',
+      lightTitle: 'Calibrated Perception',
+      activation: 'Separate what was observed, what was inferred, what remains unknown, and what action would produce better evidence.',
+      replacementLaw: 'I key out assumption, preserve uncertainty, and broadcast only what the evidence can carry.',
+    },
+    {
+      shadowId: 'mentalism-SC-03',
+      shadowTitle: 'Performed Authorship',
+      lightId: 'mentalism-LC-03',
+      lightTitle: 'Embodied Signal',
+      activation: 'Choose one claim you make about yourself and complete a private, observable action that gives the claim a record.',
+      replacementLaw: 'My identity is accumulated behavior. I make the signal credible through alignment.',
+    },
+  ],
+  declarationFields: [
+    {
+      key: 'observation',
+      label: 'What mental instruction is currently directing the pattern?',
+      placeholder: 'Write the exact repeated sentence, not a general theme...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'evidence',
+      label: 'What is signal, what is overlay, and what remains unknown?',
+      placeholder: 'Separate observable facts from interpretation and name the missing evidence...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'practice',
+      label: 'What observable act will test a different instruction within twenty-four hours?',
+      placeholder: 'Name the situation, the replacement instruction, and the behavior that will prove it...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'declaration',
+      label: 'What law will govern your broadcast now?',
+      placeholder: 'I witness the thought, test the evidence, and align my conduct with the signal I choose...',
+      feedbackCopy: responseGuidance,
+    },
+  ],
+  integrationKey: 'Mind sets direction; behavior authenticates the signal. I key out inherited overlay, test perception against evidence, and build identity through conduct I can repeat and verify.',
+  estimatedMinutes: 60,
+};
+
 const buildModule = (law) => ({
   id: `hermetic-law-${law.number}-${law.slug}`,
   slug: law.slug,
@@ -170,6 +320,7 @@ const buildModule = (law) => ({
   integrationKey: law.replacementLaw,
   xpReward: 700,
   estimatedMinutes: 45,
+  ...(law.slug === 'mentalism' ? mentalismCurriculum : {}),
 });
 
 export const HERMETIC_HALL_FACULTY = {

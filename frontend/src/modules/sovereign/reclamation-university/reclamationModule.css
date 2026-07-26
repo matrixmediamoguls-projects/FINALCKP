@@ -197,6 +197,66 @@
   color: #fca5a5;
 }
 
+.module-brief-curriculum {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.module-curriculum-sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.module-curriculum-section {
+  padding: clamp(1.1rem, 2.5vw, 1.75rem);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.module-curriculum-section header {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.module-curriculum-section h3 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+}
+
+.module-curriculum-section header p {
+  margin-top: 0.55rem;
+  color: #fca5a5;
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+.module-curriculum-section > div {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.28fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.module-curriculum-section h4 {
+  color: #d4d4d8;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.module-curriculum-section > div p {
+  max-width: 72ch;
+  color: #a1a1aa;
+  line-height: 1.75;
+}
+
 .module-transmission {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -644,6 +704,11 @@
 }
 
 @media (max-width: 720px) {
+  .module-curriculum-section > div {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
   .rec-module-root {
     padding: 0.75rem;
   }

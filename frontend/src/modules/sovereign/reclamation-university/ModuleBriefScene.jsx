@@ -56,6 +56,39 @@ export default function ModuleBriefScene({ copy = [], module, onCross }) {
         </section>
       )}
 
+      {module?.curriculumSections?.length > 0 && (
+        <section className="module-brief-curriculum" aria-labelledby="module-curriculum-title">
+          <div className="module-brief-section-heading">
+            <p className="rec-module-kicker">Core transmission</p>
+            <h2 id="module-curriculum-title">Mentalism through the Chroma Key lens</h2>
+          </div>
+          <div className="module-curriculum-sections">
+            {module.curriculumSections.map((section) => (
+              <article key={section.title} className="module-curriculum-section">
+                <header>
+                  <h3>{section.title}</h3>
+                  <p>{section.anchor}</p>
+                </header>
+                {[
+                  ['Hook', section.hook],
+                  ['Real-world 2026 scenario', section.scenario],
+                  ['Chroma Key / Reclamation lens', section.chromaLens],
+                  ['Historical / timeless context', section.timelessContext],
+                  ['Practical translation', section.practicalTranslation],
+                  ['Why this matters', section.value],
+                  ['Coherence reinforcement', section.coherence],
+                ].map(([label, content]) => (
+                  <div key={label}>
+                    <h4>{label}</h4>
+                    <p>{content}</p>
+                  </div>
+                ))}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
       <section className="module-brief-roadmap" aria-labelledby="module-roadmap-title">
         <div className="module-brief-section-heading">
           <p className="rec-module-kicker">The sequence</p>
