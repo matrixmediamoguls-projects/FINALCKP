@@ -77,4 +77,29 @@ describe('Hermetic Hall curriculum', () => {
     expect(correspondence.lightMappings).toHaveLength(3);
     expect(correspondence.integrationKey).toContain('preserve the differences');
   });
+
+  it('delivers the complete Polarity curriculum through the Hall practicum', () => {
+    const polarity = getHermeticHallModule('polarity');
+
+    expect(polarity.sourceTrackIds).toEqual([
+      'Hold On Through The Burial',
+      'Flip It',
+      'Where The Phantom Fell',
+    ]);
+    expect(polarity.curriculumSections).toHaveLength(3);
+    polarity.curriculumSections.forEach((section) => {
+      expect(section).toEqual(expect.objectContaining({
+        hook: expect.any(String),
+        scenario: expect.any(String),
+        chromaLens: expect.any(String),
+        timelessContext: expect.any(String),
+        practicalTranslation: expect.any(String),
+        value: expect.any(String),
+        coherence: expect.any(String),
+      }));
+    });
+    expect(polarity.shadowCodes).toHaveLength(3);
+    expect(polarity.lightMappings).toHaveLength(3);
+    expect(polarity.integrationKey).toContain('spectrum beneath the binary');
+  });
 });
