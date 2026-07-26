@@ -102,4 +102,30 @@ describe('Hermetic Hall curriculum', () => {
     expect(polarity.lightMappings).toHaveLength(3);
     expect(polarity.integrationKey).toContain('spectrum beneath the binary');
   });
+
+  it('delivers the complete Rhythm curriculum through the Hall practicum', () => {
+    const rhythm = getHermeticHallModule('rhythm');
+
+    expect(rhythm.sourceTrackIds).toEqual([
+      'Concrete Warnings',
+      'Remember the Price (When You Speak The Name)',
+      'Blueprint of the Divine',
+      'Through The Fog',
+    ]);
+    expect(rhythm.curriculumSections).toHaveLength(3);
+    rhythm.curriculumSections.forEach((section) => {
+      expect(section).toEqual(expect.objectContaining({
+        hook: expect.any(String),
+        scenario: expect.any(String),
+        chromaLens: expect.any(String),
+        timelessContext: expect.any(String),
+        practicalTranslation: expect.any(String),
+        value: expect.any(String),
+        coherence: expect.any(String),
+      }));
+    });
+    expect(rhythm.shadowCodes).toHaveLength(3);
+    expect(rhythm.lightMappings).toHaveLength(3);
+    expect(rhythm.integrationKey).toContain('protect my baseline');
+  });
 });

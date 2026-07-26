@@ -566,6 +566,168 @@ const polarityCurriculum = {
   estimatedMinutes: 60,
 };
 
+const rhythmCurriculum = {
+  curriculumTitle: 'Rhythm through the Chroma Key lens',
+  sourceTrackIds: [
+    'Concrete Warnings',
+    'Remember the Price (When You Speak The Name)',
+    'Blueprint of the Divine',
+    'Through The Fog',
+  ],
+  initiationCopy: [
+    'A phase can influence you without defining you. Rhythm begins when you recognize the swing early enough to choose how you will travel through it.',
+    'In 2026, attention, income, visibility, communication, and creative energy all move through accelerated cycles. Platforms call a dip failure and a spike destiny. The law of Rhythm restores time to the analysis.',
+    'This chamber teaches neither passive waiting nor perfect control. It teaches phase literacy: identify the cycle, distinguish recurrence from inevitability, protect the baseline, and make the action that fits the season without surrendering authorship to it.',
+  ],
+  learningObjectives: [
+    'Identify a recurring cycle and distinguish its current phase from a permanent identity or final outcome.',
+    'Map the triggers, duration, behaviors, and consequences that make a personal or collective rhythm observable.',
+    'Use phase-appropriate action and baseline protections to reduce the force of an unhelpful swing.',
+    'Design a repeatable rhythm of acknowledgment, action, release, and return that supports signal integrity over time.',
+  ],
+  curriculumSections: [
+    {
+      title: '01 · The Phase Is Not the Self',
+      anchor: 'Anchor statement: A temporary swing becomes a prison when you mistake it for your name.',
+      hook: 'The tide is real. So is the shore that remains when it changes.',
+      scenario: 'A creator’s reach drops for three weeks after a platform update. Fewer views become “my work no longer matters,” and that identity claim changes behavior: they post frantically, imitate trends, antagonize the audience, then disappear. A temporary distribution phase becomes a self-authored reputational cycle.',
+      chromaLens: 'Key out the overlay that turns a measurement window into an identity. Reveal the signal beneath it: the actual reach change, the platform condition, the quality of the work, the audience response, and the behavior produced by interpretation. Reclaim the broadcast by naming the phase accurately before reacting to it.',
+      timelessContext: 'The Hermetic principle of Rhythm describes tides, pendulum swings, rise and fall, action and reaction. Agricultural and navigational cultures understood that timing alters what an action can produce. Modern dashboards make cycles look immediate; they do not abolish seasonality.',
+      practicalTranslation: 'Replace “I am failing” with a dated observation: “Reach is down thirty percent over twenty-one days.” Compare it with a longer baseline, identify external changes, and record the behaviors the dip is provoking. A phase can be measured; an identity claim cannot.',
+      value: 'When you confuse phase with self, you make permanent decisions from temporary pressure. Phase literacy protects creative direction, emotional stability, and audience trust while the conditions change.',
+      coherence: 'Performance overreacts to the current metric. Signal integrity preserves the standard across the swing. Identity is the behavior you sustain through phases, not the phase currently passing through you.',
+    },
+    {
+      title: '02 · The Pattern, the Pendulum, and the Protected Baseline',
+      anchor: 'Anchor statement: You may not stop the swing, but you can reduce what it is allowed to take.',
+      hook: 'A recurring pattern is not fate. It is a system with an entrance, a peak, and a return.',
+      scenario: 'A delayed text triggers uncertainty, repeated checking, an accusatory message, shame, and then silence. Days later the relationship reconnects, but nothing in the sequence is examined, so the next delay restarts the same pendulum. At collective scale, outrage cycles work similarly: provocation, amplification, certainty, punishment, fatigue, forgetting, repeat.',
+      chromaLens: 'Key out the dramatic peak and reveal the entire waveform. What initiates the cycle? Which behavior amplifies it? Where does choice disappear? What remains after the swing? Reclaiming control means installing a protected baseline—a practice you maintain at both poles so the cycle cannot fully author the broadcast.',
+      timelessContext: 'Hermetic teaching describes neutralization as rising in consciousness so the pendulum’s return does not carry the practitioner as far. This is not immunity from emotion or consequence. It is the old human discipline of maintaining orientation while conditions fluctuate.',
+      practicalTranslation: 'Map one full cycle in five points: trigger, rise, peak, descent, return. Choose a baseline rule for the next pass: no public response before verification, no second message for twenty-four hours, minimum sleep before major decisions, or a fixed creative practice independent of analytics.',
+      value: 'Without a baseline, every peak can rewrite your values and every trough can erase your progress. A protected minimum preserves agency, shortens recovery, and makes your signal more trustworthy under pressure.',
+      coherence: 'Signal integrity is not emotional flatness. It is alignment that survives movement. The baseline keeps private behavior, public communication, and stated values in correspondence throughout the cycle.',
+    },
+    {
+      title: '03 · Timing, Repetition, and Deliberate Return',
+      anchor: 'Anchor statement: Repetition becomes refinement only when the return carries new information.',
+      hook: 'Coming back to the same place does not mean you are the same person.',
+      scenario: 'A professional alternates between overproduction and burnout. Each comeback is branded as a total rebirth, followed by the same impossible schedule and another disappearance. Elsewhere, a creator uses a slower loop: publish, observe, recover, revise, return. Both repeat; only one cycle learns.',
+      chromaLens: 'Key out the spectacle of reinvention and reveal the quality of the return. Did the system incorporate evidence, or merely reset the aesthetic? Reclaim the broadcast by designing a cycle whose rest, review, and revision phases are as intentional as its visible release.',
+      timelessContext: 'Ritual calendars, apprenticeship, musical meter, and seasonal labor all use repetition to build capacity. Hermetic Rhythm adds awareness of compensation and return: ascent contains descent, exertion requires recovery, and a cycle can refine rather than merely repeat.',
+      practicalTranslation: 'Build a four-part operating rhythm: acknowledge the present facts, ascend through the necessary work, release what cannot be carried forward, and return with one documented adjustment. Give each phase a duration, boundary, and completion signal.',
+      value: 'Ignoring rhythm produces avoidable burnout, missed timing, and the illusion that inconsistency is a character flaw. Designing rhythm converts energy into sustainable output and makes improvement cumulative.',
+      coherence: 'Performance worships the visible peak. Signal integrity includes preparation, silence, recovery, and return. A durable identity is built by the quality of the whole cycle.',
+    },
+  ],
+  lyricAnchors: [
+    {
+      key: 'rhythm-warnings',
+      label: 'Concrete Warnings',
+      teaching: 'Repeated consequences become readable when the full pattern is tracked instead of isolated at its peak.',
+      line: 'History repeats through patterns etched in pain. Map the beat before deciding the next response.',
+    },
+    {
+      key: 'rhythm-price',
+      label: 'Remember the Price',
+      teaching: 'Long-cycle tempering reveals that transformation has seasons, costs, and accumulated returns.',
+      line: 'Ten winters can temper the will. Name what the cycle trained and what price must not be paid again.',
+    },
+    {
+      key: 'rhythm-blueprint',
+      label: 'Blueprint of the Divine',
+      teaching: 'A deliberate cycle turns recurrence into a practice of refinement.',
+      line: 'Acknowledge. Ascend. Release. Return. Give each phase an observable purpose.',
+    },
+    {
+      key: 'rhythm-fog',
+      label: 'Through The Fog',
+      teaching: 'Concealment and emergence are phases; waiting can be active when it protects readiness and perception.',
+      line: 'Through the fog, wait without surrendering direction. Prepare for the moment the signal clears.',
+    },
+  ],
+  shadowCodes: [
+    {
+      id: 'rhythm-SC-01',
+      displayId: 'SC-01',
+      title: 'Phase Identity',
+      definition: 'A temporary rise, decline, delay, or emotional state is treated as a permanent identity or final verdict.',
+      diagnostic: 'Which current phase have you converted into a sentence about who you are or what will always happen?',
+      collectiveDiagnostic: 'Which short measurement window is being used to define the permanent worth or future of a person, group, or work?',
+    },
+    {
+      id: 'rhythm-SC-02',
+      displayId: 'SC-02',
+      title: 'Pendulum Capture',
+      definition: 'A recurring trigger carries behavior from one reactive pole to the other because no protected baseline interrupts the sequence.',
+      diagnostic: 'At what point in your recurring cycle does reaction replace choice?',
+      collectiveDiagnostic: 'Which outrage, panic, or attention cycle repeatedly moves the group away from its stated standards?',
+    },
+    {
+      id: 'rhythm-SC-03',
+      displayId: 'SC-03',
+      title: 'Unintegrated Return',
+      definition: 'The cycle restarts with new language or aesthetics but without incorporating evidence from the previous pass.',
+      diagnostic: 'Which comeback, reset, or fresh start keeps rebuilding the conditions of the last collapse?',
+      collectiveDiagnostic: 'Which institutional reform repeatedly announces renewal while preserving the incentives that recreate the problem?',
+    },
+  ],
+  lightMappings: [
+    {
+      shadowId: 'rhythm-SC-01',
+      shadowTitle: 'Phase Identity',
+      lightId: 'rhythm-LC-01',
+      lightTitle: 'Temporal Discernment',
+      activation: 'Date the observation, compare it with a longer baseline, and separate the current condition from the identity claim attached to it.',
+      replacementLaw: 'I name the phase without making it my identity. I preserve perspective across the swing.',
+    },
+    {
+      shadowId: 'rhythm-SC-02',
+      shadowTitle: 'Pendulum Capture',
+      lightId: 'rhythm-LC-02',
+      lightTitle: 'Protected Baseline',
+      activation: 'Map the trigger-to-return sequence and install one minimum standard that remains active at both poles.',
+      replacementLaw: 'The cycle may move through me, but it does not own my baseline or author my response.',
+    },
+    {
+      shadowId: 'rhythm-SC-03',
+      shadowTitle: 'Unintegrated Return',
+      lightId: 'rhythm-LC-03',
+      lightTitle: 'Deliberate Renewal',
+      activation: 'Complete the cycle with review, recovery, and one documented system change before beginning the next ascent.',
+      replacementLaw: 'I return with evidence integrated. Repetition becomes refinement through what I change.',
+    },
+  ],
+  declarationFields: [
+    {
+      key: 'observation',
+      label: 'Which cycle are you in, and what phase is active now?',
+      placeholder: 'Name the trigger, rise, peak, descent, or return using dated and observable evidence...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'evidence',
+      label: 'What repeats, and what proves this phase is not your permanent identity?',
+      placeholder: 'Compare prior cycles, duration, behavior, conditions, and the longer baseline...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'practice',
+      label: 'What baseline or phase-appropriate action will you repeat?',
+      placeholder: 'State one standard that will remain active through both the rise and the fall...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'declaration',
+      label: 'What law will govern your movement through this cycle?',
+      placeholder: 'I recognize the phase, protect my baseline, and return with the lesson integrated...',
+      feedbackCopy: responseGuidance,
+    },
+  ],
+  integrationKey: 'I recognize the phase without becoming it, protect my baseline through the swing, and return with evidence integrated into the next cycle.',
+  estimatedMinutes: 65,
+};
+
 const buildModule = (law) => ({
   id: `hermetic-law-${law.number}-${law.slug}`,
   slug: law.slug,
@@ -626,6 +788,7 @@ const buildModule = (law) => ({
   ...(law.slug === 'mentalism' ? mentalismCurriculum : {}),
   ...(law.slug === 'correspondence' ? correspondenceCurriculum : {}),
   ...(law.slug === 'polarity' ? polarityCurriculum : {}),
+  ...(law.slug === 'rhythm' ? rhythmCurriculum : {}),
 });
 
 export const HERMETIC_HALL_FACULTY = {
