@@ -911,6 +911,151 @@ const causeAndEffectCurriculum = {
   estimatedMinutes: 75,
 };
 
+const genderCurriculum = {
+  curriculumTitle: 'Gender through the Chroma Key lens',
+  sourceTrackIds: ['Art! Official!', 'Elemental Orchestra'],
+  initiationCopy: [
+    'Creation requires both an impulse that gives direction and a field capable of receiving, developing, and returning information.',
+    'In this chamber, Gender names generative functions—not biological sex, gender identity, or a hierarchy of social roles. Every person and creative system can direct, receive, initiate, incubate, structure, adapt, and bring form into being.',
+    'In 2026, the principle is visible wherever human vision meets responsive technology, wherever teams alternate leadership and listening, and wherever identity becomes whole enough to unite will with sensitivity. The task is not to perform a stereotype. It is to integrate the currents required by the work.',
+  ],
+  learningObjectives: [
+    'Explain Hermetic Gender as the interaction of generative functions without reducing those functions to sex, identity, or prescribed social roles.',
+    'Diagnose where a creative or relational process is overdirected, underdirected, unreceptive, or unable to convert reception into form.',
+    'Distinguish integrated human authorship from both tool denial and unaccountable automation.',
+    'Design a creation cycle that deliberately alternates intention, reception, discernment, structure, and release.',
+  ],
+  curriculumSections: [
+    {
+      title: '01 · The Two Currents of Creation',
+      anchor: 'Anchor statement: Direction without reception becomes force; reception without direction becomes drift.',
+      hook: 'Nothing is created by command alone. Nothing becomes form by openness alone.',
+      scenario: 'A creative director enters every collaboration with the answer already fixed. Feedback is requested but never allowed to alter the work, so the team becomes decorative. In another studio, every idea is welcomed, no decision is made, and the project dissolves into endless possibility. One process has direction without reception; the other receives without directing.',
+      chromaLens: 'Key out the gendered stereotypes attached to command and care. Reveal the underlying functions: initiating, receiving, discerning, structuring, and completing. Reclaim the broadcast by asking which function the work requires now, not which role a person has been socially assigned.',
+      timelessContext: 'The Hermetic principle of Gender describes generative activity throughout nature and mind. Historical language often called the projective current masculine and the receptive current feminine. A modern reading can preserve the functional insight while refusing the claim that capacities belong exclusively to particular bodies or identities.',
+      practicalTranslation: 'Map a current project through five functions: intention, reception, selection, formation, and release. Mark where the process stalls. If intention is absent, define the decision. If reception is absent, gather real feedback. If selection is absent, set criteria. If formation is absent, assign structure and a deadline.',
+      value: 'When one function dominates, collaboration becomes coercive or creation remains unfinished. Functional literacy lets teams use the right mode at the right time and prevents identity stereotypes from hiding ordinary process failures.',
+      coherence: 'Performance attaches authority or sensitivity to a role. Signal integrity proves both through behavior. A coherent creator can direct without becoming closed and receive without surrendering authorship.',
+    },
+    {
+      title: '02 · Human Vision, Responsive Machine',
+      anchor: 'Anchor statement: The tool can return possibilities; authorship remains responsible for direction and consequence.',
+      hook: 'Generation is not authorship until someone chooses what the output will mean and answer for.',
+      scenario: 'An artist gives a generative system a vague prompt, accepts the first output, and calls the result fully authored. Another artist develops a concept, selects references responsibly, tests many outputs, rejects distortions, edits the material, discloses assistance, and accepts responsibility for the final work. Both used AI; only one completed the generative circuit with discernment and accountability.',
+      chromaLens: 'Key out both overlays: the machine presented as an independent creative soul and the human presented as untouched by tools. Reveal the layered process—vision, dataset, prompt, generated variation, selection, revision, disclosure, and impact. Reclaim the broadcast by keeping human intention and accountability legible at every layer.',
+      timelessContext: 'Artists have always created through responsive materials: pigment resists, instruments resonate, language carries inherited forms, and collaborators return unexpected information. Generative technology intensifies the response, but the timeless question remains: who directs, who selects, who is credited, and who owns the consequence?',
+      practicalTranslation: 'Create an authorship ledger for one AI-assisted work. Record the originating concept, source permissions, tool contributions, rejected outputs, human revisions, disclosure decision, and final responsibility. If no meaningful human selection or transformation occurred, describe the role honestly rather than inflating it.',
+      value: 'Without this distinction, trust erodes and creative identity becomes indistinguishable from access to a tool. Integrated authorship protects provenance, strengthens artistic voice, and gives audiences a truthful basis for evaluating the work.',
+      coherence: 'Performance says either “the machine made me brilliant” or “the machine touched nothing.” Signal integrity shows the actual circuit. Identity rests in the pattern of choices that directed and refined the result.',
+    },
+    {
+      title: '03 · Inner Union and Relational Reciprocity',
+      anchor: 'Anchor statement: Wholeness is the ability to change modes without abandoning the self.',
+      hook: 'The self that can only lead is fragile. So is the self that can only yield.',
+      scenario: 'In a relationship or team chat, one person always explains, solves, and decides; the other absorbs, accommodates, and waits. Over time, both identities harden around the pattern. The director loses access to uncertainty and care. The receiver loses access to boundary and initiative. Resentment grows not because either current is wrong, but because neither is free to move.',
+      chromaLens: 'Key out the role overlay—strong versus soft, leader versus supporter, masculine versus feminine—and reveal the behavioral exchange underneath. Who initiates? Who listens? Whose information changes the plan? Who carries the emotional and operational labor? Reclaim the broadcast by making reciprocity observable rather than merely claimed.',
+      timelessContext: 'Images of sacred union, inner marriage, and complementary forces appear across older traditions as metaphors for psychic and creative integration. Their useful modern application is not compulsory coupling or binary identity. It is the cultivation of capacities that culture often separates.',
+      practicalTranslation: 'Run a reciprocity audit across the last three decisions in a relationship or team. Record who proposed, who questioned, who adapted, who completed, and who received credit. In the next decision, deliberately practice the underused current: ask before solving, state a boundary before accommodating, or transfer real decision authority.',
+      value: 'Rigid roles make people predictable, exploitable, and incomplete. Integrated range improves consent, leadership, collaboration, intimacy, and the capacity to create without reproducing domination.',
+      coherence: 'Signal integrity appears when values of equality and care are visible in decision rights, listening, credit, and labor. Identity becomes generative when behavior can unite direction with receptivity across channels.',
+    },
+  ],
+  lyricAnchors: [
+    {
+      key: 'gender-art-official',
+      label: 'Art! Official!',
+      teaching: 'Human vision and responsive technology can form one creative circuit when authorship remains deliberate and accountable.',
+      line: 'Where circuitry meets soul, keep the vision, selection, disclosure, and consequence traceable to the author.',
+    },
+    {
+      key: 'gender-elemental',
+      label: 'Elemental Orchestra',
+      teaching: 'Creation and healing require dialogue between the wound and witness, need and boundary, child and architect.',
+      line: 'Receive what is true, then give it structure. Let every element contribute without surrendering the whole composition.',
+    },
+  ],
+  shadowCodes: [
+    {
+      id: 'gender-SC-01',
+      displayId: 'SC-01',
+      title: 'Rigid Role Assignment',
+      definition: 'Generative capacities are assigned to sex, identity, status, or role instead of being developed and evaluated as observable functions.',
+      diagnostic: 'Which capacity—direction, receptivity, boundary, care, initiative, or adaptation—have you treated as incompatible with who you are?',
+      collectiveDiagnostic: 'Which people are expected to lead, listen, care, decide, or yield because of identity rather than demonstrated capacity and consent?',
+    },
+    {
+      id: 'gender-SC-02',
+      displayId: 'SC-02',
+      title: 'Unaccountable Generation',
+      definition: 'A tool, system, or collaborator produces material while authorship, selection, provenance, credit, and consequence remain obscured.',
+      diagnostic: 'Where does your claim of authorship exceed the intention, discernment, transformation, or responsibility you actually contributed?',
+      collectiveDiagnostic: 'Which creative system captures value from responsive tools or people while hiding their inputs and concentrating credit elsewhere?',
+    },
+    {
+      id: 'gender-SC-03',
+      displayId: 'SC-03',
+      title: 'Divided Current',
+      definition: 'Direction and receptivity become fixed in separate people or phases, producing coercion, passivity, resentment, or unfinished creation.',
+      diagnostic: 'Where can you only command or only accommodate, even when the situation requires the opposite capacity?',
+      collectiveDiagnostic: 'Whose labor receives and carries the system while someone else retains direction, visibility, and credit?',
+    },
+  ],
+  lightMappings: [
+    {
+      shadowId: 'gender-SC-01',
+      shadowTitle: 'Rigid Role Assignment',
+      lightId: 'gender-LC-01',
+      lightTitle: 'Functional Range',
+      activation: 'Name the function the moment requires and practice it as a learnable behavior rather than assigning it through identity.',
+      replacementLaw: 'No generative capacity is forbidden to my identity. I develop the function the work and truth require.',
+    },
+    {
+      shadowId: 'gender-SC-02',
+      shadowTitle: 'Unaccountable Generation',
+      lightId: 'gender-LC-02',
+      lightTitle: 'Integrated Authorship',
+      activation: 'Document intention, inputs, tool contribution, selection, revision, disclosure, credit, and ownership of consequence.',
+      replacementLaw: 'I unite responsive tools with deliberate vision and keep authorship accountable from source to effect.',
+    },
+    {
+      shadowId: 'gender-SC-03',
+      shadowTitle: 'Divided Current',
+      lightId: 'gender-LC-03',
+      lightTitle: 'Generative Reciprocity',
+      activation: 'Redistribute one real act of listening, decision authority, completion labor, boundary-setting, or credit in the next cycle.',
+      replacementLaw: 'I direct without closing, receive without disappearing, and create through reciprocal power.',
+    },
+  ],
+  declarationFields: [
+    {
+      key: 'observation',
+      label: 'Which generative function is overused, missing, or assigned by role?',
+      placeholder: 'Name what is happening through direction, reception, selection, formation, release, labor, or credit...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'evidence',
+      label: 'What behavior proves how the currents are currently distributed?',
+      placeholder: 'Use recent decisions, feedback, revisions, boundaries, labor, tool use, disclosures, and outcomes...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'practice',
+      label: 'Which underused current will you practice in the next creation cycle?',
+      placeholder: 'State the moment, the capacity, the observable behavior, and who should experience the change...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'declaration',
+      label: 'What law will govern your generative practice?',
+      placeholder: 'I unite direction with receptivity, preserve accountable authorship, and distribute power through observable reciprocity...',
+      feedbackCopy: responseGuidance,
+    },
+  ],
+  integrationKey: 'I direct without closing, receive without disappearing, and unite vision, discernment, reciprocity, and accountable action in what I bring into form.',
+  estimatedMinutes: 65,
+};
+
 const buildModule = (law) => ({
   id: `hermetic-law-${law.number}-${law.slug}`,
   slug: law.slug,
@@ -973,6 +1118,7 @@ const buildModule = (law) => ({
   ...(law.slug === 'polarity' ? polarityCurriculum : {}),
   ...(law.slug === 'rhythm' ? rhythmCurriculum : {}),
   ...(law.slug === 'cause-and-effect' ? causeAndEffectCurriculum : {}),
+  ...(law.slug === 'gender' ? genderCurriculum : {}),
 });
 
 export const HERMETIC_HALL_FACULTY = {

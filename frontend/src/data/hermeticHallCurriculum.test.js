@@ -157,4 +157,28 @@ describe('Hermetic Hall curriculum', () => {
     expect(causeAndEffect.lightMappings).toHaveLength(3);
     expect(causeAndEffect.integrationKey).toContain('preserve chronology');
   });
+
+  it('delivers the complete Gender curriculum through the Hall practicum', () => {
+    const gender = getHermeticHallModule('gender');
+
+    expect(gender.sourceTrackIds).toEqual([
+      'Art! Official!',
+      'Elemental Orchestra',
+    ]);
+    expect(gender.curriculumSections).toHaveLength(3);
+    gender.curriculumSections.forEach((section) => {
+      expect(section).toEqual(expect.objectContaining({
+        hook: expect.any(String),
+        scenario: expect.any(String),
+        chromaLens: expect.any(String),
+        timelessContext: expect.any(String),
+        practicalTranslation: expect.any(String),
+        value: expect.any(String),
+        coherence: expect.any(String),
+      }));
+    });
+    expect(gender.shadowCodes).toHaveLength(3);
+    expect(gender.lightMappings).toHaveLength(3);
+    expect(gender.integrationKey).toContain('direct without closing');
+  });
 });
