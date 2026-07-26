@@ -60,7 +60,7 @@ export default function ModuleBriefScene({ copy = [], module, onCross }) {
         <section className="module-brief-curriculum" aria-labelledby="module-curriculum-title">
           <div className="module-brief-section-heading">
             <p className="rec-module-kicker">Core transmission</p>
-            <h2 id="module-curriculum-title">Mentalism through the Chroma Key lens</h2>
+            <h2 id="module-curriculum-title">{module.curriculumTitle || 'The law through the Chroma Key lens'}</h2>
           </div>
           <div className="module-curriculum-sections">
             {module.curriculumSections.map((section) => (

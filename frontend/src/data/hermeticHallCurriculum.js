@@ -114,6 +114,7 @@ const buildDeclarationFields = (law) => [
 ];
 
 const mentalismCurriculum = {
+  curriculumTitle: 'Mentalism through the Chroma Key lens',
   sourceTrackIds: ['Adjacent (Reroute It)', 'Thought Form', 'I Create As I Speak'],
   initiationCopy: [
     'Before an identity becomes visible, it is rehearsed in thought. Mentalism is the discipline of noticing which rehearsals have become instructions—and deciding which ones deserve embodiment.',
@@ -263,6 +264,157 @@ const mentalismCurriculum = {
   estimatedMinutes: 60,
 };
 
+const correspondenceCurriculum = {
+  curriculumTitle: 'Correspondence through the Chroma Key lens',
+  sourceTrackIds: ['Chosen Ones', 'As Above, So Below', 'The Witness Don’t Talk'],
+  initiationCopy: [
+    'What appears outside you is not always caused by what is inside you—but the two often reveal one another through repeated structure. Correspondence is the discipline of reading that structure without collapsing complexity into blame.',
+    'In 2026, identity travels across profiles, prompts, group chats, workplaces, search results, and AI-generated summaries. Each surface may look separate, yet repeated behavior links them. The pattern scales even when the interface changes.',
+    'This chamber teaches comparison with precision: find what repeats, identify where the analogy stops, and align the channels you can actually govern. Correspondence becomes useful when recognition produces a more truthful choice.',
+  ],
+  learningObjectives: [
+    'Identify a repeated structure across inner interpretation, interpersonal behavior, and public or digital outcomes.',
+    'Distinguish meaningful correspondence from coincidence, forced analogy, and victim-blaming.',
+    'Trace how a small repeated behavior can scale into relationship norms, audience expectations, or system culture.',
+    'Write an alignment practice that makes private values, public claims, and observable conduct correspond.',
+  ],
+  curriculumSections: [
+    {
+      title: '01 · The Pattern Across Surfaces',
+      anchor: 'Anchor statement: Different surfaces can carry the same structure.',
+      hook: 'The setting changes. The pattern keeps its handwriting.',
+      scenario: 'A creative professional says they want collaboration, yet delays every difficult reply, avoids clear rates, and posts vague messages about being undervalued. The private fear, the texting pattern, the business friction, and the public narrative are not identical events. They correspond because the same structure—avoidance followed by resentment—reappears across channels.',
+      chromaLens: 'Key out the surface differences long enough to see the repeating geometry. The overlay is the story that each conflict is isolated. The revealed signal is the sequence that survives every setting: uncertainty, silence, assumption, then rupture. Reclamation begins by changing the part of the sequence you actually control.',
+      timelessContext: 'The Hermetic formula “as above, so below; as within, so without” treats levels of experience as intelligible through relationship. Earlier philosophical and contemplative systems also used the small to study the large. The principle invites comparison; it does not claim that every event has one simple cause.',
+      practicalTranslation: 'Choose one recurring outcome and trace it across three surfaces: internal language, direct behavior, and external result. Use verbs rather than labels. “I delay, imply, then withdraw” reveals more than “I have bad communication.” Mark what truly repeats and what does not.',
+      value: 'If you treat every recurrence as unrelated, you pay for the same lesson in new settings. Pattern literacy lets you intervene earlier, transfer learning between contexts, and stop mistaking a changed backdrop for a changed system.',
+      coherence: 'Signal integrity requires correspondence between channels. Identity is the structure your behavior carries from room to room, especially when the audience changes.',
+    },
+    {
+      title: '02 · Scale, Feedback, and the Manufactured Mirror',
+      anchor: 'Anchor statement: Systems amplify the patterns supplied to them.',
+      hook: 'A mirror can reflect you, distort you, or train you to become the reflection.',
+      scenario: 'An AI tool summarizes a creator from scraped interviews, old posts, audience reactions, and repeated keywords. The summary is incomplete, yet search engines and new audiences repeat it until it influences opportunities. At the same time, the creator begins tailoring every post to the machine-readable version of themselves. The profile reflects behavior, then feeds back into behavior.',
+      chromaLens: 'Key out the manufactured overlay: engagement metrics presented as worth, synthetic summaries presented as identity, and repetition presented as independent confirmation. Reveal the underlying inputs, incentives, and feedback loop. Reclaim the broadcast by producing consistent primary evidence that can outlast a distorted proxy.',
+      timelessContext: 'Human communities have always formed reputations through accumulated reports, symbols, and social memory. What is new is the speed and automated scale of the mirror. Correspondence helps us read the relation between a small input, its amplified image, and the behavior that image later conditions.',
+      practicalTranslation: 'Audit one digital identity loop. List the signals you publish, what the platform rewards, what observers infer, and how those inferences change your next post. Then introduce one corrective signal: disclose context, update outdated information, show process, or stop feeding a metric that is bending the work.',
+      value: 'Without this literacy, you can become the product of a profile assembled about you. With it, you understand where reputation is being generated and can strengthen the evidence that deserves to scale.',
+      coherence: 'Performance chases the mirror. Signal integrity improves the source. Alignment means the compressed public version of you remains traceable to conduct, craft, and truth.',
+    },
+    {
+      title: '03 · Alignment Without False Equivalence',
+      anchor: 'Anchor statement: Correspondence reveals relationship; it does not erase difference.',
+      hook: 'A pattern can connect two realities without making them equally responsible.',
+      scenario: 'Someone notices that a harmful workplace resembles a family dynamic and concludes they “manifested” the abuse. Or a team leader calls dissent “negative energy” while their own incentives punish honesty. Both misuse correspondence: one converts recognition into self-blame; the other uses spiritual language to hide power and consequence.',
+      chromaLens: 'Key out the overlay of total personal causation. Reveal the layered reality: your conditioning, another person’s agency, institutional power, material constraints, and the choices available now. Reclaiming control of the broadcast means governing your signal without pretending you authored every signal in the system.',
+      timelessContext: 'Hermetic analogy was meant to support understanding across planes, not to flatten ethics or causality. Timeless pattern traditions are strongest when paired with discernment: similarity is investigated, limits are named, and responsibility remains proportional to power and action.',
+      practicalTranslation: 'For any claimed correspondence, ask four questions: What structure is similar? What facts are different? Who had power to choose? What action belongs to me now? Use the answers to set a boundary, request evidence, repair your contribution, or leave a system that requires your distortion.',
+      value: 'Ignoring the limits of analogy produces superstition, misplaced guilt, and exploitable doctrine. Mastering those limits gives you pattern recognition without surrendering judgment—a major advantage in relationships, leadership, and media literacy.',
+      coherence: 'The goal is not perfect sameness across channels. It is ethical alignment: claims matched to evidence, responsibility matched to agency, and behavior matched to the values you broadcast.',
+    },
+  ],
+  lyricAnchors: [
+    {
+      key: 'correspondence-chosen',
+      label: 'Chosen Ones',
+      teaching: 'Inner recognition changes which outer structures can continue to organize identity.',
+      line: 'When you choose yourself, the false world disconnects. Name the inner permission that changes the outer pattern.',
+    },
+    {
+      key: 'correspondence-above-below',
+      label: 'As Above, So Below',
+      teaching: 'Inner and outer, high and low, private and public can reveal one another without becoming identical.',
+      line: 'As within, so without. Trace the shared structure, then name where the comparison ends.',
+    },
+    {
+      key: 'correspondence-witness',
+      label: 'The Witness Don’t Talk',
+      teaching: 'The body may register a pattern before conscious language can explain it.',
+      line: 'The inner archive receives the geometry first. Test what the witness noticed against present evidence.',
+    },
+  ],
+  shadowCodes: [
+    {
+      id: 'correspondence-SC-01',
+      displayId: 'SC-01',
+      title: 'Isolated Surface',
+      definition: 'A recurring structure is treated as a series of unrelated incidents because each incident appears in a different setting.',
+      diagnostic: 'Which outcome keeps returning across work, intimacy, creativity, or communication under different names?',
+      collectiveDiagnostic: 'Which institutional pattern survives every rebrand, policy statement, or leadership change?',
+    },
+    {
+      id: 'correspondence-SC-02',
+      displayId: 'SC-02',
+      title: 'Manufactured Mirror',
+      definition: 'A platform metric, synthetic summary, or public projection is mistaken for the source identity it only partially reflects.',
+      diagnostic: 'Where are you changing your behavior to satisfy a compressed version of yourself created by an audience or system?',
+      collectiveDiagnostic: 'Which repeated media representation is training the group to reproduce the distortion it claims merely to describe?',
+    },
+    {
+      id: 'correspondence-SC-03',
+      displayId: 'SC-03',
+      title: 'False Equivalence',
+      definition: 'A meaningful similarity is stretched until differences in evidence, agency, power, or responsibility disappear.',
+      diagnostic: 'Where have you turned pattern recognition into total self-blame or assigned equal responsibility where power was unequal?',
+      collectiveDiagnostic: 'Which analogy allows a leader or institution to avoid specific accountability by calling every side the same?',
+    },
+  ],
+  lightMappings: [
+    {
+      shadowId: 'correspondence-SC-01',
+      shadowTitle: 'Isolated Surface',
+      lightId: 'correspondence-LC-01',
+      lightTitle: 'Structural Recognition',
+      activation: 'Trace the recurring sequence across three settings and intervene at the earliest behavior that remains under your control.',
+      replacementLaw: 'I read the structure beneath the setting and transfer what the pattern has already taught me.',
+    },
+    {
+      shadowId: 'correspondence-SC-02',
+      shadowTitle: 'Manufactured Mirror',
+      lightId: 'correspondence-LC-02',
+      lightTitle: 'Source Integrity',
+      activation: 'Audit the inputs, incentives, and feedback shaping the reflection, then publish or practice one stronger piece of primary evidence.',
+      replacementLaw: 'I improve the source instead of performing for the mirror. My signal remains traceable to evidence.',
+    },
+    {
+      shadowId: 'correspondence-SC-03',
+      shadowTitle: 'False Equivalence',
+      lightId: 'correspondence-LC-03',
+      lightTitle: 'Proportional Discernment',
+      activation: 'Name both the shared pattern and the material differences, then assign responsibility according to evidence, agency, and power.',
+      replacementLaw: 'I use correspondence to reveal relationship without erasing difference or misplacing responsibility.',
+    },
+  ],
+  declarationFields: [
+    {
+      key: 'observation',
+      label: 'What structure repeats across more than one surface?',
+      placeholder: 'Name the sequence across inner language, behavior, relationship, platform, or institution...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'evidence',
+      label: 'What genuinely corresponds, and where does the comparison stop?',
+      placeholder: 'List the repeated evidence, the important differences, and what remains uncertain...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'practice',
+      label: 'Which channel will you bring into alignment through one observable act?',
+      placeholder: 'Name the private value, public claim, or repeated behavior and the action that will align it...',
+      feedbackCopy: responseGuidance,
+    },
+    {
+      key: 'declaration',
+      label: 'What law will govern correspondence across your channels?',
+      placeholder: 'I read repeating structure, preserve meaningful difference, and align the signal I can govern...',
+      feedbackCopy: responseGuidance,
+    },
+  ],
+  integrationKey: 'I read the structure beneath the surface, preserve the differences that truth requires, and align private value, public signal, and repeated behavior.',
+  estimatedMinutes: 60,
+};
+
 const buildModule = (law) => ({
   id: `hermetic-law-${law.number}-${law.slug}`,
   slug: law.slug,
@@ -321,6 +473,7 @@ const buildModule = (law) => ({
   xpReward: 700,
   estimatedMinutes: 45,
   ...(law.slug === 'mentalism' ? mentalismCurriculum : {}),
+  ...(law.slug === 'correspondence' ? correspondenceCurriculum : {}),
 });
 
 export const HERMETIC_HALL_FACULTY = {

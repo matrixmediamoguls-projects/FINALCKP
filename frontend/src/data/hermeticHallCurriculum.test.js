@@ -52,4 +52,29 @@ describe('Hermetic Hall curriculum', () => {
     expect(mentalism.lightMappings).toHaveLength(3);
     expect(mentalism.integrationKey).toContain('behavior authenticates the signal');
   });
+
+  it('delivers the complete Correspondence curriculum through the Hall practicum', () => {
+    const correspondence = getHermeticHallModule('correspondence');
+
+    expect(correspondence.sourceTrackIds).toEqual([
+      'Chosen Ones',
+      'As Above, So Below',
+      'The Witness Don’t Talk',
+    ]);
+    expect(correspondence.curriculumSections).toHaveLength(3);
+    correspondence.curriculumSections.forEach((section) => {
+      expect(section).toEqual(expect.objectContaining({
+        hook: expect.any(String),
+        scenario: expect.any(String),
+        chromaLens: expect.any(String),
+        timelessContext: expect.any(String),
+        practicalTranslation: expect.any(String),
+        value: expect.any(String),
+        coherence: expect.any(String),
+      }));
+    });
+    expect(correspondence.shadowCodes).toHaveLength(3);
+    expect(correspondence.lightMappings).toHaveLength(3);
+    expect(correspondence.integrationKey).toContain('preserve the differences');
+  });
 });
