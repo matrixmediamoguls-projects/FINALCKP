@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { getNextCurriculumDestination } from './hermeticCurriculumNavigation';
+import {
+  getCurriculumAdvanceLabel,
+  getNextCurriculumDestination,
+} from './hermeticCurriculumNavigation';
 
 const lessons = [
   { id: 'lesson-1' },
@@ -38,5 +41,11 @@ describe('Hermetic curriculum next lesson navigation', () => {
       hallModules,
       moduleOrder: 7,
     })).toEqual({ type: 'hall' });
+  });
+
+  it('labels lesson, module, and Hall boundaries accurately', () => {
+    expect(getCurriculumAdvanceLabel({ type: 'lesson' })).toBe('Next Lesson');
+    expect(getCurriculumAdvanceLabel({ type: 'module' })).toBe('Next Module');
+    expect(getCurriculumAdvanceLabel({ type: 'hall' })).toBe('Return to Hall');
   });
 });

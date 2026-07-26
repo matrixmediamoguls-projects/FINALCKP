@@ -21,3 +21,9 @@ export function getNextCurriculumDestination({
 
   return { type: 'hall' };
 }
+
+export function getCurriculumAdvanceLabel(destination) {
+  if (destination.type === 'module') return 'Next Module';
+  if (destination.type === 'hall') return 'Return to Hall';
+  return 'Next Lesson';
+}

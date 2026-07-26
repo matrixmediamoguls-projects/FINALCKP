@@ -31,7 +31,10 @@ import {
   TRACKS,
 } from '../../../data/hermeticVibrationModuleData';
 import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
-import { getNextCurriculumDestination } from './hermeticCurriculumNavigation';
+import {
+  getCurriculumAdvanceLabel,
+  getNextCurriculumDestination,
+} from './hermeticCurriculumNavigation';
 import './hermeticCurriculumModule.css';
 
 const EMPTY_RECORD = {
@@ -158,23 +161,25 @@ export default function HermeticCurriculumModule({ module, faculty }) {
     updateRecord({ completedLessons: [...record.completedLessons, activeLesson.id] });
   };
 
+  const nextDestination = activeLesson
+    ? getNextCurriculumDestination({
+        lessons,
+        activeLessonId: activeLesson.id,
+        hallModules,
+        moduleOrder: module.order,
+      })
+    : { type: 'hall' };
+
   const openNextLesson = () => {
     if (!record.completedLessons.includes(activeLesson.id)) return;
 
-    const destination = getNextCurriculumDestination({
-      lessons,
-      activeLessonId: activeLesson.id,
-      hallModules,
-      moduleOrder: module.order,
-    });
-
-    if (destination.type === 'lesson') {
-      openLesson(destination.lessonId);
+    if (nextDestination.type === 'lesson') {
+      openLesson(nextDestination.lessonId);
       return;
     }
 
-    if (destination.type === 'module') {
-      navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${destination.slug}`);
+    if (nextDestination.type === 'module') {
+      navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${nextDestination.slug}`);
       return;
     }
 
@@ -432,7 +437,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     onClick={openNextLesson}
                     disabled={!record.completedLessons.includes(activeLesson.id)}
                   >
-                    Next Lesson <ArrowRight size={15} />
+                    {getCurriculumAdvanceLabel(nextDestination)} <ArrowRight size={15} />
                   </button>
                 </div>
               </footer>
