@@ -31,6 +31,7 @@ import {
   TRACKS,
 } from '../../../data/hermeticVibrationModuleData';
 import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
+import { getNextCurriculumDestination } from './hermeticCurriculumNavigation';
 import './hermeticCurriculumModule.css';
 
 const EMPTY_RECORD = {
@@ -155,6 +156,29 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const completeLesson = () => {
     if (record.completedLessons.includes(activeLesson.id)) return;
     updateRecord({ completedLessons: [...record.completedLessons, activeLesson.id] });
+  };
+
+  const openNextLesson = () => {
+    if (!record.completedLessons.includes(activeLesson.id)) return;
+
+    const destination = getNextCurriculumDestination({
+      lessons,
+      activeLessonId: activeLesson.id,
+      hallModules,
+      moduleOrder: module.order,
+    });
+
+    if (destination.type === 'lesson') {
+      openLesson(destination.lessonId);
+      return;
+    }
+
+    if (destination.type === 'module') {
+      navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${destination.slug}`);
+      return;
+    }
+
+    navigate('/experiencemode/sovereign/reclamation-university');
   };
 
   if (!courseModule) return null;
@@ -398,9 +422,19 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                 <button type="button" className="hcm-secondary" onClick={() => persistRecord(record)}>
                   Save Reflection
                 </button>
-                <button type="button" className="hcm-primary" onClick={completeLesson}>
-                  {record.completedLessons.includes(activeLesson.id) ? 'Lesson Completed' : 'Complete Lesson'} <Check size={15} />
-                </button>
+                <div className="hcm-reader-footer__actions">
+                  <button type="button" className="hcm-primary" onClick={completeLesson}>
+                    {record.completedLessons.includes(activeLesson.id) ? 'Lesson Completed' : 'Complete Lesson'} <Check size={15} />
+                  </button>
+                  <button
+                    type="button"
+                    className="hcm-primary hcm-next-lesson"
+                    onClick={openNextLesson}
+                    disabled={!record.completedLessons.includes(activeLesson.id)}
+                  >
+                    Next Lesson <ArrowRight size={15} />
+                  </button>
+                </div>
               </footer>
             </article>
           )}
