@@ -171,8 +171,6 @@ export default function HermeticCurriculumModule({ module, faculty }) {
     : { type: 'hall' };
 
   const openNextLesson = () => {
-    if (!record.completedLessons.includes(activeLesson.id)) return;
-
     if (nextDestination.type === 'lesson') {
       openLesson(nextDestination.lessonId);
       return;
@@ -435,7 +433,6 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     type="button"
                     className="hcm-primary hcm-next-lesson"
                     onClick={openNextLesson}
-                    disabled={!record.completedLessons.includes(activeLesson.id)}
                   >
                     {getCurriculumAdvanceLabel(nextDestination)} <ArrowRight size={15} />
                   </button>

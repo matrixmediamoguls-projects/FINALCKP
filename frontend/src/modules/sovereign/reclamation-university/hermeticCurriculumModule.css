@@ -418,7 +418,6 @@
 
 .hcm-reader-footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
 .hcm-reader-footer__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem; }
-.hcm-next-lesson:disabled { cursor: not-allowed; filter: saturate(.25); opacity: .42; }
 
 .hcm-library-view > section {
   margin-bottom: 1rem;
