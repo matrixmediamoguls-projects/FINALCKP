@@ -35,6 +35,7 @@ import {
   getCurriculumAdvanceLabel,
   getNextCurriculumDestination,
 } from './hermeticCurriculumNavigation';
+import { buildHermeticLessonContent } from './hermeticLessonContent';
 import './hermeticCurriculumModule.css';
 
 const EMPTY_RECORD = {
@@ -114,6 +115,13 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   }, [module.id, lessons]);
 
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) || lessons[0];
+  const activeLessonIndex = lessons.findIndex((lesson) => lesson.id === activeLesson?.id);
+  const activeLessonContent = activeLesson?.content || buildHermeticLessonContent({
+    lesson: activeLesson,
+    lessonIndex: Math.max(activeLessonIndex, 0),
+    lessonCount: lessons.length,
+    curriculumSections: module.curriculumSections,
+  });
   const completionPercent = lessons.length
     ? Math.round((record.completedLessons.length / lessons.length) * 100)
     : 0;
@@ -379,10 +387,10 @@ export default function HermeticCurriculumModule({ module, faculty }) {
               <h1>{activeLesson.title}</h1>
               {activeLesson.subtitle && <h2>{activeLesson.subtitle}</h2>}
 
-              {hasFullCurriculum ? (
+              {activeLessonContent ? (
                 <>
-                  <p className="hcm-intro">{activeLesson.content.intro}</p>
-                  {activeLesson.content.sections.map((section, index) => (
+                  <p className="hcm-intro">{activeLessonContent.intro}</p>
+                  {activeLessonContent.sections.map((section, index) => (
                     <section className={`hcm-content-block is-${section.type || 'doctrine'}`} key={`${section.heading}-${index}`}>
                       <div className="hcm-content-label"><SectionIcon type={section.type} /> {section.type || 'Doctrine'}</div>
                       <h3>{section.heading}</h3>
@@ -406,13 +414,13 @@ export default function HermeticCurriculumModule({ module, faculty }) {
 
               <section className="hcm-reflection">
                 <label htmlFor={`reflection-${activeLesson.id}`}>
-                  {activeLesson.content?.reflection?.prompt || 'Field notes and reflection'}
+                  {activeLessonContent?.reflection?.prompt || 'Field notes and reflection'}
                 </label>
-                {activeLesson.content?.reflection?.questions?.map((question) => <p key={question}>{question}</p>)}
+                {activeLessonContent?.reflection?.questions?.map((question) => <p key={question}>{question}</p>)}
                 <textarea
                   id={`reflection-${activeLesson.id}`}
                   value={record.reflections[activeLesson.id] || ''}
-                  placeholder={activeLesson.content?.reflection?.placeholder || 'Record what this lesson reveals, challenges, or requires…'}
+                  placeholder={activeLessonContent?.reflection?.placeholder || 'Record what this lesson reveals, challenges, or requires…'}
                   onChange={(event) => setRecord({
                     ...record,
                     reflections: { ...record.reflections, [activeLesson.id]: event.target.value },

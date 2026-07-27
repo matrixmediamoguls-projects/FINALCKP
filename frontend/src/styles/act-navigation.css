@@ -1,13 +1,13 @@
 .act-nav-page {
-  --chrome: rgba(130, 148, 142, 0.28);
-  --green: #66f58a;
+  --chrome: rgba(255, 55, 61, 0.25);
+  --green: #ff373d;
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
   padding: 0;
   color: #e8ece9;
   background:
-    radial-gradient(circle at 50% 24%, rgba(24, 100, 73, 0.12), transparent 34rem),
+    radial-gradient(circle at 50% 24%, rgba(150, 20, 24, 0.16), transparent 34rem),
     #020504;
   font-family: "Inter", sans-serif;
 }
@@ -22,8 +22,8 @@
 
 .act-nav-bg {
   background:
-    linear-gradient(rgba(92, 246, 145, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(92, 246, 145, 0.018) 1px, transparent 1px);
+    linear-gradient(rgba(255, 55, 61, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 55, 61, 0.025) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -127,12 +127,12 @@
 .act-nav-command__links button.is-active {
   color: #fff;
   outline: none;
-  background: radial-gradient(ellipse at bottom, rgba(98, 245, 135, 0.16), transparent 65%);
+  background: radial-gradient(ellipse at bottom, rgba(255, 55, 61, 0.16), transparent 65%);
 }
 
 .act-nav-command__links button.is-active svg {
   color: var(--green);
-  filter: drop-shadow(0 0 7px rgba(102, 245, 138, 0.65));
+  filter: drop-shadow(0 0 7px rgba(255, 55, 61, 0.65));
 }
 
 .act-nav-command__links button.is-active::after {
@@ -164,7 +164,7 @@
   background: radial-gradient(circle at 35% 30%, #39443f, #0c100e 67%);
   font-size: 1.35rem;
   font-weight: 700;
-  box-shadow: inset 0 0 0 5px #090d0b, 0 0 20px rgba(92, 246, 145, 0.1);
+  box-shadow: inset 0 0 0 5px #090d0b, 0 0 20px rgba(255, 55, 61, 0.1);
 }
 
 .act-nav-profile__copy {
@@ -282,7 +282,7 @@
   background-image: var(--hero-image);
   background-position: center 48%;
   background-size: cover;
-  filter: saturate(0.86) contrast(1.12) brightness(0.78);
+  filter: hue-rotate(238deg) saturate(1.35) contrast(1.14) brightness(0.72);
 }
 
 .act-nav-hero::after {
@@ -305,7 +305,7 @@
   position: absolute;
   width: 28px;
   height: 28px;
-  border-color: rgba(106, 241, 143, 0.38);
+  border-color: rgba(255, 55, 61, 0.38);
 }
 
 .act-nav-hero__frame span:nth-child(1) { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
@@ -322,7 +322,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #48e376;
+  color: #ff373d;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -395,9 +395,9 @@
 }
 
 .act-nav-telemetry__access {
-  border-color: rgba(102, 245, 138, 0.8) !important;
+  border-color: rgba(255, 55, 61, 0.8) !important;
   color: var(--green) !important;
-  box-shadow: inset 0 0 24px rgba(102, 245, 138, 0.09), 0 0 15px rgba(102, 245, 138, 0.12);
+  box-shadow: inset 0 0 24px rgba(255, 55, 61, 0.09), 0 0 15px rgba(255, 55, 61, 0.12);
 }
 
 .act-nav-strip {
@@ -794,4 +794,119 @@
   .act-nav-card__emblem-ring::after { animation: none; }
   .act-nav-card,
   .act-nav-card__emblem-core img { transition: none; }
+}
+
+/* Red command-center treatment used by the protocol gateway. The desktop layout
+   deliberately resolves to one viewport: header, workspace, and console share
+   the available height rather than making the four act modules overflow it. */
+@media (min-width: 981px) {
+  .act-nav-page {
+    --chrome: rgba(255, 55, 61, 0.25);
+    --green: #ff373d;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    background: #030303;
+  }
+
+  .act-nav-bg {
+    background:
+      radial-gradient(circle at 50% 38%, rgba(255, 26, 31, 0.14), transparent 38%),
+      linear-gradient(rgba(255, 50, 55, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 50, 55, 0.018) 1px, transparent 1px);
+    background-size: auto, 24px 24px, 24px 24px;
+  }
+
+  .act-nav-shell { height: 100dvh; min-height: 0; }
+  .act-nav-command { min-height: 86px; height: 86px; }
+  .act-nav-brand strong { color: #d52d32; text-shadow: 0 2px 0 #68171a, 0 0 16px rgba(255, 35, 42, 0.2); }
+  .act-nav-command__links button:hover,
+  .act-nav-command__links button:focus-visible,
+  .act-nav-command__links button.is-active {
+    background: radial-gradient(ellipse at bottom, rgba(255, 45, 51, 0.18), transparent 65%);
+  }
+
+  .act-nav-body { overflow: hidden; }
+  .act-nav-workspace {
+    position: relative;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) 32px minmax(205px, 29vh);
+    gap: 6px;
+    padding: 0 14px 16px;
+    isolation: isolate;
+  }
+
+  .act-nav-workspace::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 0;
+    z-index: -2;
+    background-image: url('/media/act-gateway-scene.jpg');
+    background-position: center 46%;
+    background-size: cover;
+    filter: hue-rotate(238deg) saturate(1.45) contrast(1.16) brightness(0.68);
+  }
+
+  .act-nav-workspace::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.76), transparent 43%, rgba(0, 0, 0, 0.22) 66%, rgba(0, 0, 0, 0.68)),
+      linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent 45%);
+  }
+
+  .act-nav-hero {
+    min-height: 0;
+    border: 0;
+    background: transparent;
+    clip-path: none;
+  }
+  .act-nav-hero::before { display: none; }
+  .act-nav-hero::after {
+    background:
+      radial-gradient(circle at 52% 39%, transparent 0 16%, rgba(255, 20, 25, 0.13) 16.3%, transparent 31%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.76), transparent 45%);
+  }
+  .act-nav-hero__frame span { border-color: rgba(255, 55, 61, 0.38); }
+  .act-nav-hero__content { padding: 20px 64px; }
+  .act-nav-kicker { color: #ff373d; }
+  .act-nav-hero h1 { font-size: clamp(3.7rem, 5.7vw, 6rem); }
+  .act-nav-hero p strong { color: #ff373d; }
+  .act-nav-telemetry__access { border-color: rgba(255, 55, 61, 0.8) !important; color: #ff373d !important; box-shadow: inset 0 0 24px rgba(255, 55, 61, 0.09), 0 0 15px rgba(255, 55, 61, 0.12); }
+
+  .act-nav-strip { margin: 0; gap: 14px; }
+  .act-nav-strip button { min-height: 32px; }
+  .act-nav-roadmap { min-height: 0; gap: 14px; }
+  .act-nav-card {
+    grid-template-rows: auto minmax(92px, 1fr) auto 30px;
+    gap: 4px;
+    min-height: 0;
+    padding: 9px 12px;
+    background: linear-gradient(180deg, rgba(var(--act-rgb), 0.09), rgba(3, 5, 5, 0.94));
+  }
+  .act-nav-card__emblem { width: clamp(92px, 7.7vw, 132px); height: clamp(92px, 7.7vw, 132px); }
+  .act-nav-card__signal { width: 26px; height: 26px; bottom: 8px; }
+  .act-nav-card h2 { font-size: clamp(.9rem, 1.1vw, 1.18rem); }
+
+  .act-nav-console {
+    position: relative;
+    min-height: 90px;
+    height: 90px;
+  }
+  .act-nav-console__brand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    justify-items: center;
+    border: 0;
+    color: #c92b30;
+    background: none;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+  .act-nav-console__brand strong { font-size: 3rem; font-style: italic; line-height: .82; }
+  .act-nav-console__brand span { margin-top: 7px; color: #a62a2e; font-family: "JetBrains Mono", monospace; font-size: .58rem; text-transform: uppercase; }
 }

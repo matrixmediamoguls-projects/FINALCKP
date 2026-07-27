@@ -15,7 +15,6 @@ import {
   Waveform,
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
-import '../styles/act-navigation.css';
 
 const acts = [
   {
@@ -25,8 +24,8 @@ const acts = [
     subtitle: 'Awakening',
     statement: 'Reality is not as it seems.',
     tags: ['Disrupt', 'Discover', 'Decode'],
-    color: '#54ff9f',
-    rgb: '84, 255, 159',
+    color: '#ff373d',
+    rgb: '255, 55, 61',
     emblem: '/emblem/act_one_module_emblem.png',
     route: '/act/1/entry',
     status: 'Ready',
@@ -289,6 +288,10 @@ export default function ActNavigation() {
             <i />
             <span><small>System Status</small><strong>All Systems Operational</strong></span>
           </div>
+          <button className="act-nav-console__brand" type="button" onClick={() => navigate('/acts')}>
+            <strong>CKP</strong>
+            <span>Chroma Key Protocol</span>
+          </button>
           <div className="act-nav-sync">
             <span>
               <small>Time Sync</small>
