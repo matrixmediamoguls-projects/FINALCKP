@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700&display=swap');
+@import 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700&display=swap';
 
 .mhi-root {
   --mhi-gold: #ffd978;
@@ -9,7 +9,7 @@
   overflow: hidden;
   color: var(--mhi-gold);
   background: #020000;
-  font-family: 'Oxanium', Oxanium, sans-serif;
+  font-family: Oxanium, sans-serif;
   isolation: isolate;
 }
 
@@ -53,7 +53,8 @@
   height: 30.5%;
   display: grid;
   place-items: center;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: clamp(10px, 1.4vw, 23px) clamp(12px, 2vw, 32px);
   border-radius: 2%;
   text-align: center;
@@ -118,7 +119,7 @@
 .mhi-screen-content h2 {
   margin: 0;
   color: rgba(255, 225, 168, .82);
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
   font-size: clamp(.42rem, .82vw, .94rem);
   font-weight: 600;
   letter-spacing: .11em;
@@ -131,7 +132,7 @@
   width: min(92%, 44rem);
   margin: clamp(6px, .9vw, 15px) auto 0;
   color: rgba(255, 235, 199, .88);
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
   font-size: clamp(.44rem, .76vw, .86rem);
   line-height: 1.55;
   text-wrap: balance;
@@ -183,7 +184,7 @@
   gap: 10px;
   padding: 3px 0;
   border-bottom: 1px solid rgba(255, 199, 107, .1);
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
   font-size: clamp(.31rem, .47vw, .55rem);
   letter-spacing: .08em;
   opacity: 0;
@@ -216,7 +217,7 @@
   border: 1px solid rgba(255, 185, 82, .34);
   color: rgba(255, 229, 182, .78);
   background: rgba(31, 4, 1, .75);
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
   font-size: clamp(.3rem, .47vw, .54rem);
   cursor: pointer;
 }
@@ -235,7 +236,7 @@
   grid-column: 1 / -1;
   margin: 3px 0 0;
   color: #ffd789;
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
   font-size: clamp(.3rem, .45vw, .52rem);
 }
 
@@ -266,7 +267,7 @@
   border: 1px solid rgba(255, 198, 99, .18);
   color: rgba(255, 224, 167, .75);
   background: rgba(29, 5, 2, .72);
-  font: 600 .65rem/1 'Oxanium', sans-serif;
+  font: 600 .65rem/1 Oxanium, sans-serif;
   letter-spacing: .06em;
   cursor: pointer;
   white-space: nowrap;
@@ -350,7 +351,7 @@
   border: 0;
   color: rgba(255, 224, 168, .54);
   background: transparent;
-  font: 500 .62rem/1 'Oxanium', sans-serif;
+  font: 500 .62rem/1 Oxanium, sans-serif;
   letter-spacing: .1em;
   text-transform: uppercase;
   cursor: pointer;
