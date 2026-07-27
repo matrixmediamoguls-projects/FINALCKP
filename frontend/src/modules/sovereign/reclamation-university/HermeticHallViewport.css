@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700&display=swap');
 
 .hermetic-hall {
   --hall-gold: #ffb329;
@@ -84,11 +84,32 @@
   padding: clamp(10px, 1.5vw, 24px) clamp(12px, 2vw, 32px);
   border-radius: 2%;
   pointer-events: none;
+  transition:
+    top 520ms cubic-bezier(.2, .78, .2, 1),
+    left 520ms cubic-bezier(.2, .78, .2, 1),
+    width 520ms cubic-bezier(.2, .78, .2, 1),
+    height 520ms cubic-bezier(.2, .78, .2, 1),
+    padding 520ms cubic-bezier(.2, .78, .2, 1),
+    filter 520ms ease;
 }
 
 .hh-display.has-curriculum {
+  z-index: 12;
+  top: 5.5%;
+  left: 12%;
+  width: 76%;
+  height: 72%;
   place-items: stretch;
-  padding: clamp(8px, 1vw, 16px) clamp(9px, 1.4vw, 22px);
+  padding: clamp(18px, 2.1vw, 34px) clamp(20px, 3.4vw, 56px);
+  border: 1px solid color-mix(in srgb, var(--active-law) 55%, #ffd677);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 50% 10%, color-mix(in srgb, var(--active-law) 12%, transparent), transparent 46%),
+    rgba(4, 0, 0, .94);
+  box-shadow:
+    0 0 0 100vmax rgba(0, 0, 0, .68),
+    0 0 70px color-mix(in srgb, var(--active-law) 25%, transparent),
+    inset 0 0 60px rgba(255, 84, 46, .06);
   pointer-events: auto;
 }
 
@@ -169,7 +190,7 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
-  padding: 0 clamp(10px, 1.15vw, 18px);
+  padding: 0 clamp(18px, 2vw, 34px);
   border-left: 1px solid color-mix(in srgb, var(--active-law) 72%, #ffd677);
   border-right: 1px solid rgba(255, 205, 113, .12);
   color: rgba(255, 229, 181, .82);
@@ -189,7 +210,7 @@
 .hh-curriculum-reader footer span {
   color: color-mix(in srgb, var(--active-law) 62%, #ffe69b);
   font-family: 'Oxanium', Oxanium, serif;
-  font-size: clamp(.38rem, .48vw, .57rem);
+  font-size: clamp(.68rem, .72vw, .82rem);
   letter-spacing: .18em;
   text-transform: uppercase;
 }
@@ -198,7 +219,7 @@
   margin: 4px 0 0;
   color: #ffe2a0;
   font-family: 'Oxanium', Oxanium, serif;
-  font-size: clamp(.78rem, 1.24vw, 1.38rem);
+  font-size: clamp(1.35rem, 2vw, 2.25rem);
   letter-spacing: .045em;
   line-height: 1.12;
   text-transform: uppercase;
@@ -214,9 +235,9 @@
 }
 
 .hh-curriculum-scroll {
-  width: min(100%, 64ch);
+  width: min(100%, 72ch);
   margin-inline: auto;
-  padding: 30% 2% 48%;
+  padding: 14% 3% 28%;
   animation: hh-curriculum-roll 42s linear infinite;
 }
 
@@ -228,20 +249,21 @@
 
 .hh-curriculum-scroll p,
 .hh-curriculum-scroll li {
-  margin: 0 0 .78rem;
-  color: rgba(255, 233, 196, .88);
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(.52rem, .7vw, .78rem);
+  margin: 0 0 1rem;
+  color: rgba(255, 239, 211, .94);
+  font-family: 'Chakra Petch', 'JetBrains Mono', monospace;
+  font-size: clamp(1rem, 1.16vw, 1.28rem);
   font-weight: 500;
-  letter-spacing: .012em;
-  line-height: 1.62;
+  letter-spacing: .018em;
+  line-height: 1.68;
 }
 
 .hh-curriculum-scroll h2 {
-  margin: 1.15rem 0 .62rem;
+  margin: 1.65rem 0 .75rem;
   color: #ffd37c;
-  font-family: 'Oxanium', Oxanium, serif;
-  font-size: clamp(.54rem, .72vw, .8rem);
+  font-family: 'Chakra Petch', 'Oxanium', monospace;
+  font-size: clamp(.92rem, 1vw, 1.12rem);
+  font-weight: 600;
   letter-spacing: .16em;
   text-transform: uppercase;
 }
@@ -256,8 +278,8 @@
   padding: .72rem .8rem;
   border-block: 1px solid rgba(255, 211, 124, .2);
   color: #ffe8b5;
-  font-family: 'Oxanium', Oxanium, serif;
-  font-size: clamp(.6rem, .86vw, .94rem) !important;
+  font-family: 'Chakra Petch', 'Oxanium', monospace;
+  font-size: clamp(1.1rem, 1.4vw, 1.52rem) !important;
   letter-spacing: .035em !important;
   line-height: 1.45 !important;
   text-align: center;
@@ -286,13 +308,13 @@
 
 .hh-curriculum-reader footer button {
   flex: 0 0 auto;
-  min-height: 30px;
-  padding: 6px 11px;
+  min-height: 42px;
+  padding: 9px 16px;
   border: 1px solid color-mix(in srgb, var(--active-law) 65%, #ffd36c);
   color: #ffe7ad;
   background: rgba(75, 12, 5, .76);
   font-family: 'Oxanium', Oxanium, serif;
-  font-size: clamp(.42rem, .52vw, .6rem);
+  font-size: clamp(.68rem, .72vw, .82rem);
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -536,6 +558,15 @@
     padding: 8px;
   }
 
+  .hh-display.has-curriculum {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    left: 12px;
+    width: calc(100% - 24px);
+    height: calc(100svh - 24px - env(safe-area-inset-top));
+    padding: 18px 12px;
+  }
+
   .hh-display-copy {
     max-width: 100%;
     padding: 5px 7px;
@@ -552,11 +583,11 @@
 
   .hh-curriculum-reader header span,
   .hh-curriculum-reader footer span {
-    font-size: clamp(.28rem, 1vw, .45rem);
+    font-size: .64rem;
   }
 
   .hh-curriculum-reader h1 {
-    font-size: clamp(.48rem, 1.85vw, .78rem);
+    font-size: clamp(1.12rem, 5vw, 1.5rem);
   }
 
   .hh-curriculum-scroll {
@@ -566,8 +597,8 @@
 
   .hh-curriculum-scroll p,
   .hh-curriculum-scroll li {
-    font-size: clamp(.38rem, 1.25vw, .54rem);
-    line-height: 1.5;
+    font-size: clamp(.98rem, 4vw, 1.12rem);
+    line-height: 1.62;
   }
 
   .hh-curriculum-reader footer span {
