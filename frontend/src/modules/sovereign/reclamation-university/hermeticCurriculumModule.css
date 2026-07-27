@@ -16,7 +16,7 @@
     radial-gradient(circle at 14% 0, rgba(125, 29, 34, .2), transparent 30rem),
     radial-gradient(circle at 100% 30%, rgba(201, 164, 97, .07), transparent 30rem),
     linear-gradient(140deg, #0d0908, #030303 55%, #100707);
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
 }
 
 .hcm-atmosphere {
@@ -52,7 +52,7 @@
   border: 0;
   color: var(--hcm-muted);
   background: transparent;
-  font: 600 .63rem/1 'Inter', sans-serif;
+  font: 600 .63rem/1 Inter, sans-serif;
   letter-spacing: .14em;
   text-transform: uppercase;
   cursor: pointer;
@@ -87,7 +87,7 @@
 .hcm-brand strong {
   display: block;
   color: var(--hcm-paper);
-  font: 600 1.12rem/1.1 'Oxanium', serif;
+  font: 600 1.12rem/1.1 Oxanium, serif;
   letter-spacing: .07em;
 }
 
@@ -179,7 +179,7 @@
 
 .hcm-index > h2 {
   margin: .5rem 0 .2rem;
-  font: 600 1.75rem/1 'Oxanium', serif;
+  font: 600 1.75rem/1 Oxanium, serif;
 }
 
 .hcm-index > p:not(.hcm-eyebrow) {
@@ -229,7 +229,7 @@
 
 .hcm-index li strong,
 .hcm-index li small { display: block; }
-.hcm-index li strong { font: 600 .72rem/1.2 'Inter', sans-serif; }
+.hcm-index li strong { font: 600 .72rem/1.2 Inter, sans-serif; }
 .hcm-index li small { margin-top: .25rem; color: #787269; font-size: .59rem; }
 
 .hcm-stage {
@@ -241,7 +241,7 @@
 .hcm-stage h2,
 .hcm-stage h3,
 .hcm-context blockquote {
-  font-family: 'Oxanium', serif;
+  font-family: Oxanium, serif;
 }
 
 .hcm-stage h1 {
@@ -258,7 +258,7 @@
   padding-left: 1.25rem;
   border-left: 2px solid var(--hcm-gold);
   color: #d5cfc3;
-  font: 500 clamp(1.15rem, 2vw, 1.65rem)/1.45 'Oxanium', serif;
+  font: 500 clamp(1.15rem, 2vw, 1.65rem)/1.45 Oxanium, serif;
 }
 
 .hcm-meta-grid {
@@ -310,7 +310,7 @@
   border: 1px solid rgba(201, 164, 97, .56);
   color: #160d08;
   background: linear-gradient(110deg, #9f763b, #dfc37c 52%, #987038);
-  font: 700 .63rem 'Inter', sans-serif;
+  font: 700 .63rem Inter, sans-serif;
   letter-spacing: .14em;
   text-transform: uppercase;
   cursor: pointer;
@@ -370,7 +370,7 @@
 .hcm-reader > .hcm-eyebrow { margin-top: 3rem; }
 .hcm-reader > h1 { font-size: clamp(3rem, 7vw, 7rem); }
 .hcm-reader > h2 { margin: -1rem 0 2rem; color: var(--hcm-gold); font-size: 1.25rem; font-style: italic; font-weight: 500; }
-.hcm-intro { margin: 0 0 2.5rem; color: #ded7cb; font: 500 clamp(1.05rem, 1.6vw, 1.25rem)/1.85 'Oxanium', serif; }
+.hcm-intro { margin: 0 0 2.5rem; color: #ded7cb; font: 500 clamp(1.05rem, 1.6vw, 1.25rem)/1.85 Oxanium, serif; }
 
 .hcm-content-block {
   margin: 0 0 1rem;
@@ -389,7 +389,7 @@
 .hcm-content-block p,
 .hcm-content-block li { color: #bdb6ab; font-size: .84rem; line-height: 1.75; }
 .hcm-content-block li + li { margin-top: .45rem; }
-.hcm-content-block blockquote { margin: 1rem 0 0; padding: 1rem; color: var(--hcm-gold-pale); background: rgba(201, 164, 97, .06); font: 600 1.05rem/1.5 'Oxanium', serif; }
+.hcm-content-block blockquote { margin: 1rem 0 0; padding: 1rem; color: var(--hcm-gold-pale); background: rgba(201, 164, 97, .06); font: 600 1.05rem/1.5 Oxanium, serif; }
 
 .hcm-reflection,
 .hcm-artifact label {
@@ -400,7 +400,7 @@
   background: rgba(125, 29, 34, .08);
 }
 
-.hcm-reflection > label { display: block; color: var(--hcm-gold-pale); font: 600 1.35rem 'Oxanium', serif; }
+.hcm-reflection > label { display: block; color: var(--hcm-gold-pale); font: 600 1.35rem Oxanium, serif; }
 .hcm-reflection p,
 .hcm-artifact label p { color: var(--hcm-muted); font-size: .76rem; line-height: 1.55; }
 .hcm-reflection textarea,
@@ -413,7 +413,7 @@
   padding: 1rem;
   color: var(--hcm-paper);
   background: rgba(0, 0, 0, .42);
-  font: 400 .85rem/1.65 'Inter', sans-serif;
+  font: 400 .85rem/1.65 Inter, sans-serif;
 }
 
 .hcm-reader-footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
@@ -429,7 +429,7 @@
 .hcm-library-view section header p { color: var(--hcm-muted); line-height: 1.65; }
 .hcm-lyrics { display: grid; gap: .5rem; margin: 1rem 0; }
 .hcm-lyrics > div { padding: .9rem; border-left: 1px solid rgba(201, 164, 97, .28); background: rgba(0,0,0,.22); }
-.hcm-lyrics q { color: #e5ded2; font: 500 1rem 'Oxanium', serif; }
+.hcm-lyrics q { color: #e5ded2; font: 500 1rem Oxanium, serif; }
 .hcm-lyrics p { margin: .4rem 0 0; color: var(--hcm-muted); font-size: .72rem; }
 .hcm-library-view dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
 .hcm-library-view dl div { padding: .8rem; border: 1px solid rgba(255,255,255,.07); }
@@ -452,7 +452,7 @@
   border: 1px solid rgba(201, 164, 97, .16);
   background: var(--hcm-panel);
 }
-.hcm-assessment legend { display: flex; gap: .8rem; padding: 0 .4rem; color: #ddd6ca; font: 600 1rem/1.5 'Oxanium', serif; }
+.hcm-assessment legend { display: flex; gap: .8rem; padding: 0 .4rem; color: #ddd6ca; font: 600 1rem/1.5 Oxanium, serif; }
 .hcm-assessment legend span { color: var(--hcm-gold); }
 .hcm-assessment fieldset label { display: flex; align-items: flex-start; gap: .65rem; margin-top: .55rem; padding: .7rem; color: var(--hcm-muted); background: rgba(0,0,0,.2); font-size: .75rem; line-height: 1.5; cursor: pointer; }
 .hcm-assessment input { accent-color: var(--hcm-gold); }
@@ -461,7 +461,7 @@
 .hcm-assessment .is-review { color: #e2b074; background: rgba(145, 87, 32, .1); }
 
 .hcm-context > div { padding: 1rem 0; border-bottom: 1px solid rgba(201, 164, 97, .12); }
-.hcm-context strong { display: block; margin-top: .45rem; color: #d7d0c4; font: 600 .78rem/1.5 'Oxanium', serif; }
+.hcm-context strong { display: block; margin-top: .45rem; color: #d7d0c4; font: 600 .78rem/1.5 Oxanium, serif; }
 .hcm-context blockquote { margin: 2rem 0 0; padding-left: .8rem; border-left: 1px solid var(--hcm-gold); color: var(--hcm-muted); font-size: .9rem; line-height: 1.6; }
 
 /* Readability pass: instructional content must never use decorative microtype. */
@@ -825,7 +825,7 @@
 }
 
 /* Shared Reclamation University high-tech type system */
-.hcm-root { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+.hcm-root { font-family: Inter, system-ui, -apple-system, sans-serif; }
 
 .hcm-brand strong,
 .hcm-stage h1,
@@ -836,7 +836,7 @@
 .hcm-diagnostic h1,
 .hcm-artifact h1,
 .hcm-assessment h1 {
-  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-family: Oxanium, system-ui, -apple-system, sans-serif;
 }
 
 .hcm-stage h1,
@@ -855,7 +855,7 @@
 
 .hcm-eyebrow {
   color: #ff9f1c;
-  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-family: Oxanium, system-ui, -apple-system, sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 14px;
@@ -869,7 +869,7 @@
 .hcm-reflection > label,
 .hcm-lyrics h2,
 .hcm-context h2 {
-  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-family: Oxanium, system-ui, -apple-system, sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
@@ -883,7 +883,7 @@
 .hcm-lesson-grid p,
 .hcm-artifact > p:not(.hcm-eyebrow) {
   color: rgba(255,255,255,.85);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
@@ -916,7 +916,7 @@
   border-left: 2px solid #ff5722;
   color: rgba(255,255,255,.95);
   background: linear-gradient(90deg,rgba(255,87,34,.06),transparent);
-  font-family: 'Oxanium', system-ui, -apple-system, sans-serif;
+  font-family: Oxanium, system-ui, -apple-system, sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 30px;
@@ -935,7 +935,7 @@
   background:
     radial-gradient(circle at 58% 22%, rgba(161, 47, 18, .1), transparent 34rem),
     linear-gradient(115deg, #050505, #090706 58%, #040404);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .hcm-atmosphere {
@@ -981,7 +981,7 @@
 
 .hcm-brand strong {
   color: #e8bd68;
-  font-family: 'Oxanium', system-ui, sans-serif;
+  font-family: Oxanium, system-ui, sans-serif;
   font-size: 18px;
   font-weight: 500;
   line-height: 1.05;
@@ -1085,7 +1085,7 @@
 .hcm-campus-nav button:hover { color: #fff0d5; background: rgba(211,154,67,.045); }
 .hcm-campus-nav button > span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
 .hcm-campus-nav button small,
-.hcm-campus-nav__group p small { display: block; margin-top: 5px; color: #756f68; font: 11px 'Inter', sans-serif; letter-spacing: 0; text-transform: none; }
+.hcm-campus-nav__group p small { display: block; margin-top: 5px; color: #756f68; font: 11px Inter, sans-serif; letter-spacing: 0; text-transform: none; }
 
 .hcm-campus-nav__group {
   padding: 14px 0;
@@ -1116,7 +1116,7 @@
 .hcm-campus-nav__group button > span:last-child {
   width: auto;
   color: inherit;
-  font: 500 10px/1.35 'Oxanium', system-ui, sans-serif;
+  font: 500 10px/1.35 Oxanium, system-ui, sans-serif;
   letter-spacing: .035em;
   text-transform: none;
 }
@@ -1168,7 +1168,7 @@
   max-width: 650px;
   margin: 20px 0 28px;
   color: #f1ece4;
-  font-family: 'Oxanium', system-ui, sans-serif;
+  font-family: Oxanium, system-ui, sans-serif;
   font-size: clamp(48px, 5vw, 76px);
   font-weight: 400;
   line-height: .98;
@@ -1178,7 +1178,7 @@
 .hcm-law-summary {
   max-width: 500px;
   color: #b8afa5;
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
   font-size: 15px;
   line-height: 1.75;
 }
@@ -1218,7 +1218,7 @@
   left: 62%;
   top: 50%;
   color: #e4a34b;
-  font: 500 58px 'Oxanium', system-ui, sans-serif;
+  font: 500 58px Oxanium, system-ui, sans-serif;
   transform: translate(-50%, -50%);
   text-shadow: 0 0 24px rgba(226,97,34,.65);
 }
@@ -1268,8 +1268,8 @@
   border-color: #ffb255;
   box-shadow: 0 0 0 6px rgba(170,37,26,.16), 0 0 28px rgba(238,64,35,.58);
 }
-.hcm-method__steps strong { color: #d6c8b4; font: 500 14px/1.25 'Oxanium', system-ui, sans-serif; }
-.hcm-method__steps em { color: #736b63; font: normal 10px/1.4 'Inter', sans-serif; }
+.hcm-method__steps strong { color: #d6c8b4; font: 500 14px/1.25 Oxanium, system-ui, sans-serif; }
+.hcm-method__steps em { color: #736b63; font: normal 10px/1.4 Inter, sans-serif; }
 .hcm-method__steps button.is-active strong { color: #fff; }
 .hcm-method__steps button.is-active em { color: #ef4935; }
 
@@ -1285,7 +1285,7 @@
   padding: 25px 28px;
   color: #e9e1d7;
   border-left: 1px solid rgba(211,154,67,.16);
-  font: 500 22px/1.35 'Oxanium', system-ui, sans-serif;
+  font: 500 22px/1.35 Oxanium, system-ui, sans-serif;
 }
 .hcm-method footer blockquote small { display: block; margin-bottom: 12px; color: #d49b43; font: 500 9px 'JetBrains Mono', monospace; letter-spacing: .15em; text-transform: uppercase; }
 
@@ -1315,7 +1315,7 @@
 .hcm-context section header strong { color: #e7b55d; font: 500 10px 'JetBrains Mono', monospace; }
 .hcm-context-track { display: block; height: 3px; margin: 16px 0 26px; background: rgba(255,255,255,.07); }
 .hcm-context-track b { display: block; height: 100%; background: linear-gradient(90deg,#ec2828,#dfa144); }
-.hcm-context h2 { margin: 11px 0 9px; color: #e7e0d8; font: 500 24px 'Oxanium', system-ui, sans-serif; }
+.hcm-context h2 { margin: 11px 0 9px; color: #e7e0d8; font: 500 24px Oxanium, system-ui, sans-serif; }
 .hcm-context section > span { color: #8d857d; font-size: 12px; line-height: 1.65; }
 .hcm-context-wave { width: 100%; margin-top: 20px; color: #a4251e; opacity: .72; }
 .hcm-context ul { display: grid; gap: 12px; margin: 22px 0 0; padding: 0; list-style: none; }
@@ -1346,7 +1346,7 @@
 .hcm-artifact > h1,
 .hcm-assessment > h1 {
   color: #f0eae2;
-  font-family: 'Oxanium', system-ui, sans-serif;
+  font-family: Oxanium, system-ui, sans-serif;
   font-size: clamp(40px, 5vw, 66px);
   font-weight: 400;
   line-height: 1;
@@ -1401,4 +1401,26 @@
   .hcm-method footer blockquote { border-left: 0; border-top: 1px solid rgba(211,154,67,.16); }
   .hcm-context { grid-template-columns: 1fr; padding: 14px; }
   .hcm-context section:last-of-type { grid-column: auto; }
+}
+
+
+.hcm-intro-replay {
+  width: fit-content;
+  margin-top: 16px;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--hcm-accent) 56%, #f2c878);
+  color: #f4dca8;
+  background: rgba(20, 4, 2, .6);
+  font: 600 .64rem/1 Oxanium, sans-serif;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.hcm-intro-replay:hover,
+.hcm-intro-replay:focus-visible {
+  outline: 1px solid #ffe7ad;
+  outline-offset: 3px;
+  border-color: #ffe7ad;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--hcm-accent) 30%, transparent);
 }

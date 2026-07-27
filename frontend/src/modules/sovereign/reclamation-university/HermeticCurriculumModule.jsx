@@ -31,6 +31,8 @@ import {
   TRACKS,
 } from '../../../data/hermeticVibrationModuleData';
 import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
+import MentalismIntroSequence from './MentalismIntroSequence';
+import InteractiveLessonExperience from './InteractiveLessonExperience';
 import './hermeticCurriculumModule.css';
 
 const EMPTY_RECORD = {
@@ -38,6 +40,7 @@ const EMPTY_RECORD = {
   reflections: {},
   artifact: {},
   answers: {},
+  lessonInteractions: {},
 };
 
 const VIEW_LABELS = {
@@ -60,6 +63,15 @@ function loadLocalRecord(moduleId) {
   }
 }
 
+function shouldShowMentalismIntro(moduleId, courseModuleNumber) {
+  if (courseModuleNumber !== 1 || typeof window === 'undefined') return false;
+  try {
+    return window.localStorage.getItem(`ru_mentalism_intro_${moduleId}`) !== 'complete';
+  } catch {
+    return true;
+  }
+}
+
 function normalizeRecord(progress, fallback = null) {
   const saved = progress?.declaration_json?.curriculum;
   return {
@@ -72,6 +84,7 @@ function normalizeRecord(progress, fallback = null) {
     reflections: saved?.reflections || fallback?.reflections || {},
     artifact: saved?.artifact || fallback?.artifact || {},
     answers: saved?.answers || fallback?.answers || {},
+    lessonInteractions: saved?.lessonInteractions || fallback?.lessonInteractions || {},
   };
 }
 
@@ -93,6 +106,9 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const [activeLessonId, setActiveLessonId] = useState(lessons[0]?.id || '');
   const [record, setRecord] = useState(() => normalizeRecord(null, loadLocalRecord(module.id)));
   const [saveState, setSaveState] = useState('idle');
+  const [showMentalismIntro, setShowMentalismIntro] = useState(() => (
+    shouldShowMentalismIntro(module.id, courseModule?.number)
+  ));
 
   const { progress, isLoading, saveProgress } = useReclamationModuleProgress(
     module.id,
@@ -107,7 +123,8 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   useEffect(() => {
     setActiveLessonId(lessons[0]?.id || '');
     setView('orientation');
-  }, [module.id, lessons]);
+    setShowMentalismIntro(shouldShowMentalismIntro(module.id, courseModule?.number));
+  }, [courseModule?.number, module.id, lessons]);
 
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) || lessons[0];
   const completionPercent = lessons.length
@@ -158,6 +175,19 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   };
 
   if (!courseModule) return null;
+
+  const completeMentalismIntro = () => {
+    try {
+      window.localStorage.setItem(`ru_mentalism_intro_${module.id}`, 'complete');
+    } catch {
+      // The module must remain usable when browser storage is unavailable.
+    }
+    setShowMentalismIntro(false);
+  };
+
+  if (courseModule.number === 1 && showMentalismIntro) {
+    return <MentalismIntroSequence onComplete={completeMentalismIntro} />;
+  }
 
   const navItems = [
     ['orientation', 'Orientation'],
@@ -273,6 +303,11 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     <span><ShieldCheck size={14} /> Foundational Law</span>
                     <span><Sparkles size={14} /> {courseModule.discipline}</span>
                   </div>
+                  {courseModule.number === 1 && (
+                    <button type="button" className="hcm-intro-replay" onClick={() => setShowMentalismIntro(true)}>
+                      Replay Hall initiation
+                    </button>
+                  )}
                 </div>
                 <div className="hcm-resonance-visual" aria-hidden="true">
                   <img src="/reclamation-university/hermetic-resonance-field.png" alt="" />
@@ -343,6 +378,26 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           )}
 
           {view === 'lesson' && activeLesson && (
+            activeLesson.experience ? (
+              <InteractiveLessonExperience
+                lesson={activeLesson}
+                savedState={record.lessonInteractions?.[activeLesson.id]}
+                reflection={record.reflections[activeLesson.id] || ''}
+                onStateChange={(lessonState) => updateRecord({
+                  lessonInteractions: {
+                    ...record.lessonInteractions,
+                    [activeLesson.id]: lessonState,
+                  },
+                })}
+                onReflectionChange={(value) => setRecord({
+                  ...record,
+                  reflections: { ...record.reflections, [activeLesson.id]: value },
+                })}
+                onSaveReflection={() => persistRecord(record)}
+                onComplete={completeLesson}
+                isComplete={record.completedLessons.includes(activeLesson.id)}
+              />
+            ) : (
             <article className="hcm-reader">
               <header>
                 <button type="button" onClick={() => setView('lessons')}><ChevronLeft size={15} /> All lessons</button>
@@ -403,6 +458,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                 </button>
               </footer>
             </article>
+            )
           )}
 
           {view === 'caseFiles' && hasFullCurriculum && (

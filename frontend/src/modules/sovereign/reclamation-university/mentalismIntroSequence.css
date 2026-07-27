@@ -1,0 +1,481 @@
+@import 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700&display=swap';
+
+.mhi-root {
+  --mhi-gold: #ffd978;
+  --mhi-red: #ff311c;
+  position: fixed;
+  z-index: 80;
+  inset: 0;
+  overflow: hidden;
+  color: var(--mhi-gold);
+  background: #020000;
+  font-family: Oxanium, sans-serif;
+  isolation: isolate;
+}
+
+.mhi-hall-camera,
+.mhi-hall-scene,
+.mhi-hall-vignette {
+  position: absolute;
+  inset: 0;
+}
+
+.mhi-hall-camera {
+  z-index: -2;
+  transform: scale(2.44);
+  transform-origin: 50% 27.75%;
+  transition: transform 8s cubic-bezier(.2, .72, .16, 1), filter 4s ease;
+  will-change: transform;
+}
+
+.mhi-root.is-hall-revealed .mhi-hall-camera {
+  transform: scale(1.002);
+}
+
+.mhi-hall-scene {
+  background: url('/reclamation-university/hermetic-hall.png') center / 100% 100% no-repeat;
+  filter: saturate(1.03) contrast(1.02);
+}
+
+.mhi-hall-vignette {
+  background:
+    radial-gradient(ellipse at 50% 28%, rgba(255, 58, 21, .08), transparent 29%),
+    radial-gradient(ellipse at center, transparent 32%, rgba(0, 0, 0, .7) 100%);
+  box-shadow: inset 0 0 10vw rgba(0, 0, 0, .7);
+}
+
+.mhi-screen {
+  position: absolute;
+  z-index: 2;
+  top: 12.5%;
+  left: 29.5%;
+  width: 41%;
+  height: 30.5%;
+  display: grid;
+  place-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: clamp(10px, 1.4vw, 23px) clamp(12px, 2vw, 32px);
+  border-radius: 2%;
+  text-align: center;
+  transform: scale(2.44);
+  transform-origin: center;
+  transition: transform 8s cubic-bezier(.2, .72, .16, 1);
+}
+
+.mhi-root.is-hall-revealed .mhi-screen {
+  transform: scale(1);
+}
+
+.mhi-screen::before {
+  content: '';
+  position: absolute;
+  inset: 5% 3%;
+  border: 1px solid rgba(255, 196, 96, .12);
+  background:
+    radial-gradient(ellipse at center, rgba(76, 10, 3, .22), rgba(0, 0, 0, .55) 72%),
+    repeating-linear-gradient(0deg, transparent 0 4px, rgba(255, 67, 30, .024) 5px);
+  box-shadow: inset 0 0 34px rgba(0, 0, 0, .84), 0 0 25px rgba(255, 49, 28, .08);
+}
+
+.mhi-screen-glass {
+  position: absolute;
+  inset: 5% 3%;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, .055), transparent 27% 73%, rgba(255, 104, 69, .04));
+  mix-blend-mode: screen;
+}
+
+.mhi-screen-content {
+  position: relative;
+  z-index: 2;
+  width: min(92%, 64rem);
+  animation: mhi-copy-enter 1.35s cubic-bezier(.2, .8, .2, 1) both;
+  text-shadow: 0 0 18px rgba(255, 67, 28, .42);
+}
+
+.mhi-eyebrow,
+.mhi-status {
+  margin: 0;
+  color: #ff9d4d;
+  font-size: clamp(.33rem, .55vw, .65rem);
+  font-weight: 600;
+  letter-spacing: .24em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.mhi-screen-content h1 {
+  margin: clamp(4px, .55vw, 10px) 0;
+  color: #ffe4a4;
+  font-size: clamp(.72rem, 1.7vw, 2rem);
+  font-weight: 600;
+  letter-spacing: .09em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.mhi-screen-content h2 {
+  margin: 0;
+  color: rgba(255, 225, 168, .82);
+  font-family: Inter, sans-serif;
+  font-size: clamp(.42rem, .82vw, .94rem);
+  font-weight: 600;
+  letter-spacing: .11em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.mhi-body {
+  width: min(92%, 44rem);
+  margin: clamp(6px, .9vw, 15px) auto 0;
+  color: rgba(255, 235, 199, .88);
+  font-family: Inter, sans-serif;
+  font-size: clamp(.44rem, .76vw, .86rem);
+  line-height: 1.55;
+  text-wrap: balance;
+}
+
+.mhi-status {
+  margin-top: clamp(8px, 1vw, 16px);
+  animation: mhi-status-pulse 1.8s ease-in-out infinite alternate;
+}
+
+.mhi-sequence-meter {
+  width: min(82%, 27rem);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 9px;
+  margin: clamp(8px, 1vw, 16px) auto 0;
+}
+
+.mhi-sequence-meter span {
+  height: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 194, 91, .3);
+  background: rgba(0, 0, 0, .7);
+}
+
+.mhi-sequence-meter i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #ff321d, #ffc45e);
+  box-shadow: 0 0 10px #ff321d;
+  transition: width .15s linear;
+}
+
+.mhi-sequence-meter b {
+  color: #ffc56b;
+  font-size: clamp(.35rem, .48vw, .55rem);
+  font-weight: 500;
+}
+
+.mhi-diagnostics {
+  width: min(86%, 29rem);
+  margin: clamp(7px, .8vw, 13px) auto 0;
+}
+
+.mhi-diagnostics div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255, 199, 107, .1);
+  font-family: Inter, sans-serif;
+  font-size: clamp(.31rem, .47vw, .55rem);
+  letter-spacing: .08em;
+  opacity: 0;
+  animation: mhi-diagnostic-enter .7s ease forwards;
+  animation-delay: calc(.8s + var(--diagnostic-index) * 1.8s);
+}
+
+.mhi-diagnostics dt {
+  color: rgba(255, 225, 169, .64);
+  text-align: left;
+}
+
+.mhi-diagnostics dd {
+  margin: 0;
+  color: #ffc45f;
+  text-align: right;
+}
+
+.mhi-signal-options {
+  width: min(96%, 34rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(3px, .45vw, 8px);
+  margin: clamp(7px, .8vw, 13px) auto 0;
+}
+
+.mhi-signal-options button {
+  min-height: clamp(24px, 2.3vw, 38px);
+  padding: 5px 7px;
+  border: 1px solid rgba(255, 185, 82, .34);
+  color: rgba(255, 229, 182, .78);
+  background: rgba(31, 4, 1, .75);
+  font-family: Inter, sans-serif;
+  font-size: clamp(.3rem, .47vw, .54rem);
+  cursor: pointer;
+}
+
+.mhi-signal-options button:hover,
+.mhi-signal-options button:focus-visible,
+.mhi-signal-options button.is-selected {
+  border-color: #ffb555;
+  outline: none;
+  color: #fff0c7;
+  background: rgba(94, 15, 7, .84);
+  box-shadow: 0 0 14px rgba(255, 62, 27, .28);
+}
+
+.mhi-signal-options p {
+  grid-column: 1 / -1;
+  margin: 3px 0 0;
+  color: #ffd789;
+  font-family: Inter, sans-serif;
+  font-size: clamp(.3rem, .45vw, .52rem);
+}
+
+.mhi-controls {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: clamp(18px, 3.2vh, 36px);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px;
+  border: 1px solid rgba(255, 198, 99, .24);
+  background: rgba(2, 0, 0, .83);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, .6), inset 0 0 20px rgba(255, 46, 24, .04);
+  backdrop-filter: blur(14px);
+  transform: translateX(-50%);
+}
+
+.mhi-controls button,
+.mhi-pace-control {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 198, 99, .18);
+  color: rgba(255, 224, 167, .75);
+  background: rgba(29, 5, 2, .72);
+  font: 600 .65rem/1 Oxanium, sans-serif;
+  letter-spacing: .06em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mhi-controls button:hover:not(:disabled),
+.mhi-controls button:focus-visible,
+.mhi-pace-control:focus-within {
+  border-color: #ffbd60;
+  outline: 1px solid rgba(255, 235, 186, .55);
+  outline-offset: 2px;
+  color: #fff0c3;
+}
+
+.mhi-controls button:disabled {
+  cursor: not-allowed;
+  opacity: .35;
+}
+
+.mhi-controls .mhi-next-control {
+  border-color: rgba(255, 90, 45, .72);
+  color: #fff0c3;
+  background: linear-gradient(135deg, rgba(118, 18, 8, .95), rgba(48, 5, 2, .9));
+}
+
+.mhi-pace-control span {
+  color: rgba(255, 224, 167, .55);
+  font-size: .56rem;
+  text-transform: uppercase;
+}
+
+.mhi-pace-control select {
+  border: 0;
+  outline: 0;
+  color: #ffe5a7;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mhi-pace-control option {
+  color: #ffe5a7;
+  background: #140201;
+}
+
+.mhi-step-meter {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: clamp(68px, 10.2vh, 100px);
+  display: flex;
+  gap: 7px;
+  transform: translateX(-50%);
+}
+
+.mhi-step-meter button {
+  width: 23px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  background: rgba(255, 219, 151, .2);
+  cursor: pointer;
+  transition: width .25s ease, background .25s ease, box-shadow .25s ease;
+}
+
+.mhi-step-meter button.is-complete {
+  background: rgba(255, 123, 58, .55);
+}
+
+.mhi-step-meter button.is-current {
+  width: 42px;
+  background: #ffc465;
+  box-shadow: 0 0 9px #ff3d1f;
+}
+
+.mhi-skip,
+.mhi-restart {
+  position: absolute;
+  z-index: 9;
+  top: 22px;
+  border: 0;
+  color: rgba(255, 224, 168, .54);
+  background: transparent;
+  font: 500 .62rem/1 Oxanium, sans-serif;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mhi-skip {
+  right: 24px;
+}
+
+.mhi-restart {
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mhi-skip:hover,
+.mhi-skip:focus-visible,
+.mhi-restart:hover,
+.mhi-restart:focus-visible {
+  outline: none;
+  color: #ffe5a7;
+}
+
+@keyframes mhi-copy-enter {
+  from { opacity: 0; transform: translateY(8px) scale(.985); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes mhi-diagnostic-enter {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mhi-status-pulse {
+  to { opacity: .42; }
+}
+
+@media (max-width: 850px), (max-aspect-ratio: 11 / 10) {
+  .mhi-hall-camera {
+    transform: scale(2.44);
+  }
+
+  .mhi-root.is-hall-revealed .mhi-hall-camera {
+    transform: scale(1.22);
+  }
+
+  .mhi-screen {
+    top: 12.5%;
+    left: 19%;
+    width: 62%;
+    height: 30.5%;
+    transform: scale(1.62);
+  }
+
+  .mhi-root.is-hall-revealed .mhi-screen {
+    transform: scale(1);
+  }
+
+  .mhi-controls {
+    width: calc(100% - 24px);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .mhi-controls .mhi-next-control {
+    grid-column: span 2;
+  }
+
+  .mhi-controls button,
+  .mhi-pace-control {
+    min-width: 0;
+    padding-inline: 7px;
+    font-size: .58rem;
+  }
+
+  .mhi-signal-options {
+    grid-template-columns: 1fr;
+  }
+
+  .mhi-step-meter {
+    bottom: 126px;
+  }
+}
+
+@media (max-width: 540px) {
+  .mhi-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mhi-controls .mhi-next-control {
+    grid-column: auto;
+  }
+
+  .mhi-step-meter {
+    bottom: 184px;
+    gap: 4px;
+  }
+
+  .mhi-step-meter button {
+    width: 15px;
+  }
+
+  .mhi-step-meter button.is-current {
+    width: 28px;
+  }
+
+  .mhi-skip,
+  .mhi-restart {
+    top: 12px;
+    font-size: .52rem;
+  }
+
+  .mhi-skip { right: 12px; }
+  .mhi-restart { left: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mhi-root *,
+  .mhi-root *::before,
+  .mhi-root *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
