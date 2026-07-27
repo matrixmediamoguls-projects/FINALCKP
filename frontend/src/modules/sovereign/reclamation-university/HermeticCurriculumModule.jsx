@@ -63,6 +63,15 @@ function loadLocalRecord(moduleId) {
   }
 }
 
+function shouldShowMentalismIntro(moduleId, courseModuleNumber) {
+  if (courseModuleNumber !== 1 || typeof window === 'undefined') return false;
+  try {
+    return window.localStorage.getItem(`ru_mentalism_intro_${moduleId}`) !== 'complete';
+  } catch {
+    return true;
+  }
+}
+
 function normalizeRecord(progress, fallback = null) {
   const saved = progress?.declaration_json?.curriculum;
   return {
@@ -98,9 +107,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const [record, setRecord] = useState(() => normalizeRecord(null, loadLocalRecord(module.id)));
   const [saveState, setSaveState] = useState('idle');
   const [showMentalismIntro, setShowMentalismIntro] = useState(() => (
-    courseModule?.number === 1
-      && typeof window !== 'undefined'
-      && window.localStorage.getItem(`ru_mentalism_intro_${module.id}`) !== 'complete'
+    shouldShowMentalismIntro(module.id, courseModule?.number)
   ));
 
   const { progress, isLoading, saveProgress } = useReclamationModuleProgress(
@@ -116,10 +123,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   useEffect(() => {
     setActiveLessonId(lessons[0]?.id || '');
     setView('orientation');
-    setShowMentalismIntro(
-      courseModule?.number === 1
-        && window.localStorage.getItem(`ru_mentalism_intro_${module.id}`) !== 'complete'
-    );
+    setShowMentalismIntro(shouldShowMentalismIntro(module.id, courseModule?.number));
   }, [courseModule?.number, module.id, lessons]);
 
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) || lessons[0];
@@ -173,7 +177,11 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   if (!courseModule) return null;
 
   const completeMentalismIntro = () => {
-    window.localStorage.setItem(`ru_mentalism_intro_${module.id}`, 'complete');
+    try {
+      window.localStorage.setItem(`ru_mentalism_intro_${module.id}`, 'complete');
+    } catch {
+      // The module must remain usable when browser storage is unavailable.
+    }
     setShowMentalismIntro(false);
   };
 
