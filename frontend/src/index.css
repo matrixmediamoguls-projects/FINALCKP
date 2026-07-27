@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oxanium:wght@400;500;600;700;800&display=swap');
-@import "./styles/base.css";
 @import "./styles/global.css";
-@import "./styles/acts.css";
-@import "./styles/act-navigation.css";
 
 @tailwind base;
 @tailwind components;
