@@ -119,34 +119,40 @@ export default function MentalismIntroSequence({ onComplete }) {
   }, []);
 
   const nextStep = useCallback(() => {
+    if (step.interactive && !signalAnswer) return;
     if (isLastStep) {
       onComplete();
       return;
     }
     goToStep(stepIndex + 1);
-  }, [goToStep, isLastStep, onComplete, stepIndex]);
+  }, [goToStep, isLastStep, onComplete, signalAnswer, step.interactive, stepIndex]);
 
   const previousStep = useCallback(() => goToStep(stepIndex - 1), [goToStep, stepIndex]);
 
   useEffect(() => {
     if (!isPlaying || !canAutoAdvance) return undefined;
+    let advanceTimeout;
     const timer = window.setInterval(() => {
       setElapsed((current) => {
         const nextElapsed = current + 100;
         if (nextElapsed >= step.duration / pace) {
           window.clearInterval(timer);
-          window.setTimeout(nextStep, 80);
+          advanceTimeout = window.setTimeout(nextStep, 80);
           return step.duration / pace;
         }
         return nextElapsed;
       });
     }, 100);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearInterval(timer);
+      window.clearTimeout(advanceTimeout);
+    };
   }, [canAutoAdvance, isPlaying, nextStep, pace, step.duration]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+      const interactiveTags = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'];
+      if (interactiveTags.includes(event.target?.tagName)) return;
       if (event.key === 'ArrowRight') nextStep();
       if (event.key === 'ArrowLeft') previousStep();
       if (event.key === ' ') {
