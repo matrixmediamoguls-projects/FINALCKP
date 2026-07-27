@@ -1402,3 +1402,25 @@
   .hcm-context { grid-template-columns: 1fr; padding: 14px; }
   .hcm-context section:last-of-type { grid-column: auto; }
 }
+
+
+.hcm-intro-replay {
+  width: fit-content;
+  margin-top: 16px;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--hcm-accent) 56%, #f2c878);
+  color: #f4dca8;
+  background: rgba(20, 4, 2, .6);
+  font: 600 .64rem/1 'Oxanium', sans-serif;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.hcm-intro-replay:hover,
+.hcm-intro-replay:focus-visible {
+  outline: 1px solid #ffe7ad;
+  outline-offset: 3px;
+  border-color: #ffe7ad;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--hcm-accent) 30%, transparent);
+}
