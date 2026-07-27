@@ -31,6 +31,7 @@ import {
   TRACKS,
 } from '../../../data/hermeticVibrationModuleData';
 import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
+import MentalismIntroSequence from './MentalismIntroSequence';
 import './hermeticCurriculumModule.css';
 
 const EMPTY_RECORD = {
@@ -93,6 +94,11 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const [activeLessonId, setActiveLessonId] = useState(lessons[0]?.id || '');
   const [record, setRecord] = useState(() => normalizeRecord(null, loadLocalRecord(module.id)));
   const [saveState, setSaveState] = useState('idle');
+  const [showMentalismIntro, setShowMentalismIntro] = useState(() => (
+    courseModule?.number === 1
+      && typeof window !== 'undefined'
+      && window.localStorage.getItem(`ru_mentalism_intro_${module.id}`) !== 'complete'
+  ));
 
   const { progress, isLoading, saveProgress } = useReclamationModuleProgress(
     module.id,
@@ -107,7 +113,11 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   useEffect(() => {
     setActiveLessonId(lessons[0]?.id || '');
     setView('orientation');
-  }, [module.id, lessons]);
+    setShowMentalismIntro(
+      courseModule?.number === 1
+        && window.localStorage.getItem(`ru_mentalism_intro_${module.id}`) !== 'complete'
+    );
+  }, [courseModule?.number, module.id, lessons]);
 
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) || lessons[0];
   const completionPercent = lessons.length
@@ -158,6 +168,15 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   };
 
   if (!courseModule) return null;
+
+  const completeMentalismIntro = () => {
+    window.localStorage.setItem(`ru_mentalism_intro_${module.id}`, 'complete');
+    setShowMentalismIntro(false);
+  };
+
+  if (courseModule.number === 1 && showMentalismIntro) {
+    return <MentalismIntroSequence onComplete={completeMentalismIntro} />;
+  }
 
   const navItems = [
     ['orientation', 'Orientation'],
@@ -273,6 +292,11 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     <span><ShieldCheck size={14} /> Foundational Law</span>
                     <span><Sparkles size={14} /> {courseModule.discipline}</span>
                   </div>
+                  {courseModule.number === 1 && (
+                    <button type="button" className="hcm-intro-replay" onClick={() => setShowMentalismIntro(true)}>
+                      Replay Hall initiation
+                    </button>
+                  )}
                 </div>
                 <div className="hcm-resonance-visual" aria-hidden="true">
                   <img src="/reclamation-university/hermetic-resonance-field.png" alt="" />
