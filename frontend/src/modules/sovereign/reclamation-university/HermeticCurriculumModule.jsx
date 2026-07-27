@@ -32,6 +32,7 @@ import {
 } from '../../../data/hermeticVibrationModuleData';
 import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
 import MentalismIntroSequence from './MentalismIntroSequence';
+import InteractiveLessonExperience from './InteractiveLessonExperience';
 import './hermeticCurriculumModule.css';
 
 const EMPTY_RECORD = {
@@ -39,6 +40,7 @@ const EMPTY_RECORD = {
   reflections: {},
   artifact: {},
   answers: {},
+  lessonInteractions: {},
 };
 
 const VIEW_LABELS = {
@@ -73,6 +75,7 @@ function normalizeRecord(progress, fallback = null) {
     reflections: saved?.reflections || fallback?.reflections || {},
     artifact: saved?.artifact || fallback?.artifact || {},
     answers: saved?.answers || fallback?.answers || {},
+    lessonInteractions: saved?.lessonInteractions || fallback?.lessonInteractions || {},
   };
 }
 
@@ -367,6 +370,26 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           )}
 
           {view === 'lesson' && activeLesson && (
+            activeLesson.experience ? (
+              <InteractiveLessonExperience
+                lesson={activeLesson}
+                savedState={record.lessonInteractions?.[activeLesson.id]}
+                reflection={record.reflections[activeLesson.id] || ''}
+                onStateChange={(lessonState) => updateRecord({
+                  lessonInteractions: {
+                    ...record.lessonInteractions,
+                    [activeLesson.id]: lessonState,
+                  },
+                })}
+                onReflectionChange={(value) => setRecord({
+                  ...record,
+                  reflections: { ...record.reflections, [activeLesson.id]: value },
+                })}
+                onSaveReflection={() => persistRecord(record)}
+                onComplete={completeLesson}
+                isComplete={record.completedLessons.includes(activeLesson.id)}
+              />
+            ) : (
             <article className="hcm-reader">
               <header>
                 <button type="button" onClick={() => setView('lessons')}><ChevronLeft size={15} /> All lessons</button>
@@ -427,6 +450,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                 </button>
               </footer>
             </article>
+            )
           )}
 
           {view === 'caseFiles' && hasFullCurriculum && (
