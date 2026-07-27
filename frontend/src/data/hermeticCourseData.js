@@ -29,8 +29,150 @@ const COURSE_MODULES = [
         id: "lesson-1-1",
         number: "1.1",
         title: "The Mind as Medium",
+        subtitle: "Before the visible pattern, an invisible rehearsal",
+        duration: "18 min",
         summary: "This lesson explores how experience is filtered before it becomes meaning. It distinguishes between objective events and subjective interpretation, showing that the first story the mind tells is not always the truest one.",
-        keyPoints: ["Perception versus event", "Thought\u2013emotion\u2013behavior sequence", "Meaning is constructed, not merely received"]
+        keyPoints: ["Perception versus event", "Thought emotion behavior sequence", "Meaning is constructed, not merely received"],
+        experience: {
+          screens: [
+            {
+              id: "signal-entry",
+              kind: "choice",
+              label: "Signal Entry",
+              title: "When was the last thought you know for certain was completely your own?",
+              copy: [
+                "Not a reaction. Not an opinion you repeated. Not a conclusion supplied by a headline, a memory, a fear, or a feed.",
+                "Do not force an answer. Notice how difficult it is to prove where a thought began."
+              ],
+              options: [
+                { id: "name-it", label: "I can name one", feedback: "Hold it in mind. This lesson will ask you to trace what made it available to you." },
+                { id: "not-sure", label: "I am not sure", feedback: "Uncertainty is useful here. It creates room to examine the source instead of defending the result." },
+                { id: "never-asked", label: "I have never asked", feedback: "That question is the entrance. Awareness begins before agreement or change." }
+              ]
+            },
+            {
+              id: "mind-medium",
+              kind: "axiom",
+              label: "The First Principle",
+              title: "The mind is a medium.",
+              callout: "THE ALL IS MIND. THE UNIVERSE IS MENTAL.",
+              copy: [
+                "Before an identity becomes visible, it is rehearsed in thought. Before a choice becomes behavior, the mind has already interpreted what the moment means.",
+                "Mentalism is the discipline of noticing which interpretations have become instructions, then deciding which instructions deserve embodiment.",
+                "This does not mean thought magically controls every event. It means perception organizes attention, attention influences choice, and repeated choices accumulate into identity."
+              ]
+            },
+            {
+              id: "creative-brief",
+              kind: "choice",
+              label: "A 2026 Reality",
+              title: "One sentence can become a production brief.",
+              copy: [
+                "A creative professional opens a platform to publish new work. The first post is a polished AI generated campaign. Before they study it, one sentence arrives: I am already behind.",
+                "The sentence is not neutral. It directs the next hour."
+              ],
+              prompt: "What happens next?",
+              options: [
+                { id: "compare", label: "Compare instead of create", feedback: "The thought redirected attention before any evidence was tested." },
+                { id: "imitate", label: "Imitate what is rewarded", feedback: "The thought converted platform approval into an instruction for authorship." },
+                { id: "pause", label: "Pause and examine the sentence", feedback: "The pause restores a decision point between interpretation and behavior." }
+              ]
+            },
+            {
+              id: "thought-pipeline",
+              kind: "pipeline",
+              label: "Trace the Architecture",
+              title: "A visible result has an invisible sequence.",
+              copy: ["Select each stage. Watch how an event becomes a lived result without the original event ever issuing a command."],
+              nodes: [
+                { id: "event", label: "Event", detail: "Something occurs. At this stage, meaning has not yet been established." },
+                { id: "interpretation", label: "Interpretation", detail: "The mind decides what the event means, often before conscious review." },
+                { id: "attention", label: "Attention", detail: "The interpretation determines what evidence becomes visible and what gets ignored." },
+                { id: "choice", label: "Choice", detail: "Available actions narrow around the meaning already assigned." },
+                { id: "behavior", label: "Behavior", detail: "The chosen response creates an observable pattern." },
+                { id: "identity", label: "Identity", detail: "Repeated behavior becomes evidence for the story you tell about who you are." }
+              ],
+              lock: "EVENT → INTERPRETATION → ATTENTION → CHOICE → BEHAVIOR → IDENTITY"
+            },
+            {
+              id: "same-event",
+              kind: "comparison",
+              label: "Perception Is Not the Event",
+              title: "The event is identical. The instruction is not.",
+              event: "A new project receives less engagement than expected.",
+              paths: [
+                { id: "overlay", title: "The automatic overlay", thought: "The work has no value.", result: "Withdraw, abandon the campaign, and treat limited distribution as a verdict on identity." },
+                { id: "evidence", title: "The examined interpretation", thought: "Reach is one data point. I need context before I assign meaning.", result: "Review timing, audience, distribution, message clarity, and the work itself before choosing the next action." }
+              ],
+              lock: "The first story the mind tells is not automatically the truest one."
+            },
+            {
+              id: "observation-test",
+              kind: "classification",
+              label: "Chroma Key Lens",
+              title: "Key out what was added.",
+              copy: [
+                "A convincing image, voice, caption, or persona can be produced in seconds. Appearance is no longer reliable proof of coherence.",
+                "Separate what can be observed from the meaning placed over it."
+              ],
+              categories: ["Observation", "Interpretation"],
+              items: [
+                { id: "reply", text: "The reply arrived two days later.", answer: "Observation" },
+                { id: "disrespect", text: "They waited because they wanted to disrespect me.", answer: "Interpretation" },
+                { id: "views", text: "The post received 312 views.", answer: "Observation" },
+                { id: "failure", text: "The number proves the project failed.", answer: "Interpretation" }
+              ],
+              lock: "Treat the first interpretation as an overlay, not a verdict."
+            },
+            {
+              id: "reclamation-lens",
+              kind: "album",
+              label: "Reclamation Case File",
+              title: "The album asks what instruction came first.",
+              copy: ["Reclamation does not separate identity from the architecture that produced it. These records examine Mentalism from three connected positions."],
+              tracks: [
+                { id: "thought-form", title: "Thought Form", role: "Primary case", teaching: "A repeated thought becomes the medium through which evidence is interpreted and life is organized.", question: "What thought keeps becoming evidence for itself?" },
+                { id: "adjacent", title: "Adjacent (Reroute It)", role: "Authorship case", teaching: "Vision precedes construction. A tool can extend the signal, but it does not originate the intention.", question: "What did you author before the mechanism helped execute it?" },
+                { id: "speak", title: "I Create As I Speak", role: "Transmission case", teaching: "Speech carries mental direction into behavior, expectation, and public record.", question: "Which repeated sentence are you prepared to support through action?" }
+              ]
+            },
+            {
+              id: "mentalism-loop",
+              kind: "mechanism",
+              label: "The Mentalism Loop",
+              title: "Reclaim the instruction before it becomes behavior.",
+              copy: ["A new thought matters only when it survives contact with action. Use this sequence whenever an interpretation arrives with the force of certainty."],
+              steps: [
+                { number: "01", title: "Pause", detail: "Create space before reaction converts meaning into behavior." },
+                { number: "02", title: "Name", detail: "State the exact instruction running in the moment." },
+                { number: "03", title: "Test", detail: "Separate observation, interpretation, missing context, and supporting evidence." },
+                { number: "04", title: "Choose", detail: "Author an instruction proportionate to what is actually known." },
+                { number: "05", title: "Prove", detail: "Perform one observable action that gives the new instruction a behavioral record." }
+              ],
+              lock: "The mind authors direction. Aligned action authenticates the signal."
+            },
+            {
+              id: "field-note",
+              kind: "reflection",
+              label: "Signal Audit",
+              title: "Trace one thought that is currently directing you.",
+              prompt: "Name the repeated thought, where you first remember learning it, and the behavior it produces now.",
+              placeholder: "The thought I keep rehearsing is... I first learned or absorbed it from... When I believe it, I tend to...",
+              copy: ["Do not decide whether the thought is good or bad yet. First make its source and behavioral trail visible."]
+            },
+            {
+              id: "signal-locked",
+              kind: "lock",
+              label: "Signal Locked",
+              title: "You are not being asked to control every circumstance.",
+              copy: [
+                "You are being asked to recognize the point where circumstance becomes interpretation, interpretation becomes instruction, and instruction begins directing behavior.",
+                "Mentalism begins when the thought is no longer invisible. Reclamation begins when authorship returns."
+              ],
+              callout: "I WITNESS THE THOUGHT, TEST IT, AND CHOOSE THE INSTRUCTION I CONTINUE TO ANIMATE."
+            }
+          ]
+        }
       },
       {
         id: "lesson-1-2",
