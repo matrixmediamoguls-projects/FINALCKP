@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends, UploadFile, File, Query, Header
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends, Query, Header
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -449,7 +449,7 @@ async def bootstrap_admin(payload: BootstrapAdminPayload):
     # Block if any admin already exists
     existing_admins = await db.table("users").select("user_id").eq("is_admin", True).limit(1).execute()
     if existing_admins.data:
-        raise HTTPException(status_code=403, detail="An admin account already exists. Use the admin panel to promote users.")
+        raise HTTPException(status_code=403, detail="An admin account already exists.")
 
     user_res = await db.table("users").select("*").eq("email", payload.email).limit(1).execute()
     if not user_res.data:
@@ -869,98 +869,6 @@ async def license_status(request: Request):
     return {"act3_unlocked": user.get("act3_unlocked", False)}
 
 
-# ==================== ADMIN HELPER ====================
-
-async def require_admin(request: Request):
-    user = await get_current_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    if not user.get("is_admin"):
-        raise HTTPException(status_code=403, detail="Admin access required")
-    return user
-
-# ==================== ADMIN: TRACKS ====================
-
-@api_router.get("/admin/tracks")
-async def list_tracks(request: Request):
-    await require_admin(request)
-    client = await get_db()
-    res = await client.table("tracks").select("*").order("act", desc=False).execute()
-    return {"tracks": res.data}
-
-@api_router.post("/admin/tracks")
-async def create_track(request: Request):
-    await require_admin(request)
-    body = await request.json()
-    track = {
-        "track_id": f"track_{uuid.uuid4().hex[:8]}",
-        "name": body.get("name", "Untitled"),
-        "act": body.get("act", 1),
-        "type": body.get("type", "track"),
-        "color": body.get("color", "#5ab038"),
-        "lyrics": body.get("lyrics", ""),
-        "audio_url": None,
-        "audio_filename": None,
-        "audio_storage_path": None,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "updated_at": datetime.now(timezone.utc).isoformat()
-    }
-    client = await get_db()
-    await client.table("tracks").insert(track).execute()
-    track.pop("_id", None)
-    return track
-
-@api_router.put("/admin/tracks/{track_id}")
-async def update_track(track_id: str, request: Request):
-    await require_admin(request)
-    body = await request.json()
-    updates = {"updated_at": datetime.now(timezone.utc).isoformat()}
-    for field in ["name", "act", "type", "color", "lyrics", "lore", "lightcodes", "shadowcodes", "system_role", "spotify_uri"]:
-        if field in body:
-            updates[field] = body[field]
-    client = await get_db()
-    result = await client.table("tracks").update(updates).eq("track_id", track_id).execute()
-    if not result.data:
-        raise HTTPException(status_code=404, detail="Track not found")
-    return result.data[0]
-
-@api_router.delete("/admin/tracks/{track_id}")
-async def delete_track(track_id: str, request: Request):
-    await require_admin(request)
-    client = await get_db()
-    result = await client.table("tracks").delete().eq("track_id", track_id).execute()
-    if not result.data:
-        raise HTTPException(status_code=404, detail="Track not found")
-    return {"success": True}
-
-# ==================== ADMIN: AUDIO UPLOAD ====================
-
-@api_router.post("/admin/tracks/{track_id}/audio")
-async def upload_audio(track_id: str, request: Request, file: UploadFile = File(...)):
-    await require_admin(request)
-    
-    client = await get_db()
-    track_res = await client.table("tracks").select("*").eq("track_id", track_id).limit(1).execute()
-    if not track_res.data:
-        raise HTTPException(status_code=404, detail="Track not found")
-    
-    ext = file.filename.split(".")[-1] if "." in file.filename else "mp3"
-    storage_path = f"{APP_NAME}/audio/{track_id}/{uuid.uuid4().hex}.{ext}"
-    data = await file.read()
-    
-    content_type = file.content_type or "audio/mpeg"
-    result = put_object(storage_path, data, content_type)
-    
-    updated_res = await client.table("tracks").update({
-        "audio_storage_path": result["path"],
-        "audio_filename": file.filename,
-        "audio_content_type": content_type,
-        "audio_size": result.get("size", len(data)),
-        "updated_at": datetime.now(timezone.utc).isoformat()
-    }).eq("track_id", track_id).execute()
-    
-    return updated_res.data[0] if updated_res.data else None
-
 @api_router.get("/audio/{track_id}")
 async def stream_audio(track_id: str, request: Request):
     """Stream audio for any authenticated user"""
@@ -1017,64 +925,6 @@ async def download_audio(track_id: str, request: Request):
             "Content-Disposition": f'attachment; filename="{track.get("audio_filename", "audio.mp3")}"'
         }
     )
-
-# ==================== ADMIN: LICENSE KEYS ====================
-
-@api_router.get("/admin/license-keys")
-async def list_license_keys(request: Request):
-    await require_admin(request)
-    client = await get_db()
-    res = await client.table("license_keys").select("*").execute()
-    return {"keys": res.data}
-
-@api_router.post("/admin/license-keys")
-async def create_license_key(request: Request):
-    await require_admin(request)
-    body = await request.json()
-    key_value = body.get("key", f"CHROMA-{uuid.uuid4().hex[:8].upper()}")
-    key_doc = {
-        "key": key_value.upper(),
-        "used": False,
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }
-    client = await get_db()
-    await client.table("license_keys").insert(key_doc).execute()
-    key_doc.pop("_id", None)
-    return key_doc
-
-@api_router.delete("/admin/license-keys/{key}")
-async def delete_license_key(key: str, request: Request):
-    await require_admin(request)
-    client = await get_db()
-    result = await client.table("license_keys").delete().eq("key", key.upper()).execute()
-    if not result.data:
-        raise HTTPException(status_code=404, detail="Key not found")
-    return {"success": True}
-
-# ==================== ADMIN: USERS ====================
-
-@api_router.get("/admin/users")
-async def list_users(request: Request):
-    await require_admin(request)
-    client = await get_db()
-    res = await client.table("users").select("user_id, email, name, picture, level, current_act, completed_acts, tier, spins_earned, spins_used, owns_all_albums, act3_unlocked, is_admin, created_at, updated_at").execute()
-    return {"users": res.data}
-
-@api_router.put("/admin/users/{user_id}")
-async def update_user(user_id: str, request: Request):
-    await require_admin(request)
-    body = await request.json()
-    updates = {}
-    for field in ["is_admin", "act3_unlocked", "level", "current_act", "tier", "spins_earned", "spins_used", "owns_all_albums"]:
-        if field in body:
-            updates[field] = body[field]
-    if not updates:
-        raise HTTPException(status_code=400, detail="No valid fields to update")
-    client = await get_db()
-    result = await client.table("users").update(updates).eq("user_id", user_id).execute()
-    if not result.data:
-        raise HTTPException(status_code=404, detail="User not found")
-    return result.data[0]
 
 # ==================== PUBLIC: TRACKS LIST ====================
 
@@ -1422,28 +1272,6 @@ async def use_spin(request: Request):
     await client.table("users").update({"spins_used": used + 1}).eq("user_id", user["user_id"]).execute()
     return {"success": True, "spins_available": earned - used - 1}
 
-
-# ==================== ADMIN: SETTINGS ====================
-
-@api_router.get("/admin/settings")
-async def get_admin_settings(request: Request):
-    await require_admin(request)
-    client = await get_db()
-    res = await client.table("app_settings").select("*").execute()
-    settings = {s["key"]: s["value"] for s in res.data}
-    # Defaults
-    if "addon_price" not in settings:
-        settings["addon_price"] = 5.00
-    return settings
-
-@api_router.put("/admin/settings")
-async def update_admin_settings(request: Request):
-    await require_admin(request)
-    body = await request.json()
-    client = await get_db()
-    for key, value in body.items():
-        await client.table("app_settings").upsert({"key": key, "value": value}).execute()
-    return {"success": True}
 
 @api_router.get("/settings/public")
 async def get_public_settings(request: Request):

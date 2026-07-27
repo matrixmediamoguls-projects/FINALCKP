@@ -10,7 +10,6 @@ const sidebarNav = [
     icon: "\u25C8",
     path: "/protocol",
   },
-  { id: "vma", label: "VMA Assistant", icon: "V", path: "/vma" },
   {
     id: "listen",
     label: "Immersion Protocol",
@@ -19,13 +18,6 @@ const sidebarNav = [
   },
   { id: "wheel", label: "The Wheel", icon: "\u25CE", path: "/wheel" },
   { id: "journal", label: "Journal", icon: "\u270E", path: "/journal" },
-  {
-    id: "admin",
-    label: "Admin Panel",
-    icon: "\u2699",
-    path: "/admin",
-    adminOnly: true,
-  },
 ];
 
 const acts = [
