@@ -6,8 +6,6 @@ import {
   Pause,
   Play,
   RotateCcw,
-  Volume2,
-  VolumeX,
 } from 'lucide-react';
 import './mentalismIntroSequence.css';
 
@@ -104,7 +102,6 @@ export default function MentalismIntroSequence({ onComplete }) {
   const [elapsed, setElapsed] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [pace, setPace] = useState(0.75);
-  const [soundEnabled, setSoundEnabled] = useState(false);
   const [signalAnswer, setSignalAnswer] = useState('');
 
   const step = SEQUENCE_STEPS[stepIndex];
@@ -262,16 +259,6 @@ export default function MentalismIntroSequence({ onComplete }) {
             ))}
           </select>
         </label>
-        <button
-          type="button"
-          className="mhi-sound-control"
-          onClick={() => setSoundEnabled((current) => !current)}
-          aria-pressed={soundEnabled}
-          title="Audio atmosphere is prepared for a future sound asset"
-        >
-          {soundEnabled ? <Volume2 size={17} /> : <VolumeX size={17} />}
-          Sound {soundEnabled ? 'on' : 'off'}
-        </button>
         <button
           type="button"
           className="mhi-next-control"
