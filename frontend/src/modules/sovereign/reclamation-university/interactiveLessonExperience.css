@@ -23,7 +23,7 @@
   border: 0;
   color: #ac9470;
   background: transparent;
-  font: 600 .62rem/1 'Oxanium', sans-serif;
+  font: 600 .62rem/1 Oxanium, sans-serif;
   letter-spacing: .08em;
   text-transform: uppercase;
   cursor: pointer;
@@ -46,7 +46,7 @@
 .ile-header > div span,
 .ile-header > span {
   color: #8e7859;
-  font: 600 .55rem/1.2 'Oxanium', sans-serif;
+  font: 600 .55rem/1.2 Oxanium, sans-serif;
   letter-spacing: .16em;
   text-transform: uppercase;
 }
@@ -54,7 +54,7 @@
 .ile-header > div strong {
   margin-top: 4px;
   color: #d9c190;
-  font: 600 .72rem/1.2 'Oxanium', sans-serif;
+  font: 600 .72rem/1.2 Oxanium, sans-serif;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -92,7 +92,7 @@
   gap: 7px;
   margin: 0 0 14px;
   color: color-mix(in srgb, var(--hcm-accent) 55%, #d6a758);
-  font: 600 .62rem/1.2 'Oxanium', sans-serif;
+  font: 600 .62rem/1.2 Oxanium, sans-serif;
   letter-spacing: .18em;
   text-transform: uppercase;
 }
@@ -101,7 +101,7 @@
   max-width: 22ch;
   margin: 0;
   color: #f0ddbb;
-  font: 500 clamp(2rem, 4vw, 4.25rem)/1.02 'Oxanium', sans-serif;
+  font: 500 clamp(2rem, 4vw, 4.25rem)/1.02 Oxanium, sans-serif;
   letter-spacing: -.025em;
   text-wrap: balance;
 }
@@ -114,7 +114,7 @@
 .ile-copy p {
   margin: 0 0 14px;
   color: #bcae97;
-  font: 400 clamp(.92rem, 1.2vw, 1.08rem)/1.72 'Inter', sans-serif;
+  font: 400 clamp(.92rem, 1.2vw, 1.08rem)/1.72 Inter, sans-serif;
 }
 
 .ile-callout {
@@ -125,7 +125,7 @@
   border-left: 3px solid color-mix(in srgb, var(--hcm-accent) 72%, #d8a34e);
   color: #efd39c;
   background: linear-gradient(90deg, color-mix(in srgb, var(--hcm-accent) 8%, transparent), rgba(15, 7, 4, .52));
-  font: 600 clamp(1rem, 1.6vw, 1.4rem)/1.35 'Oxanium', sans-serif;
+  font: 600 clamp(1rem, 1.6vw, 1.4rem)/1.35 Oxanium, sans-serif;
   letter-spacing: .08em;
 }
 
@@ -135,7 +135,7 @@
 
 .ile-choice > p {
   color: #d3b982;
-  font: 600 .75rem/1.3 'Oxanium', sans-serif;
+  font: 600 .75rem/1.3 Oxanium, sans-serif;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -156,7 +156,7 @@
   border: 1px solid rgba(211, 175, 106, .22);
   color: #c7b89e;
   background: rgba(20, 11, 7, .62);
-  font: 500 .8rem/1.35 'Inter', sans-serif;
+  font: 500 .8rem/1.35 Inter, sans-serif;
   text-align: left;
   cursor: pointer;
 }
@@ -197,7 +197,7 @@
 .ile-pipeline > aside p {
   margin: 0;
   color: #bdae93;
-  font: 400 .88rem/1.55 'Inter', sans-serif;
+  font: 400 .88rem/1.55 Inter, sans-serif;
 }
 
 .ile-pipeline {
@@ -227,13 +227,13 @@
 
 .ile-pipeline button small {
   color: #75654c;
-  font: 600 .5rem/1 'Oxanium', sans-serif;
+  font: 600 .5rem/1 Oxanium, sans-serif;
   letter-spacing: .12em;
 }
 
 .ile-pipeline button strong {
   margin-top: 12px;
-  font: 600 .66rem/1.2 'Oxanium', sans-serif;
+  font: 600 .66rem/1.2 Oxanium, sans-serif;
   letter-spacing: .07em;
   text-transform: uppercase;
 }
@@ -267,12 +267,12 @@
   border: 1px solid rgba(218, 180, 108, .18);
   color: #e8d2ac;
   background: rgba(218, 180, 108, .045);
-  font: 500 1rem/1.4 'Inter', sans-serif;
+  font: 500 1rem/1.4 Inter, sans-serif;
 }
 
 .ile-comparison > p span {
   color: #8f7853;
-  font: 600 .52rem/1 'Oxanium', sans-serif;
+  font: 600 .52rem/1 Oxanium, sans-serif;
   letter-spacing: .15em;
   text-transform: uppercase;
 }
@@ -293,7 +293,7 @@
 
 .ile-comparison section small {
   color: #9b8157;
-  font: 600 .56rem/1 'Oxanium', sans-serif;
+  font: 600 .56rem/1 Oxanium, sans-serif;
   letter-spacing: .15em;
   text-transform: uppercase;
 }
@@ -302,13 +302,13 @@
   display: block;
   margin: 20px 0;
   color: #efd8ad;
-  font: 500 clamp(1.1rem, 2vw, 1.6rem)/1.25 'Oxanium', sans-serif;
+  font: 500 clamp(1.1rem, 2vw, 1.6rem)/1.25 Oxanium, sans-serif;
 }
 
 .ile-comparison section p {
   margin: 0;
   color: #aa9d88;
-  font: 400 .88rem/1.6 'Inter', sans-serif;
+  font: 400 .88rem/1.6 Inter, sans-serif;
 }
 
 .ile-classification {
@@ -336,7 +336,7 @@
   min-height: 48px;
   margin: 0;
   color: #ddccb0;
-  font: 500 .86rem/1.5 'Inter', sans-serif;
+  font: 500 .86rem/1.5 Inter, sans-serif;
 }
 
 .ile-classification section > div {
@@ -351,7 +351,7 @@
   border: 1px solid rgba(214, 177, 105, .2);
   color: #9f8f75;
   background: rgba(0, 0, 0, .24);
-  font: 600 .56rem/1 'Oxanium', sans-serif;
+  font: 600 .56rem/1 Oxanium, sans-serif;
   letter-spacing: .06em;
   text-transform: uppercase;
   cursor: pointer;
@@ -367,7 +367,7 @@
   display: block;
   margin-top: 10px;
   color: #a99470;
-  font: 500 .58rem/1.3 'Inter', sans-serif;
+  font: 500 .58rem/1.3 Inter, sans-serif;
 }
 
 .ile-album {
@@ -398,14 +398,14 @@
 
 .ile-album nav small {
   color: #806d51;
-  font: 600 .5rem/1 'Oxanium', sans-serif;
+  font: 600 .5rem/1 Oxanium, sans-serif;
   letter-spacing: .14em;
   text-transform: uppercase;
 }
 
 .ile-album nav strong {
   margin-top: 7px;
-  font: 600 .72rem/1.2 'Oxanium', sans-serif;
+  font: 600 .72rem/1.2 Oxanium, sans-serif;
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -431,14 +431,14 @@
 .ile-album > section h2 {
   margin: 0;
   color: #efd9b2;
-  font: 600 1.5rem/1.15 'Oxanium', sans-serif;
+  font: 600 1.5rem/1.15 Oxanium, sans-serif;
   text-transform: uppercase;
 }
 
 .ile-album > section p,
 .ile-album-prompt {
   color: #b6a890;
-  font: 400 .92rem/1.65 'Inter', sans-serif;
+  font: 400 .92rem/1.65 Inter, sans-serif;
 }
 
 .ile-album > section blockquote {
@@ -446,7 +446,7 @@
   padding-left: 16px;
   border-left: 2px solid #d5a756;
   color: #dfc99f;
-  font: 500 1rem/1.5 'Inter', sans-serif;
+  font: 500 1rem/1.5 Inter, sans-serif;
 }
 
 .ile-mechanism {
@@ -467,7 +467,7 @@
 
 .ile-mechanism li > span {
   color: color-mix(in srgb, var(--hcm-accent) 55%, #d3a350);
-  font: 600 .62rem/1 'Oxanium', sans-serif;
+  font: 600 .62rem/1 Oxanium, sans-serif;
   letter-spacing: .13em;
 }
 
@@ -475,7 +475,7 @@
   display: block;
   margin-top: 24px;
   color: #e1cca6;
-  font: 600 .75rem/1.2 'Oxanium', sans-serif;
+  font: 600 .75rem/1.2 Oxanium, sans-serif;
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -483,7 +483,7 @@
 .ile-mechanism p {
   margin: 12px 0 0;
   color: #9f927d;
-  font: 400 .77rem/1.55 'Inter', sans-serif;
+  font: 400 .77rem/1.55 Inter, sans-serif;
 }
 
 .ile-reflection {
@@ -494,7 +494,7 @@
 
 .ile-reflection > span {
   color: #dac395;
-  font: 500 .92rem/1.45 'Inter', sans-serif;
+  font: 500 .92rem/1.45 Inter, sans-serif;
 }
 
 .ile-reflection textarea {
@@ -506,7 +506,7 @@
   outline: none;
   color: #eee1ca;
   background: rgba(8, 5, 4, .74);
-  font: 400 .93rem/1.65 'Inter', sans-serif;
+  font: 400 .93rem/1.65 Inter, sans-serif;
 }
 
 .ile-reflection textarea:focus {
@@ -516,7 +516,7 @@
 
 .ile-reflection small {
   color: #8f7d61;
-  font: 500 .58rem/1.3 'Inter', sans-serif;
+  font: 500 .58rem/1.3 Inter, sans-serif;
 }
 
 .ile-knowledge-lock {
@@ -528,7 +528,7 @@
   border: 1px solid rgba(220, 181, 105, .24);
   color: #ddc69a;
   background: rgba(211, 168, 90, .055);
-  font: 600 .72rem/1.45 'Oxanium', sans-serif;
+  font: 600 .72rem/1.45 Oxanium, sans-serif;
   letter-spacing: .06em;
 }
 
