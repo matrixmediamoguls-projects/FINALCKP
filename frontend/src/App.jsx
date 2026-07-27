@@ -29,7 +29,6 @@ const GuidedListen = lazy(() => import('./pages/GuidedListen'));
 const ActProtocol = lazy(() => import('./pages/ActProtocol'));
 const LaunchSequencePage = lazy(() => import('./pages/LaunchSequencePage'));
 const Activation = lazy(() => import('./pages/Activation'));
-const MatrixAssistant = lazy(() => import('./components/assistant/MatrixAssistant'));
 const ChromaKeyProtocolPremium = lazy(() => import('./pages/ChromaKeyProtocolPremium'));
 const SelfDirectedSovereignMode = lazy(() => import('./pages/SelfDirectedSovereignMode'));
 const CKPVisualizerCore = lazy(() => import('./pages/CKPVisualizerCore'));
@@ -312,20 +311,11 @@ function AppRoutes() {
         element={<LaunchSequencePage />}
       />
 
-      {/* SEEKER / VMA */}
+      {/* SEEKER */}
 
       <Route
         path="/seeker"
         element={<Navigate to="/experiencemode/sovereign/module/archetype" replace />}
-      />
-
-      <Route
-        path="/vma"
-        element={
-          <ProtectedRoute>
-            <MatrixAssistant />
-          </ProtectedRoute>
-        }
       />
 
       {/* PROTOCOL */}
@@ -443,7 +433,6 @@ function AppWithBackground() {
     path.includes("/act/3") ||
     path.includes("act_three") ||
     path.includes("reclamation") ||
-    path.includes("/vma") ||
     path.includes("/reclamation_user_journey") ||
     path.includes("self-directed-sovereign-mode") ||
     path.includes("/experiencemode/sovereign") ||

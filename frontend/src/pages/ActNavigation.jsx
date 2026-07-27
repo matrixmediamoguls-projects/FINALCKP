@@ -10,7 +10,6 @@ import {
   LockKey,
   Play,
   SignOut,
-  SlidersHorizontal,
   Stack,
   Waveform,
 } from '@phosphor-icons/react';
@@ -151,7 +150,6 @@ const commandLinks = [
   { label: 'Elemental Protocols', icon: Circuitry, route: '/acts', active: true },
   { label: 'Archaetypes', icon: ChartLineUp, route: '/experiencemode/sovereign/module/archetype' },
   { label: 'Archive', icon: Stack, route: '/journal' },
-  { label: 'Intel', icon: SlidersHorizontal, route: '/vma' },
 ];
 
 export default function ActNavigation() {
