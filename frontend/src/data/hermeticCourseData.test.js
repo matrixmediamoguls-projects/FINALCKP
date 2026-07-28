@@ -431,4 +431,33 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(25);
   });
+
+  it("delivers the supplied Preparing for Rhythm curriculum for Lesson 3.6", () => {
+    const lesson = VIBRATION_LESSONS.find(
+      (item) => item.number === "3.6",
+    );
+
+    expect(lesson.title).toBe("Preparing for Rhythm");
+    expect(lesson.content.intro).toBe(
+      "How does repeated movement become a cycle, and how can we respond without being controlled by it?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Frequency and Rhythm Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Module Artifact",
+          body: expect.stringContaining("The Personal Frequency Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Module: Rhythm"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(32);
+  });
 });

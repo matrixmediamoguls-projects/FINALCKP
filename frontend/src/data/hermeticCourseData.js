@@ -594,10 +594,10 @@ const COURSE_MODULES = [
       {
         id: "lesson-3-6",
         number: "3.6",
-        title: "Trust in the Synthetic Age",
+        title: "Preparing for Rhythm",
         duration: "35 min",
-        summary: "Students confront a world of edited images, AI voices, generated text, and deepfakes. The lesson teaches verification, attribution, behavioral consistency, and creator responsibility when surface evidence can be manufactured.",
-        keyPoints: ["Synthetic media complicates trust", "Verification matters", "AI-assisted work still needs authorship"]
+        summary: "How does repeated movement become a cycle, and how can we respond without being controlled by it?",
+        keyPoints: ["Vibration describes movement while rhythm describes recurring movement", "A cycle is a sequence rather than a permanent destiny", "Earlier recognition creates more opportunities for intervention"]
       }
     ]
   },
