@@ -562,10 +562,10 @@ const COURSE_MODULES = [
       {
         id: "lesson-3-2",
         number: "3.2",
-        title: "Signal, Noise, and Interference",
+        title: "Receive the Signal",
         duration: "30 min",
-        summary: "Students distinguish authentic signal from absorbed noise and interference. The lesson examines emotional contagion, algorithmic amplification, and the cost of mistaking foreign frequencies for personal truth.",
-        keyPoints: ["Signal versus noise", "Interference distorts meaning", "Absorbed emotion can feel personal"]
+        summary: "Why do some experiences shape us deeply while others pass through us almost unnoticed?",
+        keyPoints: ["Attention filters incoming signals", "Repetition and emotion strengthen influence", "Discernment turns reception into authorship"]
       },
       {
         id: "lesson-3-3",

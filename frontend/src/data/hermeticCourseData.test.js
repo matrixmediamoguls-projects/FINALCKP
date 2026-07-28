@@ -329,4 +329,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(44);
   });
+
+  it("delivers the supplied Receive the Signal curriculum for Lesson 3.2", () => {
+    const lesson = VIBRATION_LESSONS.find(
+      (item) => item.number === "3.2",
+    );
+
+    expect(lesson.title).toBe("Receive the Signal");
+    expect(lesson.content.intro).toBe(
+      "Why do some experiences shape us deeply while others pass through us almost unnoticed?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("Signal Inventory"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Living Frequencies"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(23);
+  });
 });
