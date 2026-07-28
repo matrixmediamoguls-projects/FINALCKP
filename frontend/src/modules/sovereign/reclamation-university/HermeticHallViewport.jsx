@@ -8,7 +8,7 @@ const moduleBySlug = new Map(
 );
 
 const mentalismObjectives = [
-  'Articulate the Principle of Mentalism as a first cause: “The ALL is Mind; the universe is mental,” and distinguish events from interpretations.',
+  'Articulate the Principle of Mentalism as a first cause: “The ALL is Mind; the Universe is Mental,” and distinguish events from interpretations.',
   'Recognize hidden influences shaping perception, including conditioning, media environments, and digital systems.',
   'Identify inherited beliefs and thought-forms that operate as unconscious code in daily decisions.',
   'Understand how repeated thinking, emotional memory, and reinforcement crystallize into stable thought-forms and identity patterns.',
