@@ -69,4 +69,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(13);
   });
+
+  it("delivers the supplied Vision Before the Tool curriculum for Lesson 1.4", () => {
+    const lesson = COURSE_MODULES[0].lessons.find(
+      (item) => item.number === "1.4",
+    );
+
+    expect(lesson.title).toBe("Vision Before the Tool");
+    expect(lesson.content.intro).toBe(
+      "Does a tool create the future—or does it reveal the mind of the person using it?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Vision-First Brief"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Speech as Construction"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(15);
+  });
 });
