@@ -94,4 +94,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(15);
   });
+
+  it("delivers the supplied Speech as Construction curriculum for Lesson 1.5", () => {
+    const lesson = COURSE_MODULES[0].lessons.find(
+      (item) => item.number === "1.5",
+    );
+
+    expect(lesson.title).toBe("Speech as Construction");
+    expect(lesson.content.intro).toBe(
+      "What are your words building before the results become visible?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Speech Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Authorship Returns"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(18);
+  });
 });
