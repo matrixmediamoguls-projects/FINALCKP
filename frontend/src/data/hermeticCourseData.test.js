@@ -171,4 +171,31 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(17);
   });
+
+  it("delivers the supplied Part and the Pattern curriculum for Lesson 2.2", () => {
+    const lesson = COURSE_MODULES[1].lessons.find(
+      (item) => item.number === "2.2",
+    );
+
+    expect(lesson.title).toBe("The Part and the Pattern");
+    expect(lesson.content.intro).toBe(
+      "How does one person shape a system—and how does the system shape the person in return?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The System Loop Map"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining(
+            "Next Lesson: The Pattern Across Generations",
+          ),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(18);
+  });
 });
