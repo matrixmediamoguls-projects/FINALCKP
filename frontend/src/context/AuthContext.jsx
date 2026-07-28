@@ -1,11 +1,20 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { getSupabaseClient } from '../services/supabase/client';
 import { sanitizeRedirectPath } from '../lib/authRedirects';
-import '../services/apiClient';
 
 const AuthContext = createContext(null);
 
-const supabase = getSupabaseClient();
+let supabaseClientPromise;
+
+const getAuthClient = async () => {
+  if (!supabaseClientPromise) {
+    supabaseClientPromise = Promise.all([
+      import('../services/supabase/client'),
+      import('../services/apiClient'),
+    ]).then(([{ getSupabaseClient }]) => getSupabaseClient());
+  }
+
+  return supabaseClientPromise;
+};
 
 const toAppUser = (supabaseUser) => {
   if (!supabaseUser) return null;
@@ -40,31 +49,35 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!supabase) {
-      setLoading(false);
-      return undefined;
-    }
-
     let mounted = true;
+    let subscription;
 
-    supabase.auth
-      .getSession()
-      .then(({ data: { session } }) => {
-        if (!mounted) return;
-        setUser(toAppUser(session?.user ?? null));
+    getAuthClient()
+      .then(async (supabase) => {
+        if (!supabase || !mounted) return;
+
+        const {
+          data: { subscription: authSubscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+          if (mounted) setUser(toAppUser(session?.user ?? null));
+        });
+        subscription = authSubscription;
+
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (mounted) setUser(toAppUser(session?.user ?? null));
+      })
+      .catch((error) => {
+        console.error('Unable to restore the authentication session.', error);
       })
       .finally(() => {
         if (mounted) setLoading(false);
       });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(toAppUser(session?.user ?? null));
-    });
-
     const handleSessionExpired = async () => {
-      await supabase.auth.signOut({ scope: 'local' });
+      const supabase = await getAuthClient();
+      if (supabase) await supabase.auth.signOut({ scope: 'local' });
       setUser(null);
     };
 
@@ -72,12 +85,13 @@ export const AuthProvider = ({ children }) => {
 
     return () => {
       mounted = false;
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
       window.removeEventListener('auth:session-expired', handleSessionExpired);
     };
   }, []);
 
   const login = async (email, password) => {
+    const supabase = await getAuthClient();
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -89,6 +103,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
+    const supabase = await getAuthClient();
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
 
     const { data, error } = await supabase.auth.signUp({
@@ -104,6 +119,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const socialLogin = async (provider, redirectPath = '/acts') => {
+    const supabase = await getAuthClient();
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
 
     const safeRedirectPath = sanitizeRedirectPath(redirectPath);
@@ -117,11 +133,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    const supabase = await getAuthClient();
     if (supabase) await supabase.auth.signOut({ scope: 'local' });
     setUser(null);
   };
 
   const checkAuth = useCallback(async () => {
+    const supabase = await getAuthClient();
     if (!supabase) {
       setUser(null);
       return null;
@@ -136,6 +154,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const updateProgress = async (progressData) => {
+    const supabase = await getAuthClient();
     if (!supabase) throw new Error('Supabase is not configured. Check frontend environment variables.');
 
     const {
