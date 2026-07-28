@@ -354,4 +354,31 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(23);
   });
+
+  it("delivers the supplied Living Frequencies curriculum for Lesson 3.3", () => {
+    const lesson = VIBRATION_LESSONS.find(
+      (item) => item.number === "3.3",
+    );
+
+    expect(lesson.title).toBe("Living Frequencies");
+    expect(lesson.content.intro).toBe(
+      "How do repeated states become the patterns from which we think, act, and relate?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Living Frequency Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining(
+            "Next Lesson: Resonance and Environment",
+          ),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(29);
+  });
 });

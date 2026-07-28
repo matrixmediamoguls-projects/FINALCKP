@@ -570,10 +570,10 @@ const COURSE_MODULES = [
       {
         id: "lesson-3-3",
         number: "3.3",
-        title: "The Suppression Routine",
+        title: "Living Frequencies",
         duration: "35 min",
-        summary: "This lesson audits suppression as learned behavior rather than personality. Students examine where silence, shrinking, and self-censorship were installed and what long-term cost that routine exacts.",
-        keyPoints: ["Suppression is learned", "Silence has a price", "Audit the routine"]
+        summary: "How do repeated states become the patterns from which we think, act, and relate?",
+        keyPoints: ["Repeated states become familiar patterns", "Frequency describes practice rather than worth", "Replacement, repetition, and recovery support change"]
       },
       {
         id: "lesson-3-4",
