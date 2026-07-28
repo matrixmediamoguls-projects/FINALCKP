@@ -119,4 +119,31 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(18);
   });
+
+  it("delivers the supplied Authorship Returns curriculum for Lesson 1.6", () => {
+    const lesson = COURSE_MODULES[0].lessons.find(
+      (item) => item.number === "1.6",
+    );
+
+    expect(lesson.title).toBe("Authorship Returns");
+    expect(lesson.content.intro).toBe(
+      "If your mind has been shaped by inherited beliefs, repeated thoughts, tools, and language, what does it actually mean to become the author of your own life?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("Personal Operating System Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining(
+            "Next Module: Correspondence — Patterns Across Worlds",
+          ),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(15);
+  });
 });
