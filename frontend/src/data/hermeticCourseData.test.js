@@ -460,4 +460,31 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(32);
   });
+
+  it("delivers the supplied Nature of Cycles curriculum for Lesson 4.1", () => {
+    const lesson = COURSE_MODULES[3].lessons.find(
+      (item) => item.number === "4.1",
+    );
+
+    expect(lesson.title).toBe("The Nature of Cycles");
+    expect(lesson.content.intro).toBe(
+      "Why do patterns repeat across nature, people, societies, and history—and what can those repetitions teach us?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("Pattern Recognition Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining(
+            "Next Lesson: Oscillation — Why Systems Swing",
+          ),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(22);
+  });
 });

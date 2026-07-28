@@ -629,9 +629,137 @@ const COURSE_MODULES = [
       {
         id: "lesson-4-1",
         number: "4.1",
-        title: "One Continuum, Multiple Degrees",
-        summary: "This lesson teaches that many apparent opposites are different degrees of one shared force. Students map how fear, reverence, anger, and protective force can sit on the same continuum without being identical.",
-        keyPoints: ["Opposites share a continuum", "Degrees matter", "Mapping replaces splitting"]
+        title: "The Nature of Cycles",
+        summary: "Why do patterns repeat across nature, people, societies, and history—and what can those repetitions teach us?",
+        keyPoints: [
+          "Rhythm is organized movement across time",
+          "Patterns emerge through repetition and feedback",
+          "Earlier recognition creates more opportunities for wise intervention"
+        ],
+        content: {
+          intro: "Why do patterns repeat across nature, people, societies, and history—and what can those repetitions teach us?",
+          sections: [
+            {
+              "heading": "Introduction",
+              "body": "Stand beside the ocean long enough, and you begin to notice something.\n\nNo two waves are identical.\n\nYet none of them arrive randomly.\n\nEach belongs to a larger pattern.\n\nThe same is true of almost everything we experience.\n\nThe Earth rotates.\n\nThe seasons return.\n\nThe heart contracts and relaxes.\n\nBreathing alternates between inhalation and exhalation.\n\nEconomies expand and contract.\n\nTechnologies emerge, mature, and are replaced.\n\nIdeas rise into popularity, lose influence, and sometimes return generations later.\n\nHuman life is filled with repetition.\n\nBut repetition is not sameness.\n\nEvery sunrise is different.\n\nEvery conversation changes.\n\nEvery generation inherits a world unlike the one before it.\n\nRhythm is not about identical events.\n\nIt is about recognizable patterns unfolding across time.\n\nThe Third Principle, Vibration, taught us that everything is moving.\n\nThe Fourth Principle asks a different question:\n\nWhat happens when movement begins to organize itself?\n\nMovement becomes rhythm.\n\nRhythm becomes pattern.\n\nPattern becomes history.\n\nTo understand Rhythm is not merely to notice change.\n\nIt is to recognize that change itself often follows structure.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "What Is Rhythm?",
+              "body": "Rhythm is organized movement across time.\n\nUnlike vibration, which simply describes motion, rhythm describes motion with recurrence.\n\nA heartbeat is rhythmic.\n\nWalking has rhythm.\n\nMusic depends on rhythm.\n\nConversation has rhythm.\n\nLearning has rhythm.\n\nAttention has rhythm.\n\nEntire civilizations develop through rhythms.\n\nRhythm is what allows us to recognize something before it fully happens.\n\nWhen enough movement repeats, it becomes a pattern.\n\nWhen enough patterns accumulate, they become expectation.\n\nWhen expectations shape decisions, rhythm begins influencing reality itself.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "The Difference Between Randomness and Pattern",
+              "body": "Suppose you flip a coin once.\n\nThe outcome tells you almost nothing.\n\nFlip it a thousand times.\n\nPatterns begin to appear.\n\nIndividual events remain unpredictable.\n\nThe larger structure becomes understandable.\n\nThis distinction is essential.\n\nRhythm does not eliminate uncertainty.\n\nIt reveals order within uncertainty.\n\nMeteorologists cannot predict the exact shape of every cloud.\n\nYet they understand weather systems.\n\nEconomists cannot predict every purchase.\n\nYet they observe business cycles.\n\nPsychologists cannot predict every decision.\n\nYet they recognize recurring behavioral patterns.\n\nThe goal is never perfect prediction.\n\nThe goal is deeper perception.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Patterns Exist at Every Scale",
+              "body": "One of the remarkable characteristics of complex systems is that similar structures appear at different levels.\n\nConsider breathing.\n\nEach breath follows a rhythm.\n\nThousands of breaths create the rhythm of a day.\n\nDays create weeks.\n\nWeeks become seasons.\n\nSeasons become years.\n\nThe same principle appears elsewhere.\n\nOne conversation shapes a relationship.\n\nRelationships shape families.\n\nFamilies influence communities.\n\nCommunities influence cultures.\n\nCultures influence civilizations.\n\nSmall rhythms contribute to larger rhythms.\n\nLarge rhythms influence smaller ones.\n\nCorrespondence taught us that patterns appear across scales.\n\nRhythm shows us how those patterns unfold through time.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Cycles Are Not Circles",
+              "body": "People often imagine cycles as endless circles.\n\nBut many natural systems resemble spirals.\n\nA spiral returns to familiar territory while continuing forward.\n\nImagine learning a musical instrument.\n\nAt first you struggle with rhythm.\n\nMonths later you revisit rhythm at a more advanced level.\n\nYears later you study rhythm again while composing music.\n\nThe subject returns.\n\nYour relationship to it changes.\n\nLife often develops in this way.\n\nRecurring themes do not necessarily mean we are trapped.\n\nSometimes they reveal increasing depth.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Why Systems Repeat",
+              "body": "Patterns repeat because systems preserve certain relationships over time.\n\nA forest experiences changing weather every year.\n\nYet forests continue functioning because the relationships between soil, water, sunlight, and living organisms remain relatively stable.\n\nThe same applies to many human systems.\n\nOrganizations develop routines.\n\nFamilies establish traditions.\n\nSchools create schedules.\n\nGovernments operate through recurring procedures.\n\nTechnology evolves, yet many underlying human needs remain remarkably consistent.\n\nSystems repeat because stability allows continuity.\n\nWithout repetition, learning would be impossible.\n\nMemory depends upon recurrence.\n\nLanguage depends upon recurrence.\n\nCulture depends upon recurrence.\n\nIdentity depends upon recurrence.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Feedback Creates Rhythm",
+              "body": "One reason rhythms emerge is through feedback.\n\nA feedback loop occurs when the result of a process influences the process itself.\n\nImagine adjusting the temperature in a room.\n\nIf the room becomes too cold, the heater turns on.\n\nAs the room warms, the heater turns off.\n\nThe system continually adjusts itself.\n\nHuman life contains countless feedback loops.\n\nA musician hears a note and adjusts the next one.\n\nA basketball player sees the ball miss and changes the next shot.\n\nA teacher observes confusion and explains the concept differently.\n\nFeedback transforms isolated actions into adaptive systems.\n\nWithout feedback, there can be movement.\n\nWith feedback, movement begins to organize.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Positive and Negative Feedback",
+              "body": "The words positive and negative often confuse people.\n\nIn systems thinking, they do not mean \"good\" and \"bad.\"\n\nPositive feedback amplifies change.\n\nSmall differences become larger.\n\nExamples include:\n\nA viral social media trend.\nPopulation growth under favorable conditions.\nFinancial bubbles.\nPanic buying.\nRumors spreading through a community.\n\nPositive feedback accelerates movement.\n\nNegative feedback reduces deviation.\n\nIt stabilizes systems.\n\nExamples include:\n\nBody temperature regulation.\nCruise control in a vehicle.\nBudget adjustments after overspending.\nCorrecting posture while walking.\n\nNegative feedback slows change enough to preserve stability.\n\nHealthy systems often require both.\n\nWithout amplification, innovation rarely spreads.\n\nWithout stabilization, systems become chaotic.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "The Rhythm of Learning",
+              "body": "Learning rarely happens in a straight line.\n\nStudents often experience:\n\nExposure.\n\nConfusion.\n\nPractice.\n\nSmall improvement.\n\nPlateau.\n\nSudden insight.\n\nMore practice.\n\nNew confusion.\n\nThe cycle repeats.\n\nMany people mistake confusion for failure.\n\nIn reality, confusion often signals that previous understanding is being reorganized.\n\nProgress frequently appears uneven because learning involves restructuring existing knowledge rather than simply adding information.\n\nGrowth is rhythmic.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "The Rhythm of Creativity",
+              "body": "Creative work follows similar patterns.\n\nAn idea appears.\n\nExcitement grows.\n\nPossibilities expand.\n\nComplexity increases.\n\nMomentum slows.\n\nRevision begins.\n\nClarity returns.\n\nCompletion arrives.\n\nRest follows.\n\nThen another idea appears.\n\nMany creators abandon projects because they believe inspiration should remain constant.\n\nExperienced creators recognize that inspiration and discipline serve different stages.\n\nThe rhythm itself becomes part of the craft.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "The Rhythm of Innovation",
+              "body": "Technology also develops through recognizable stages.\n\nA discovery creates excitement.\n\nInvestment increases.\n\nExpectations rise.\n\nLimitations become visible.\n\nRefinement follows.\n\nEventually the technology becomes ordinary.\n\nElectricity.\n\nRadio.\n\nTelevision.\n\nPersonal computers.\n\nThe internet.\n\nArtificial intelligence.\n\nEach has passed—or is passing—through versions of this pattern.\n\nThe details differ.\n\nThe rhythm remains surprisingly familiar.\n\nUnderstanding these rhythms helps us separate temporary excitement from lasting transformation.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "History Does Not Repeat—But Patterns Do",
+              "body": "A common saying claims:\n\n\"History repeats itself.\"\n\nA more accurate observation is:\n\nHistory rarely repeats exactly, but patterns often reappear.\n\nEconomic instability.\n\nPolitical polarization.\n\nRapid technological change.\n\nPeriods of cultural optimism.\n\nMoments of social anxiety.\n\nQuestions about identity.\n\nConflicts over authority.\n\nThese themes return in different forms.\n\nRecognizing patterns does not mean believing outcomes are inevitable.\n\nIt provides context.\n\nPatterns help us ask better questions.\n\nThey do not eliminate uncertainty.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "The Rhythm of Attention",
+              "body": "Attention itself follows cycles.\n\nFocus naturally rises and falls.\n\nAfter prolonged concentration, attention weakens.\n\nRecovery restores it.\n\nDigital technology often interrupts these rhythms.\n\nConstant notifications shorten attention cycles.\n\nContinuous stimulation leaves little room for reflection.\n\nAs a result, many people mistake overstimulation for productivity.\n\nRhythm reminds us that attention requires alternation.\n\nFocus.\n\nRest.\n\nReflection.\n\nReturn.\n\nWithout recovery, attention becomes fragmented.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Rhythm and Identity",
+              "body": "Identity is often imagined as something fixed.\n\nIn reality, identity develops rhythmically.\n\nA child imitates.\n\nAn adolescent experiments.\n\nAn adult commits.\n\nMidlife may invite reevaluation.\n\nLater life often emphasizes integration and legacy.\n\nNone of these stages fully defines a person.\n\nEach contributes to an unfolding pattern.\n\nUnderstanding this prevents us from treating temporary seasons as permanent identities.\n\nWho you are includes movement across time.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "The Reclamation Lens",
+              "body": "Throughout Reclamation, transformation unfolds through sequence rather than speed.\n\nThe listener is not immediately offered resolution.\n\nThe album begins with pressure.\n\nIt moves through fire.\n\nIt confronts burial.\n\nIt remembers forgotten identity.\n\nIt questions inherited narratives.\n\nIt changes direction.\n\nIt returns to authorship.\n\nEach song gains meaning from its place within the larger journey.\n\nWelcome to the Fire establishes initiation.\n\nHold On Through the Burial demonstrates that periods of apparent stillness often contain hidden transformation.\n\nAdjacent (Reroute It) shows that cycles can be interrupted before they complete themselves.\n\nThe album teaches rhythm through structure as much as through lyrics.\n\nThe order matters.\n\nTransformation is not merely a collection of experiences.\n\nIt is a sequence.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Why We Miss Patterns",
+              "body": "Human beings naturally pay attention to dramatic events.\n\nWe remember crises.\n\nVictories.\n\nLosses.\n\nSurprises.\n\nPatterns are quieter.\n\nThey reveal themselves through repetition.\n\nThis is why journals, calendars, habit trackers, financial records, and historical archives are valuable.\n\nMemory remembers stories.\n\nRecords reveal rhythms.\n\nOne difficult day may seem overwhelming.\n\nSix months of observation may reveal that difficult days consistently follow the same conditions.\n\nAwareness begins when isolated events become connected.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "From Events to Systems",
+              "body": "One of the most important shifts in this course is learning to think in systems rather than isolated events.\n\nInstead of asking:\n\n\"Why did this happen?\"\n\nWe begin asking:\n\n\"What pattern made this likely?\"\n\nInstead of asking:\n\n\"How do I solve this one problem?\"\n\nWe ask:\n\n\"What system keeps producing this problem?\"\n\nRhythm encourages this broader perspective.\n\nEvents matter.\n\nPatterns explain more.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Reflection",
+              "body": "Choose one recurring pattern from your life.\n\nIt may involve:\n\nCreativity\nRelationships\nWork\nLearning\nHealth\nFinances\nTechnology\nLeadership\nSpiritual practice\n\nComplete the following:\n\nThe pattern I notice is __________.\n\nIt usually begins when __________.\n\nIt repeats approximately every __________.\n\nI usually notice it only after __________.\n\nThen ask yourself:\n\nWhat feedback keeps this pattern alive?\nWhat conditions strengthen it?\nWhat conditions weaken it?\nAm I responding to isolated events or to the larger system?\nWhat would change if I recognized this rhythm earlier?",
+              "type": "reflection"
+            },
+            {
+              "heading": "Reclamation Protocol",
+              "body": "Pattern Recognition Audit\n\nOver the next fourteen days, observe one recurring system in your life.\n\n1. Name the System\n\nExamples:\n\nMorning routine\nCreative workflow\nTeam communication\nSleep\nExercise\nStudy habits\nFinancial decisions\nDigital media use\n2. Record the Pattern\n\nEach day write:\n\nWhat happened?\nWhat happened immediately before?\nWhat happened immediately after?\n3. Look for Feedback\n\nAsk:\n\nWhat action reinforced the pattern?\nWhat interrupted it?\nWhat reward kept it going?\nWhat cost appeared later?\n4. Identify the Rhythm\n\nComplete:\n\nTrigger → Response → Result → Reinforcement → Repeat\n\n5. Ask the Systems Question\n\nInstead of:\n\n\"How do I fix today's problem?\"\n\nWrite:\n\n\"What recurring structure keeps producing this result?\"\n\n6. Identify One Intervention Point\n\nChoose the earliest realistic place where the pattern can be changed.\n\nDo not redesign the entire system.\n\nChange one point.\n\n7. Review\n\nAt the end of two weeks ask:\n\nWhich parts repeated consistently?\nWhich surprised me?\nWhat assumptions changed?\nWhat pattern became visible that I had previously missed?",
+              "type": "activation"
+            },
+            {
+              "heading": "Worked Example",
+              "body": "System\n\nLate-night phone use.\n\nPattern\n\nWork ends.\n\nFatigue increases.\n\nThe phone becomes a source of easy stimulation.\n\nBedtime is delayed.\n\nSleep quality decreases.\n\nMorning focus becomes weaker.\n\nLower focus leads to more procrastination.\n\nProcrastination creates evening pressure.\n\nEvening pressure increases late-night phone use.\n\nFeedback\n\nThe phone provides short-term relief but strengthens the larger cycle.\n\nIntervention\n\nMove the phone outside the bedroom and replace it with a book.\n\nResult\n\nThe entire cycle does not disappear immediately, but the feedback loop weakens at its earliest stage.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Key Takeaways",
+              "body": "Rhythm is organized movement across time.\nPatterns emerge through repetition and feedback.\nCycles are better understood as spirals than perfect circles.\nSystems thinking reveals structures behind isolated events.\nPositive feedback amplifies change; negative feedback stabilizes systems.\nLearning, creativity, technology, and societies all develop through recurring rhythms.\nHistory rarely repeats exactly, but recognizable patterns often return.\nRecords reveal rhythms that memory alone may overlook.\nEarlier recognition creates more opportunities for wise intervention.",
+              "type": "doctrine"
+            },
+            {
+              "heading": "Looking Ahead",
+              "body": "Patterns explain that something repeats.\n\nOur next question is more challenging:\n\nWhy do systems swing between extremes?\n\nWhy do economies boom and crash?\n\nWhy does public opinion shift so dramatically?\n\nWhy do habits often move from excess to restraint—and back again?\n\nIn the next lesson, we will examine oscillation: the forces that drive systems from one extreme toward another, and why understanding those swings is essential to reclaiming authorship.\n\nNext Lesson: Oscillation — Why Systems Swing",
+              "type": "integration"
+            },
+          ],
+          reflection: {
+            prompt: "Observe one recurring system and identify the structure that keeps producing its results.",
+            questions: [
+              "What feedback keeps this pattern alive?",
+              "What conditions strengthen or weaken it?",
+              "What would change if I recognized this rhythm earlier?"
+            ],
+            placeholder: "Name the system, document its rhythm, and choose one realistic intervention point."
+          }
+        }
       },
       {
         id: "lesson-4-2",
