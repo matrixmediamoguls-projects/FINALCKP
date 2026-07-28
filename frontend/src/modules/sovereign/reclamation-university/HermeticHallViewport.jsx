@@ -119,7 +119,7 @@ function LawButton({ law, active, onActivate }) {
 function MentalismPopupContent() {
   return (
     <>
-      <p className="hh-curriculum-axiom">The ALL is Mind; the universe is mental.</p>
+      <p className="hh-curriculum-axiom">The ALL is Mind; the Universe is Mental.</p>
       <h2>Module Overview</h2>
       <p>
         Module I, “Mentalism: Before the Body, The ALL-Mind,” is the opening architecture of Reclamation University and the first act in the Mentalism sequence. It moves the student from passive understanding of “mind” as an abstract concept into conscious reclamation of authorship over perception, interpretation, and identity. The module treats the mind not as a brain-bound organ but as a medium, a field, and a primary creative interface through which all experience is interpreted before it becomes behavior.
