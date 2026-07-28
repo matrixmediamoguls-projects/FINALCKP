@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
-
 .hcm-root {
   --hcm-ink: #060504;
   --hcm-panel: rgba(17, 13, 11, .88);
@@ -697,6 +695,10 @@
 .hcm-content-block li {
   font-size: 1rem;
   line-height: 1.85;
+}
+
+.hcm-active-section > p {
+  white-space: pre-line;
 }
 
 .hcm-content-block blockquote {

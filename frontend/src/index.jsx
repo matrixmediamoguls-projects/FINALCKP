@@ -29,6 +29,24 @@ root.render(
   </React.StrictMode>
 );
 
+const scheduleAnalytics = () => {
+  const start = () => {
+    void import("@/services/analytics").then(({ startAnalytics }) => startAnalytics());
+  };
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(start, { timeout: 4000 });
+  } else {
+    window.setTimeout(start, 2000);
+  }
+};
+
+if (document.readyState === "complete") {
+  scheduleAnalytics();
+} else {
+  window.addEventListener("load", scheduleAnalytics, { once: true });
+}
+
 void import("@/services/supabase/client").then(({ validateSupabaseConfiguration }) => {
   const supabaseConfiguration = validateSupabaseConfiguration();
   if (!supabaseConfiguration.isValid) {

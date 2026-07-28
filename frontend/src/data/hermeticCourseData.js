@@ -29,8 +29,42 @@ const COURSE_MODULES = [
         id: "lesson-1-1",
         number: "1.1",
         title: "The Mind as Medium",
-        summary: "This lesson explores how experience is filtered before it becomes meaning. It distinguishes between objective events and subjective interpretation, showing that the first story the mind tells is not always the truest one.",
-        keyPoints: ["Perception versus event", "Thought\u2013emotion\u2013behavior sequence", "Meaning is constructed, not merely received"]
+        summary: "You do not experience events directly. You experience them through a medium.",
+        keyPoints: ["Reality as a Translation", "Event, Interpretation, Observer", "Where This Shows Up in Your Life", "Mind in the Attention Economy"],
+        content: {
+          intro: "Imagine ten people standing in the same room when a message arrives: \"We need to talk.\"",
+          sections: [
+            {
+              heading: "Reality as a Translation",
+              type: "doctrine",
+              body: "The words are identical. The sender is the same. The room doesn't change. Inside those ten bodies, however, ten different worlds come alive. Relief. Dread. Curiosity. Indifference. Suspicion. Hope. The event is shared. The experience is not.\n\nYou do not experience events directly. You experience them through a medium.\n\nMentalism points to that medium: the mind. Not \"mental\" as in imaginary or unreal, but mental in the sense that everything you recognize as reality has already been filtered through perception, memory, belief, and meaning before it reaches conscious awareness. By the time you believe you are reacting to the world, your mind has already translated it.\n\nOnce you recognize that translation is taking place, you stop fighting the event itself and begin examining the interpretation. That shift marks the difference between living on autopilot and living consciously."
+            },
+            {
+              heading: "Event, Interpretation, Observer",
+              type: "activation",
+              body: "There are three moving parts at work in every experience:\n\nEvent – What objectively occurs. A message. A loss. A promotion. A period of silence. A headline. A contract. The event exists independently of the meaning assigned to it.\n\nInterpretation – The meaning your mind gives the event. I'm being punished. I'm finally being recognized. They're abandoning me. This is an opportunity. Interpretation is where experience becomes personal.\n\nObserver – The part of you capable of noticing both the event and the interpretation without confusing one for the other. The Observer recognizes that the story is not the event itself.\n\nMost people never separate these three layers. \"They didn't reply\" becomes \"I'm not worth replying to.\" \"The project failed\" becomes \"I'm a failure.\" \"They challenged my idea\" becomes \"They're against me.\" The interpretation fuses with the event until it feels inseparable, and the story quietly becomes accepted as reality.\n\nMentalism invites you to pull those layers apart.\n\nHold the event in one hand and the interpretation in the other. Then ask a question that most people never consider:\n\nDid this happen, or is this what I decided it means?\n\nThat question creates psychological distance. Within that distance lives perspective. Within perspective lives choice. And within choice begins authorship."
+            },
+            {
+              heading: "Where This Shows Up in Your Life",
+              type: "exercise",
+              body: "This distinction isn't philosophical. It appears everywhere.\n\nRelationships. A delayed response can become evidence that someone is busy, emotionally overwhelmed, losing interest, testing boundaries, or simply away from their phone. One interpretation encourages patience. Another creates resentment. A third starts an argument that never needed to exist.\n\nWork. Critical feedback can become proof that you're failing or evidence that someone believes you're capable of more. The situation remains identical; only the interpretation changes. Yet those interpretations produce completely different decisions.\n\nEmotional Life. A setback can reinforce the belief that nothing ever works out, or it can become another step in a longer process of growth. Both interpretations acknowledge difficulty. Only one leaves room for movement.\n\nIdentity. Sentences like I'm always overlooked. I'm the one who has to fix everything. I never belong. rarely arrive as objective truth. They begin as interpretations repeated so often that they eventually feel permanent. Over time, your nervous system stops treating them as stories and starts treating them as facts."
+            },
+            {
+              heading: "Mind in the Attention Economy",
+              type: "warning",
+              body: "You are not the only author writing on your mental medium.\n\nEvery day, algorithms compete for your attention. They learn what captures your emotions, then respond by showing you more of it. Outrage attracts more outrage. Fear attracts more fear. Validation attracts more validation. Gradually, your perception of reality begins reflecting the logic of the feed rather than the complexity of the world itself.\n\nAI generated media introduces another layer. Images, voices, conversations, and events can now be created with remarkable realism despite never occurring. Your nervous system still responds. The emotional experience is genuine, even when the event is synthetic.\n\nAdvertising rarely sells products alone. It sells identity. Political messaging rarely presents information alone. It frames belonging, opposition, and emotional allegiance before presenting evidence. Every system competing for your attention is attempting to influence the medium through which you interpret reality.\n\nMentalism does not require you to reject these systems.\n\nIt requires you to recognize that your mind is the interface they are trying to reach."
+            }
+          ],
+          reflection: {
+            prompt: "Observer Practice",
+            questions: [
+              "Name one recent event without adding interpretation.",
+              "What meaning did your mind assign to it?",
+              "What becomes possible when the Observer separates the event from the story?"
+            ],
+            placeholder: "Separate the event, interpretation, and observer..."
+          }
+        }
       },
       {
         id: "lesson-1-2",
