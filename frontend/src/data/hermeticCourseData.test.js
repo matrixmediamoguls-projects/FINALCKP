@@ -44,4 +44,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(22);
   });
+
+  it("delivers the supplied Algorithmic Thought Form curriculum for Lesson 1.3", () => {
+    const lesson = COURSE_MODULES[0].lessons.find(
+      (item) => item.number === "1.3",
+    );
+
+    expect(lesson.title).toBe("The Algorithmic Thought Form");
+    expect(lesson.content.intro).toBe(
+      "When does a passing thought become a pattern that begins directing your life?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("Thought Form Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Vision Before the Tool"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(13);
+  });
 });
