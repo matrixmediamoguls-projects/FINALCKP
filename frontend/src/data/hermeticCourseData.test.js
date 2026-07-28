@@ -381,4 +381,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(29);
   });
+
+  it("delivers the supplied Resonance and Environment curriculum for Lesson 3.4", () => {
+    const lesson = VIBRATION_LESSONS.find(
+      (item) => item.number === "3.4",
+    );
+
+    expect(lesson.title).toBe("Resonance and Environment");
+    expect(lesson.content.intro).toBe(
+      "How do people, places, and systems strengthen the patterns we already carry?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Resonance Map"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Amplify the Signal"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(31);
+  });
 });

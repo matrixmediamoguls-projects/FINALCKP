@@ -578,10 +578,10 @@ const COURSE_MODULES = [
       {
         id: "lesson-3-4",
         number: "3.4",
-        title: "Voice as Code",
+        title: "Resonance and Environment",
         duration: "40 min",
-        summary: "Voice is treated as operational force, not just self-expression. Students study testimony, naming, language precision, and the difference between affirmation and behavioral commitment.",
-        keyPoints: ["Voice reshapes the field", "Naming clarifies reality", "Speech needs behavioral proof"]
+        summary: "How do people, places, and systems strengthen the patterns we already carry?",
+        keyPoints: ["Resonance activates existing patterns", "Environments make behaviors easier or harder", "Authorship requires openness with boundaries"]
       },
       {
         id: "lesson-3-5",
