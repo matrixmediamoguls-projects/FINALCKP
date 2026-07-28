@@ -198,4 +198,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(18);
   });
+
+  it("delivers the supplied Pattern Across Generations curriculum for Lesson 2.3", () => {
+    const lesson = COURSE_MODULES[1].lessons.find(
+      (item) => item.number === "2.3",
+    );
+
+    expect(lesson.title).toBe("The Pattern Across Generations");
+    expect(lesson.content.intro).toBe(
+      "What if some of the patterns shaping your life began long before you were born?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("Generational Pattern Map"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: The Fractal Mind"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(15);
+  });
 });
