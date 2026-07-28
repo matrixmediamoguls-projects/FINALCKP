@@ -223,4 +223,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(15);
   });
+
+  it("delivers the supplied Fractal Mind curriculum for Lesson 2.4", () => {
+    const lesson = COURSE_MODULES[1].lessons.find(
+      (item) => item.number === "2.4",
+    );
+
+    expect(lesson.title).toBe("The Fractal Mind");
+    expect(lesson.content.intro).toBe(
+      "What can a small recurring pattern reveal about the larger structure of your life?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Fractal Pattern Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Analogy Without Illusion"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(23);
+  });
 });
