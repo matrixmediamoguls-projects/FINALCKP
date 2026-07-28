@@ -7,6 +7,25 @@ const moduleBySlug = new Map(
   HERMETIC_HALL_FACULTY.modules.map((module) => [module.slug, module])
 );
 
+const mentalismObjectives = [
+  'Articulate the Principle of Mentalism as a first cause: “The ALL is Mind; the universe is mental,” and distinguish events from interpretations.',
+  'Recognize hidden influences shaping perception, including conditioning, media environments, and digital systems.',
+  'Identify inherited beliefs and thought-forms that operate as unconscious code in daily decisions.',
+  'Understand how repeated thinking, emotional memory, and reinforcement crystallize into stable thought-forms and identity patterns.',
+  'Evaluate the role of tools, technology, and language as extensions of prior vision instead of autonomous authors.',
+  'Begin reclaiming authorship through reflection, protocol exercises, and a structured thirty-day plan.',
+];
+
+const mentalismPageQuestions = [
+  'What is this?',
+  'Why does it matter?',
+  'Where do I already see this?',
+  'How does it actually work?',
+  'How does this connect to the Reclamation album?',
+  'How can I apply it?',
+  'What should I observe after finishing this page?',
+];
+
 const laws = [
   {
     number: 1,
@@ -97,6 +116,53 @@ function LawButton({ law, active, onActivate }) {
   );
 }
 
+function MentalismPopupContent() {
+  return (
+    <>
+      <p className="hh-curriculum-axiom">The ALL is Mind; the universe is mental.</p>
+      <h2>Module Overview</h2>
+      <p>
+        Module I, “Mentalism: Before the Body, The ALL-Mind,” is the opening architecture of Reclamation University and the first act in the Mentalism sequence. It moves the student from passive understanding of “mind” as an abstract concept into conscious reclamation of authorship over perception, interpretation, and identity. The module treats the mind not as a brain-bound organ but as a medium, a field, and a primary creative interface through which all experience is interpreted before it becomes behavior.
+      </p>
+      <p>
+        Across six lessons and a capstone audit, students travel from invisible influence to intentional authorship. Each lesson integrates hermetic philosophy, the Principle of Mentalism, modern information environments including algorithms, AI, and social media, and case studies from the Reclamation album to demonstrate how thought-forms precede worlds, how inherited code writes lives, and how language and tools extend, rather than originate, vision.
+      </p>
+      <h2>Educational Objectives</h2>
+      <p>By the end of this module, students should be able to:</p>
+      <ol>
+        {mentalismObjectives.map((objective) => <li key={objective}>{objective}</li>)}
+      </ol>
+      <h2>Every Page Is Designed to Answer</h2>
+      <ol>
+        {mentalismPageQuestions.map((question) => <li key={question}>{question}</li>)}
+      </ol>
+      <p className="hh-curriculum-end">End of module introduction · Enter the curriculum when ready</p>
+    </>
+  );
+}
+
+function DefaultPopupContent({ activeLaw }) {
+  return (
+    <>
+      <p className="hh-curriculum-axiom">{activeLaw.axiom}</p>
+      {(activeLaw.module?.initiationCopy || []).map((paragraph, index) => (
+        <p key={`${activeLaw.slug}-reading-${index}`}>{paragraph}</p>
+      ))}
+      <h2>Field of Inquiry</h2>
+      <p>{activeLaw.module?.lyricAnchors?.[0]?.line}</p>
+      <h2>Curriculum Outcomes</h2>
+      <ol>
+        {(activeLaw.module?.learningObjectives || []).map((objective) => (
+          <li key={objective}>{objective}</li>
+        ))}
+      </ol>
+      <h2>Integration Practice</h2>
+      <p>{activeLaw.module?.integrationKey}</p>
+      <p className="hh-curriculum-end">End of transmission · Enter the practicum when ready</p>
+    </>
+  );
+}
+
 export default function HermeticHallViewport() {
   const navigate = useNavigate();
   const [activeLaw, setActiveLaw] = useState(null);
@@ -131,25 +197,13 @@ export default function HermeticHallViewport() {
           <article key={activeLaw.slug} className="hh-curriculum-reader" aria-label={`${activeLaw.title} curriculum`}>
             <header>
               <span>Hermetic Curriculum · Chamber {activeLaw.number}</span>
-              <h1>{activeLaw.title}</h1>
+              <h1>{activeLaw.slug === 'mentalism' ? 'Module I · Mentalism: Before the Body, The ALL-Mind' : activeLaw.title}</h1>
             </header>
             <div className="hh-curriculum-window" tabIndex={0}>
               <div className="hh-curriculum-scroll">
-                <p className="hh-curriculum-axiom">{activeLaw.axiom}</p>
-                {(activeLaw.module?.initiationCopy || []).map((paragraph, index) => (
-                  <p key={`${activeLaw.slug}-reading-${index}`}>{paragraph}</p>
-                ))}
-                <h2>Field of Inquiry</h2>
-                <p>{activeLaw.module?.lyricAnchors?.[0]?.line}</p>
-                <h2>Curriculum Outcomes</h2>
-                <ol>
-                  {(activeLaw.module?.learningObjectives || []).map((objective) => (
-                    <li key={objective}>{objective}</li>
-                  ))}
-                </ol>
-                <h2>Integration Practice</h2>
-                <p>{activeLaw.module?.integrationKey}</p>
-                <p className="hh-curriculum-end">End of transmission · Enter the practicum when ready</p>
+                {activeLaw.slug === 'mentalism'
+                  ? <MentalismPopupContent />
+                  : <DefaultPopupContent activeLaw={activeLaw} />}
               </div>
             </div>
             <footer>

@@ -222,7 +222,7 @@ export default function ActNavigation() {
           </aside>
 
           <div className="act-nav-workspace">
-        <header className="act-nav-hero" style={{ '--hero-image': 'url(/media/act-gateway-scene.jpg)' }}>
+        <header className="act-nav-hero" style={{ '--hero-image': 'url(/media/acts-command-portrait.png)' }}>
           <div className="act-nav-hero__media" aria-hidden="true">
             <div className="act-nav-hero__frame">
               <span />
