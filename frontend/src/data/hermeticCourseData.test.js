@@ -273,4 +273,34 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(27);
   });
+
+  it("delivers the supplied Alignment Across Worlds curriculum for Lesson 2.6", () => {
+    const lesson = COURSE_MODULES[1].lessons.find(
+      (item) => item.number === "2.6",
+    );
+
+    expect(lesson.title).toBe("Alignment Across Worlds");
+    expect(lesson.content.intro).toBe(
+      "What happens when your inner world and outer life begin moving in the same direction?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("Personal Pattern Map"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining(
+            "Next Module: Vibration — Everything Moves",
+          ),
+        }),
+      ]),
+    );
+    expect(
+      lesson.content.sections.filter(({ heading }) => heading === "Reflection"),
+    ).toHaveLength(1);
+    expect(lesson.content.sections).toHaveLength(21);
+  });
 });
