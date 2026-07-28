@@ -23,4 +23,25 @@ describe("Hermetic course data", () => {
     ).toBe(true);
     expect(lesson.content.reflection.questions).toHaveLength(3);
   });
+
+  it("delivers the supplied Inherited Code curriculum for Lesson 1.2", () => {
+    const lesson = COURSE_MODULES[0].lessons.find(
+      (item) => item.number === "1.2",
+    );
+
+    expect(lesson.title).toBe("Inherited Code");
+    expect(lesson.content.intro).toBe(
+      "How many of your beliefs were chosen—and how many were handed to you?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections.at(-1)).toEqual(
+      expect.objectContaining({
+        heading: "Looking Ahead",
+        body: expect.stringContaining(
+          "Next Lesson: The Algorithmic Thought Form",
+        ),
+      }),
+    );
+    expect(lesson.content.sections).toHaveLength(22);
+  });
 });
