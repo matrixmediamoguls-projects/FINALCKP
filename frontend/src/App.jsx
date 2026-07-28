@@ -42,11 +42,31 @@ import PaywallModal from './components/layout/PaywallModal';
 import { UNLOCK_ALL_ACCESS } from './lib/accessFlags';
 import { getAuthRedirectPath } from './lib/authRedirects';
 
+const AuthRouteLoading = () => (
+  <main
+    aria-busy="true"
+    aria-live="polite"
+    style={{
+      minHeight: '100vh',
+      display: 'grid',
+      placeItems: 'center',
+      padding: '2rem',
+      color: '#f1e7df',
+      background: 'rgba(5, 5, 5, 0.72)',
+      fontFamily: '"Space Grotesk", sans-serif',
+      letterSpacing: '0.16em',
+      textTransform: 'uppercase',
+    }}
+  >
+    <p>Restoring your session…</p>
+  </main>
+);
+
 const ProtectedRoute = ({ children, withShell = true }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  if (loading) return null;
+  if (loading) return <AuthRouteLoading />;
 
   if (!user) {
     return <Navigate to="/login" replace state={{ from: location }} />;
@@ -85,10 +105,8 @@ const AppShellWrapper = ({ children }) => {
 };
 
 function AppRoutes() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
-
-  if (loading) return null;
 
   const postAuthRedirectPath = getAuthRedirectPath(location);
 
@@ -455,7 +473,7 @@ function AppWithBackground() {
     <>
       <ElementalBackground act={act} audioLevel={0} />
 
-      <Suspense fallback={null}>
+      <Suspense fallback={<AuthRouteLoading />}>
         <AppRoutes />
       </Suspense>
     </>
