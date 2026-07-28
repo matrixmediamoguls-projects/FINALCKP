@@ -146,4 +146,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(15);
   });
+
+  it("delivers the supplied As Within, So Without curriculum for Lesson 2.1", () => {
+    const lesson = COURSE_MODULES[1].lessons.find(
+      (item) => item.number === "2.1",
+    );
+
+    expect(lesson.title).toBe("As Within, So Without");
+    expect(lesson.content.intro).toBe(
+      "What can the patterns in one part of your life reveal about the patterns operating elsewhere?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Correspondence Map"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: The Part and the Pattern"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(17);
+  });
 });
