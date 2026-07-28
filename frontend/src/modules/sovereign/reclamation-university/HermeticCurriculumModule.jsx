@@ -141,6 +141,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const lessons = hasFullCurriculum ? VIBRATION_LESSONS : (courseModule?.lessons || []);
   const [view, setView] = useState('orientation');
   const [activeLessonId, setActiveLessonId] = useState(lessons[0]?.id || '');
+  const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [record, setRecord] = useState(() => normalizeRecord(null, loadLocalRecord(module.id)));
   const [saveState, setSaveState] = useState('idle');
   const { progress, isLoading, saveProgress } = useReclamationModuleProgress(module.id, faculty.slug, module.slug);
@@ -151,6 +152,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
 
   useEffect(() => {
     setActiveLessonId(lessons[0]?.id || '');
+    setActiveSectionIndex(0);
     setView('orientation');
   }, [module.id, lessons]);
 
@@ -163,6 +165,11 @@ export default function HermeticCurriculumModule({ module, faculty }) {
     curriculumSections: module.curriculumSections,
   });
   const completionPercent = lessons.length ? Math.round((record.completedLessons.length / lessons.length) * 100) : 0;
+  const lessonSections = activeLessonContent?.sections || [];
+  const activeSection = lessonSections[activeSectionIndex];
+  const sectionPercent = lessonSections.length
+    ? Math.round(((activeSectionIndex + 1) / lessonSections.length) * 100)
+    : 100;
   const hallModules = faculty.modules || [];
   const relatedLaws = hallModules.filter((item) => item.order !== module.order).slice(0, 3);
 
@@ -184,8 +191,13 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const updateRecord = (patch) => persistRecord({ ...record, ...patch });
   const openLesson = (lessonId) => {
     setActiveLessonId(lessonId);
+    setActiveSectionIndex(0);
     setView('lesson');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  const openSection = (sectionIndex) => {
+    setActiveSectionIndex(sectionIndex);
+    document.querySelector('.hcm-guided-reader')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   const completeLesson = () => {
     if (!record.completedLessons.includes(activeLesson.id)) {
