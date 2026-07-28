@@ -248,4 +248,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(23);
   });
+
+  it("delivers the supplied Analogy Without Illusion curriculum for Lesson 2.5", () => {
+    const lesson = COURSE_MODULES[1].lessons.find(
+      (item) => item.number === "2.5",
+    );
+
+    expect(lesson.title).toBe("Analogy Without Illusion");
+    expect(lesson.content.intro).toBe(
+      "How can comparison reveal truth without becoming a substitute for evidence?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Analogy Test"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Alignment Across Worlds"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(27);
+  });
 });
