@@ -8,12 +8,6 @@ import { AudioProvider } from "@/context/audioprovider";
 
 import "@/index.css";
 import App from "@/App";
-import { validateSupabaseConfiguration } from "@/services/supabase/client";
-
-const supabaseConfiguration = validateSupabaseConfiguration();
-if (!supabaseConfiguration.isValid) {
-  console.error("Application startup blocked by invalid Supabase configuration:", supabaseConfiguration.issues);
-}
 
 const root = ReactDOM.createRoot(
   document.getElementById("root")
@@ -34,3 +28,10 @@ root.render(
     </GoogleOAuthProvider>
   </React.StrictMode>
 );
+
+void import("@/services/supabase/client").then(({ validateSupabaseConfiguration }) => {
+  const supabaseConfiguration = validateSupabaseConfiguration();
+  if (!supabaseConfiguration.isValid) {
+    console.error("Invalid Supabase configuration:", supabaseConfiguration.issues);
+  }
+});

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft, ChevronLeft, ChevronRight, Disc3, Maximize2, Minimize2, Pause, Play,
   Radio, Settings, Shuffle, SkipBack, SkipForward, Volume1, Volume2,
@@ -9,8 +9,8 @@ import { useAudioAnalyzer } from '../../lib/audio/useAudioAnalyzer';
 import { getAdjacentTrackIndex, orderVisualizerQueue } from './visualizerQueue';
 import { getVisibleLyricLines } from './visualizerLyrics';
 import './SovereignArchiveVisualizer.css';
-import EmblemReactorCore from './EmblemReactorCore';
 
+const EmblemReactorCore = lazy(() => import('./EmblemReactorCore'));
 
 const FALLBACK_TRACKS = [
   'Welcome To The Fire', 'Reclamation', 'Know Your Names', 'Hold On',
@@ -305,7 +305,13 @@ export default function AudioVisualizerCore({
             <div className="sav-reactor-aura" aria-hidden="true">
               <i /><i /><i />
             </div>
-            <EmblemReactorCore frequencyData={frequencyData} audioLevel={audioLevel} />
+            {isPlaying ? (
+              <Suspense fallback={<img src={REACTOR} alt="Musiq Matrix Reclamation frequency reactor" />}>
+                <EmblemReactorCore frequencyData={frequencyData} audioLevel={audioLevel} />
+              </Suspense>
+            ) : (
+              <img src={REACTOR} alt="Musiq Matrix Reclamation frequency reactor" />
+            )}
             <div className="sav-reactor-pulse" />
           </div>
           <div className="sav-meter" aria-hidden="true">{bars.map((height, index) => <i key={index} style={{ height: `${height}%`, animationDelay: `${index * -37}ms` }} />)}</div>
