@@ -406,4 +406,29 @@ describe("Hermetic course data", () => {
     );
     expect(lesson.content.sections).toHaveLength(31);
   });
+
+  it("delivers the supplied Amplify the Signal curriculum for Lesson 3.5", () => {
+    const lesson = VIBRATION_LESSONS.find(
+      (item) => item.number === "3.5",
+    );
+
+    expect(lesson.title).toBe("Amplify the Signal");
+    expect(lesson.content.intro).toBe(
+      "What happens when a thought, emotion, message, or action continues beyond the person who first expressed it?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("Signal Amplification Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Preparing for Rhythm"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(25);
+  });
 });

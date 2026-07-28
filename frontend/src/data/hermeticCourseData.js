@@ -586,10 +586,10 @@ const COURSE_MODULES = [
       {
         id: "lesson-3-5",
         number: "3.5",
-        title: "Nervous-System Coherence",
+        title: "Amplify the Signal",
         duration: "30 min",
-        summary: "This lesson explores dysregulation as signal corruption and introduces a reset protocol before transmission. Students learn that coherence is not passivity but preparation for clear and responsible output.",
-        keyPoints: ["Dysregulation distorts signal", "Coherence precedes transmission", "Reset before response"]
+        summary: "What happens when a thought, emotion, message, or action continues beyond the person who first expressed it?",
+        keyPoints: ["Every person is a receiver and transmitter", "Repetition strengthens reach rather than truth", "Responsible authorship chooses what deserves amplification"]
       },
       {
         id: "lesson-3-6",
