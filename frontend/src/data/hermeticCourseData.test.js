@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { COURSE_MODULES } from "./hermeticCourseData";
+import { LESSONS as VIBRATION_LESSONS } from "./hermeticVibrationModuleData";
 
 describe("Hermetic course data", () => {
   it("delivers the complete interactive curriculum for Lesson 1.1", () => {
@@ -302,5 +303,30 @@ describe("Hermetic course data", () => {
       lesson.content.sections.filter(({ heading }) => heading === "Reflection"),
     ).toHaveLength(1);
     expect(lesson.content.sections).toHaveLength(21);
+  });
+
+  it("delivers the supplied Everything Is in Motion curriculum for Lesson 3.1", () => {
+    const lesson = VIBRATION_LESSONS.find(
+      (item) => item.number === "3.1",
+    );
+
+    expect(lesson.title).toBe("Everything Is in Motion");
+    expect(lesson.content.intro).toBe(
+      "What changes when you stop treating stillness as the natural state of life?",
+    );
+    expect(lesson.content.sections[0].heading).toBe("Introduction");
+    expect(lesson.content.sections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          heading: "Reclamation Protocol",
+          body: expect.stringContaining("The Movement Audit"),
+        }),
+        expect.objectContaining({
+          heading: "Looking Ahead",
+          body: expect.stringContaining("Next Lesson: Receive the Signal"),
+        }),
+      ]),
+    );
+    expect(lesson.content.sections).toHaveLength(44);
   });
 });

@@ -554,10 +554,10 @@ const COURSE_MODULES = [
       {
         id: "lesson-3-1",
         number: "3.1",
-        title: "Everything Transmits",
+        title: "Everything Is in Motion",
         duration: "25 min",
-        summary: "This lesson introduces the law of Vibration as a total transmission field rather than mere sound or mood. Students learn that language, timing, silence, posture, digital behavior, and follow-through all communicate before explanation begins.",
-        keyPoints: ["Signal is multi-channel", "Broadcast begins before speech", "Digital behavior is part of transmission"]
+        summary: "What changes when you stop treating stillness as the natural state of life?",
+        keyPoints: ["Reality is dynamic", "Movement and progress are different", "Change becomes influenceable when its direction is recognized"]
       },
       {
         id: "lesson-3-2",
