@@ -292,15 +292,8 @@ const COURSE_MODULES = [
             title: "The Tree of Correspondence",
             panelSectionHeading: "What Is Correspondence?",
             caption: "A visual systems model showing how foundational inner patterns travel from roots and identity into behavior, life roles, and visible outcomes.",
-            src: "/reclamation-university/exhibits/exhibit-2-1.png",
+            src: "/reclamation-university/exhibits/exhibit-2-1.webp",
             alt: "The Tree of Correspondence diagram mapping fine, secondary, and primary roots through the trunk and branches to visible leaves and outcomes."
-          },
-          {
-            id: "exhibit-2-1a",
-            label: "Exhibit 2-1a",
-            title: "Exhibit 2-1a",
-            panelSectionHeading: "What Is Correspondence?",
-            status: "pending"
           }
         ],
         content: {
