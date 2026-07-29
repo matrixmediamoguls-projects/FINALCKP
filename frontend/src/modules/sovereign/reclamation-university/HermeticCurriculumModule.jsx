@@ -31,6 +31,7 @@ import {
 } from "./hermeticCurriculumNavigation";
 import { buildHermeticLessonContent } from "./hermeticLessonContent";
 import "./hermeticCurriculumModule.css";
+import "./hermeticLearningExperience.css";
 
 const EMPTY_RECORD = {
   completedLessons: [],
@@ -56,6 +57,75 @@ const LAW_ACCENTS = [
   "#7ea6ff",
   "#d68cff",
 ];
+const JOURNEY_PHASES = [
+  { id: "intro", label: "Intro", icon: Sparkles },
+  { id: "concept", label: "Concept", icon: Library },
+  { id: "patterns", label: "Patterns", icon: Activity },
+  { id: "reclamation", label: "Reclamation", icon: Radio },
+  { id: "reflect", label: "Reflect", icon: PenLine },
+  { id: "protocol", label: "Protocol", icon: ShieldCheck },
+];
+
+function getSectionPhase(section, index, total) {
+  const heading = section?.heading?.toLowerCase() || "";
+  if (section?.type === "activation" || section?.type === "exercise" || /protocol|audit|artifact|practice/.test(heading))
+    return "protocol";
+  if (/reflection|your current|observe|question/.test(heading)) return "reflect";
+  if (/reclamation|album|track|lyric/.test(heading)) return "reclamation";
+  if (/pattern|system|cycle|environment|technology|relationship|learning|creative|history|attention/.test(heading))
+    return "patterns";
+  if (index === 0 || /introduction|opening|orientation/.test(heading)) return "intro";
+  if (index === total - 1 || /looking ahead|summary|takeaway|closing/.test(heading))
+    return "reflect";
+  return "concept";
+}
+
+function LessonJourneyMap({ sections, activeIndex, onOpen }) {
+  const phaseMap = JOURNEY_PHASES.map((phase) => {
+    const sectionIndexes = sections
+      .map((section, index) =>
+        getSectionPhase(section, index, sections.length) === phase.id
+          ? index
+          : -1,
+      )
+      .filter((index) => index >= 0);
+    return { ...phase, sectionIndexes };
+  }).filter((phase) => phase.sectionIndexes.length);
+  const activePhase = getSectionPhase(
+    sections[activeIndex],
+    activeIndex,
+    sections.length,
+  );
+
+  return (
+    <nav className="hcm-journey-map" aria-label="Lesson journey">
+      {phaseMap.map((phase) => {
+        const PhaseIcon = phase.icon;
+        const isComplete = phase.sectionIndexes.every(
+          (index) => index < activeIndex,
+        );
+        return (
+          <button
+            type="button"
+            key={phase.id}
+            className={[
+              activePhase === phase.id ? "is-active" : "",
+              isComplete ? "is-complete" : "",
+            ].filter(Boolean).join(" ")}
+            onClick={() => onOpen(phase.sectionIndexes[0])}
+            aria-current={activePhase === phase.id ? "step" : undefined}
+          >
+            <span>
+              {isComplete ? <Check size={16} /> : <PhaseIcon size={17} />}
+            </span>
+            <strong>{phase.label}</strong>
+            <small>{phase.sectionIndexes.length}</small>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
 
 const MENTALISM_OBJECTIVES = [
   "Articulate the Principle of Mentalism as a first cause: “The ALL is Mind; the universe is mental,” and distinguish events from interpretations.",
@@ -164,6 +234,53 @@ function LessonSectionBody({ body }) {
         );
       })}
     </div>
+  );
+}
+
+function SectionInsightPanel({ lesson, section, sectionIndex }) {
+  const insights = (section.bullets?.length
+    ? section.bullets
+    : lesson.keyPoints || []
+  ).slice(0, 3);
+  const passages = String(section.body || "")
+    .split(/\n{2,}/)
+    .map((passage) => passage.trim())
+    .filter(Boolean);
+  const comparisonMatch = section.heading.match(
+    /(.+?)\s+(?:versus|vs\.?|and|without|not)\s+(.+)/i,
+  );
+
+  return (
+    <aside className="hcm-insight-stack">
+      <section className="hcm-key-insight">
+        <span><Sparkles size={15} /> Key insight</span>
+        <h4>{insights[sectionIndex % Math.max(insights.length, 1)] || section.heading}</h4>
+        {passages[0] && <p>{passages[0]}</p>}
+      </section>
+      {comparisonMatch && (
+        <section className="hcm-comparison-card">
+          <div>
+            <span>{comparisonMatch[1].trim()}</span>
+            <p>{passages[0] || comparisonMatch[1].trim()}</p>
+          </div>
+          <b>VS</b>
+          <div>
+            <span>{comparisonMatch[2].trim()}</span>
+            <p>{passages[1] || comparisonMatch[2].trim()}</p>
+          </div>
+        </section>
+      )}
+      {!comparisonMatch && insights.length > 1 && (
+        <section className="hcm-pattern-gallery">
+          {insights.map((insight, index) => (
+            <article key={insight}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <p>{insight}</p>
+            </article>
+          ))}
+        </section>
+      )}
+    </aside>
   );
 }
 
@@ -359,6 +476,10 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const completionPercent = lessons.length
     ? Math.round((record.completedLessons.length / lessons.length) * 100)
     : 0;
+  const coursePercent = Math.round(
+    (((module.order - 1) + completionPercent / 100) / COURSE_MODULES.length) *
+      100,
+  );
   const lessonSections = activeLessonContent?.sections || [];
   const activeSection = lessonSections[activeSectionIndex];
   const sectionPercent = lessonSections.length
@@ -474,16 +595,16 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   if (!courseModule) return null;
 
   const navItems = [
-    ["orientation", "Orientation"],
-    ["lessons", "Lessons"],
+    ["orientation", "Dashboard", Home],
+    ["lessons", "Curriculum", Library],
     ...(hasFullCurriculum
       ? [
-          ["caseFiles", "Case Files"],
-          ["codes", "Codes"],
+          ["caseFiles", "Lyrical Codex", Radio],
+          ["codes", "Elemental Codex", BookOpen],
         ]
       : []),
-    ["artifact", "Artifact"],
-    ...(hasFullCurriculum ? [["assessment", "Assessment"]] : []),
+    ["artifact", "Artifact", FileText],
+    ...(hasFullCurriculum ? [["assessment", "Assessment", ShieldCheck]] : []),
   ];
 
   return (
@@ -565,7 +686,58 @@ export default function HermeticCurriculumModule({ module, faculty }) {
         </span>
       </nav>
 
-      <div className="hcm-layout">
+      <div className={`hcm-layout ${view === "lesson" ? "is-lesson-view" : ""}`}>
+        <aside className="hcm-campus-nav" aria-label="Course navigation">
+          <button
+            type="button"
+            className="hcm-campus-seal"
+            onClick={() =>
+              navigate("/experiencemode/sovereign/reclamation-university")
+            }
+          >
+            <span><Library size={28} /></span>
+            <strong>RU</strong>
+            <small>Reclamation University</small>
+          </button>
+          <nav>
+            {navItems.map(([id, label, NavIcon]) => (
+              <button
+                type="button"
+                key={id}
+                className={
+                  view === id || (view === "lesson" && id === "lessons")
+                    ? "is-current"
+                    : ""
+                }
+                onClick={() => setView(id)}
+              >
+                <NavIcon size={17} />
+                <span>{label}</span>
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => navigate("/visualizer-core")}
+            >
+              <Activity size={17} />
+              <span>Visualizer Core</span>
+            </button>
+          </nav>
+          <section className="hcm-campus-progress">
+            <header>
+              <span>Course progress</span>
+              <strong>{coursePercent}%</strong>
+            </header>
+            <i><b style={{ width: `${coursePercent}%` }} /></i>
+          </section>
+          <section className="hcm-campus-profile">
+            <span><Sparkles size={17} /></span>
+            <div>
+              <small>Student</small>
+              <strong>Sovereign Learner</strong>
+            </div>
+          </section>
+        </aside>
         <aside className="hcm-index">
           <p className="hcm-eyebrow">Lesson Index</p>
           <h2>{courseModule.title}</h2>
@@ -660,26 +832,25 @@ export default function HermeticCurriculumModule({ module, faculty }) {
               style={{
                 "--hcm-law-accent":
                   LAW_ACCENTS[(module.order - 1) % LAW_ACCENTS.length],
+                "--hcm-lesson-progress": `${sectionPercent * 3.6}deg`,
               }}
             >
-              <header>
-                <button type="button" onClick={() => setView("lessons")}>
-                  <ChevronLeft size={15} /> All lessons
-                </button>
-                <span>
-                  {activeLesson.duration || `Lesson ${activeLesson.number}`}
-                </span>
-              </header>
               <div className="hcm-lesson-hero">
                 <div>
-                  <p className="hcm-eyebrow">Lesson {activeLesson.number}</p>
+                  <p className="hcm-eyebrow">
+                    Module {courseModule.number} · {courseModule.title}
+                    <i />
+                    Lesson {activeLesson.number}
+                  </p>
                   <h1>{activeLesson.title}</h1>
                   {activeLesson.subtitle && <h2>{activeLesson.subtitle}</h2>}
                 </div>
-                <div className="hcm-lesson-sigil" aria-hidden="true">
-                  <span>{activeLesson.number}</span>
-                  <i />
-                  <b>{String(sectionPercent).padStart(2, "0")}%</b>
+                <div
+                  className="hcm-lesson-sigil"
+                  aria-label={`${sectionPercent}% lesson progress`}
+                >
+                  <span>{String(sectionPercent).padStart(2, "0")}%</span>
+                  <b>Lesson progress</b>
                 </div>
               </div>
               {activeLessonContent?.intro && (
@@ -701,24 +872,11 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                       <b style={{ width: `${sectionPercent}%` }} />
                     </i>
                   </div>
-                  <nav
-                    className="hcm-section-steps"
-                    aria-label="Lesson sections"
-                  >
-                    {lessonSections.map((section, index) => (
-                      <button
-                        type="button"
-                        key={`${section.heading}-${index}`}
-                        className={index === activeSectionIndex ? "is-active" : ""}
-                        onClick={() => openSection(index)}
-                        aria-label={`Open section ${index + 1}: ${section.heading}`}
-                        aria-current={index === activeSectionIndex ? "step" : undefined}
-                      >
-                        <span>{String(index + 1).padStart(2, "0")}</span>
-                        <strong>{section.heading}</strong>
-                      </button>
-                    ))}
-                  </nav>
+                  <LessonJourneyMap
+                    sections={lessonSections}
+                    activeIndex={activeSectionIndex}
+                    onOpen={openSection}
+                  />
                 </div>
               )}
               {activeLessonContent ? (
@@ -728,76 +886,89 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                       className={`hcm-content-block hcm-active-section is-${activeSection.type || "doctrine"}`}
                       aria-live="polite"
                     >
-                      <div className="hcm-section-stage">
-                        <div className="hcm-content-label">
-                          <SectionIcon type={activeSection.type} />{" "}
-                          {activeSection.type || "Doctrine"}
+                      <div className="hcm-learning-grid">
+                        <div className="hcm-teaching-canvas">
+                          <div className="hcm-section-stage">
+                            <div className="hcm-content-label">
+                              <SectionIcon type={activeSection.type} />{" "}
+                              {getSectionPhase(
+                                activeSection,
+                                activeSectionIndex,
+                                lessonSections.length,
+                              )}
+                            </div>
+                            <span>
+                              {String(activeSectionIndex + 1).padStart(2, "0")}
+                            </span>
+                          </div>
+                          <h3>{activeSection.heading}</h3>
+                          {(activeSection.type === "activation" ||
+                            activeSection.type === "exercise") && (
+                            <div
+                              className="hcm-mode-switch"
+                              role="tablist"
+                              aria-label="Chamber mode"
+                            >
+                              <button
+                                type="button"
+                                role="tab"
+                                aria-selected={chamberMode === "study"}
+                                className={chamberMode === "study" ? "is-active" : ""}
+                                onClick={() => setChamberMode("study")}
+                              >
+                                Study the protocol
+                              </button>
+                              <button
+                                type="button"
+                                role="tab"
+                                aria-selected={chamberMode === "practice"}
+                                className={chamberMode === "practice" ? "is-active" : ""}
+                                onClick={() => setChamberMode("practice")}
+                              >
+                                Enter practice mode
+                              </button>
+                            </div>
+                          )}
+                          {chamberMode === "study" ||
+                          !["activation", "exercise"].includes(activeSection.type) ? (
+                            <>
+                              <LessonSectionBody body={activeSection.body} />
+                              {activeSection.bullets && (
+                                <ul>
+                                  {activeSection.bullets.map((item) => (
+                                    <li key={item}>{item}</li>
+                                  ))}
+                                </ul>
+                              )}
+                              {activeSection.numbered && (
+                                <ol>
+                                  {activeSection.numbered.map((item) => (
+                                    <li key={item}>{item}</li>
+                                  ))}
+                                </ol>
+                              )}
+                              {activeSection.callout && (
+                                <blockquote>{activeSection.callout}</blockquote>
+                              )}
+                            </>
+                          ) : (
+                            <ChamberFieldLab
+                              lesson={activeLesson}
+                              section={activeSection}
+                              questions={activeLessonContent.reflection?.questions}
+                              values={activeLedgerValues}
+                              saveState={saveState}
+                              onChange={updateFieldLab}
+                              onSave={saveFieldLab}
+                            />
+                          )}
                         </div>
-                        <span>
-                          {String(activeSectionIndex + 1).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <h3>{activeSection.heading}</h3>
-                      {(activeSection.type === "activation" ||
-                        activeSection.type === "exercise") && (
-                        <div
-                          className="hcm-mode-switch"
-                          role="tablist"
-                          aria-label="Chamber mode"
-                        >
-                          <button
-                            type="button"
-                            role="tab"
-                            aria-selected={chamberMode === "study"}
-                            className={chamberMode === "study" ? "is-active" : ""}
-                            onClick={() => setChamberMode("study")}
-                          >
-                            Study the protocol
-                          </button>
-                          <button
-                            type="button"
-                            role="tab"
-                            aria-selected={chamberMode === "practice"}
-                            className={chamberMode === "practice" ? "is-active" : ""}
-                            onClick={() => setChamberMode("practice")}
-                          >
-                            Enter practice mode
-                          </button>
-                        </div>
-                      )}
-                      {chamberMode === "study" ||
-                      !["activation", "exercise"].includes(activeSection.type) ? (
-                        <>
-                          <LessonSectionBody body={activeSection.body} />
-                          {activeSection.bullets && (
-                            <ul>
-                              {activeSection.bullets.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))}
-                            </ul>
-                          )}
-                          {activeSection.numbered && (
-                            <ol>
-                              {activeSection.numbered.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))}
-                            </ol>
-                          )}
-                          {activeSection.callout && (
-                            <blockquote>{activeSection.callout}</blockquote>
-                          )}
-                        </>
-                      ) : (
-                        <ChamberFieldLab
+                        <SectionInsightPanel
                           lesson={activeLesson}
                           section={activeSection}
-                          questions={activeLessonContent.reflection?.questions}
-                          values={activeLedgerValues}
-                          saveState={saveState}
-                          onChange={updateFieldLab}
-                          onSave={saveFieldLab}
+                          sectionIndex={activeSectionIndex}
                         />
-                      )}
+                      </div>
                       <div className="hcm-section-coda" aria-hidden="true">
                         <i />
                         <span>Continue the inquiry</span>

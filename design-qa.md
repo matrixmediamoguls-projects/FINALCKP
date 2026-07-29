@@ -1,65 +1,55 @@
 # Design QA
 
-- Source visual truth: `C:\Users\matri\Desktop\2e0b5205-dddf-452e-b4a0-f6183fb36acf.png`
-- Source dimensions: 1672 x 941 px
-- Implementation route: `http://localhost:3000/experiencemode/sovereign/module/audio-visualizer-core`
-- Intended viewport: 1672 x 941 CSS px at 1x density
-- State: first track selected; playback active for frequency response
-- Implementation screenshot: unavailable
+- Source visual truth: `C:\Users\matri\Downloads\ChatGPT Image Jul 29, 2026, 01_03_50 AM.png`
+- Implementation: active `HermeticCurriculumModule` route in `frontend`
+- Intended viewport: desktop, approximately 1728 × 960 CSS pixels
+- Source pixels: 1728 × 960
+- Implementation pixels: unavailable
+- Density normalization: unavailable
+- State: lesson reader, first learning chamber
 
 ## Full-view comparison evidence
 
-The source image was opened from the supplied attachment and used to place the
-red stage perimeter lights, three frequency-specific rails, the segmented
-frequency meter, and cyan transport illumination. Browser discovery returned no
-available browser backend, so a matching browser-rendered implementation
-screenshot could not be captured.
+The source image was opened and inspected at original resolution. A browser-rendered implementation capture could not be created because no browser surface is available in this session.
 
 ## Focused region comparison evidence
 
-Focused comparison of the reactor stage and transport bar is blocked by the same
-missing browser-rendered implementation capture.
+Blocked for the same reason. The implementation could not be visually compared at the lesson header, Journey Map, teaching grid, comparison card, process diagram, sidebar, or responsive breakpoints.
 
 ## Findings
 
-- [P2] Visual verification is unavailable.
-  - Location: reactor stage and transport bar.
-  - Evidence: the source is available, but no implementation screenshot can be
-    captured because the browser runtime reports no available browser.
-  - Impact: placement, glow strength, responsive clipping, and live pulse behavior
-    cannot be visually compared against the supplied target.
-  - Fix: capture the route at 1672 x 941 with playback active once a browser
-    backend is available, then compare both images together.
+- P1 — Browser-rendered fidelity is unverified.
+  - Location: complete lesson-reader composition.
+  - Evidence: source visual is available; matching implementation screenshot is unavailable.
+  - Impact: typography, spacing, wrapping, vertical fit, and visible interaction states cannot be accepted from source inspection or build output alone.
+  - Fix: capture the active lesson route at 1728 × 960, compare it with the source in one combined visual, and correct all P1/P2 drift.
+
+- P1 — Primary interactions require browser confirmation.
+  - Location: course rail, Journey Map, Previous/Next controls, Study/Practice switch, Field Ledger.
+  - Evidence: the implementation and automated curriculum tests compile, but clicks, focus states, persistence, and console output were not exercised in a browser.
+  - Impact: core experience behavior remains visually and interactively unverified.
+  - Fix: exercise each control in the mounted route, verify state changes and persistence, and check the browser console.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: unchanged by this scoped lighting implementation.
-- Spacing and layout rhythm: existing layout retained; browser comparison blocked.
-- Colors and visual tokens: red/orange frequency lighting and cyan transport
-  lighting follow the supplied source; rendered comparison blocked.
-- Image quality and asset fidelity: existing supplied track and reactor assets
-  retained without replacement.
-- Copy and content: unchanged.
+- Fonts and typography: code-matched to Oxanium, Chakra Petch, and JetBrains Mono; rendered hierarchy and wrapping blocked.
+- Spacing and layout rhythm: desktop and responsive grids implemented; rendered measurement blocked.
+- Colors and visual tokens: black, antique gold, law-accent, and muted-paper palette implemented; rendered sampling blocked.
+- Image quality and asset fidelity: existing Hermetic Hall image is used in the lesson stage; rendered crop and sharpness blocked.
+- Copy and content: existing module and lesson data are consumed without replacement copy; visual truncation and overflow blocked.
 
 ## Comparison history
 
-- Initial pass: source opened; implementation capture blocked before comparison.
-- Fixes implemented from the source: frequency-specific stage rails, reactive
-  perimeter glow, stronger segmented meter lighting, cyan transport illumination,
-  and removal of the reactor's continuous spin.
-- Post-fix evidence: build and automated tests pass; browser-rendered evidence
-  remains unavailable.
-
-## Primary interactions and console
-
-- Playback interaction: not browser-tested.
-- Frequency response: not browser-tested.
-- Console errors: not browser-checked.
+- Pass 1: source opened successfully; implementation capture blocked because no browser is available. No visual fixes can be evidence-backed until capture is possible.
 
 ## Implementation checklist
 
-- Capture the live visualizer at the target viewport.
-- Start playback and verify independent bass, mid, treble, and transport response.
-- Compare the source and implementation together and tune glow intensity if needed.
+1. Open the mounted lesson route in an available browser.
+2. Capture the first lesson chamber at 1728 × 960.
+3. Compare source and implementation together.
+4. Fix all P1/P2 layout, typography, asset, and interaction-state differences.
+5. Repeat capture and comparison until no actionable P1/P2 findings remain.
+
+## Final result
 
 final result: blocked
