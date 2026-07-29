@@ -285,6 +285,16 @@ const COURSE_MODULES = [
         title: "As Within, So Without",
         summary: "What can the patterns in one part of your life reveal about the patterns operating elsewhere?",
         keyPoints: ["Patterns correspond across levels", "Similarity does not mean sameness", "Alignment connects values and action"],
+        exhibits: [
+          {
+            id: "exhibit-2-1",
+            label: "Exhibit 2-1",
+            title: "The Tree of Correspondence",
+            caption: "A visual systems model showing how foundational inner patterns travel from roots and identity into behavior, life roles, and visible outcomes.",
+            src: "/reclamation-university/exhibits/exhibit-2-1.png",
+            alt: "The Tree of Correspondence diagram mapping fine, secondary, and primary roots through the trunk and branches to visible leaves and outcomes."
+          }
+        ],
         content: {
           intro: "What can the patterns in one part of your life reveal about the patterns operating elsewhere?",
           sections: [

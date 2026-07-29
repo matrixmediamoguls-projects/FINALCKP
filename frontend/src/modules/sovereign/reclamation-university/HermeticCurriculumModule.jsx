@@ -10,10 +10,12 @@ import {
   FileText,
   Home,
   Library,
+  Maximize2,
   PenLine,
   Radio,
   ShieldCheck,
   Sparkles,
+  X,
 } from "lucide-react";
 import { COURSE_MODULES } from "../../../data/hermeticCourseData";
 import {
@@ -194,8 +196,7 @@ function LessonSectionBody({ body }) {
         const isQuote =
           lines.length === 1 &&
           (/^["“]/.test(passage) || /["”]$/.test(passage));
-        const isList = lines.length >= 3;
-        const isBeat = lines.length === 1 && passage.length <= 72;
+        const isLineGroup = lines.length >= 3;
 
         if (isSequence) {
           return (
@@ -214,26 +215,98 @@ function LessonSectionBody({ body }) {
           return <blockquote key={`${passage}-${index}`}>{passage}</blockquote>;
         }
 
-        if (isList) {
+        if (isLineGroup) {
           return (
-            <ul className="hcm-observation-list" key={`${passage}-${index}`}>
+            <div className="hcm-line-group" key={`${passage}-${index}`}>
               {lines.map((line, lineIndex) => (
-                <li key={`${line}-${lineIndex}`}>{line}</li>
+                <span key={`${line}-${lineIndex}`}>{line}</span>
               ))}
-            </ul>
+            </div>
           );
         }
 
-        return (
-          <p
-            className={isBeat ? "hcm-prose-beat" : undefined}
-            key={`${passage}-${index}`}
-          >
-            {passage}
-          </p>
-        );
+        return <p key={`${passage}-${index}`}>{passage}</p>;
       })}
     </div>
+  );
+}
+
+function LessonExhibits({ exhibits = [] }) {
+  const [expandedExhibit, setExpandedExhibit] = useState(null);
+
+  useEffect(() => {
+    if (!expandedExhibit) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setExpandedExhibit(null);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [expandedExhibit]);
+
+  if (!exhibits.length) return null;
+
+  return (
+    <>
+      <section className="hcm-exhibit-gallery" aria-label="Lesson exhibits">
+        {exhibits.map((exhibit) => (
+          <figure key={exhibit.id} className="hcm-exhibit">
+            <button
+              type="button"
+              className="hcm-exhibit__image"
+              onClick={() => setExpandedExhibit(exhibit)}
+              aria-label={`Expand ${exhibit.label}: ${exhibit.title}`}
+            >
+              <img src={exhibit.src} alt={exhibit.alt} />
+              <span><Maximize2 size={15} /> Expand diagram</span>
+            </button>
+            <figcaption>
+              <span>{exhibit.label}</span>
+              <div>
+                <h3>{exhibit.title}</h3>
+                <p>{exhibit.caption}</p>
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </section>
+      {expandedExhibit && (
+        <div
+          className="hcm-exhibit-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${expandedExhibit.label}: ${expandedExhibit.title}`}
+          onClick={() => setExpandedExhibit(null)}
+        >
+          <div
+            className="hcm-exhibit-lightbox__content"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header>
+              <div>
+                <span>{expandedExhibit.label}</span>
+                <strong>{expandedExhibit.title}</strong>
+              </div>
+              <button
+                type="button"
+                autoFocus
+                onClick={() => setExpandedExhibit(null)}
+                aria-label="Close expanded exhibit"
+              >
+                <X size={20} />
+              </button>
+            </header>
+            <div className="hcm-exhibit-lightbox__viewport">
+              <img src={expandedExhibit.src} alt={expandedExhibit.alt} />
+            </div>
+            <p>{expandedExhibit.caption}</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -879,6 +952,10 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                   />
                 </div>
               )}
+              <LessonExhibits
+                key={activeLesson.id}
+                exhibits={activeLesson.exhibits}
+              />
               {activeLessonContent ? (
                 <>
                   {activeSection && (

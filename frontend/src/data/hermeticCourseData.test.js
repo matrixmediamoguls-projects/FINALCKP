@@ -171,6 +171,14 @@ describe("Hermetic course data", () => {
       ]),
     );
     expect(lesson.content.sections).toHaveLength(17);
+    expect(lesson.exhibits).toEqual([
+      expect.objectContaining({
+        id: "exhibit-2-1",
+        label: "Exhibit 2-1",
+        title: "The Tree of Correspondence",
+        src: "/reclamation-university/exhibits/exhibit-2-1.png",
+      }),
+    ]);
   });
 
   it("delivers the supplied Part and the Pattern curriculum for Lesson 2.2", () => {
