@@ -30,8 +30,13 @@ import {
   getNextCurriculumDestination,
 } from "./hermeticCurriculumNavigation";
 import { buildHermeticLessonContent } from "./hermeticLessonContent";
+import {
+  buildLessonJourneyTabs,
+  getEmptyJourneyTabCopy,
+} from "./hermeticJourneyTabs";
 import ReclamationLessonMedia from "./ReclamationLessonMedia";
 import "./hermeticCurriculumModule.css";
+import "./hermeticJourneyTabs.css";
 
 const EMPTY_RECORD = {
   completedLessons: [],
@@ -360,7 +365,10 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const completionPercent = lessons.length
     ? Math.round((record.completedLessons.length / lessons.length) * 100)
     : 0;
-  const lessonSections = activeLessonContent?.sections || [];
+  const lessonSections = buildLessonJourneyTabs({
+    content: activeLessonContent,
+    lesson: activeLesson,
+  });
   const activeSection = lessonSections[activeSectionIndex];
   const sectionPercent = lessonSections.length
     ? Math.round(((activeSectionIndex + 1) / lessonSections.length) * 100)
@@ -695,7 +703,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     <div>
                       <span>Journey map</span>
                       <strong>
-                        Chamber {activeSectionIndex + 1} of {lessonSections.length}
+                        Tab {activeSectionIndex + 1} of {lessonSections.length}
                       </strong>
                     </div>
                     <i>
@@ -712,7 +720,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         key={`${section.heading}-${index}`}
                         className={index === activeSectionIndex ? "is-active" : ""}
                         onClick={() => openSection(index)}
-                        aria-label={`Open section ${index + 1}: ${section.heading}`}
+                        aria-label={`Open tab ${index + 1}: ${section.heading}`}
                         aria-current={index === activeSectionIndex ? "step" : undefined}
                       >
                         <span>{String(index + 1).padStart(2, "0")}</span>
@@ -739,8 +747,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         </span>
                       </div>
                       <h3>{activeSection.heading}</h3>
-                      {(activeSection.type === "activation" ||
-                        activeSection.type === "exercise") && (
+                      {activeSection.heading === "Protocol" && (
                         <div
                           className="hcm-mode-switch"
                           role="tablist"
@@ -767,25 +774,41 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         </div>
                       )}
                       {chamberMode === "study" ||
-                      !["activation", "exercise"].includes(activeSection.type) ? (
+                      activeSection.heading !== "Protocol" ? (
                         <>
-                          <LessonSectionBody body={activeSection.body} />
-                          {activeSection.bullets && (
-                            <ul>
-                              {activeSection.bullets.map((item) => (
-                                <li key={item}>{item}</li>
+                          {activeSection.items.length ? (
+                            <div className="hcm-journey-subsections">
+                              {activeSection.items.map((journeySection, itemIndex) => (
+                                <section
+                                  className="hcm-journey-subsection"
+                                  key={`${journeySection.heading}-${itemIndex}`}
+                                >
+                                  <h4>{journeySection.heading}</h4>
+                                  <LessonSectionBody body={journeySection.body} />
+                                  {journeySection.bullets && (
+                                    <ul>
+                                      {journeySection.bullets.map((item) => (
+                                        <li key={item}>{item}</li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                  {journeySection.numbered && (
+                                    <ol>
+                                      {journeySection.numbered.map((item) => (
+                                        <li key={item}>{item}</li>
+                                      ))}
+                                    </ol>
+                                  )}
+                                  {journeySection.callout && (
+                                    <blockquote>{journeySection.callout}</blockquote>
+                                  )}
+                                </section>
                               ))}
-                            </ul>
-                          )}
-                          {activeSection.numbered && (
-                            <ol>
-                              {activeSection.numbered.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))}
-                            </ol>
-                          )}
-                          {activeSection.callout && (
-                            <blockquote>{activeSection.callout}</blockquote>
+                            </div>
+                          ) : (
+                            <p className="hcm-empty-tab">
+                              {getEmptyJourneyTabCopy(activeSection.heading, activeLesson)}
+                            </p>
                           )}
                           {/reclamation lens/i.test(activeSection.heading) && (
                             <ReclamationLessonMedia
@@ -846,8 +869,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                   </section>
                 </>
               )}
-              {(!lessonSections.length ||
-                activeSectionIndex === lessonSections.length - 1) && (
+              {activeSection?.heading === "Reflect" && (
               <section className="hcm-reflection">
                 <div className="hcm-reflection-mark" aria-hidden="true">
                   <PenLine size={24} />
@@ -880,8 +902,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
               </section>
               )}
               <footer className="hcm-reader-footer">
-                {(!lessonSections.length ||
-                  activeSectionIndex === lessonSections.length - 1) && (
+                {activeSection?.heading === "Reflect" && (
                   <button
                     type="button"
                     className="hcm-secondary"
