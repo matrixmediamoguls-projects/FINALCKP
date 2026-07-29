@@ -182,12 +182,48 @@ function SectionIcon({ type }) {
   return <BookOpen size={15} />;
 }
 
-function LessonSectionBody({ body }) {
-  const [activePassageGroup, setActivePassageGroup] = useState(0);
-  const passages = String(body || "")
+function groupLessonPassages(body) {
+  const sourcePassages = String(body || "")
     .split(/\n{2,}/)
     .map((passage) => passage.trim())
     .filter(Boolean);
+  const groupedPassages = [];
+  let proseBuffer = [];
+
+  const flushProse = () => {
+    if (!proseBuffer.length) return;
+    groupedPassages.push(proseBuffer.join(" "));
+    proseBuffer = [];
+  };
+
+  sourcePassages.forEach((passage) => {
+    const lines = passage.split("\n").map((line) => line.trim()).filter(Boolean);
+    const isStandalone =
+      lines.length > 1 ||
+      passage.includes("â†’") ||
+      /^["â€œ]/.test(passage) ||
+      /["â€]$/.test(passage) ||
+      /[:?]$/.test(passage);
+    const bufferedLength =
+      proseBuffer.join(" ").length + passage.length + proseBuffer.length;
+
+    if (isStandalone) {
+      flushProse();
+      groupedPassages.push(passage);
+      return;
+    }
+
+    if (proseBuffer.length >= 4 || bufferedLength > 440) flushProse();
+    proseBuffer.push(passage);
+  });
+
+  flushProse();
+  return groupedPassages;
+}
+
+function LessonSectionBody({ body }) {
+  const [activePassageGroup, setActivePassageGroup] = useState(0);
+  const passages = groupLessonPassages(body);
   const passageGroups = Array.from(
     { length: Math.ceil(passages.length / 5) },
     (_, index) => passages.slice(index * 5, index * 5 + 5),
