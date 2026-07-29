@@ -462,6 +462,9 @@ function SectionInsightPanel({
   section,
   sectionIndex,
   showConceptExhibits = false,
+  showPatternGallery = false,
+  showReflectionPrompts = false,
+  journeyItems = [],
 }) {
   const insights = (section.bullets?.length
     ? section.bullets
@@ -489,7 +492,31 @@ function SectionInsightPanel({
           lessonNumber={lesson.number}
         />
       )}
-      {!showConceptExhibits && comparisonMatch && (
+      {showPatternGallery && (
+        <section className="hcm-pattern-gallery is-stage-gallery" aria-label="Pattern gallery">
+          {journeyItems.slice(0, 6).map((item, index) => (
+            <article key={`${item.heading}-${index}`}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{item.heading}</strong>
+              <p>{String(item.body || "").split(/\n{2,}/)[0]}</p>
+            </article>
+          ))}
+        </section>
+      )}
+      {showReflectionPrompts && (
+        <section className="hcm-reflection-prompts" aria-label="Reflection prompts">
+          {(lesson.content?.reflection?.questions || lesson.keyPoints || [])
+            .slice(0, 2)
+            .map((prompt, index) => (
+              <article key={prompt}>
+                <span>Prompt {index + 1}</span>
+                <strong>{index === 0 ? "The Outer Echo" : "The Inner Source"}</strong>
+                <p>{prompt}</p>
+              </article>
+            ))}
+        </section>
+      )}
+      {!showConceptExhibits && !showPatternGallery && !showReflectionPrompts && comparisonMatch && (
         <section className="hcm-comparison-card">
           <div>
             <span>{comparisonMatch[1].trim()}</span>
@@ -502,7 +529,7 @@ function SectionInsightPanel({
           </div>
         </section>
       )}
-      {!showConceptExhibits && !comparisonMatch && insights.length > 1 && (
+      {!showConceptExhibits && !showPatternGallery && !showReflectionPrompts && !comparisonMatch && insights.length > 1 && (
         <section className="hcm-pattern-gallery">
           {insights.map((insight, index) => (
             <article key={insight}>
@@ -513,6 +540,73 @@ function SectionInsightPanel({
         </section>
       )}
     </aside>
+  );
+}
+
+const JOURNEY_PROCESS_STEPS = {
+  Intro: [
+    ["Question", "Frame the inquiry"],
+    ["Context", "Locate the principle"],
+    ["Orientation", "Prepare to observe"],
+  ],
+  Concept: [
+    ["Belief", "What you accept as true"],
+    ["Attention", "What you focus on"],
+    ["Interpretation", "How you make sense of it"],
+    ["Behavior", "How you respond"],
+    ["Result", "What you experience"],
+    ["Reinforced belief", "What is confirmed"],
+  ],
+  Patterns: [
+    ["Source", "One organizing logic"],
+    ["Pathway", "The structure repeats"],
+    ["Expression", "The form changes"],
+    ["Outcome", "The source remains"],
+  ],
+  "Reclamation Lens": [
+    ["Observation", "Hear the opening"],
+    ["Recognition", "Notice the motif"],
+    ["Expansion", "Follow the layers"],
+    ["Reversal", "Receive the reflection"],
+    ["Authorship", "Name the meaning"],
+  ],
+  Reflect: [
+    ["Observe", "Notice what is present"],
+    ["Recognize", "Identify the pattern"],
+    ["Connect", "Link it across your life"],
+    ["Choose", "Act with awareness"],
+  ],
+  Protocol: [
+    ["Name", "Define the pattern"],
+    ["Test", "Apply the practice"],
+    ["Record", "Preserve the evidence"],
+    ["Repeat", "Build a usable method"],
+  ],
+  Artifact: [
+    ["Insight", "Keep what matters"],
+    ["Evidence", "Name what changed"],
+    ["Action", "Carry it forward"],
+  ],
+};
+
+function JourneyProcessDiagram({ sectionHeading }) {
+  const steps = JOURNEY_PROCESS_STEPS[sectionHeading];
+  if (!steps) return null;
+
+  return (
+    <section className="hcm-process-diagram" aria-label={`${sectionHeading} process`}>
+      <span>{sectionHeading === "Concept" ? "The correspondence loop" : `${sectionHeading} journey`}</span>
+      <div>
+        {steps.map(([title, description], index) => (
+          <article key={title}>
+            <b>{String(index + 1).padStart(2, "0")}</b>
+            <strong>{title}</strong>
+            <small>{description}</small>
+            {index < steps.length - 1 && <ArrowRight size={17} aria-hidden="true" />}
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -670,6 +764,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const [view, setView] = useState("orientation");
   const [activeLessonId, setActiveLessonId] = useState(lessons[0]?.id || "");
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [activeJourneyItemIndex, setActiveJourneyItemIndex] = useState(0);
   const [chamberMode, setChamberMode] = useState("study");
   const [record, setRecord] = useState(() =>
     normalizeRecord(null, loadLocalRecord(module.id)),
@@ -717,6 +812,9 @@ export default function HermeticCurriculumModule({ module, faculty }) {
     lesson: activeLesson,
   });
   const activeSection = lessonSections[activeSectionIndex];
+  const activeJourneyItems = activeSection?.items || [];
+  const activeJourneyItem =
+    activeJourneyItems[activeJourneyItemIndex] || activeJourneyItems[0] || activeSection;
   const sectionPercent = lessonSections.length
     ? Math.round(((activeSectionIndex + 1) / lessonSections.length) * 100)
     : 100;
@@ -749,12 +847,14 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const openLesson = (lessonId) => {
     setActiveLessonId(lessonId);
     setActiveSectionIndex(0);
+    setActiveJourneyItemIndex(0);
     setChamberMode("study");
     setView("lesson");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const openSection = (sectionIndex) => {
     setActiveSectionIndex(sectionIndex);
+    setActiveJourneyItemIndex(0);
     setChamberMode("study");
     document
       .querySelector(".hcm-guided-reader")
@@ -1136,7 +1236,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                               {String(activeSectionIndex + 1).padStart(2, "0")}
                             </span>
                           </div>
-                          <h3>{activeSection.heading}</h3>
+                          <h3>{activeJourneyItem?.heading || activeSection.heading}</h3>
                           {activeSection.heading === "Protocol" && (
                             <div
                               className="hcm-mode-switch"
@@ -1167,38 +1267,119 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                           activeSection.heading !== "Protocol" ? (
                             <>
                               {activeSection.items.length ? (
-                                <div className="hcm-journey-subsections">
-                                  {activeSection.items.map((journeySection, itemIndex) => (
-                                    <section
-                                      className="hcm-journey-subsection"
-                                      key={`${journeySection.heading}-${itemIndex}`}
+                                <div className="hcm-journey-subsections is-paged">
+                                  <section
+                                    className="hcm-journey-subsection is-active-card"
+                                    key={`${activeJourneyItem.heading}-${activeJourneyItemIndex}`}
+                                  >
+                                    <header className="hcm-card-heading">
+                                      <span>
+                                        Page {activeJourneyItemIndex + 1} of{" "}
+                                        {activeJourneyItems.length}
+                                      </span>
+                                    </header>
+                                    <LessonSectionBody body={activeJourneyItem.body} />
+                                    {activeJourneyItem.bullets && (
+                                      <ul>
+                                        {activeJourneyItem.bullets.map((item) => (
+                                          <li key={item}>{item}</li>
+                                        ))}
+                                      </ul>
+                                    )}
+                                    {activeJourneyItem.numbered && (
+                                      <ol>
+                                        {activeJourneyItem.numbered.map((item) => (
+                                          <li key={item}>{item}</li>
+                                        ))}
+                                      </ol>
+                                    )}
+                                    {activeJourneyItem.callout && (
+                                      <blockquote>{activeJourneyItem.callout}</blockquote>
+                                    )}
+                                  </section>
+                                  {activeJourneyItems.length > 1 && (
+                                    <nav
+                                      className="hcm-card-pagination"
+                                      aria-label={`${activeSection.heading} pages`}
                                     >
-                                      <h4>{journeySection.heading}</h4>
-                                      <LessonSectionBody body={journeySection.body} />
-                                      {journeySection.bullets && (
-                                        <ul>
-                                          {journeySection.bullets.map((item) => (
-                                            <li key={item}>{item}</li>
-                                          ))}
-                                        </ul>
-                                      )}
-                                      {journeySection.numbered && (
-                                        <ol>
-                                          {journeySection.numbered.map((item) => (
-                                            <li key={item}>{item}</li>
-                                          ))}
-                                        </ol>
-                                      )}
-                                      {journeySection.callout && (
-                                        <blockquote>{journeySection.callout}</blockquote>
-                                      )}
-                                    </section>
-                                  ))}
+                                      <button
+                                        type="button"
+                                        disabled={activeJourneyItemIndex === 0}
+                                        onClick={() =>
+                                          setActiveJourneyItemIndex((index) =>
+                                            Math.max(0, index - 1),
+                                          )
+                                        }
+                                      >
+                                        <ChevronLeft size={15} /> Previous page
+                                      </button>
+                                      <div aria-label="Page position">
+                                        {activeJourneyItems.map((item, index) => (
+                                          <button
+                                            type="button"
+                                            key={`${item.heading}-${index}`}
+                                            className={
+                                              index === activeJourneyItemIndex
+                                                ? "is-active"
+                                                : ""
+                                            }
+                                            onClick={() => setActiveJourneyItemIndex(index)}
+                                            aria-label={`Open page ${index + 1}: ${item.heading}`}
+                                            aria-current={
+                                              index === activeJourneyItemIndex
+                                                ? "page"
+                                                : undefined
+                                            }
+                                          />
+                                        ))}
+                                      </div>
+                                      <button
+                                        type="button"
+                                        disabled={
+                                          activeJourneyItemIndex ===
+                                          activeJourneyItems.length - 1
+                                        }
+                                        onClick={() =>
+                                          setActiveJourneyItemIndex((index) =>
+                                            Math.min(
+                                              activeJourneyItems.length - 1,
+                                              index + 1,
+                                            ),
+                                          )
+                                        }
+                                      >
+                                        Next page <ArrowRight size={15} />
+                                      </button>
+                                    </nav>
+                                  )}
                                 </div>
                               ) : (
                                 <p className="hcm-empty-tab">
                                   {getEmptyJourneyTabCopy(activeSection.heading, activeLesson)}
                                 </p>
+                              )}
+                              {activeSection.heading === "Reflect" && (
+                                <label className="hcm-inline-reflection">
+                                  <span>Guided reflection</span>
+                                  <textarea
+                                    value={record.reflections[activeLesson.id] || ""}
+                                    placeholder={
+                                      activeLessonContent?.reflection?.placeholder ||
+                                      "Begin your reflection here..."
+                                    }
+                                    onChange={(event) =>
+                                      setRecord({
+                                        ...record,
+                                        reflections: {
+                                          ...record.reflections,
+                                          [activeLesson.id]: event.target.value,
+                                        },
+                                      })
+                                    }
+                                    onBlur={() => persistRecord(record)}
+                                  />
+                                  <small>Saved with your lesson progress</small>
+                                </label>
                               )}
                               {activeSection.heading === "Reclamation Lens" && (
                                 <ReclamationLessonMedia
@@ -1254,11 +1435,15 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         </div>
                         <SectionInsightPanel
                           lesson={activeLesson}
-                          section={activeSection.items[0] || activeSection}
-                          sectionIndex={activeSectionIndex}
+                          section={activeJourneyItem}
+                          sectionIndex={activeJourneyItemIndex}
                           showConceptExhibits={activeSection.heading === "Concept"}
+                          showPatternGallery={activeSection.heading === "Patterns"}
+                          showReflectionPrompts={activeSection.heading === "Reflect"}
+                          journeyItems={activeJourneyItems}
                         />
                       </div>
+                      <JourneyProcessDiagram sectionHeading={activeSection.heading} />
                       <div className="hcm-section-coda" aria-hidden="true">
                         <i />
                         <span>Continue the inquiry</span>
@@ -1271,7 +1456,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     </button>
                     {activeSectionIndex < lessonSections.length - 1 ? (
                       <button type="button" className="hcm-primary" onClick={() => openSection(activeSectionIndex + 1)}>
-                        Enter next chamber <ArrowRight size={15} />
+                        Continue to {lessonSections[activeSectionIndex + 1].label || lessonSections[activeSectionIndex + 1].heading} <ArrowRight size={15} />
                       </button>
                     ) : (
                       <span><Check size={15} /> Teaching complete — integrate below</span>

@@ -106,9 +106,100 @@
   gap: 1.15rem;
 }
 
+.hcm-journey-subsections.is-paged {
+  height: 100%;
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 12px;
+}
+
 .hcm-journey-subsection {
   padding: 0 0 1.15rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.hcm-journey-subsection.is-active-card {
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border-bottom: 0;
+  animation: hcm-card-enter 220ms ease both;
+}
+
+.hcm-card-heading {
+  margin-bottom: 17px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgba(217, 162, 58, 0.32);
+}
+
+.hcm-card-heading > span {
+  display: block;
+  margin-bottom: 7px;
+  color: #9e742d;
+  font: 600 0.54rem "JetBrains Mono", monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hcm-card-heading > h4 {
+  margin: 0;
+  color: #eee8dc;
+  font: 500 clamp(1.55rem, 2.5vw, 2.35rem) / 1.08 "Oxanium", sans-serif;
+}
+
+.hcm-card-pagination {
+  display: grid;
+  grid-template-columns: auto minmax(80px, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(217, 162, 58, 0.18);
+}
+
+.hcm-card-pagination > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 0;
+  border: 0;
+  color: #d9a23a;
+  background: transparent;
+  font: 600 0.61rem "Chakra Petch", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.hcm-card-pagination > button:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.hcm-card-pagination > div {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.hcm-card-pagination > div button {
+  width: 18px;
+  height: 3px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: rgba(217, 162, 58, 0.2);
+  cursor: pointer;
+}
+
+.hcm-card-pagination > div button.is-active {
+  background: #d9a23a;
+  box-shadow: 0 0 8px rgba(217, 162, 58, 0.55);
+}
+
+@keyframes hcm-card-enter {
+  from { opacity: 0; transform: translateX(18px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .hcm-journey-subsection:last-child {

@@ -1,55 +1,54 @@
-# Design QA
+**Source visual truth**
 
-- Source visual truth: `C:\Users\matri\Downloads\ChatGPT Image Jul 29, 2026, 01_03_50 AM.png`
-- Implementation: active `HermeticCurriculumModule` route in `frontend`
-- Intended viewport: desktop, approximately 1728 × 960 CSS pixels
-- Source pixels: 1728 × 960
-- Implementation pixels: unavailable
-- Density normalization: unavailable
-- State: lesson reader, first learning chamber
+- `C:\Users\matri\Downloads\DESIGN.zip`
+- Concept: `ChatGPT Image Jul 29, 2026, 05_04_13 PM.png`
+- Patterns: `ChatGPT Image Jul 29, 2026, 05_46_40 PM.png`
+- Reclamation: `ChatGPT Image Jul 29, 2026, 06_03_37 PM.png`
+- Reflect: `ChatGPT Image Jul 29, 2026, 06_17_20 PM.png`
 
-## Full-view comparison evidence
+**Implementation**
 
-The source image was opened and inspected at original resolution. A browser-rendered implementation capture could not be created because no browser surface is available in this session.
+- Active route component: `frontend/src/modules/sovereign/reclamation-university/HermeticCurriculumModule.jsx`
+- Layout styling: `frontend/src/modules/sovereign/reclamation-university/hermeticLearningExperience.css`
+- Journey styling: `frontend/src/modules/sovereign/reclamation-university/hermeticJourneyTabs.css`
 
-## Focused region comparison evidence
+**Comparison setup**
 
-Blocked for the same reason. The implementation could not be visually compared at the lesson header, Journey Map, teaching grid, comparison card, process diagram, sidebar, or responsive breakpoints.
+- Intended viewport: desktop, 1920 x 1080 CSS pixels, device scale factor 1.
+- Source dimensions: desktop reference images supplied in `DESIGN.zip`.
+- Implementation screenshot: unavailable.
+- State: all seven lesson stages: Intro, Concept, Patterns, Reclamation, Reflect, Protocol, and Artifact.
+- Full-view comparison evidence: blocked because no browser session is available.
+- Focused-region comparison evidence: blocked for the same reason.
 
-## Findings
+**Findings**
 
-- P1 — Browser-rendered fidelity is unverified.
-  - Location: complete lesson-reader composition.
-  - Evidence: source visual is available; matching implementation screenshot is unavailable.
-  - Impact: typography, spacing, wrapping, vertical fit, and visible interaction states cannot be accepted from source inspection or build output alone.
-  - Fix: capture the active lesson route at 1728 × 960, compare it with the source in one combined visual, and correct all P1/P2 drift.
+- [P0] Browser-rendered comparison unavailable.
+  - Location: mounted Reclamation University lesson route.
+  - Evidence: source references opened successfully; the local browser runtime reported that no browser is available.
+  - Impact: typography, exact viewport containment, clipping, and stage-to-stage visual fidelity cannot be truthfully certified.
+  - Fix: capture the mounted route at 1920 x 1080 in Concept, Patterns, Reclamation, and Reflect, compare each capture with its matching source, and correct all P1/P2 drift.
 
-- P1 — Primary interactions require browser confirmation.
-  - Location: course rail, Journey Map, Previous/Next controls, Study/Practice switch, Field Ledger.
-  - Evidence: the implementation and automated curriculum tests compile, but clicks, focus states, persistence, and console output were not exercised in a browser.
-  - Impact: core experience behavior remains visually and interactively unverified.
-  - Fix: exercise each control in the mounted route, verify state changes and persistence, and check the browser console.
+**Implemented source-level changes**
 
-## Required fidelity surfaces
+- Fixed-height desktop lesson workstation shared by all seven stages.
+- One authored subsection per paged card instead of a vertical subsection stack.
+- Previous/next page controls and direct page markers.
+- Permanent Concept-side Key Insight and two-square Exhibit panel.
+- Seven-stage journey map with direct stage navigation.
+- Stage-specific process strip.
+- Named primary CTA that advances to the next journey stage.
+- Responsive fallback below the desktop workstation breakpoint.
 
-- Fonts and typography: code-matched to Oxanium, Chakra Petch, and JetBrains Mono; rendered hierarchy and wrapping blocked.
-- Spacing and layout rhythm: desktop and responsive grids implemented; rendered measurement blocked.
-- Colors and visual tokens: black, antique gold, law-accent, and muted-paper palette implemented; rendered sampling blocked.
-- Image quality and asset fidelity: existing Hermetic Hall image is used in the lesson stage; rendered crop and sharpness blocked.
-- Copy and content: existing module and lesson data are consumed without replacement copy; visual truncation and overflow blocked.
+**Implementation checklist**
 
-## Comparison history
+- Capture all seven mounted stage states at 1920 x 1080.
+- Confirm there is no page-level vertical scroll at the reference viewport.
+- Confirm Concept paging preserves all authored text.
+- Confirm both exhibit frames remain square and visible.
+- Confirm the primary CTA advances Concept to Patterns and each later stage in order.
+- Compare fonts, spacing, colors, image crops, and copy against the source archive.
 
-- Pass 1: source opened successfully; implementation capture blocked because no browser is available. No visual fixes can be evidence-backed until capture is possible.
-
-## Implementation checklist
-
-1. Open the mounted lesson route in an available browser.
-2. Capture the first lesson chamber at 1728 × 960.
-3. Compare source and implementation together.
-4. Fix all P1/P2 layout, typography, asset, and interaction-state differences.
-5. Repeat capture and comparison until no actionable P1/P2 findings remain.
-
-## Final result
+**Final result**
 
 final result: blocked

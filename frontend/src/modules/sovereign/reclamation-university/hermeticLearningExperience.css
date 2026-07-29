@@ -463,6 +463,104 @@
   grid-column: 1 / -1;
 }
 
+.hcm-pattern-gallery.is-stage-gallery {
+  grid-template-columns: 1fr 1fr;
+  align-content: stretch;
+}
+
+.hcm-pattern-gallery.is-stage-gallery article,
+.hcm-pattern-gallery.is-stage-gallery article:first-child {
+  min-height: 0;
+  grid-column: auto;
+  display: grid;
+  align-content: start;
+  padding: 12px;
+}
+
+.hcm-pattern-gallery.is-stage-gallery strong {
+  margin-top: 5px;
+  color: #e5d9c7;
+  font: 500 .72rem/1.2 "Oxanium", sans-serif;
+}
+
+.hcm-pattern-gallery.is-stage-gallery p {
+  display: -webkit-box;
+  margin-top: 6px;
+  overflow: hidden;
+  font-size: .63rem;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.hcm-reflection-prompts {
+  display: grid;
+  flex: 1;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.hcm-reflection-prompts article {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid rgba(217, 162, 58, .34);
+  background: rgba(10, 8, 6, .9);
+}
+
+.hcm-reflection-prompts span {
+  color: #c38d32;
+  font: 600 .56rem "JetBrains Mono", monospace;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.hcm-reflection-prompts strong {
+  color: #e7ded1;
+  font: 500 1.25rem "Oxanium", sans-serif;
+}
+
+.hcm-reflection-prompts p {
+  margin: 0;
+  color: #a9a198;
+  font: 400 .78rem/1.5 "Chakra Petch", sans-serif;
+}
+
+.hcm-inline-reflection {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.hcm-inline-reflection > span {
+  color: #d39a38;
+  font: 600 .58rem "JetBrains Mono", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.hcm-inline-reflection textarea {
+  min-height: 96px;
+  resize: none;
+  padding: 12px;
+  border: 1px solid rgba(217, 162, 58, .32);
+  color: #e8dfd2;
+  background:
+    repeating-linear-gradient(
+      transparent,
+      transparent 25px,
+      rgba(217, 162, 58, .08) 26px
+    ),
+    rgba(8, 7, 5, .9);
+  font: italic .8rem/1.65 "Chakra Petch", sans-serif;
+}
+
+.hcm-inline-reflection small {
+  color: #746d64;
+  font: 500 .55rem "Chakra Petch", sans-serif;
+}
+
 .hcm-pattern-gallery span {
   color: #9d742f;
   font: 500 .56rem "JetBrains Mono", monospace;
@@ -712,6 +810,154 @@ button.hcm-artifact-slot {
 
 .hcm-root .hcm-section-coda {
   display: none;
+}
+
+.hcm-process-diagram {
+  margin: 8px;
+  padding: 8px 14px 10px;
+  border: 1px solid rgba(217, 162, 58, .28);
+  background:
+    linear-gradient(90deg, rgba(217, 162, 58, .035), transparent 42%),
+    rgba(9, 8, 6, .96);
+}
+
+.hcm-process-diagram > span {
+  display: block;
+  margin-bottom: 6px;
+  color: #c28d32;
+  font: 600 .57rem "JetBrains Mono", monospace;
+  letter-spacing: .13em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.hcm-process-diagram > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  align-items: center;
+}
+
+.hcm-process-diagram article {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: center;
+  gap: 2px 8px;
+  padding: 6px 20px 6px 7px;
+}
+
+.hcm-process-diagram article > b {
+  grid-row: 1 / 3;
+  color: #d9a23a;
+  font: 500 .56rem "JetBrains Mono", monospace;
+}
+
+.hcm-process-diagram article > strong {
+  color: #d8a23e;
+  font: 500 .65rem "Oxanium", sans-serif;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.hcm-process-diagram article > small {
+  overflow: hidden;
+  color: #8f887e;
+  font: 400 .56rem "Chakra Petch", sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hcm-process-diagram article > svg {
+  position: absolute;
+  right: 2px;
+  color: #b27b24;
+}
+
+@media (min-width: 1181px) and (min-height: 760px) {
+  .hcm-root,
+  .hcm-root .hcm-layout.is-lesson-view,
+  .hcm-root .hcm-layout.is-lesson-view > .hcm-stage {
+    height: 100svh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hcm-root .hcm-layout.is-lesson-view > .hcm-stage {
+    padding-block: 12px;
+  }
+
+  .hcm-root .hcm-reader {
+    height: calc(100svh - 24px);
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    overflow: hidden;
+  }
+
+  .hcm-root .hcm-lesson-hero {
+    min-height: 0;
+    height: clamp(104px, 13svh, 138px);
+  }
+
+  .hcm-root .hcm-central-question {
+    min-height: 0;
+    margin-block: 7px;
+    padding-block: 10px;
+  }
+
+  .hcm-root .hcm-guided-reader {
+    margin-bottom: 7px;
+  }
+
+  .hcm-root .hcm-active-section {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow: hidden;
+  }
+
+  .hcm-learning-grid {
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .hcm-teaching-canvas,
+  .hcm-insight-stack {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hcm-teaching-canvas {
+    display: flex;
+    flex-direction: column;
+    padding-block: 18px;
+  }
+
+  .hcm-teaching-canvas > .hcm-journey-subsections {
+    flex: 1;
+  }
+
+  .hcm-root .hcm-active-section h3 {
+    margin-block: 10px 14px;
+    font-size: clamp(1.35rem, 2.2vw, 2rem);
+  }
+
+  .hcm-root .hcm-prose p {
+    margin-bottom: 7px;
+    font-size: clamp(.72rem, .78vw, .88rem);
+    line-height: 1.43;
+  }
+
+  .hcm-root .hcm-section-controls {
+    min-height: 42px;
+    margin-top: 6px;
+  }
+
+  .hcm-root .hcm-reader > .hcm-reflection,
+  .hcm-root .hcm-reader > .hcm-reader-footer {
+    display: none;
+  }
 }
 
 .hcm-root .hcm-section-controls {
