@@ -45,3 +45,53 @@
     scroll-snap-align: start;
   }
 }
+
+
+.hcm-lesson-artifact {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 32%, transparent);
+  background: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 6%, rgba(10, 8, 7, 0.72));
+}
+
+.hcm-lesson-artifact > span {
+  color: var(--hcm-law-accent, #d7a64a);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.hcm-lesson-artifact h4,
+.hcm-lesson-artifact p {
+  margin: 0;
+}
+
+.hcm-lesson-artifact h4 {
+  color: #f3e7d5;
+  font-family: "Cinzel", serif;
+}
+
+.hcm-lesson-artifact p {
+  color: rgba(247, 239, 228, 0.68);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.hcm-lesson-artifact textarea {
+  min-height: 120px;
+  padding: 0.8rem;
+  resize: vertical;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.28);
+  color: #f7efe4;
+  font: inherit;
+  line-height: 1.55;
+}
+
+.hcm-lesson-artifact textarea:focus {
+  border-color: var(--hcm-law-accent, #d7a64a);
+  outline: none;
+}
