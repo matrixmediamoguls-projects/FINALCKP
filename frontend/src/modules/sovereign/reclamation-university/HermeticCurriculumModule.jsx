@@ -822,6 +822,33 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                               referenceAnnotations={module.lyricAnchors || []}
                             />
                           )}
+                          {activeSection.heading === "Artifact" && (
+                            <section className="hcm-lesson-artifact">
+                              <span>Carry Forward</span>
+                              <h4>Your usable takeaway</h4>
+                              <p>
+                                Preserve the insight, practice, or decision from this
+                                lesson that you want available beyond this screen.
+                              </p>
+                              <textarea
+                                value={
+                                  record.artifact[`lesson-${activeLesson.id}`] || ""
+                                }
+                                placeholder="What are you carrying forward, and how will you use it?"
+                                onChange={(event) =>
+                                  setRecord({
+                                    ...record,
+                                    artifact: {
+                                      ...record.artifact,
+                                      [`lesson-${activeLesson.id}`]:
+                                        event.target.value,
+                                    },
+                                  })
+                                }
+                                onBlur={() => persistRecord(record)}
+                              />
+                            </section>
+                          )}
                         </>
                       ) : (
                         <ChamberFieldLab
