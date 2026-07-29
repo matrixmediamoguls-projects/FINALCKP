@@ -331,16 +331,9 @@ function LessonExhibits({
   lessonNumber = "",
 }) {
   const [expandedExhibit, setExpandedExhibit] = useState(null);
-  const conceptExhibits =
+  const visibleExhibits =
     variant === "concept-panel"
-      ? Array.from({ length: 2 }, (_, index) =>
-          exhibits[index] || {
-            id: `exhibit-${lessonNumber || "lesson"}-${index + 1}-pending`,
-            label: `Exhibit ${lessonNumber || ""}${lessonNumber ? "." : ""}${index + 1}`,
-            title: "Exhibit awaiting curation",
-            status: "pending",
-          },
-        )
+      ? exhibits.filter((exhibit) => exhibit.src).slice(0, 2)
       : exhibits;
 
   useEffect(() => {
@@ -356,7 +349,7 @@ function LessonExhibits({
     };
   }, [expandedExhibit]);
 
-  if (!conceptExhibits.length) return null;
+  if (!visibleExhibits.length) return null;
 
   return (
     <>
@@ -367,10 +360,10 @@ function LessonExhibits({
         >
           <header>
             <span><BookOpen size={14} /> Exhibits</span>
-            <small>Two framed studies</small>
+            <small>{visibleExhibits.length === 1 ? "Framed study" : `${visibleExhibits.length} framed studies`}</small>
           </header>
           <div className="hcm-artifact-panel__grid">
-            {conceptExhibits.map((exhibit) =>
+            {visibleExhibits.map((exhibit) =>
               exhibit.src ? (
                 <button
                   type="button"

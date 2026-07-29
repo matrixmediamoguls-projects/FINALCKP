@@ -639,6 +639,7 @@
 }
 
 .is-concept-exhibits .hcm-artifact-panel__grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
   align-content: start;
   margin: 6px 0 0;
   gap: 10px;
@@ -657,6 +658,7 @@
 }
 
 .is-concept-exhibits .hcm-artifact-slot {
+  aspect-ratio: 4 / 5;
   isolation: isolate;
   border-color: rgba(217, 162, 58, .46);
   outline: 1px solid rgba(217, 162, 58, .1);
@@ -694,6 +696,11 @@ button.hcm-artifact-slot {
   object-fit: cover;
   object-position: center;
   transition: transform 260ms ease, filter 260ms ease;
+}
+
+.is-concept-exhibits .hcm-artifact-slot img {
+  object-fit: contain;
+  background: #d8ddd8;
 }
 
 .hcm-artifact-slot:hover img,
