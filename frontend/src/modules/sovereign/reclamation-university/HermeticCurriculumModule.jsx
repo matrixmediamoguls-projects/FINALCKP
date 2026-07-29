@@ -72,11 +72,13 @@ const JOURNEY_PHASES = [
   { id: "reclamation", label: "Reclamation", icon: Radio },
   { id: "reflect", label: "Reflect", icon: PenLine },
   { id: "protocol", label: "Protocol", icon: ShieldCheck },
+  { id: "artifact", label: "Artifact", icon: FileText },
 ];
 
 export function getSectionPhase(section, index, total) {
   const heading = section?.heading?.toLowerCase() || "";
-  if (section?.type === "activation" || section?.type === "exercise" || /protocol|audit|artifact|practice/.test(heading))
+  if (/artifact|carry forward|integration/.test(heading)) return "artifact";
+  if (section?.type === "activation" || section?.type === "exercise" || /protocol|audit|practice/.test(heading))
     return "protocol";
   if (/reflection|your current|observe|question/.test(heading)) return "reflect";
   if (/reclamation|album|track|lyric/.test(heading)) return "reclamation";
@@ -323,8 +325,23 @@ function LessonSectionBody({ body }) {
   );
 }
 
-function LessonExhibits({ exhibits = [], variant = "inline" }) {
+function LessonExhibits({
+  exhibits = [],
+  variant = "inline",
+  lessonNumber = "",
+}) {
   const [expandedExhibit, setExpandedExhibit] = useState(null);
+  const conceptExhibits =
+    variant === "concept-panel"
+      ? Array.from({ length: 2 }, (_, index) =>
+          exhibits[index] || {
+            id: `exhibit-${lessonNumber || "lesson"}-${index + 1}-pending`,
+            label: `Exhibit ${lessonNumber || ""}${lessonNumber ? "." : ""}${index + 1}`,
+            title: "Exhibit awaiting curation",
+            status: "pending",
+          },
+        )
+      : exhibits;
 
   useEffect(() => {
     if (!expandedExhibit) return undefined;
@@ -339,18 +356,21 @@ function LessonExhibits({ exhibits = [], variant = "inline" }) {
     };
   }, [expandedExhibit]);
 
-  if (!exhibits.length) return null;
+  if (!conceptExhibits.length) return null;
 
   return (
     <>
-      {variant === "artifact-panel" ? (
-        <section className="hcm-artifact-panel" aria-label="Lesson artifacts">
+      {variant === "artifact-panel" || variant === "concept-panel" ? (
+        <section
+          className={`hcm-artifact-panel${variant === "concept-panel" ? " is-concept-exhibits" : ""}`}
+          aria-label="Lesson exhibits"
+        >
           <header>
-            <span><BookOpen size={14} /> Artifacts</span>
-            <small>Exhibits for this section</small>
+            <span><BookOpen size={14} /> Exhibits</span>
+            <small>Two framed studies</small>
           </header>
           <div className="hcm-artifact-panel__grid">
-            {exhibits.map((exhibit) =>
+            {conceptExhibits.map((exhibit) =>
               exhibit.src ? (
                 <button
                   type="button"
@@ -437,7 +457,12 @@ function LessonExhibits({ exhibits = [], variant = "inline" }) {
   );
 }
 
-function SectionInsightPanel({ lesson, section, sectionIndex }) {
+function SectionInsightPanel({
+  lesson,
+  section,
+  sectionIndex,
+  showConceptExhibits = false,
+}) {
   const insights = (section.bullets?.length
     ? section.bullets
     : lesson.keyPoints || []
@@ -449,9 +474,6 @@ function SectionInsightPanel({ lesson, section, sectionIndex }) {
   const comparisonMatch = section.heading.match(
     /(.+?)\s+(?:versus|vs\.?|and|without|not)\s+(.+)/i,
   );
-  const sectionExhibits = (lesson.exhibits || []).filter(
-    (exhibit) => exhibit.panelSectionHeading === section.heading,
-  );
 
   return (
     <aside className="hcm-insight-stack">
@@ -460,10 +482,14 @@ function SectionInsightPanel({ lesson, section, sectionIndex }) {
         <h4>{insights[sectionIndex % Math.max(insights.length, 1)] || section.heading}</h4>
         {passages[0] && <p>{passages[0]}</p>}
       </section>
-      {sectionExhibits.length > 0 && (
-        <LessonExhibits exhibits={sectionExhibits} variant="artifact-panel" />
+      {showConceptExhibits && (
+        <LessonExhibits
+          exhibits={(lesson.exhibits || []).slice(0, 2)}
+          variant="concept-panel"
+          lessonNumber={lesson.number}
+        />
       )}
-      {sectionExhibits.length === 0 && comparisonMatch && (
+      {!showConceptExhibits && comparisonMatch && (
         <section className="hcm-comparison-card">
           <div>
             <span>{comparisonMatch[1].trim()}</span>
@@ -476,7 +502,7 @@ function SectionInsightPanel({ lesson, section, sectionIndex }) {
           </div>
         </section>
       )}
-      {sectionExhibits.length === 0 && !comparisonMatch && insights.length > 1 && (
+      {!showConceptExhibits && !comparisonMatch && insights.length > 1 && (
         <section className="hcm-pattern-gallery">
           {insights.map((insight, index) => (
             <article key={insight}>
@@ -1230,6 +1256,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                           lesson={activeLesson}
                           section={activeSection.items[0] || activeSection}
                           sectionIndex={activeSectionIndex}
+                          showConceptExhibits={activeSection.heading === "Concept"}
                         />
                       </div>
                       <div className="hcm-section-coda" aria-hidden="true">

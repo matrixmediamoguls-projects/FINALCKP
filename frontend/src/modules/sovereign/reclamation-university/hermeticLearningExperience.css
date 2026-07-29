@@ -316,7 +316,7 @@
 
 .hcm-journey-map {
   display: grid;
-  grid-template-columns: repeat(6, minmax(90px, 1fr));
+  grid-template-columns: repeat(7, minmax(86px, 1fr));
   min-height: 64px;
 }
 
@@ -486,6 +486,25 @@
   background: rgba(11, 8, 6, .82);
 }
 
+.hcm-artifact-panel.is-concept-exhibits {
+  position: relative;
+  justify-content: flex-start;
+  padding: 12px;
+  border-color: rgba(217, 162, 58, .38);
+  background:
+    linear-gradient(145deg, rgba(217, 162, 58, .055), transparent 42%),
+    rgba(9, 7, 5, .94);
+  box-shadow: inset 0 0 32px rgba(0, 0, 0, .38);
+}
+
+.hcm-artifact-panel.is-concept-exhibits::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  border: 1px solid rgba(217, 162, 58, .09);
+}
+
 .hcm-artifact-panel > header {
   display: flex;
   align-items: center;
@@ -521,6 +540,12 @@
   margin: auto;
 }
 
+.is-concept-exhibits .hcm-artifact-panel__grid {
+  align-content: start;
+  margin: 6px 0 0;
+  gap: 10px;
+}
+
 .hcm-artifact-slot {
   position: relative;
   width: 100%;
@@ -531,6 +556,31 @@
   border: 1px solid rgba(217, 162, 58, .28);
   color: #ded4c4;
   background: rgba(18, 12, 8, .9);
+}
+
+.is-concept-exhibits .hcm-artifact-slot {
+  isolation: isolate;
+  border-color: rgba(217, 162, 58, .46);
+  outline: 1px solid rgba(217, 162, 58, .1);
+  outline-offset: -5px;
+  background:
+    linear-gradient(135deg, rgba(217, 162, 58, .08), transparent 38%),
+    #0d0906;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, .28);
+}
+
+.is-concept-exhibits .hcm-artifact-slot::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 7px;
+  pointer-events: none;
+  border:
+    1px solid color-mix(
+      in srgb,
+      var(--hcm-law-accent, #d7a64a) 18%,
+      transparent
+    );
 }
 
 button.hcm-artifact-slot {
@@ -595,6 +645,13 @@ button.hcm-artifact-slot {
   background:
     linear-gradient(135deg, rgba(217, 162, 58, .04), transparent),
     rgba(14, 10, 7, .72);
+}
+
+.is-concept-exhibits .hcm-artifact-slot.is-pending::after {
+  content: "◇";
+  color: rgba(217, 162, 58, .42);
+  font-size: 1.35rem;
+  line-height: 1;
 }
 
 .hcm-artifact-slot.is-pending > span {

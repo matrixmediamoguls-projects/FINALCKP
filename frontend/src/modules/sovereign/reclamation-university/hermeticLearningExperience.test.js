@@ -18,6 +18,9 @@ describe("Hermetic learning experience section mapping", () => {
     expect(
       getSectionPhase({ heading: "Reclamation Protocol", type: "activation" }, 10, 12),
     ).toBe("protocol");
+    expect(
+      getSectionPhase({ heading: "Artifact", type: "activation" }, 11, 12),
+    ).toBe("artifact");
   });
 
   it("uses concept as the stable fallback for teaching sections", () => {
