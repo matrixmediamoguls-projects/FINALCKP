@@ -114,12 +114,13 @@ export function buildLessonJourneyTabs({ content, lesson }) {
     });
   }
 
-  return JOURNEY_TAB_LABELS.map((heading) => {
-    const items = groups[heading];
+  return JOURNEY_TAB_LABELS.map((label) => {
+    const items = groups[label];
     return {
-      id: heading.toLowerCase(),
-      heading,
-      type: TAB_TYPES[heading],
+      id: label.toLowerCase(),
+      label,
+      heading: label === "Reclamation" ? "Reclamation Lens" : label,
+      type: TAB_TYPES[label],
       items,
       body: items.map((item) => item.body).filter(Boolean).join("\n\n"),
       lessonId: lesson?.id || "",
@@ -128,7 +129,7 @@ export function buildLessonJourneyTabs({ content, lesson }) {
 }
 
 export function getEmptyJourneyTabCopy(tab, lesson) {
-  if (tab === "Reclamation") {
+  if (tab === "Reclamation" || tab === "Reclamation Lens") {
     return "The selected Reclamation album reference carries the lesson principle into sound, lyric, and lived context.";
   }
   if (tab === "Reflect") {

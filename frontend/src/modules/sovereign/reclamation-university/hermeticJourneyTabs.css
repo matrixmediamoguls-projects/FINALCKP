@@ -1,3 +1,106 @@
+.hcm-guided-reader {
+  margin: 1.25rem 0 1.5rem;
+  border: 1px solid rgba(215, 166, 74, 0.2);
+  background: rgba(12, 9, 7, 0.72);
+}
+
+.hcm-section-progress {
+  padding: 0.8rem 1rem 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hcm-section-steps {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+
+.hcm-section-steps button {
+  position: relative;
+  min-width: 0;
+  min-height: 58px;
+  padding: 0.85rem 0.45rem 0.75rem;
+  border: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0;
+  background: transparent;
+  color: rgba(247, 239, 228, 0.56);
+  text-align: center;
+}
+
+.hcm-section-steps button:last-child {
+  border-right: 0;
+}
+
+.hcm-section-steps button::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  content: "";
+  background: transparent;
+  box-shadow: none;
+}
+
+.hcm-section-steps button:hover {
+  color: rgba(247, 239, 228, 0.9);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.hcm-section-steps button.is-active {
+  color: #f7efe4;
+  background: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 7%, transparent);
+}
+
+.hcm-section-steps button.is-active::after {
+  background: var(--hcm-law-accent, #d7a64a);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 58%, transparent);
+}
+
+.hcm-section-steps button > span {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 72%, rgba(247, 239, 228, 0.45));
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.hcm-section-steps button strong {
+  display: block;
+  overflow: hidden;
+  font-size: clamp(0.64rem, 0.8vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The renderer uses the internal name “Reclamation Lens” to mount album media.
+   The visible curriculum label remains exactly “Reclamation.” */
+.hcm-section-steps button:nth-child(4) strong {
+  font-size: 0;
+}
+
+.hcm-section-steps button:nth-child(4) strong::after {
+  content: "Reclamation";
+  font-size: clamp(0.64rem, 0.8vw, 0.78rem);
+}
+
+.hcm-section-3 .hcm-active-section > h3 {
+  font-size: 0;
+}
+
+.hcm-section-3 .hcm-active-section > h3::after {
+  content: "Reclamation";
+  font-size: clamp(1.45rem, 3vw, 2.3rem);
+}
+
 .hcm-journey-subsections {
   display: grid;
   gap: 1.15rem;
@@ -29,23 +132,6 @@
   color: rgba(247, 239, 228, 0.68);
   line-height: 1.65;
 }
-
-.hcm-section-steps button strong {
-  white-space: nowrap;
-}
-
-@media (max-width: 720px) {
-  .hcm-section-steps {
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-  }
-
-  .hcm-section-steps button {
-    min-width: 112px;
-    scroll-snap-align: start;
-  }
-}
-
 
 .hcm-lesson-artifact {
   display: grid;
@@ -94,4 +180,30 @@
 .hcm-lesson-artifact textarea:focus {
   border-color: var(--hcm-law-accent, #d7a64a);
   outline: none;
+}
+
+@media (max-width: 900px) {
+  .hcm-section-steps {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .hcm-section-steps button {
+    flex: 0 0 124px;
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 520px) {
+  .hcm-section-progress {
+    padding-inline: 0.75rem;
+  }
+
+  .hcm-section-steps button {
+    flex-basis: 108px;
+    min-height: 54px;
+    padding-inline: 0.35rem;
+  }
 }
