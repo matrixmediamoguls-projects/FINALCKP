@@ -397,14 +397,15 @@
 }
 
 .hcm-root .hcm-prose p {
+  margin: 0 0 9px;
   color: #c9c1b6;
-  font: 400 .92rem/1.7 "Chakra Petch", sans-serif;
+  font: 400 .92rem/1.55 "Chakra Petch", sans-serif;
 }
 
 .hcm-root .hcm-prose > p:first-child:not(.hcm-prose-beat) {
   color: #e1d9cd;
   font-size: 1rem;
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 .hcm-insight-stack {
@@ -513,14 +514,19 @@
 .hcm-artifact-panel__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  flex: 1;
+  align-content: center;
+  justify-content: center;
   gap: 6px;
+  width: 100%;
+  margin: auto;
 }
 
 .hcm-artifact-slot {
   position: relative;
+  width: 100%;
+  aspect-ratio: 1;
   min-width: 0;
-  min-height: 180px;
+  min-height: 0;
   overflow: hidden;
   border: 1px solid rgba(217, 162, 58, .28);
   color: #ded4c4;
@@ -747,7 +753,7 @@ button.hcm-artifact-slot {
 
 @media (max-width: 560px) {
   .hcm-artifact-panel__grid { grid-template-columns: 1fr; }
-  .hcm-artifact-slot { min-height: 170px; }
+  .hcm-artifact-panel__grid { max-width: 260px; }
   .hcm-root .hcm-lesson-hero {
     grid-template-columns: 1fr;
   }
