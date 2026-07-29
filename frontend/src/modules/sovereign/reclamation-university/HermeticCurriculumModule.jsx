@@ -183,14 +183,26 @@ function SectionIcon({ type }) {
 }
 
 function LessonSectionBody({ body, exhibits = [] }) {
+  const [activePassageGroup, setActivePassageGroup] = useState(0);
   const passages = String(body || "")
     .split(/\n{2,}/)
     .map((passage) => passage.trim())
     .filter(Boolean);
+  const passageGroups = Array.from(
+    { length: Math.ceil(passages.length / 5) },
+    (_, index) => passages.slice(index * 5, index * 5 + 5),
+  );
+
+  useEffect(() => {
+    setActivePassageGroup(0);
+  }, [body]);
+
+  const visiblePassages = passageGroups[activePassageGroup] || [];
 
   return (
-    <div className="hcm-prose">
-      {passages.map((passage, index) => {
+    <div className="hcm-reading-flow">
+      <div className="hcm-prose">
+      {visiblePassages.map((passage, index) => {
         const lines = passage.split("\n").map((line) => line.trim()).filter(Boolean);
         const isSequence = passage.includes("→") && lines.length === 1;
         const isQuote =
@@ -240,6 +252,38 @@ function LessonSectionBody({ body, exhibits = [] }) {
           </div>
         );
       })}
+      </div>
+      {passageGroups.length > 1 && (
+        <div className="hcm-passage-controls" aria-label="Section reading flow">
+          <button
+            type="button"
+            disabled={activePassageGroup === 0}
+            onClick={() => setActivePassageGroup((index) => index - 1)}
+          >
+            <ChevronLeft size={14} /> Previous part
+          </button>
+          <div>
+            <span>
+              Part {activePassageGroup + 1} of {passageGroups.length}
+            </span>
+            <i>
+              {passageGroups.map((_, index) => (
+                <b
+                  key={index}
+                  className={index <= activePassageGroup ? "is-read" : ""}
+                />
+              ))}
+            </i>
+          </div>
+          <button
+            type="button"
+            disabled={activePassageGroup === passageGroups.length - 1}
+            onClick={() => setActivePassageGroup((index) => index + 1)}
+          >
+            Next part <ArrowRight size={14} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
