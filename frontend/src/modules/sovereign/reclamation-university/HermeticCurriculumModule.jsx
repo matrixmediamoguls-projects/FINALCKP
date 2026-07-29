@@ -1174,7 +1174,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                                   {getEmptyJourneyTabCopy(activeSection.heading, activeLesson)}
                                 </p>
                               )}
-                              {activeSection.heading === "Reclamation" && (
+                              {activeSection.heading === "Reclamation Lens" && (
                                 <ReclamationLessonMedia
                                   lesson={activeLesson}
                                   contextBody={activeSection.body}

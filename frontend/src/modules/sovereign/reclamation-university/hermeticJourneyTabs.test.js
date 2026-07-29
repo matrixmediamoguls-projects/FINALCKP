@@ -19,7 +19,7 @@ describe("Hermetic lesson journey tabs", () => {
         lesson,
       });
 
-      expect(tabs.map((tab) => tab.heading)).toEqual(JOURNEY_TAB_LABELS);
+      expect(tabs.map((tab) => tab.label)).toEqual(JOURNEY_TAB_LABELS);
       expect(tabs).toHaveLength(7);
     });
   });
@@ -44,7 +44,7 @@ describe("Hermetic lesson journey tabs", () => {
       (item) => item.number === "2.1",
     );
     const tabs = buildLessonJourneyTabs({ content: lesson.content, lesson });
-    const reclamation = tabs.find((tab) => tab.heading === "Reclamation");
+    const reclamation = tabs.find((tab) => tab.heading === "Reclamation Lens");
     const reflect = tabs.find((tab) => tab.heading === "Reflect");
     const protocol = tabs.find((tab) => tab.heading === "Protocol");
 
