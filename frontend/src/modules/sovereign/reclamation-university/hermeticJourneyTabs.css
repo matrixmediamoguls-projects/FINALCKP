@@ -1,0 +1,47 @@
+.hcm-journey-subsections {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.hcm-journey-subsection {
+  padding: 0 0 1.15rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.hcm-journey-subsection:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.hcm-journey-subsection > h4 {
+  margin: 0 0 0.75rem;
+  color: #f3e7d5;
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  letter-spacing: 0.015em;
+}
+
+.hcm-empty-tab {
+  margin: 0;
+  padding: 1rem;
+  border-left: 2px solid var(--hcm-law-accent, #d7a64a);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(247, 239, 228, 0.68);
+  line-height: 1.65;
+}
+
+.hcm-section-steps button strong {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .hcm-section-steps {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+  }
+
+  .hcm-section-steps button {
+    min-width: 112px;
+    scroll-snap-align: start;
+  }
+}

@@ -32,8 +32,14 @@ import {
   getNextCurriculumDestination,
 } from "./hermeticCurriculumNavigation";
 import { buildHermeticLessonContent } from "./hermeticLessonContent";
+import {
+  buildLessonJourneyTabs,
+  getEmptyJourneyTabCopy,
+} from "./hermeticJourneyTabs";
+import ReclamationLessonMedia from "./ReclamationLessonMedia";
 import "./hermeticCurriculumModule.css";
 import "./hermeticLearningExperience.css";
+import "./hermeticJourneyTabs.css";
 
 const EMPTY_RECORD = {
   completedLessons: [],
@@ -680,7 +686,10 @@ export default function HermeticCurriculumModule({ module, faculty }) {
     (((module.order - 1) + completionPercent / 100) / COURSE_MODULES.length) *
       100,
   );
-  const lessonSections = activeLessonContent?.sections || [];
+  const lessonSections = buildLessonJourneyTabs({
+    content: activeLessonContent,
+    lesson: activeLesson,
+  });
   const activeSection = lessonSections[activeSectionIndex];
   const sectionPercent = lessonSections.length
     ? Math.round(((activeSectionIndex + 1) / lessonSections.length) * 100)
@@ -1102,8 +1111,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                             </span>
                           </div>
                           <h3>{activeSection.heading}</h3>
-                          {(activeSection.type === "activation" ||
-                            activeSection.type === "exercise") && (
+                          {activeSection.heading === "Protocol" && (
                             <div
                               className="hcm-mode-switch"
                               role="tablist"
@@ -1130,25 +1138,53 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                             </div>
                           )}
                           {chamberMode === "study" ||
-                          !["activation", "exercise"].includes(activeSection.type) ? (
+                          activeSection.heading !== "Protocol" ? (
                             <>
-                              <LessonSectionBody body={activeSection.body} />
-                              {activeSection.bullets && (
-                                <ul>
-                                  {activeSection.bullets.map((item) => (
-                                    <li key={item}>{item}</li>
+                              {activeSection.items.length ? (
+                                <div className="hcm-journey-subsections">
+                                  {activeSection.items.map((journeySection, itemIndex) => (
+                                    <section
+                                      className="hcm-journey-subsection"
+                                      key={`${journeySection.heading}-${itemIndex}`}
+                                    >
+                                      <h4>{journeySection.heading}</h4>
+                                      <LessonSectionBody body={journeySection.body} />
+                                      {journeySection.bullets && (
+                                        <ul>
+                                          {journeySection.bullets.map((item) => (
+                                            <li key={item}>{item}</li>
+                                          ))}
+                                        </ul>
+                                      )}
+                                      {journeySection.numbered && (
+                                        <ol>
+                                          {journeySection.numbered.map((item) => (
+                                            <li key={item}>{item}</li>
+                                          ))}
+                                        </ol>
+                                      )}
+                                      {journeySection.callout && (
+                                        <blockquote>{journeySection.callout}</blockquote>
+                                      )}
+                                    </section>
                                   ))}
-                                </ul>
+                                </div>
+                              ) : (
+                                <p className="hcm-empty-tab">
+                                  {getEmptyJourneyTabCopy(activeSection.heading, activeLesson)}
+                                </p>
                               )}
-                              {activeSection.numbered && (
-                                <ol>
-                                  {activeSection.numbered.map((item) => (
-                                    <li key={item}>{item}</li>
-                                  ))}
-                                </ol>
-                              )}
-                              {activeSection.callout && (
-                                <blockquote>{activeSection.callout}</blockquote>
+                              {activeSection.heading === "Reclamation" && (
+                                <ReclamationLessonMedia
+                                  lesson={activeLesson}
+                                  contextBody={activeSection.body}
+                                  fallbackTitles={[
+                                    courseModule.primaryTrack,
+                                    ...(courseModule.supportingTracks || []),
+                                    ...(module.sourceTrackIds || []),
+                                  ].filter(Boolean)}
+                                  referenceAnnotations={module.lyricAnchors || []}
+                                />
                               )}
                             </>
                           ) : (
@@ -1165,7 +1201,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         </div>
                         <SectionInsightPanel
                           lesson={activeLesson}
-                          section={activeSection}
+                          section={activeSection.items[0] || activeSection}
                           sectionIndex={activeSectionIndex}
                         />
                       </div>
