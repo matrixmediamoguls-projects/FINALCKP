@@ -1,0 +1,222 @@
+.rlm-root {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 38%, transparent);
+  background:
+    linear-gradient(135deg, rgba(10, 8, 7, 0.97), rgba(35, 20, 15, 0.92)),
+    radial-gradient(circle at top right, color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 16%, transparent), transparent 44%);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+}
+
+.rlm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rlm-header span,
+.rlm-eyebrow,
+.rlm-annotation > span {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--hcm-law-accent, #d7a64a);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.rlm-header h4,
+.rlm-player-panel h5,
+.rlm-annotation h5 {
+  margin: 0.35rem 0 0;
+  color: #f7efe4;
+  font-family: "Cinzel", serif;
+}
+
+.rlm-header h4 {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+}
+
+.rlm-header > b {
+  color: rgba(255, 255, 255, 0.2);
+  font-family: "Cinzel", serif;
+  font-size: 1.45rem;
+}
+
+.rlm-track-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.9rem 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.rlm-track-tabs button {
+  flex: 0 0 auto;
+  padding: 0.48rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(247, 239, 228, 0.68);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+}
+
+.rlm-track-tabs button:hover,
+.rlm-track-tabs button.is-active {
+  border-color: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 72%, transparent);
+  background: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 12%, transparent);
+  color: #fff8ed;
+}
+
+.rlm-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.72fr) minmax(240px, 1.2fr);
+  gap: 1rem;
+  margin-top: 0.9rem;
+}
+
+.rlm-artwork {
+  position: relative;
+  min-height: 190px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #120e0c;
+  aspect-ratio: 1;
+}
+
+.rlm-artwork::after {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  content: "";
+  pointer-events: none;
+}
+
+.rlm-artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rlm-artwork > div {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-content: center;
+  gap: 0.5rem;
+  color: rgba(247, 239, 228, 0.5);
+  text-align: center;
+}
+
+.rlm-player-panel,
+.rlm-annotation {
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.rlm-player-panel h5,
+.rlm-annotation h5 {
+  font-size: 1.05rem;
+}
+
+.rlm-player-panel > p:not(.rlm-eyebrow) {
+  margin: 0.25rem 0 0.85rem;
+  color: rgba(247, 239, 228, 0.62);
+  font-size: 0.82rem;
+}
+
+.rlm-player-panel audio {
+  width: 100%;
+  margin: 0.5rem 0 0.85rem;
+  accent-color: var(--hcm-law-accent, #d7a64a);
+}
+
+.rlm-audio-unavailable,
+.rlm-status {
+  padding: 0.85rem;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  color: rgba(247, 239, 228, 0.58);
+  font-size: 0.78rem;
+}
+
+.rlm-status {
+  margin-top: 0.9rem;
+}
+
+.rlm-status.is-error {
+  border-color: rgba(224, 100, 61, 0.42);
+  color: #e9a186;
+}
+
+.rlm-metadata {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.15rem 0 0;
+}
+
+.rlm-metadata div {
+  min-width: 0;
+}
+
+.rlm-metadata dt {
+  color: rgba(247, 239, 228, 0.42);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.rlm-metadata dd {
+  margin: 0.16rem 0 0;
+  overflow: hidden;
+  color: rgba(247, 239, 228, 0.83);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rlm-annotation {
+  grid-column: 1 / -1;
+  position: relative;
+  padding-left: 1.15rem;
+}
+
+.rlm-annotation::before {
+  position: absolute;
+  top: 1rem;
+  bottom: 1rem;
+  left: 0;
+  width: 2px;
+  background: var(--hcm-law-accent, #d7a64a);
+  content: "";
+}
+
+.rlm-annotation p {
+  margin: 0.65rem 0 0;
+  color: rgba(247, 239, 228, 0.74);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 720px) {
+  .rlm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rlm-artwork {
+    max-width: 280px;
+    width: 100%;
+  }
+
+  .rlm-annotation {
+    grid-column: auto;
+  }
+}
