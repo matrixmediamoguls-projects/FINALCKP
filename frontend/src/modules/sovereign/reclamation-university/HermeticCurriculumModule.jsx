@@ -47,6 +47,15 @@ const VIEW_LABELS = {
   artifact: "Integration Artifact",
   assessment: "Coherence Test",
 };
+const LAW_ACCENTS = [
+  "#d7a64a",
+  "#ff268f",
+  "#e0643d",
+  "#39c6ba",
+  "#8ebf67",
+  "#7ea6ff",
+  "#d68cff",
+];
 
 const MENTALISM_OBJECTIVES = [
   "Articulate the Principle of Mentalism as a first cause: “The ALL is Mind; the universe is mental,” and distinguish events from interpretations.",
@@ -158,6 +167,71 @@ function LessonSectionBody({ body }) {
   );
 }
 
+function ChamberFieldLab({
+  lesson,
+  section,
+  questions,
+  values,
+  saveState,
+  onChange,
+  onSave,
+}) {
+  const prompts = (questions?.length ? questions : lesson.keyPoints || [])
+    .slice(0, 4);
+  const responses = prompts.map((_, index) => values?.[index]?.trim()).filter(Boolean);
+  const synthesis = responses.length
+    ? responses.join(" · ")
+    : "Your observations will assemble here as you work.";
+
+  return (
+    <div className="hcm-field-lab">
+      <header>
+        <div>
+          <span><PenLine size={14} /> Field instrument</span>
+          <h4>{section.heading} Ledger</h4>
+        </div>
+        <b>{lesson.number}</b>
+      </header>
+      <p>
+        Work directly with the principle. Your responses remain attached to this
+        lesson and can be revised as the pattern becomes clearer.
+      </p>
+      <div className="hcm-field-lab__grid">
+        {prompts.map((prompt, index) => (
+          <label key={prompt}>
+            <span>{String(index + 1).padStart(2, "0")} · {prompt}</span>
+            <input
+              type="text"
+              value={values?.[index] || ""}
+              placeholder="Enter a specific observation…"
+              onChange={(event) => onChange(index, event.target.value)}
+            />
+          </label>
+        ))}
+      </div>
+      <div className="hcm-live-synthesis" aria-live="polite">
+        <span>Live synthesis</span>
+        <p>{synthesis}</p>
+      </div>
+      <footer>
+        <small>
+          {saveState === "saved"
+            ? `Chamber ${lesson.number} · Ledger entry saved`
+            : "Stored with your Reclamation University progress"}
+        </small>
+        <button
+          type="button"
+          className={saveState === "saved" ? "is-saved" : ""}
+          onClick={onSave}
+        >
+          {saveState === "saved" ? "Recorded" : "Record in field ledger"}
+          {saveState === "saved" ? <Check size={15} /> : <FileText size={15} />}
+        </button>
+      </footer>
+    </div>
+  );
+}
+
 function MentalismOrientation({ onContinue }) {
   return (
     <article className="hcm-orientation hcm-mentalism-intro">
@@ -247,6 +321,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const [view, setView] = useState("orientation");
   const [activeLessonId, setActiveLessonId] = useState(lessons[0]?.id || "");
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [chamberMode, setChamberMode] = useState("study");
   const [record, setRecord] = useState(() =>
     normalizeRecord(null, loadLocalRecord(module.id)),
   );
@@ -318,11 +393,13 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const openLesson = (lessonId) => {
     setActiveLessonId(lessonId);
     setActiveSectionIndex(0);
+    setChamberMode("study");
     setView("lesson");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const openSection = (sectionIndex) => {
     setActiveSectionIndex(sectionIndex);
+    setChamberMode("study");
     document
       .querySelector(".hcm-guided-reader")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -358,6 +435,24 @@ export default function HermeticCurriculumModule({ module, faculty }) {
       });
     }
   };
+  const activeLedgerValues = activeLesson
+    ? record.answers?.[activeLesson.id]?.fieldLab || []
+    : [];
+  const updateFieldLab = (fieldIndex, value) => {
+    const nextValues = [...activeLedgerValues];
+    nextValues[fieldIndex] = value;
+    setRecord({
+      ...record,
+      answers: {
+        ...record.answers,
+        [activeLesson.id]: {
+          ...(record.answers?.[activeLesson.id] || {}),
+          fieldLab: nextValues,
+        },
+      },
+    });
+  };
+  const saveFieldLab = () => persistRecord(record);
   const nextDestination = activeLesson
     ? getNextCurriculumDestination({
         lessons,
@@ -560,7 +655,13 @@ export default function HermeticCurriculumModule({ module, faculty }) {
           )}
 
           {view === "lesson" && activeLesson && (
-            <article className={`hcm-reader hcm-section-${activeSectionIndex}`}>
+            <article
+              className={`hcm-reader hcm-section-${activeSectionIndex}`}
+              style={{
+                "--hcm-law-accent":
+                  LAW_ACCENTS[(module.order - 1) % LAW_ACCENTS.length],
+              }}
+            >
               <header>
                 <button type="button" onClick={() => setView("lessons")}>
                   <ChevronLeft size={15} /> All lessons
@@ -637,23 +738,65 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         </span>
                       </div>
                       <h3>{activeSection.heading}</h3>
-                      <LessonSectionBody body={activeSection.body} />
-                      {activeSection.bullets && (
-                        <ul>
-                          {activeSection.bullets.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
+                      {(activeSection.type === "activation" ||
+                        activeSection.type === "exercise") && (
+                        <div
+                          className="hcm-mode-switch"
+                          role="tablist"
+                          aria-label="Chamber mode"
+                        >
+                          <button
+                            type="button"
+                            role="tab"
+                            aria-selected={chamberMode === "study"}
+                            className={chamberMode === "study" ? "is-active" : ""}
+                            onClick={() => setChamberMode("study")}
+                          >
+                            Study the protocol
+                          </button>
+                          <button
+                            type="button"
+                            role="tab"
+                            aria-selected={chamberMode === "practice"}
+                            className={chamberMode === "practice" ? "is-active" : ""}
+                            onClick={() => setChamberMode("practice")}
+                          >
+                            Enter practice mode
+                          </button>
+                        </div>
                       )}
-                      {activeSection.numbered && (
-                        <ol>
-                          {activeSection.numbered.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ol>
-                      )}
-                      {activeSection.callout && (
-                        <blockquote>{activeSection.callout}</blockquote>
+                      {chamberMode === "study" ||
+                      !["activation", "exercise"].includes(activeSection.type) ? (
+                        <>
+                          <LessonSectionBody body={activeSection.body} />
+                          {activeSection.bullets && (
+                            <ul>
+                              {activeSection.bullets.map((item) => (
+                                <li key={item}>{item}</li>
+                              ))}
+                            </ul>
+                          )}
+                          {activeSection.numbered && (
+                            <ol>
+                              {activeSection.numbered.map((item) => (
+                                <li key={item}>{item}</li>
+                              ))}
+                            </ol>
+                          )}
+                          {activeSection.callout && (
+                            <blockquote>{activeSection.callout}</blockquote>
+                          )}
+                        </>
+                      ) : (
+                        <ChamberFieldLab
+                          lesson={activeLesson}
+                          section={activeSection}
+                          questions={activeLessonContent.reflection?.questions}
+                          values={activeLedgerValues}
+                          saveState={saveState}
+                          onChange={updateFieldLab}
+                          onSave={saveFieldLab}
+                        />
                       )}
                       <div className="hcm-section-coda" aria-hidden="true">
                         <i />
