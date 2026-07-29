@@ -30,6 +30,7 @@ import {
   getNextCurriculumDestination,
 } from "./hermeticCurriculumNavigation";
 import { buildHermeticLessonContent } from "./hermeticLessonContent";
+import ReclamationLessonMedia from "./ReclamationLessonMedia";
 import "./hermeticCurriculumModule.css";
 
 const EMPTY_RECORD = {
@@ -785,6 +786,18 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                           )}
                           {activeSection.callout && (
                             <blockquote>{activeSection.callout}</blockquote>
+                          )}
+                          {/reclamation lens/i.test(activeSection.heading) && (
+                            <ReclamationLessonMedia
+                              lesson={activeLesson}
+                              contextBody={activeSection.body}
+                              fallbackTitles={[
+                                courseModule.primaryTrack,
+                                ...(courseModule.supportingTracks || []),
+                                ...(module.sourceTrackIds || []),
+                              ].filter(Boolean)}
+                              referenceAnnotations={module.lyricAnchors || []}
+                            />
                           )}
                         </>
                       ) : (
