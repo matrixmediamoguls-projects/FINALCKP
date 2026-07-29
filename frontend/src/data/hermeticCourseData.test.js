@@ -176,9 +176,14 @@ describe("Hermetic course data", () => {
         id: "exhibit-2-1",
         label: "Exhibit 2-1",
         title: "The Tree of Correspondence",
-        afterSectionHeading: "What Is Correspondence?",
-        afterText: "The roots beneath the ground may follow a similar spreading structure.",
+        panelSectionHeading: "What Is Correspondence?",
         src: "/reclamation-university/exhibits/exhibit-2-1.png",
+      }),
+      expect.objectContaining({
+        id: "exhibit-2-1a",
+        label: "Exhibit 2-1a",
+        panelSectionHeading: "What Is Correspondence?",
+        status: "pending",
       }),
     ]);
   });

@@ -473,6 +473,134 @@
   font: 500 .76rem/1.45 "Chakra Petch", sans-serif;
 }
 
+.hcm-artifact-panel {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid rgba(217, 162, 58, .3);
+  background: rgba(11, 8, 6, .82);
+}
+
+.hcm-artifact-panel > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 2px 8px;
+  border-bottom: 1px solid rgba(217, 162, 58, .16);
+}
+
+.hcm-artifact-panel > header span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #d5a044;
+  font: 600 .58rem "JetBrains Mono", monospace;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.hcm-artifact-panel > header small {
+  color: #756b60;
+  font: 500 .56rem "Chakra Petch", sans-serif;
+  text-transform: uppercase;
+}
+
+.hcm-artifact-panel__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  gap: 6px;
+}
+
+.hcm-artifact-slot {
+  position: relative;
+  min-width: 0;
+  min-height: 180px;
+  overflow: hidden;
+  border: 1px solid rgba(217, 162, 58, .28);
+  color: #ded4c4;
+  background: rgba(18, 12, 8, .9);
+}
+
+button.hcm-artifact-slot {
+  padding: 0;
+  text-align: left;
+  cursor: zoom-in;
+}
+
+.hcm-artifact-slot img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 260ms ease, filter 260ms ease;
+}
+
+.hcm-artifact-slot:hover img,
+.hcm-artifact-slot:focus-visible img {
+  filter: brightness(.65);
+  transform: scale(1.025);
+}
+
+.hcm-artifact-slot > span {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  gap: 4px;
+  padding: 28px 12px 11px;
+  background: linear-gradient(transparent, rgba(4, 3, 2, .96));
+}
+
+.hcm-artifact-slot small {
+  color: #c28e35;
+  font: 600 .52rem "JetBrains Mono", monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.hcm-artifact-slot strong {
+  color: #eee4d3;
+  font: 500 .78rem/1.25 "Oxanium", sans-serif;
+}
+
+.hcm-artifact-slot i {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #c9b994;
+  font: 500 .53rem "Chakra Petch", sans-serif;
+  font-style: normal;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.hcm-artifact-slot.is-pending {
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 18px;
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(217, 162, 58, .04), transparent),
+    rgba(14, 10, 7, .72);
+}
+
+.hcm-artifact-slot.is-pending > span {
+  position: static;
+  display: block;
+  padding: 0;
+  color: #776d62;
+  background: none;
+  font: 500 .61rem "Chakra Petch", sans-serif;
+  text-transform: uppercase;
+}
+
 .hcm-comparison-card {
   position: relative;
   display: grid;
@@ -618,6 +746,8 @@
 }
 
 @media (max-width: 560px) {
+  .hcm-artifact-panel__grid { grid-template-columns: 1fr; }
+  .hcm-artifact-slot { min-height: 170px; }
   .hcm-root .hcm-lesson-hero {
     grid-template-columns: 1fr;
   }

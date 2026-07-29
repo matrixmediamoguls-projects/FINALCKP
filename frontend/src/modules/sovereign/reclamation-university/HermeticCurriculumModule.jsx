@@ -182,7 +182,7 @@ function SectionIcon({ type }) {
   return <BookOpen size={15} />;
 }
 
-function LessonSectionBody({ body, exhibits = [] }) {
+function LessonSectionBody({ body }) {
   const [activePassageGroup, setActivePassageGroup] = useState(0);
   const passages = String(body || "")
     .split(/\n{2,}/)
@@ -239,16 +239,9 @@ function LessonSectionBody({ body, exhibits = [] }) {
           renderedPassage = <p key={`${passage}-${index}`}>{passage}</p>;
         }
 
-        const anchoredExhibits = exhibits.filter(
-          (exhibit) => exhibit.afterText === passage,
-        );
-
         return (
           <div className="hcm-passage-unit" key={`${passage}-${index}`}>
             {renderedPassage}
-            {anchoredExhibits.length > 0 && (
-              <LessonExhibits exhibits={anchoredExhibits} />
-            )}
           </div>
         );
       })}
@@ -288,7 +281,7 @@ function LessonSectionBody({ body, exhibits = [] }) {
   );
 }
 
-function LessonExhibits({ exhibits = [] }) {
+function LessonExhibits({ exhibits = [], variant = "inline" }) {
   const [expandedExhibit, setExpandedExhibit] = useState(null);
 
   useEffect(() => {
@@ -308,28 +301,63 @@ function LessonExhibits({ exhibits = [] }) {
 
   return (
     <>
-      <section className="hcm-exhibit-gallery" aria-label="Lesson exhibits">
-        {exhibits.map((exhibit) => (
-          <figure key={exhibit.id} className="hcm-exhibit">
-            <button
-              type="button"
-              className="hcm-exhibit__image"
-              onClick={() => setExpandedExhibit(exhibit)}
-              aria-label={`Expand ${exhibit.label}: ${exhibit.title}`}
-            >
-              <img src={exhibit.src} alt={exhibit.alt} />
-              <span><Maximize2 size={15} /> Expand diagram</span>
-            </button>
-            <figcaption>
-              <span>{exhibit.label}</span>
-              <div>
-                <h3>{exhibit.title}</h3>
-                <p>{exhibit.caption}</p>
-              </div>
-            </figcaption>
-          </figure>
-        ))}
-      </section>
+      {variant === "artifact-panel" ? (
+        <section className="hcm-artifact-panel" aria-label="Lesson artifacts">
+          <header>
+            <span><BookOpen size={14} /> Artifacts</span>
+            <small>Exhibits for this section</small>
+          </header>
+          <div className="hcm-artifact-panel__grid">
+            {exhibits.map((exhibit) =>
+              exhibit.src ? (
+                <button
+                  type="button"
+                  key={exhibit.id}
+                  className="hcm-artifact-slot"
+                  onClick={() => setExpandedExhibit(exhibit)}
+                  aria-label={`Expand ${exhibit.label}: ${exhibit.title}`}
+                >
+                  <img src={exhibit.src} alt={exhibit.alt} />
+                  <span>
+                    <small>{exhibit.label}</small>
+                    <strong>{exhibit.title}</strong>
+                    <i><Maximize2 size={13} /> Expand</i>
+                  </span>
+                </button>
+              ) : (
+                <div key={exhibit.id} className="hcm-artifact-slot is-pending">
+                  <small>{exhibit.label}</small>
+                  <strong>{exhibit.title}</strong>
+                  <span>Awaiting exhibit asset</span>
+                </div>
+              ),
+            )}
+          </div>
+        </section>
+      ) : (
+        <section className="hcm-exhibit-gallery" aria-label="Lesson exhibits">
+          {exhibits.map((exhibit) => (
+            <figure key={exhibit.id} className="hcm-exhibit">
+              <button
+                type="button"
+                className="hcm-exhibit__image"
+                onClick={() => setExpandedExhibit(exhibit)}
+                aria-label={`Expand ${exhibit.label}: ${exhibit.title}`}
+              >
+                <img src={exhibit.src} alt={exhibit.alt} />
+                <span><Maximize2 size={15} /> Expand diagram</span>
+              </button>
+              <figcaption>
+                <span>{exhibit.label}</span>
+                <div>
+                  <h3>{exhibit.title}</h3>
+                  <p>{exhibit.caption}</p>
+                </div>
+              </figcaption>
+            </figure>
+          ))}
+        </section>
+      )}
       {expandedExhibit && (
         <div
           className="hcm-exhibit-lightbox"
@@ -379,6 +407,9 @@ function SectionInsightPanel({ lesson, section, sectionIndex }) {
   const comparisonMatch = section.heading.match(
     /(.+?)\s+(?:versus|vs\.?|and|without|not)\s+(.+)/i,
   );
+  const sectionExhibits = (lesson.exhibits || []).filter(
+    (exhibit) => exhibit.panelSectionHeading === section.heading,
+  );
 
   return (
     <aside className="hcm-insight-stack">
@@ -387,7 +418,10 @@ function SectionInsightPanel({ lesson, section, sectionIndex }) {
         <h4>{insights[sectionIndex % Math.max(insights.length, 1)] || section.heading}</h4>
         {passages[0] && <p>{passages[0]}</p>}
       </section>
-      {comparisonMatch && (
+      {sectionExhibits.length > 0 && (
+        <LessonExhibits exhibits={sectionExhibits} variant="artifact-panel" />
+      )}
+      {sectionExhibits.length === 0 && comparisonMatch && (
         <section className="hcm-comparison-card">
           <div>
             <span>{comparisonMatch[1].trim()}</span>
@@ -400,7 +434,7 @@ function SectionInsightPanel({ lesson, section, sectionIndex }) {
           </div>
         </section>
       )}
-      {!comparisonMatch && insights.length > 1 && (
+      {sectionExhibits.length === 0 && !comparisonMatch && insights.length > 1 && (
         <section className="hcm-pattern-gallery">
           {insights.map((insight, index) => (
             <article key={insight}>
@@ -1062,14 +1096,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                           {chamberMode === "study" ||
                           !["activation", "exercise"].includes(activeSection.type) ? (
                             <>
-                              <LessonSectionBody
-                                body={activeSection.body}
-                                exhibits={(activeLesson.exhibits || []).filter(
-                                  (exhibit) =>
-                                    exhibit.afterSectionHeading ===
-                                    activeSection.heading,
-                                )}
-                              />
+                              <LessonSectionBody body={activeSection.body} />
                               {activeSection.bullets && (
                                 <ul>
                                   {activeSection.bullets.map((item) => (
