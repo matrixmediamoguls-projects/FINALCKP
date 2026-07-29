@@ -1,3 +1,10 @@
 [2m3:41:10 PM[22m [33m[1m[vite][22m[39m [33mwarning: `esbuild` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `oxc` instead.[39m
 [2m3:41:10 PM[22m [33m[1m[vite][22m[39m [33mwarning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.[39m
 [33mYou or a plugin you are using have set `optimizeDeps.esbuildOptions` but this option is now deprecated. Vite now uses Rolldown to optimize the dependencies. Please use `optimizeDeps.rolldownOptions` instead.[39m
+npm error Lifecycle script `dev` failed with error:
+npm error code 4294967295
+npm error path C:\Users\matri\FINALCKP\frontend
+npm error workspace frontend@0.1.0
+npm error location C:\Users\matri\FINALCKP\frontend
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c npm run restore-env && vite --host 127.0.0.1 --port 4174

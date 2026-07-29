@@ -101,6 +101,63 @@ function SectionIcon({ type }) {
   return <BookOpen size={15} />;
 }
 
+function LessonSectionBody({ body }) {
+  const passages = String(body || "")
+    .split(/\n{2,}/)
+    .map((passage) => passage.trim())
+    .filter(Boolean);
+
+  return (
+    <div className="hcm-prose">
+      {passages.map((passage, index) => {
+        const lines = passage.split("\n").map((line) => line.trim()).filter(Boolean);
+        const isSequence = passage.includes("→") && lines.length === 1;
+        const isQuote =
+          lines.length === 1 &&
+          (/^["“]/.test(passage) || /["”]$/.test(passage));
+        const isList = lines.length >= 3;
+        const isBeat = lines.length === 1 && passage.length <= 72;
+
+        if (isSequence) {
+          return (
+            <div className="hcm-flow-sequence" key={`${passage}-${index}`}>
+              {passage.split("→").map((step, stepIndex, steps) => (
+                <span key={`${step}-${stepIndex}`}>
+                  <b>{step.trim()}</b>
+                  {stepIndex < steps.length - 1 && <ArrowRight size={14} />}
+                </span>
+              ))}
+            </div>
+          );
+        }
+
+        if (isQuote) {
+          return <blockquote key={`${passage}-${index}`}>{passage}</blockquote>;
+        }
+
+        if (isList) {
+          return (
+            <ul className="hcm-observation-list" key={`${passage}-${index}`}>
+              {lines.map((line, lineIndex) => (
+                <li key={`${line}-${lineIndex}`}>{line}</li>
+              ))}
+            </ul>
+          );
+        }
+
+        return (
+          <p
+            className={isBeat ? "hcm-prose-beat" : undefined}
+            key={`${passage}-${index}`}
+          >
+            {passage}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 function MentalismOrientation({ onContinue }) {
   return (
     <article className="hcm-orientation hcm-mentalism-intro">
@@ -270,6 +327,30 @@ export default function HermeticCurriculumModule({ module, faculty }) {
       .querySelector(".hcm-guided-reader")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+  useEffect(() => {
+    if (view !== "lesson" || !lessonSections.length) return undefined;
+
+    const navigateSections = (event) => {
+      const element = event.target;
+      if (
+        element instanceof HTMLInputElement ||
+        element instanceof HTMLTextAreaElement ||
+        element instanceof HTMLSelectElement
+      ) {
+        return;
+      }
+
+      if (event.key === "ArrowRight" && activeSectionIndex < lessonSections.length - 1) {
+        openSection(activeSectionIndex + 1);
+      }
+      if (event.key === "ArrowLeft" && activeSectionIndex > 0) {
+        openSection(activeSectionIndex - 1);
+      }
+    };
+
+    window.addEventListener("keydown", navigateSections);
+    return () => window.removeEventListener("keydown", navigateSections);
+  }, [activeSectionIndex, lessonSections.length, view]);
   const completeLesson = () => {
     if (!record.completedLessons.includes(activeLesson.id)) {
       updateRecord({
@@ -488,16 +569,31 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                   {activeLesson.duration || `Lesson ${activeLesson.number}`}
                 </span>
               </header>
-              <p className="hcm-eyebrow">Lesson {activeLesson.number}</p>
-              <h1>{activeLesson.title}</h1>
-              {activeLesson.subtitle && <h2>{activeLesson.subtitle}</h2>}
+              <div className="hcm-lesson-hero">
+                <div>
+                  <p className="hcm-eyebrow">Lesson {activeLesson.number}</p>
+                  <h1>{activeLesson.title}</h1>
+                  {activeLesson.subtitle && <h2>{activeLesson.subtitle}</h2>}
+                </div>
+                <div className="hcm-lesson-sigil" aria-hidden="true">
+                  <span>{activeLesson.number}</span>
+                  <i />
+                  <b>{String(sectionPercent).padStart(2, "0")}%</b>
+                </div>
+              </div>
+              {activeLessonContent?.intro && (
+                <aside className="hcm-central-question">
+                  <span>Central question</span>
+                  <p>{activeLessonContent.intro}</p>
+                </aside>
+              )}
               {lessonSections.length > 0 && (
                 <div className="hcm-guided-reader">
                   <div className="hcm-section-progress">
                     <div>
-                      <span>Guided lesson</span>
+                      <span>Journey map</span>
                       <strong>
-                        Section {activeSectionIndex + 1} of {lessonSections.length}
+                        Chamber {activeSectionIndex + 1} of {lessonSections.length}
                       </strong>
                     </div>
                     <i>
@@ -515,6 +611,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         className={index === activeSectionIndex ? "is-active" : ""}
                         onClick={() => openSection(index)}
                         aria-label={`Open section ${index + 1}: ${section.heading}`}
+                        aria-current={index === activeSectionIndex ? "step" : undefined}
                       >
                         <span>{String(index + 1).padStart(2, "0")}</span>
                         <strong>{section.heading}</strong>
@@ -525,17 +622,22 @@ export default function HermeticCurriculumModule({ module, faculty }) {
               )}
               {activeLessonContent ? (
                 <>
-                  {activeSectionIndex === 0 && (
-                    <p className="hcm-intro">{activeLessonContent.intro}</p>
-                  )}
                   {activeSection && (
-                    <section className={`hcm-content-block hcm-active-section is-${activeSection.type || "doctrine"}`}>
-                      <div className="hcm-content-label">
-                        <SectionIcon type={activeSection.type} />{" "}
-                        {activeSection.type || "Doctrine"}
+                    <section
+                      className={`hcm-content-block hcm-active-section is-${activeSection.type || "doctrine"}`}
+                      aria-live="polite"
+                    >
+                      <div className="hcm-section-stage">
+                        <div className="hcm-content-label">
+                          <SectionIcon type={activeSection.type} />{" "}
+                          {activeSection.type || "Doctrine"}
+                        </div>
+                        <span>
+                          {String(activeSectionIndex + 1).padStart(2, "0")}
+                        </span>
                       </div>
                       <h3>{activeSection.heading}</h3>
-                      <p>{activeSection.body}</p>
+                      <LessonSectionBody body={activeSection.body} />
                       {activeSection.bullets && (
                         <ul>
                           {activeSection.bullets.map((item) => (
@@ -553,6 +655,10 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                       {activeSection.callout && (
                         <blockquote>{activeSection.callout}</blockquote>
                       )}
+                      <div className="hcm-section-coda" aria-hidden="true">
+                        <i />
+                        <span>Continue the inquiry</span>
+                      </div>
                     </section>
                   )}
                   <div className="hcm-section-controls">
@@ -561,7 +667,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     </button>
                     {activeSectionIndex < lessonSections.length - 1 ? (
                       <button type="button" className="hcm-primary" onClick={() => openSection(activeSectionIndex + 1)}>
-                        Next section <ArrowRight size={15} />
+                        Enter next chamber <ArrowRight size={15} />
                       </button>
                     ) : (
                       <span><Check size={15} /> Teaching complete — integrate below</span>
@@ -587,6 +693,9 @@ export default function HermeticCurriculumModule({ module, faculty }) {
               {(!lessonSections.length ||
                 activeSectionIndex === lessonSections.length - 1) && (
               <section className="hcm-reflection">
+                <div className="hcm-reflection-mark" aria-hidden="true">
+                  <PenLine size={24} />
+                </div>
                 <label htmlFor={`reflection-${activeLesson.id}`}>
                   {activeLessonContent?.reflection?.prompt ||
                     "Field notes and reflection"}
