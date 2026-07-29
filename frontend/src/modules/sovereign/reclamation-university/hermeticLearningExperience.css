@@ -637,6 +637,14 @@
   margin: 0 30px 9px;
 }
 
+.hcm-passage-unit .hcm-exhibit-gallery {
+  margin: 26px 0 30px;
+}
+
+.hcm-passage-unit {
+  display: flow-root;
+}
+
 .hcm-exhibit {
   display: grid;
   grid-template-columns: minmax(250px, .75fr) minmax(260px, 1.25fr);

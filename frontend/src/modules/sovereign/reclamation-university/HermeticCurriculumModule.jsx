@@ -182,7 +182,7 @@ function SectionIcon({ type }) {
   return <BookOpen size={15} />;
 }
 
-function LessonSectionBody({ body }) {
+function LessonSectionBody({ body, exhibits = [] }) {
   const passages = String(body || "")
     .split(/\n{2,}/)
     .map((passage) => passage.trim())
@@ -198,8 +198,10 @@ function LessonSectionBody({ body }) {
           (/^["“]/.test(passage) || /["”]$/.test(passage));
         const isLineGroup = lines.length >= 3;
 
+        let renderedPassage;
+
         if (isSequence) {
-          return (
+          renderedPassage = (
             <div className="hcm-flow-sequence" key={`${passage}-${index}`}>
               {passage.split("→").map((step, stepIndex, steps) => (
                 <span key={`${step}-${stepIndex}`}>
@@ -209,23 +211,34 @@ function LessonSectionBody({ body }) {
               ))}
             </div>
           );
-        }
-
-        if (isQuote) {
-          return <blockquote key={`${passage}-${index}`}>{passage}</blockquote>;
-        }
-
-        if (isLineGroup) {
-          return (
+        } else if (isQuote) {
+          renderedPassage = (
+            <blockquote key={`${passage}-${index}`}>{passage}</blockquote>
+          );
+        } else if (isLineGroup) {
+          renderedPassage = (
             <div className="hcm-line-group" key={`${passage}-${index}`}>
               {lines.map((line, lineIndex) => (
                 <span key={`${line}-${lineIndex}`}>{line}</span>
               ))}
             </div>
           );
+        } else {
+          renderedPassage = <p key={`${passage}-${index}`}>{passage}</p>;
         }
 
-        return <p key={`${passage}-${index}`}>{passage}</p>;
+        const anchoredExhibits = exhibits.filter(
+          (exhibit) => exhibit.afterText === passage,
+        );
+
+        return (
+          <div className="hcm-passage-unit" key={`${passage}-${index}`}>
+            {renderedPassage}
+            {anchoredExhibits.length > 0 && (
+              <LessonExhibits exhibits={anchoredExhibits} />
+            )}
+          </div>
+        );
       })}
     </div>
   );
@@ -952,10 +965,6 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                   />
                 </div>
               )}
-              <LessonExhibits
-                key={activeLesson.id}
-                exhibits={activeLesson.exhibits}
-              />
               {activeLessonContent ? (
                 <>
                   {activeSection && (
@@ -1009,7 +1018,14 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                           {chamberMode === "study" ||
                           !["activation", "exercise"].includes(activeSection.type) ? (
                             <>
-                              <LessonSectionBody body={activeSection.body} />
+                              <LessonSectionBody
+                                body={activeSection.body}
+                                exhibits={(activeLesson.exhibits || []).filter(
+                                  (exhibit) =>
+                                    exhibit.afterSectionHeading ===
+                                    activeSection.heading,
+                                )}
+                              />
                               {activeSection.bullets && (
                                 <ul>
                                   {activeSection.bullets.map((item) => (
