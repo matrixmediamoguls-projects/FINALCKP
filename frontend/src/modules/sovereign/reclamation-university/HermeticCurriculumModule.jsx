@@ -66,7 +66,7 @@ const JOURNEY_PHASES = [
   { id: "protocol", label: "Protocol", icon: ShieldCheck },
 ];
 
-function getSectionPhase(section, index, total) {
+export function getSectionPhase(section, index, total) {
   const heading = section?.heading?.toLowerCase() || "";
   if (section?.type === "activation" || section?.type === "exercise" || /protocol|audit|artifact|practice/.test(heading))
     return "protocol";
