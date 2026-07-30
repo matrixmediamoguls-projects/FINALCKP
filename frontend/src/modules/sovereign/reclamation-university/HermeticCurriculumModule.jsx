@@ -78,10 +78,11 @@ const JOURNEY_PHASES = [
 export function getSectionPhase(section, index, total) {
   const heading = section?.heading?.toLowerCase() || "";
   if (/artifact|carry forward|integration/.test(heading)) return "artifact";
-  if (section?.type === "activation" || section?.type === "exercise" || /protocol|audit|practice/.test(heading))
-    return "protocol";
-  if (/reflection|your current|observe|question/.test(heading)) return "reflect";
+  if (/protocol|audit|practice/.test(heading)) return "protocol";
   if (/reclamation|album|track|lyric/.test(heading)) return "reclamation";
+  if (/reflection|reflect|your current|observe|question/.test(heading)) return "reflect";
+  if (section?.type === "activation" || section?.type === "exercise")
+    return "protocol";
   if (/pattern|system|cycle|environment|technology|relationship|learning|creative|history|attention/.test(heading))
     return "patterns";
   if (index === 0 || /introduction|opening|orientation/.test(heading)) return "intro";

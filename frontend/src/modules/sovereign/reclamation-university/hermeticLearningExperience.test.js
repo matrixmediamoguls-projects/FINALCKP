@@ -28,4 +28,28 @@ describe("Hermetic learning experience section mapping", () => {
       getSectionPhase({ heading: "What Is Rhythm?", type: "doctrine" }, 2, 12),
     ).toBe("concept");
   });
+
+  it("keeps all seven journey tabs as distinct phases", () => {
+    const tabs = [
+      { heading: "Intro", type: "doctrine" },
+      { heading: "Concept", type: "doctrine" },
+      { heading: "Patterns", type: "case-study" },
+      { heading: "Reclamation Lens", type: "activation" },
+      { heading: "Reflect", type: "exercise" },
+      { heading: "Protocol", type: "exercise" },
+      { heading: "Artifact", type: "activation" },
+    ];
+
+    expect(
+      tabs.map((tab, index) => getSectionPhase(tab, index, tabs.length)),
+    ).toEqual([
+      "intro",
+      "concept",
+      "patterns",
+      "reclamation",
+      "reflect",
+      "protocol",
+      "artifact",
+    ]);
+  });
 });
