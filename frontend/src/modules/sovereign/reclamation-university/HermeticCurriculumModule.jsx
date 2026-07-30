@@ -184,6 +184,21 @@ function normalizeRecord(progress, fallback = null) {
   };
 }
 
+function lessonTextEditsKey(moduleId, lessonId) {
+  return `reclamation-university:text-edits:${moduleId}:${lessonId}`;
+}
+
+function loadLessonTextEdits(moduleId, lessonId) {
+  if (!moduleId || !lessonId || typeof window === "undefined") return {};
+  try {
+    return JSON.parse(
+      window.localStorage.getItem(lessonTextEditsKey(moduleId, lessonId)) || "{}",
+    );
+  } catch {
+    return {};
+  }
+}
+
 function SectionIcon({ type }) {
   if (type === "warning") return <ShieldCheck size={15} />;
   if (type === "activation" || type === "exercise")
@@ -778,6 +793,9 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [activeJourneyItemIndex, setActiveJourneyItemIndex] = useState(0);
   const [chamberMode, setChamberMode] = useState("study");
+  const [isEditingText, setIsEditingText] = useState(false);
+  const [textEdits, setTextEdits] = useState({});
+  const [savedTextEdits, setSavedTextEdits] = useState({});
   const [record, setRecord] = useState(() =>
     normalizeRecord(null, loadLocalRecord(module.id)),
   );
@@ -827,6 +845,23 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const activeJourneyItems = activeSection?.items || [];
   const activeJourneyItem =
     activeJourneyItems[activeJourneyItemIndex] || activeJourneyItems[0] || activeSection;
+  const activeTextPrefix = `section-${activeSectionIndex}-item-${activeJourneyItemIndex}`;
+  const editedLessonTitle = textEdits.title ?? activeLesson?.title;
+  const editedLessonSubtitle = textEdits.subtitle ?? activeLesson?.subtitle;
+  const editedLessonIntro = textEdits.intro ?? activeLessonContent?.intro;
+  const editedJourneyHeading =
+    textEdits[`${activeTextPrefix}-heading`] ??
+    activeJourneyItem?.heading ??
+    activeSection?.heading;
+  const editedJourneyBody =
+    textEdits[`${activeTextPrefix}-body`] ?? activeJourneyItem?.body ?? "";
+  const editedJourneyItem = activeJourneyItem
+    ? {
+        ...activeJourneyItem,
+        heading: editedJourneyHeading,
+        body: editedJourneyBody,
+      }
+    : activeJourneyItem;
   const sectionPercent = lessonSections.length
     ? Math.round(((activeSectionIndex + 1) / lessonSections.length) * 100)
     : 100;
@@ -834,6 +869,38 @@ export default function HermeticCurriculumModule({ module, faculty }) {
   const relatedLaws = hallModules
     .filter((item) => item.order !== module.order)
     .slice(0, 3);
+
+  useEffect(() => {
+    const storedEdits = loadLessonTextEdits(module.id, activeLesson?.id);
+    setTextEdits(storedEdits);
+    setSavedTextEdits(storedEdits);
+    setIsEditingText(false);
+  }, [activeLesson?.id, module.id]);
+
+  const updateTextEdit = (key, value) => {
+    setTextEdits((current) => ({ ...current, [key]: value }));
+  };
+
+  const saveTextEdits = () => {
+    window.localStorage.setItem(
+      lessonTextEditsKey(module.id, activeLesson.id),
+      JSON.stringify(textEdits),
+    );
+    setSavedTextEdits(textEdits);
+    setIsEditingText(false);
+  };
+
+  const cancelTextEdits = () => {
+    setTextEdits(savedTextEdits);
+    setIsEditingText(false);
+  };
+
+  const resetTextEdits = () => {
+    window.localStorage.removeItem(lessonTextEditsKey(module.id, activeLesson.id));
+    setTextEdits({});
+    setSavedTextEdits({});
+    setIsEditingText(false);
+  };
 
   const persistRecord = async (nextRecord) => {
     setRecord(nextRecord);
@@ -1189,8 +1256,51 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                     <i />
                     Lesson {activeLesson.number}
                   </p>
-                  <h1>{activeLesson.title}</h1>
-                  {activeLesson.subtitle && <h2>{activeLesson.subtitle}</h2>}
+                  {isEditingText ? (
+                    <>
+                      <input
+                        className="hcm-text-editor hcm-text-editor--title"
+                        value={editedLessonTitle || ""}
+                        aria-label="Edit lesson title"
+                        onChange={(event) => updateTextEdit("title", event.target.value)}
+                      />
+                      <input
+                        className="hcm-text-editor hcm-text-editor--subtitle"
+                        value={editedLessonSubtitle || ""}
+                        aria-label="Edit lesson subtitle"
+                        placeholder="Lesson subtitle"
+                        onChange={(event) => updateTextEdit("subtitle", event.target.value)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <h1>{editedLessonTitle}</h1>
+                      {editedLessonSubtitle && <h2>{editedLessonSubtitle}</h2>}
+                    </>
+                  )}
+                </div>
+                <div className="hcm-text-edit-controls">
+                  {isEditingText ? (
+                    <>
+                      <button type="button" onClick={saveTextEdits}>
+                        <Check size={14} /> Save text
+                      </button>
+                      <button type="button" onClick={cancelTextEdits}>
+                        <X size={14} /> Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button type="button" onClick={() => setIsEditingText(true)}>
+                        <PenLine size={14} /> Edit text
+                      </button>
+                      {Object.keys(textEdits).length > 0 && (
+                        <button type="button" onClick={resetTextEdits}>
+                          Reset text
+                        </button>
+                      )}
+                    </>
+                  )}
                 </div>
                 <div
                   className="hcm-lesson-sigil"
@@ -1200,10 +1310,19 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                   <b>Lesson progress</b>
                 </div>
               </div>
-              {activeLessonContent?.intro && (
+              {(editedLessonIntro || isEditingText) && (
                 <aside className="hcm-central-question">
                   <span>Central question</span>
-                  <p>{activeLessonContent.intro}</p>
+                  {isEditingText ? (
+                    <textarea
+                      className="hcm-text-editor hcm-text-editor--question"
+                      value={editedLessonIntro || ""}
+                      aria-label="Edit central question"
+                      onChange={(event) => updateTextEdit("intro", event.target.value)}
+                    />
+                  ) : (
+                    <p>{editedLessonIntro}</p>
+                  )}
                 </aside>
               )}
               {lessonSections.length > 0 && (
@@ -1248,7 +1367,21 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                               {String(activeSectionIndex + 1).padStart(2, "0")}
                             </span>
                           </div>
-                          <h3>{activeJourneyItem?.heading || activeSection.heading}</h3>
+                          {isEditingText ? (
+                            <input
+                              className="hcm-text-editor hcm-text-editor--heading"
+                              value={editedJourneyHeading || ""}
+                              aria-label="Edit page heading"
+                              onChange={(event) =>
+                                updateTextEdit(
+                                  `${activeTextPrefix}-heading`,
+                                  event.target.value,
+                                )
+                              }
+                            />
+                          ) : (
+                            <h3>{editedJourneyHeading}</h3>
+                          )}
                           {activeSection.heading === "Protocol" && (
                             <div
                               className="hcm-mode-switch"
@@ -1290,7 +1423,21 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                                         {activeJourneyItems.length}
                                       </span>
                                     </header>
-                                    <LessonSectionBody body={activeJourneyItem.body} />
+                                    {isEditingText ? (
+                                      <textarea
+                                        className="hcm-text-editor hcm-text-editor--body"
+                                        value={editedJourneyBody}
+                                        aria-label="Edit page text"
+                                        onChange={(event) =>
+                                          updateTextEdit(
+                                            `${activeTextPrefix}-body`,
+                                            event.target.value,
+                                          )
+                                        }
+                                      />
+                                    ) : (
+                                      <LessonSectionBody body={editedJourneyBody} />
+                                    )}
                                     {activeJourneyItem.bullets && (
                                       <ul>
                                         {activeJourneyItem.bullets.map((item) => (
@@ -1447,7 +1594,7 @@ export default function HermeticCurriculumModule({ module, faculty }) {
                         </div>
                         <SectionInsightPanel
                           lesson={activeLesson}
-                          section={activeJourneyItem}
+                          section={editedJourneyItem}
                           sectionIndex={activeJourneyItemIndex}
                           showConceptExhibits={activeSection.heading === "Concept"}
                           showPatternGallery={activeSection.heading === "Patterns"}
