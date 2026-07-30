@@ -42,7 +42,7 @@ const laws = [
     name: 'Correspondence',
     axiom: 'As above, so below. As below, so above.',
     glyph: '✧',
-    accent: '#ff268f',
+    accent: '#ef2b2d',
     route: '/experiencemode/sovereign/reclamation-university/hermetic-hall/correspondence',
   },
   {

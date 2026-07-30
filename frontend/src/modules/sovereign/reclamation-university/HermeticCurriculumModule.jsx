@@ -58,7 +58,7 @@ const VIEW_LABELS = {
 };
 const LAW_ACCENTS = [
   "#d7a64a",
-  "#ff268f",
+  "#ef2b2d",
   "#e0643d",
   "#39c6ba",
   "#8ebf67",
