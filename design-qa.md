@@ -1,53 +1,45 @@
 **Source visual truth**
 
-- `C:\Users\matri\Downloads\DESIGN.zip`
-- Concept: `ChatGPT Image Jul 29, 2026, 05_04_13 PM.png`
-- Patterns: `ChatGPT Image Jul 29, 2026, 05_46_40 PM.png`
-- Reclamation: `ChatGPT Image Jul 29, 2026, 06_03_37 PM.png`
-- Reflect: `ChatGPT Image Jul 29, 2026, 06_17_20 PM.png`
+`C:\Users\matri\Downloads\ChatGPT Image Jul 30, 2026, 06_03_26 PM.png`
 
 **Implementation**
 
-- Active route component: `frontend/src/modules/sovereign/reclamation-university/HermeticCurriculumModule.jsx`
-- Layout styling: `frontend/src/modules/sovereign/reclamation-university/hermeticLearningExperience.css`
-- Journey styling: `frontend/src/modules/sovereign/reclamation-university/hermeticJourneyTabs.css`
+Route: `/experiencemode/sovereign/reclamation-university`
 
-**Comparison setup**
+Viewport target: 1672 x 941 CSS pixels at device scale factor 1.
 
-- Intended viewport: desktop, 1920 x 1080 CSS pixels, device scale factor 1.
-- Source dimensions: desktop reference images supplied in `DESIGN.zip`.
-- Implementation screenshot: unavailable.
-- State: all seven lesson stages: Intro, Concept, Patterns, Reclamation, Reflect, Protocol, and Artifact.
-- Full-view comparison evidence: blocked because no browser session is available.
-- Focused-region comparison evidence: blocked for the same reason.
+Source pixels: 1672 x 941. Source density is treated as 1x.
+
+Implementation screenshot: unavailable.
+
+State: Principle I, Mentalism selected.
+
+**Full-view comparison evidence**
+
+Blocked. The source image was opened and inspected, but the in-app browser runtime failed to initialize, so a browser-rendered implementation capture could not be produced.
+
+**Focused region comparison evidence**
+
+Blocked for the same reason. The central Mentalism card and the seven principle hit regions require mounted capture before visual comparison.
 
 **Findings**
 
-- [P0] Browser-rendered comparison unavailable.
-  - Location: mounted Reclamation University lesson route.
-  - Evidence: source references opened successfully; the local browser runtime reported that no browser is available.
-  - Impact: typography, exact viewport containment, clipping, and stage-to-stage visual fidelity cannot be truthfully certified.
-  - Fix: capture the mounted route at 1920 x 1080 in Concept, Patterns, Reclamation, and Reflect, compare each capture with its matching source, and correct all P1/P2 drift.
+- [P1] Mounted visual fidelity has not been verified.
+  Evidence: the reference is available, but no browser-rendered implementation screenshot exists.
+  Impact: layout, font metrics, crop behavior, and hotspot alignment may differ at runtime.
+  Fix: capture the route at 1672 x 941, compare it beside the source, then correct all P0-P2 differences.
 
-**Implemented source-level changes**
+**Primary interactions tested**
 
-- Fixed-height desktop lesson workstation shared by all seven stages.
-- One authored subsection per paged card instead of a vertical subsection stack.
-- Previous/next page controls and direct page markers.
-- Permanent Concept-side Key Insight and two-square Exhibit panel.
-- Seven-stage journey map with direct stage navigation.
-- Stage-specific process strip.
-- Named primary CTA that advances to the next journey stage.
-- Responsive fallback below the desktop workstation breakpoint.
+Not browser-tested. Static implementation includes seven principle selectors and the Enter Module status response.
 
-**Implementation checklist**
+**Console errors checked**
 
-- Capture all seven mounted stage states at 1920 x 1080.
-- Confirm there is no page-level vertical scroll at the reference viewport.
-- Confirm Concept paging preserves all authored text.
-- Confirm both exhibit frames remain square and visible.
-- Confirm the primary CTA advances Concept to Patterns and each later stage in order.
-- Compare fonts, spacing, colors, image crops, and copy against the source archive.
+Not browser-checked. The Vite development log contains only existing dependency and Three.js warnings.
+
+**Comparison history**
+
+No visual iteration was possible because mounted capture was blocked.
 
 **Final result**
 
