@@ -2,16 +2,19 @@ import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReclamationModuleEngine from '../modules/sovereign/reclamation-university/ReclamationModuleEngine';
 import HermeticCurriculumModule from '../modules/sovereign/reclamation-university/HermeticCurriculumModule';
+import HermeticMaterialExperience from '../modules/sovereign/reclamation-university/HermeticMaterialExperience';
 import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
 import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
 /**
  * ReclamationModulePage
- * 
+ *
  * Route: /experiencemode/sovereign/reclamation-university/:facultySlug/:moduleSlug
- * 
- * This page loads the faculty and module from the curriculum registry
- * and renders the generic ReclamationModuleEngine.
+ *
+ * This page loads the faculty and module from the curriculum registry.
+ * Mentalism uses the redesigned Hermetic material experience. The remaining
+ * principles continue to use the existing curriculum renderer until their
+ * authored material screens are connected.
  */
 export default function ReclamationModulePage() {
   const navigate = useNavigate();
@@ -50,6 +53,21 @@ export default function ReclamationModulePage() {
           Return to University
         </button>
       </div>
+    );
+  }
+
+  if (isHermeticHall && module.slug === 'mentalism') {
+    return (
+      <HermeticMaterialExperience
+        activePrinciple={module.order - 1}
+        initialTab="intro"
+        progress={0}
+        onComplete={() =>
+          navigate(
+            '/experiencemode/sovereign/reclamation-university/hermetic-hall/correspondence'
+          )
+        }
+      />
     );
   }
 
