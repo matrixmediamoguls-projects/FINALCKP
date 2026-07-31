@@ -24,7 +24,7 @@ body,
 body {
   background: var(--void);
   color: var(--text-main);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
   overflow-x: hidden;
 }
 
@@ -33,4 +33,20 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
 }
