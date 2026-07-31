@@ -1,27 +1,27 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HermeticHallViewport.css';
 
 const principles = [
-  { number: 'I', name: 'Mentalism', subtitle: 'Before the Body, the All-Mind.', progress: 18 },
-  { number: 'II', name: 'Correspondence', subtitle: 'As Above, So Below.', progress: 0 },
-  { number: 'III', name: 'Vibration', subtitle: 'Nothing Rests. Everything Moves.', progress: 0 },
-  { number: 'IV', name: 'Polarity', subtitle: 'Everything Is Dual.', progress: 0 },
-  { number: 'V', name: 'Rhythm', subtitle: 'Everything Flows, Out and In.', progress: 0 },
-  { number: 'VI', name: 'Cause & Effect', subtitle: 'Every Cause Has Its Effect.', progress: 0 },
-  { number: 'VII', name: 'Gender', subtitle: 'Creation Holds Both Principles.', progress: 0 },
+  { number: 'I', slug: 'mentalism', name: 'Mentalism', subtitle: 'Before the Body, the All-Mind.', progress: 18 },
+  { number: 'II', slug: 'correspondence', name: 'Correspondence', subtitle: 'As Above, So Below.', progress: 0 },
+  { number: 'III', slug: 'vibration', name: 'Vibration', subtitle: 'Nothing Rests. Everything Moves.', progress: 0 },
+  { number: 'IV', slug: 'polarity', name: 'Polarity', subtitle: 'Everything Is Dual.', progress: 0 },
+  { number: 'V', slug: 'rhythm', name: 'Rhythm', subtitle: 'Everything Flows, Out and In.', progress: 0 },
+  { number: 'VI', slug: 'cause-and-effect', name: 'Cause & Effect', subtitle: 'Every Cause Has Its Effect.', progress: 0 },
+  { number: 'VII', slug: 'gender', name: 'Gender', subtitle: 'Creation Holds Both Principles.', progress: 0 },
 ];
 
 export default function HermeticHallViewport() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(principles[0]);
-  const [notice, setNotice] = useState('');
 
   const choosePrinciple = (principle) => {
     setSelected(principle);
-    setNotice('');
   };
 
   const enterModule = () => {
-    setNotice(`${selected.name} is ready for the new curriculum.`);
+    navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${selected.slug}`);
   };
 
   return (
@@ -59,9 +59,8 @@ export default function HermeticHallViewport() {
           </div>
         </div>
         <button type="button" className="hh-enter" onClick={enterModule}>
-          Enter Module <span aria-hidden="true">→</span>
+          Enter {selected.name} <span aria-hidden="true">→</span>
         </button>
-        {notice && <p className="hh-notice" role="status">{notice}</p>}
       </section>
 
       <footer className="hh-footer">
