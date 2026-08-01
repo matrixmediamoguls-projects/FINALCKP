@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReclamationModuleEngine from '../modules/sovereign/reclamation-university/ReclamationModuleEngine';
 import HermeticCurriculumModule from '../modules/sovereign/reclamation-university/HermeticCurriculumModule';
-import HermeticMaterialExperience from '../modules/sovereign/reclamation-university/HermeticMaterialExperience';
+import HermeticSuppliedModuleExperience from '../modules/sovereign/reclamation-university/HermeticSuppliedModuleExperience';
 import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
 import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
@@ -12,9 +12,8 @@ import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHa
  * Route: /experiencemode/sovereign/reclamation-university/:facultySlug/:moduleSlug
  *
  * This page loads the faculty and module from the curriculum registry.
- * Mentalism uses the redesigned Hermetic material experience. The remaining
- * principles continue to use the existing curriculum renderer until their
- * authored material screens are connected.
+ * Mentalism and Correspondence use the supplied Hermetic material experience.
+ * The remaining principles continue to use the existing curriculum renderer.
  */
 export default function ReclamationModulePage() {
   const navigate = useNavigate();
@@ -56,15 +55,16 @@ export default function ReclamationModulePage() {
     );
   }
 
-  if (isHermeticHall && module.slug === 'mentalism') {
+  if (isHermeticHall && ['mentalism', 'correspondence'].includes(module.slug)) {
     return (
-      <HermeticMaterialExperience
-        activePrinciple={module.order - 1}
-        initialTab="intro"
+      <HermeticSuppliedModuleExperience
+        moduleSlug={module.slug}
         progress={0}
         onComplete={() =>
           navigate(
-            '/experiencemode/sovereign/reclamation-university/hermetic-hall/correspondence'
+            `/experiencemode/sovereign/reclamation-university/hermetic-hall/${
+              module.slug === 'mentalism' ? 'correspondence' : 'vibration'
+            }`
           )
         }
       />
