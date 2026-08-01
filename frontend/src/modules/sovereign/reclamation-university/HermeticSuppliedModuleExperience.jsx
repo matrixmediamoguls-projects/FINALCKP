@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import suppliedCopy from "../../../data/hermeticSuppliedModules.txt?raw";
 import "./hermeticMaterialExperience.css";
+import "./hermeticReferenceExperience.css";
 
 const TABS = [
   ["INTRO", "Intro", BookOpen],
@@ -65,7 +66,30 @@ function PrincipleStrip({ activePrinciple }) {
   return <div className="hme-principles" aria-label="The seven Hermetic principles">{PRINCIPLES.map(([roman, name, Icon, accent], index) => <button key={name} type="button" className={index === activePrinciple ? "is-active" : ""} style={{ "--principle-accent": accent }}><span>{roman}</span><Icon size={27}/><strong>{name}</strong></button>)}</div>;
 }
 
-function CopyScreen({ section, moduleTitle, response, onResponse }) {
+function MentalismPrincipleScreen({ section }) {
+  const blocks = section.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
+  return <div className="hme-principle-feature">
+    <div className="hme-principle-copy">
+      <p className="hme-central-question">Who was shaping your mind before you learned to shape it yourself?</p>
+      <h2>{blocks[0]}</h2>
+      <blockquote>{blocks[1]}</blockquote>
+      {blocks.slice(2).map((block) => <p key={block}>{block}</p>)}
+      <aside><Brain size={28}/><em>Mind precedes manifestation. Reclaim the patterns through which you engage with the world.</em></aside>
+    </div>
+    <figure className="hme-mind-figure">
+      <img src="/reclamation-university/mentalism-mind-diagram.png" alt="A gilded Hermetic diagram of the mind shaping thought, belief, reality, and manifestation"/>
+      <figcaption>
+        <div><Sparkles/><span><strong>Thought</strong><small>The seed of all.</small></span></div>
+        <div><Brain/><span><strong>Belief</strong><small>Thought repeated becomes belief.</small></span></div>
+        <div><Target/><span><strong>Reality</strong><small>Belief shapes perception.</small></span></div>
+        <div><Building2/><span><strong>The All</strong><small>The visible reflects the mind.</small></span></div>
+      </figcaption>
+    </figure>
+  </div>;
+}
+
+function CopyScreen({ section, moduleTitle, moduleSlug, activeTab, response, onResponse }) {
+  if (moduleSlug === "mentalism" && activeTab === "PRINCIPLE") return <MentalismPrincipleScreen section={section}/>;
   const blocks = section.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
   const filtered = blocks.filter((block, index) => {
     if (block === "Title" || block === "Subtitle") return false;
@@ -90,11 +114,11 @@ function CopyScreen({ section, moduleTitle, response, onResponse }) {
 
 export default function HermeticSuppliedModuleExperience({ moduleSlug, progress = 0, onComplete }) {
   const moduleCopy = MODULE_COPY[moduleSlug];
-  const [activeTab, setActiveTab] = useState("INTRO");
+  const [activeTab, setActiveTab] = useState("PRINCIPLE");
   const [response, setResponse] = useState("");
   const activeIndex = TABS.findIndex(([id]) => id === activeTab);
   const next = TABS[Math.min(activeIndex + 1, TABS.length - 1)];
-  const screen = useMemo(() => <CopyScreen section={moduleCopy.sections[activeTab] || ""} moduleTitle={moduleCopy.title} response={response} onResponse={setResponse}/>, [activeTab, moduleCopy, response]);
+  const screen = useMemo(() => <CopyScreen section={moduleCopy.sections[activeTab] || ""} moduleTitle={moduleCopy.title} moduleSlug={moduleSlug} activeTab={activeTab} response={response} onResponse={setResponse}/>, [activeTab, moduleCopy, moduleSlug, response]);
 
-  return <main className="hme-root"><header className="hme-header"><div className="hme-brand"><span>RU</span><div><strong>Reclamation University</strong><small>Hermetic Hall</small></div></div><div className="hme-progress"><span>Your progress</span><i><b style={{ width: `${progress}%` }}/></i><strong>{progress}%</strong></div></header><div className="hme-shell"><aside className="hme-tabs">{TABS.map(([id, label, Icon]) => <button type="button" key={id} className={id === activeTab ? "is-active" : ""} onClick={() => setActiveTab(id)}><Icon size={18}/><span>{label}</span></button>)}</aside><section className="hme-main"><PrincipleStrip activePrinciple={moduleCopy.index}/><header className="hme-lesson-title"><span>{PRINCIPLES[moduleCopy.index][0]}</span><div><h1>{moduleCopy.title}</h1><p>{moduleCopy.subtitle}</p></div></header><div className="hme-screen">{screen}</div><footer className="hme-footer"><div><small>Principle {PRINCIPLES[moduleCopy.index][0]} of VII</small><strong>{moduleCopy.title}</strong></div>{activeTab !== "SUMMARY" ? <button type="button" onClick={() => setActiveTab(next[0])}>Continue to {next[1]} <ArrowRight size={17}/></button> : <button type="button" onClick={onComplete}>Next Module <ArrowRight size={17}/></button>}</footer></section></div></main>;
+  return <main className="hme-root"><header className="hme-header"><div className="hme-brand"><span><Sparkles/></span><strong>Reclamation<br/>University</strong><i/><small>Hermetic Hall</small></div><div className="hme-progress"><span>Your progress</span><i><b style={{ width: `${progress || 42}%` }}/></i><strong>{progress || 42}%</strong></div></header><div className="hme-shell"><aside className="hme-tabs">{TABS.map(([id, label, Icon]) => <button type="button" key={id} className={id === activeTab ? "is-active" : ""} onClick={() => setActiveTab(id)}><span><Icon size={22}/></span><strong>{label}</strong></button>)}</aside><section className="hme-main"><PrincipleStrip activePrinciple={moduleCopy.index}/><article className="hme-stage"><header className="hme-lesson-title"><span>{PRINCIPLES[moduleCopy.index][0]}</span><div><h1>{moduleCopy.title}</h1><p>{moduleCopy.subtitle}</p></div></header><div className="hme-screen">{screen}</div><footer className="hme-footer"><div className="hme-stat"><small>Est. time</small><strong>18 min</strong></div><div className="hme-stat"><small>Principle {PRINCIPLES[moduleCopy.index][0]} of VII</small><strong>{moduleCopy.title}</strong></div><div className="hme-stat hme-lesson-progress"><small>Lesson progress</small><span>{TABS.map(([id], index) => <i key={id} className={index <= activeIndex ? "is-complete" : ""}/>)}</span></div>{activeTab !== "SUMMARY" ? <button type="button" onClick={() => setActiveTab(next[0])}>Continue to {next[1]} <ArrowRight size={20}/></button> : <button type="button" onClick={onComplete}>Next Module <ArrowRight size={20}/></button>}</footer></article></section></div></main>;
 }
