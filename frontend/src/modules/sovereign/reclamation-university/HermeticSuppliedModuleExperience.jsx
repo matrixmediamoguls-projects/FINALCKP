@@ -62,6 +62,15 @@ const LABELS = new Set([
   "When to Use", "Process", "Worked Example", "What's Happening?",
 ]);
 
+const LENS_TOPICS = [
+  ["Artificial Intelligence", "artificial-intelligence.png"],
+  ["Social Media", "social-media.png"],
+  ["Digital Identity", "digital-identity.png"],
+  ["Creator Economy", "creator-economy.png"],
+  ["Information Overload", "information-overload.png"],
+  ["Mental Health", "mental-health.png"],
+];
+
 function PrincipleStrip({ activePrinciple }) {
   return <div className="hme-principles" aria-label="The seven Hermetic principles">{PRINCIPLES.map(([roman, name, Icon, accent], index) => <button key={name} type="button" className={index === activePrinciple ? "is-active" : ""} style={{ "--principle-accent": accent }}><span>{roman}</span><Icon size={27}/><strong>{name}</strong></button>)}</div>;
 }
@@ -88,8 +97,36 @@ function MentalismPrincipleScreen({ section }) {
   </div>;
 }
 
+function MentalismLensScreen({ section }) {
+  const blocks = section.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
+  const cards = LENS_TOPICS.map(([title, image], index) => {
+    const start = blocks.indexOf(title);
+    const nextTitle = LENS_TOPICS[index + 1]?.[0];
+    const end = nextTitle ? blocks.indexOf(nextTitle) : blocks.length;
+    const cardBlocks = blocks.slice(start + 1, end);
+    const connectionIndex = cardBlocks.indexOf("Hermetic Connection");
+    const insightIndex = cardBlocks.indexOf("Practical Insight");
+    return {
+      title,
+      image,
+      happening: cardBlocks[0],
+      connection: cardBlocks[connectionIndex + 1],
+      insight: cardBlocks[insightIndex + 1],
+    };
+  });
+
+  return <div className="hme-lens">
+    <header><p>How is this principle shaping the world you live in right now?</p><div><h2>2026 Lens: Mentalism Today</h2><span>This section examines how Mentalism operates across modern systems—from AI and social platforms to creative work, digital identity, information overload, and mental health.</span></div></header>
+    <div className="hme-lens-grid">{cards.map((card, index) => <article key={card.title}>
+      <img src={`/reclamation-university/lens/${card.image}`} alt=""/>
+      <div><h3>{index + 1}. {card.title}</h3><p><strong>What’s happening?</strong> {card.happening}</p><p><strong>Hermetic connection</strong> {card.connection}</p><p><strong>Practical insight</strong> {card.insight}</p></div>
+    </article>)}</div>
+  </div>;
+}
+
 function CopyScreen({ section, moduleTitle, moduleSlug, activeTab, response, onResponse }) {
   if (moduleSlug === "mentalism" && activeTab === "PRINCIPLE") return <MentalismPrincipleScreen section={section}/>;
+  if (moduleSlug === "mentalism" && activeTab === "2026 LENS") return <MentalismLensScreen section={section}/>;
   const blocks = section.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
   const filtered = blocks.filter((block, index) => {
     if (block === "Title" || block === "Subtitle") return false;
@@ -118,7 +155,9 @@ export default function HermeticSuppliedModuleExperience({ moduleSlug, progress 
   const [response, setResponse] = useState("");
   const activeIndex = TABS.findIndex(([id]) => id === activeTab);
   const next = TABS[Math.min(activeIndex + 1, TABS.length - 1)];
+  const displayedProgress = progress || (activeTab === "2026 LENS" ? 72 : 42);
+  const completedProgressSteps = activeTab === "2026 LENS" ? 5 : Math.min(activeIndex + 1, 8);
   const screen = useMemo(() => <CopyScreen section={moduleCopy.sections[activeTab] || ""} moduleTitle={moduleCopy.title} moduleSlug={moduleSlug} activeTab={activeTab} response={response} onResponse={setResponse}/>, [activeTab, moduleCopy, moduleSlug, response]);
 
-  return <main className="hme-root"><header className="hme-header"><div className="hme-brand"><span><Sparkles/></span><strong>Reclamation<br/>University</strong><i/><small>Hermetic Hall</small></div><div className="hme-progress"><span>Your progress</span><i><b style={{ width: `${progress || 42}%` }}/></i><strong>{progress || 42}%</strong></div></header><div className="hme-shell"><aside className="hme-tabs">{TABS.map(([id, label, Icon]) => <button type="button" key={id} className={id === activeTab ? "is-active" : ""} onClick={() => setActiveTab(id)}><span><Icon size={22}/></span><strong>{label}</strong></button>)}</aside><section className="hme-main"><PrincipleStrip activePrinciple={moduleCopy.index}/><article className="hme-stage"><header className="hme-lesson-title"><span>{PRINCIPLES[moduleCopy.index][0]}</span><div><h1>{moduleCopy.title}</h1><p>{moduleCopy.subtitle}</p></div></header><div className="hme-screen">{screen}</div><footer className="hme-footer"><div className="hme-stat"><small>Est. time</small><strong>18 min</strong></div><div className="hme-stat"><small>Principle {PRINCIPLES[moduleCopy.index][0]} of VII</small><strong>{moduleCopy.title}</strong></div><div className="hme-stat hme-lesson-progress"><small>Lesson progress</small><span>{TABS.map(([id], index) => <i key={id} className={index <= activeIndex ? "is-complete" : ""}/>)}</span></div>{activeTab !== "SUMMARY" ? <button type="button" onClick={() => setActiveTab(next[0])}>Continue to {next[1]} <ArrowRight size={20}/></button> : <button type="button" onClick={onComplete}>Next Module <ArrowRight size={20}/></button>}</footer></article></section></div></main>;
+  return <main className="hme-root"><header className="hme-header"><div className="hme-brand"><span><Sparkles/></span><strong>Reclamation<br/>University</strong><i/><small>Hermetic Hall</small></div><div className="hme-progress"><span>Your progress</span><i><b style={{ width: `${displayedProgress}%` }}/></i><strong>{displayedProgress}%</strong></div></header><div className="hme-shell"><aside className="hme-tabs">{TABS.map(([id, label, Icon]) => <button type="button" key={id} className={id === activeTab ? "is-active" : ""} onClick={() => setActiveTab(id)}><span><Icon size={22}/></span><strong>{label}</strong></button>)}</aside><section className="hme-main"><PrincipleStrip activePrinciple={moduleCopy.index}/><article className={`hme-stage hme-stage-${activeTab.toLowerCase().replace(/\s+/g, "-")}`}><header className="hme-lesson-title"><span>{PRINCIPLES[moduleCopy.index][0]}</span><div><h1>{moduleCopy.title}</h1><p>{moduleCopy.subtitle}</p></div></header><div className="hme-screen">{screen}</div><footer className="hme-footer"><div className="hme-stat"><small>Est. time</small><strong>18 min</strong></div><div className="hme-stat"><small>Principle {PRINCIPLES[moduleCopy.index][0]} of VII</small><strong>{moduleCopy.title}</strong></div><div className="hme-stat hme-lesson-progress"><small>Lesson progress</small><span>{Array.from({ length: 8 }, (_, index) => <i key={index} className={index < completedProgressSteps ? "is-complete" : ""}/>)}</span></div>{activeTab !== "SUMMARY" ? <button type="button" onClick={() => setActiveTab(next[0])}>Continue to {next[1]} <ArrowRight size={20}/></button> : <button type="button" onClick={onComplete}>Next Module <ArrowRight size={20}/></button>}</footer></article></section></div></main>;
 }
