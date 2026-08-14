@@ -11,9 +11,7 @@
 -- "Source Reconciliation".
 --
 -- Titles are the exact public.tracks values established by
--- 20260726223304_align_full_visualizer_album.sql. Body Jumper is tagged from lyrics supplied
--- directly by the author: the master lyric book prints only "Lyrics not present in the
--- supplied master sources" under that title, and both workbooks leave its taxonomy blank.
+-- 20260726223304_align_full_visualizer_album.sql. All 32 tracks are tagged.
 
 drop table if exists alchemizr_tag_seed;
 
@@ -60,7 +58,7 @@ values
   ('Architect of the Aftermath', array['Dark','Gritty','Hypnotic'], array['Educate','Protect','Focus'], array['Earth','Fire'], array['War','Power','Legacy'], array['Cause & Effect','Correspondence']),
   ('Seer Broke Chains', array['Dark','Empowering','Gritty'], array['Release','Protect','Transform'], array['Fire','Water'], array['Freedom','War','Rebirth'], array['Polarity','Cause & Effect']),
   ('Fire in My Veins', array['Euphoric','Empowering','Gritty'], array['Transform','Manifest','Inspire'], array['Fire'], array['Power','Rebirth','Legacy'], array['Polarity','Frequency']),
-  ('Body Jumper', array['Dark','Hypnotic','Ethereal','Empowering'], array['Release','Transform','Protect'], array['Fire','Air'], array['Rebirth','Power','Freedom'], array['Polarity','Correspondence','Cause & Effect']);
+  ('Body Jumper', array['Dark','Hypnotic','Empowering'], array['Release','Transform','Protect'], array['Fire','Air'], array['Rebirth','Power','Freedom'], array['Polarity','Correspondence','Cause & Effect']);
 
 -- Every seeded label must exist in public.tag_dictionary, or the rain field would offer a
 -- tag that can never match and the bank would score against a label no track can carry.
