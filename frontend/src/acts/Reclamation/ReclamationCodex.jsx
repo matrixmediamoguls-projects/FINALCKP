@@ -5,6 +5,7 @@ import useReclamationTracks, { DEFAULT_VISUALIZER_VIEWPORT_IMAGE } from "../../m
 import { useAudio } from "../../context/audioprovider";
 import "../../styles/reclamation-command-center.css";
 import "../../styles/reclamation-reference-cockpit.css";
+import "../../styles/reclamation-reactive-core.css";
 
 const FALLBACK_LYRICS = [
   "I'm breaking the code",
@@ -236,7 +237,7 @@ export default function ReclamationCodex() {
           <div className="pva-crosshair pva-crosshair--horizontal" aria-hidden="true" /><div className="pva-crosshair pva-crosshair--vertical" aria-hidden="true" />
           <div className="pva-center-chip pva-center-chip--bpm"><span>BPM</span><b>{activeTrack?.bpm || 128}</b></div>
           <div className="pva-center-chip pva-center-chip--key"><span>KEY</span><b>{activeTrack?.key_signature || "C# MINOR"}</b></div>
-          <div className="pva-reactive-emblem" aria-hidden="true"><span className="pva-emblem-flame" /><span className="pva-emblem-diamond" /></div>
+          <div className="pva-reactive-emblem" aria-hidden="true"><span className="pva-emblem-flame" /><span className="pva-emblem-diamond" /><strong className="pva-emblem-mark">M</strong></div>
           <div className="pva-now-playing">NOW PLAYING</div><div className="pva-viewport-track-title">{activeTrack?.title || "RECLAMATION"}</div>
         </section>
 

@@ -10,6 +10,7 @@ const AudioContextState = createContext(null);
 
 export function AudioProvider({ children }) {
   const audioRef = useRef(new Audio());
+  const preloadAudioRef = useRef(new Audio());
 
   const [queue, setQueue] = useState([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -21,9 +22,28 @@ export function AudioProvider({ children }) {
 
   const currentTrack = queue[currentTrackIndex];
 
+  const loadAudioTrack = (track) => {
+    const audio = audioRef.current;
+
+    if (!track?.audio_url) return false;
+
+    audio.preload = "auto";
+    audio.crossOrigin = track.audio_cross_origin || "anonymous";
+
+    if (audio.getAttribute("src") !== track.audio_url) {
+      setCurrentTime(0);
+      setDuration(0);
+      audio.src = track.audio_url;
+      audio.load();
+    }
+
+    return true;
+  };
+
   useEffect(() => {
     const audio = audioRef.current;
     audio.volume = 0.78;
+    audio.preload = "auto";
 
     const updateTime = () => {
       setCurrentTime(audio.currentTime);
@@ -61,17 +81,35 @@ export function AudioProvider({ children }) {
   }, [volume]);
 
   useEffect(() => {
-    const audio = audioRef.current;
-
-    if (!currentTrack?.audio_url) return;
-
-    audio.crossOrigin = currentTrack.audio_cross_origin || "anonymous";
-    audio.src = currentTrack.audio_url;
+    if (!loadAudioTrack(currentTrack)) return;
 
     if (isPlaying) {
-      audio.play();
+      audioRef.current.play().catch((err) => {
+        console.error(err);
+        setIsPlaying(false);
+      });
     }
-  }, [currentTrack]);
+  }, [currentTrack, isPlaying]);
+
+  useEffect(() => {
+    const nextTrack = queue.length
+      ? queue[(currentTrackIndex + 1) % queue.length]
+      : null;
+    const preloadAudio = preloadAudioRef.current;
+
+    if (!nextTrack?.audio_url || nextTrack.audio_url === currentTrack?.audio_url) {
+      preloadAudio.removeAttribute("src");
+      return;
+    }
+
+    preloadAudio.preload = "auto";
+    preloadAudio.crossOrigin = nextTrack.audio_cross_origin || "anonymous";
+
+    if (preloadAudio.getAttribute("src") !== nextTrack.audio_url) {
+      preloadAudio.src = nextTrack.audio_url;
+      preloadAudio.load();
+    }
+  }, [currentTrack?.audio_url, currentTrackIndex, queue]);
 
   async function playTrack(track, index = 0, tracks = []) {
     const audio = audioRef.current;
@@ -82,10 +120,7 @@ export function AudioProvider({ children }) {
 
     setCurrentTrackIndex(index);
 
-    if (track?.audio_url) {
-      audio.crossOrigin = track.audio_cross_origin || "anonymous";
-      audio.src = track.audio_url;
-
+    if (loadAudioTrack(track)) {
       try {
         await audio.play();
         setIsPlaying(true);
