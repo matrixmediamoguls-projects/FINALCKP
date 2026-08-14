@@ -12,6 +12,10 @@
 --
 -- Titles are the exact public.tracks values established by
 -- 20260726223304_align_full_visualizer_album.sql. All 32 tracks are tagged.
+--
+-- Every track is judged by one test: a label is applied when the lyrics substantially evidence
+-- it. There is no per-track cap and no quota, so counts run from one to four per category
+-- because the songs differ. No track is trimmed to match another or padded to fill a column.
 
 drop table if exists alchemizr_tag_seed;
 
@@ -27,8 +31,8 @@ create temporary table alchemizr_tag_seed (
 insert into alchemizr_tag_seed
   (title, vibe_tags, intention_tags, element_tags, theme_tags, vibration_tags)
 values
-  ('Welcome To The Fire', array['Gritty','Empowering','Dark'], array['Release','Transform','Heartbreak'], array['Fire'], array['Power','Legacy','Rebirth'], array['Polarity','Frequency']),
-  ('Reclamation', array['Empowering','Gritty','Dark'], array['Release','Transform','Inspire'], array['Fire','Earth'], array['Freedom','Power','Rebirth'], array['Resonance','Polarity']),
+  ('Welcome To The Fire', array['Gritty','Empowering','Dark'], array['Release','Transform','Heartbreak'], array['Fire','Air'], array['Power','Legacy','Rebirth'], array['Polarity','Frequency']),
+  ('Reclamation', array['Empowering','Gritty','Dark'], array['Release','Transform','Inspire'], array['Fire','Earth','Air'], array['Freedom','Power','Rebirth'], array['Resonance','Polarity']),
   ('Know Your Names', array['Dark','Hypnotic','Gritty'], array['Focus','Protect','Awaken'], array['Air','Earth'], array['War','Power'], array['Cause & Effect','Frequency']),
   ('Hold On Through The Burial', array['Empowering','Gritty','Ethereal'], array['Heal','Inspire','Protect'], array['Earth','Water'], array['Faith','Rebirth'], array['Rhythm','Polarity']),
   ('Chosen Ones', array['Ethereal','Hypnotic','Empowering'], array['Awaken','Inspire','Connect'], array['Air'], array['Freedom','Rebirth','Faith'], array['Frequency','Resonance','Mentalism']),
@@ -58,7 +62,7 @@ values
   ('Architect of the Aftermath', array['Dark','Gritty','Hypnotic'], array['Educate','Protect','Focus'], array['Earth','Fire'], array['War','Power','Legacy'], array['Cause & Effect','Correspondence']),
   ('Seer Broke Chains', array['Dark','Empowering','Gritty'], array['Release','Protect','Transform'], array['Fire','Water'], array['Freedom','War','Rebirth'], array['Polarity','Cause & Effect']),
   ('Fire in My Veins', array['Euphoric','Empowering','Gritty'], array['Transform','Manifest','Inspire'], array['Fire'], array['Power','Rebirth','Legacy'], array['Polarity','Frequency']),
-  ('Body Jumper', array['Dark','Hypnotic','Empowering'], array['Release','Transform','Protect'], array['Fire','Air'], array['Rebirth','Power','Freedom'], array['Polarity','Correspondence','Cause & Effect']);
+  ('Body Jumper', array['Dark','Hypnotic','Ethereal','Empowering'], array['Release','Transform','Protect'], array['Fire','Air'], array['Rebirth','Power','Legacy','Freedom'], array['Polarity','Correspondence','Cause & Effect']);
 
 -- Every seeded label must exist in public.tag_dictionary, or the rain field would offer a
 -- tag that can never match and the bank would score against a label no track can carry.
