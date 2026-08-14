@@ -6,6 +6,7 @@ import SonicArtifacts from '../../modules/sovereign/SonicArtifacts';
 import ElementalCodex from '../../modules/sovereign/ElementalCodex';
 import Archaetypes from '../../modules/sovereign/Archaetypes';
 import LyricalCodex from '../../modules/sovereign/LyricalCodex';
+import VibesAndScribes from '../../modules/sovereign/VibesAndScribes';
 import { getActThreeTracks } from '../../lib/supabase/tracks';
 import './VisualizerCorePage.css';
 
@@ -14,6 +15,7 @@ const MODULE_VIEWS = {
   'elemental-codex': { title: 'Elemental Codex', Component: ElementalCodex },
   'lyrical-codex': { title: 'Lyrical Codex', Component: LyricalCodex },
   'sonic-artifacts': { title: 'Sonic Artifacts', Component: SonicArtifacts },
+  'vibes-and-scribes': { title: 'Vibes & Scribes', Component: VibesAndScribes },
   archetype: { title: 'Archetype', Component: Archaetypes },
 };
 
