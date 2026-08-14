@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import SovereignModulePanel from '../../components/sovereign/SovereignModulePanel';
+import MatrxAlchemizr from './matrx-alchemizr/MatrxAlchemizr';
 import { getVibesAndScribesByTrack } from '../../lib/supabase/vibesAndScribes';
 
 export default function VibesAndScribes({ selectedTrackId }) {
@@ -17,14 +18,18 @@ export default function VibesAndScribes({ selectedTrackId }) {
   }, [selectedTrackId]);
 
   return (
-    <SovereignModulePanel eyebrow="Vibes & Scribes" title={vibe?.vibe_name || 'Reflection Pending'}>
-      <p className="text-zinc-400">{vibe?.scribe_prompt || 'The selected track will generate a reflection prompt here.'}</p>
-      <textarea
-        className="mt-3 min-h-20 w-full rounded-xl border border-white/10 bg-black/45 p-3 text-sm text-white outline-none focus:border-red-400/50"
-        value={entry}
-        onChange={(event) => setEntry(event.target.value)}
-        placeholder="Scribe entry..."
-      />
-    </SovereignModulePanel>
+    <div className="flex flex-col gap-4">
+      <MatrxAlchemizr />
+
+      <SovereignModulePanel eyebrow="Vibes & Scribes" title={vibe?.vibe_name || 'Reflection Pending'}>
+        <p className="text-zinc-400">{vibe?.scribe_prompt || 'The selected track will generate a reflection prompt here.'}</p>
+        <textarea
+          className="mt-3 min-h-20 w-full rounded-xl border border-white/10 bg-black/45 p-3 text-sm text-white outline-none focus:border-red-400/50"
+          value={entry}
+          onChange={(event) => setEntry(event.target.value)}
+          placeholder="Scribe entry..."
+        />
+      </SovereignModulePanel>
+    </div>
   );
 }

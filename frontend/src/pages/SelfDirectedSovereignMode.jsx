@@ -57,6 +57,14 @@ const MODULES = [
     card: '/ui/reclamation/Module_Cards/Sovereign/sonic_artifacts.png',
   },
   {
+    id: 'vibes-and-scribes',
+    title: 'Vibes & Scribes',
+    code: 'VSP',
+    lightCode: 'Set The Tags. Run The Alchemizr. Meet The Track.',
+    route: '/experiencemode/sovereign/module/vibes-and-scribes',
+    card: '/ui/reclamation/Module_Cards/Sovereign/sonic_artifacts.png',
+  },
+  {
     id: 'archetype',
     title: 'Archetype',
     code: 'ARC',
