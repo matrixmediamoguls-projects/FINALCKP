@@ -1,43 +1,43 @@
 export const JOURNEY_TAB_LABELS = [
   "Intro",
-  "Concept",
-  "Patterns",
+  "Principle",
+  "Key Concepts",
+  "Why It Matters",
+  "Domains",
   "Reclamation",
-  "Reflect",
+  "2026 Lens",
+  "Reflection",
   "Protocol",
   "Artifact",
+  "Summary",
 ];
 
 const TAB_TYPES = {
   Intro: "doctrine",
-  Concept: "doctrine",
-  Patterns: "case-study",
+  Principle: "doctrine",
+  "Key Concepts": "doctrine",
+  "Why It Matters": "doctrine",
+  Domains: "case-study",
   Reclamation: "activation",
-  Reflect: "exercise",
+  "2026 Lens": "case-study",
+  Reflection: "exercise",
   Protocol: "exercise",
   Artifact: "activation",
+  Summary: "doctrine",
 };
 
-const PATTERN_TERMS = [
-  "pattern",
-  "relationship",
-  "institution",
-  "system",
-  "body",
-  "digital",
-  "work",
-  "money",
-  "leadership",
-  "everyday life",
-  "real-world",
-  "scenario",
-  "case study",
-  "example",
-  "outer life",
-  "attention economy",
-  "reading results",
-  "small and large",
-  "across generations",
+const SECTION_MATCHERS = [
+  ["Intro", ["introduction", "opening transmission", "lesson focus", "hook", "orientation"]],
+  ["Principle", ["principle", "law", "central doctrine", "what is this"]],
+  ["Key Concepts", ["key concept", "key concepts", "concept", "mechanic", "mechanics", "definition", "core idea"]],
+  ["Why It Matters", ["why it matters", "why this matters", "importance", "significance", "stakes"]],
+  ["Domains", ["domains", "domain", "where it appears", "application domains", "real world", "real-world"]],
+  ["Reclamation", ["reclamation lens", "reclamation", "chroma key", "album reference", "album", "track", "lyric"]],
+  ["2026 Lens", ["2026 lens", "2026", "contemporary lens", "present day", "digital age", "now"]],
+  ["Reflection", ["reflection", "reflect", "field reflection", "self reflection", "your current", "observe", "question"]],
+  ["Protocol", ["reclamation protocol", "protocol", "worked example", "practice lab", "field exercise", "worksheet", "activation"]],
+  ["Artifact", ["artifact", "integration artifact", "integration exercise", "deliverable", "creation"]],
+  ["Summary", ["summary", "lesson summary", "module summary", "key takeaway", "takeaway", "looking ahead", "closing", "carry forward"]],
 ];
 
 function includesAny(value, terms) {
@@ -47,54 +47,13 @@ function includesAny(value, terms) {
 export function classifyJourneySection(section, index = 0) {
   const heading = String(section?.heading || "").toLowerCase();
 
-  if (
-    heading.includes("reclamation lens") ||
-    heading.includes("chroma key") ||
-    heading.includes("album reference")
-  ) {
-    return "Reclamation";
+  for (const [label, terms] of SECTION_MATCHERS) {
+    if (includesAny(heading, terms)) return label;
   }
 
-  if (heading === "reflection" || heading.includes("field reflection")) {
-    return "Reflect";
-  }
-
-  if (
-    heading.includes("reclamation protocol") ||
-    heading.includes("worked example") ||
-    heading.includes("practice lab") ||
-    heading.includes("field exercise") ||
-    heading.includes("worksheet")
-  ) {
-    return "Protocol";
-  }
-
-  if (
-    heading.includes("key takeaway") ||
-    heading.includes("looking ahead") ||
-    heading.includes("module summary") ||
-    heading.includes("lesson summary") ||
-    heading.includes("integration") ||
-    heading.includes("artifact")
-  ) {
-    return "Artifact";
-  }
-
-  if (
-    heading === "introduction" ||
-    heading === "lesson focus" ||
-    heading === "hook" ||
-    heading.includes("opening transmission")
-  ) {
-    return "Intro";
-  }
-
-  if (includesAny(heading, PATTERN_TERMS) || section?.type === "case-study") {
-    return "Patterns";
-  }
-
-  if (index === 0 && heading.includes("introduction")) return "Intro";
-  return "Concept";
+  // When authored content does not yet have a recognizable heading, preserve
+  // the canonical 11-section order rather than collapsing it into a generic tab.
+  return JOURNEY_TAB_LABELS[Math.min(index, JOURNEY_TAB_LABELS.length - 1)];
 }
 
 export function buildLessonJourneyTabs({ content, lesson }) {
@@ -117,9 +76,9 @@ export function buildLessonJourneyTabs({ content, lesson }) {
   return JOURNEY_TAB_LABELS.map((label) => {
     const items = groups[label];
     return {
-      id: label.toLowerCase(),
+      id: label.toLowerCase().replace(/\s+/g, "-"),
       label,
-      heading: label === "Reclamation" ? "Reclamation Lens" : label,
+      heading: label,
       type: TAB_TYPES[label],
       items,
       body: items.map((item) => item.body).filter(Boolean).join("\n\n"),
@@ -129,17 +88,23 @@ export function buildLessonJourneyTabs({ content, lesson }) {
 }
 
 export function getEmptyJourneyTabCopy(tab, lesson) {
-  if (tab === "Reclamation" || tab === "Reclamation Lens") {
-    return "The selected Reclamation album reference carries the lesson principle into sound, lyric, and lived context.";
+  if (tab === "Reclamation") {
+    return "Carry the selected principle into the Reclamation album, its sound, lyric, symbolism, and lived context.";
   }
-  if (tab === "Reflect") {
+  if (tab === "2026 Lens") {
+    return "Examine what this principle looks like in the technological, cultural, economic, creative, and social conditions of 2026.";
+  }
+  if (tab === "Reflection") {
     return "Use the reflection field below to name what this lesson reveals in your own experience.";
   }
   if (tab === "Protocol") {
-    return "Translate the lesson into one observable practice you can test and repeat.";
+    return "Translate the lesson into one observable practice you can test, repeat, and evaluate.";
   }
   if (tab === "Artifact") {
-    return `Complete ${lesson?.number || "this lesson"} by preserving the insight, evidence, and action you will carry forward.`;
+    return `Create and preserve the artifact for ${lesson?.number || "this lesson"}.`;
   }
-  return "This lesson does not yet contain additional authored material for this section.";
+  if (tab === "Summary") {
+    return "Consolidate the principle, its contemporary meaning, and the action you are carrying forward.";
+  }
+  return "This section does not yet contain additional authored material.";
 }
