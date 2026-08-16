@@ -40,6 +40,7 @@ export default function HermeticHallViewport() {
             className={`hh-hotspot hh-hotspot-${index + 1}${selected.number === principle.number ? ' is-selected' : ''}`}
             onClick={() => choosePrinciple(principle)}
             aria-label={`Select Principle ${principle.number}: ${principle.name}`}
+            data-name={`${principle.number} — ${principle.name}`}
             aria-pressed={selected.number === principle.number}
           />
         ))}
