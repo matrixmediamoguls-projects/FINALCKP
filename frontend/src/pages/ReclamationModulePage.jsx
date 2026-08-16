@@ -5,6 +5,9 @@ import HermeticCurriculumModule from '../modules/sovereign/reclamation-universit
 import HermeticSuppliedModuleExperience from '../modules/sovereign/reclamation-university/HermeticSuppliedModuleExperience';
 import VibrationModuleExperience from '../modules/sovereign/reclamation-university/VibrationModuleExperience';
 import PolarityModuleExperience from '../modules/sovereign/reclamation-university/PolarityModuleExperience';
+import RhythmModuleExperience from '../modules/sovereign/reclamation-university/RhythmModuleExperience';
+import CauseEffectModuleExperience from '../modules/sovereign/reclamation-university/CauseEffectModuleExperience';
+import GenderModuleExperience from '../modules/sovereign/reclamation-university/GenderModuleExperience';
 import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
 import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
@@ -15,11 +18,10 @@ import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHa
  *
  * This page loads the faculty and module from the curriculum registry.
  * Mentalism and Correspondence use the supplied Hermetic material experience.
- * Vibration and Polarity each have their own dedicated, fully-authored
- * experience with instrumented progress. The remaining Hermetic Hall
- * principles fall back to the generic curriculum renderer until they get
- * their own dedicated build. Non-Hermetic-Hall faculties use the original
- * module engine.
+ * Vibration, Polarity, Rhythm, Cause & Effect and Gender each have their own
+ * dedicated, fully-authored experience with instrumented progress. Gender is the
+ * seventh and final principle, so it completes back to the Hall rather than
+ * onward. Non-Hermetic-Hall faculties use the original module engine.
  */
 export default function ReclamationModulePage() {
   const navigate = useNavigate();
@@ -80,6 +82,42 @@ export default function ReclamationModulePage() {
         faculty={faculty}
         onComplete={() =>
           navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/rhythm')
+        }
+      />
+    );
+  }
+
+  if (isHermeticHall && module.slug === 'rhythm') {
+    return (
+      <RhythmModuleExperience
+        module={module}
+        faculty={faculty}
+        onComplete={() =>
+          navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/cause-and-effect')
+        }
+      />
+    );
+  }
+
+  if (isHermeticHall && module.slug === 'cause-and-effect') {
+    return (
+      <CauseEffectModuleExperience
+        module={module}
+        faculty={faculty}
+        onComplete={() =>
+          navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/gender')
+        }
+      />
+    );
+  }
+
+  if (isHermeticHall && module.slug === 'gender') {
+    return (
+      <GenderModuleExperience
+        module={module}
+        faculty={faculty}
+        onComplete={() =>
+          navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall')
         }
       />
     );
