@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ReclamationModuleEngine from '../modules/sovereign/reclamation-university/ReclamationModuleEngine';
 import HermeticCurriculumModule from '../modules/sovereign/reclamation-university/HermeticCurriculumModule';
 import HermeticSuppliedModuleExperience from '../modules/sovereign/reclamation-university/HermeticSuppliedModuleExperience';
 import VibrationModuleExperience from '../modules/sovereign/reclamation-university/VibrationModuleExperience';
@@ -12,10 +11,8 @@ import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHa
  *
  * Route: /experiencemode/sovereign/reclamation-university/:facultySlug/:moduleSlug
  *
- * This page loads the faculty and module from the curriculum registry.
- * Mentalism and Correspondence use the supplied Hermetic material experience.
- * Vibration uses its own eleven-tab experience with instrumented progress.
- * The remaining principles continue to use the existing curriculum renderer.
+ * Hermetic Hall principles use the dedicated curriculum experience. The legacy
+ * generic ReclamationModuleEngine is no longer part of the University route.
  */
 export default function ReclamationModulePage() {
   const navigate = useNavigate();
@@ -89,5 +86,29 @@ export default function ReclamationModulePage() {
     return <HermeticCurriculumModule module={module} faculty={faculty} />;
   }
 
-  return <ReclamationModuleEngine module={module} faculty={faculty} />;
+  // Non-Hermetic faculties currently have no generic fallback. Keep the route
+  // explicit rather than silently invoking the retired module engine.
+  return (
+    <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
+      <h1>Curriculum Experience Coming Soon</h1>
+      <p style={{ marginTop: '1rem', marginBottom: '2rem' }}>
+        This University curriculum is being authored as a dedicated experience.
+      </p>
+      <button
+        type="button"
+        onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}
+        style={{
+          padding: '0.75rem 1.5rem',
+          backgroundColor: '#dc2626',
+          color: 'white',
+          border: 'none',
+          borderRadius: '0.5rem',
+          cursor: 'pointer',
+          fontSize: '1rem',
+        }}
+      >
+        Return to University
+      </button>
+    </div>
+  );
 }
