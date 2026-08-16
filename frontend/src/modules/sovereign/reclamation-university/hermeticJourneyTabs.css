@@ -11,7 +11,7 @@
 
 .hcm-section-steps {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(11, minmax(0, 1fr));
   gap: 0;
   overflow: visible;
   border: 0;
@@ -22,7 +22,7 @@
   position: relative;
   min-width: 0;
   min-height: 58px;
-  padding: 0.85rem 0.45rem 0.75rem;
+  padding: 0.85rem 0.35rem 0.75rem;
   border: 0;
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 0;
@@ -61,11 +61,15 @@
   box-shadow: 0 0 14px color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 58%, transparent);
 }
 
+.hcm-section-steps button.is-complete {
+  color: rgba(247, 239, 228, 0.78);
+}
+
 .hcm-section-steps button > span {
   display: block;
   margin-bottom: 0.2rem;
   color: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 72%, rgba(247, 239, 228, 0.45));
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.12em;
 }
@@ -73,31 +77,33 @@
 .hcm-section-steps button strong {
   display: block;
   overflow: hidden;
-  font-size: clamp(0.64rem, 0.8vw, 0.78rem);
+  font-size: clamp(0.55rem, 0.67vw, 0.72rem);
   font-weight: 700;
-  letter-spacing: 0.035em;
+  letter-spacing: 0.025em;
   line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* The renderer uses the internal name “Reclamation Lens” to mount album media.
-   The visible curriculum label remains exactly “Reclamation.” */
-.hcm-section-steps button:nth-child(4) strong {
+/* Reclamation and 2026 Lens are intentionally explicit in the canonical
+   curriculum; do not rename either to an internal renderer label. */
+.hcm-section-steps button:nth-child(6) strong,
+.hcm-section-steps button:nth-child(7) strong {
+  white-space: normal;
+}
+
+.hcm-section-6 .hcm-active-section > h3,
+.hcm-section-7 .hcm-active-section > h3 {
   font-size: 0;
 }
 
-.hcm-section-steps button:nth-child(4) strong::after {
+.hcm-section-6 .hcm-active-section > h3::after {
   content: "Reclamation";
-  font-size: clamp(0.64rem, 0.8vw, 0.78rem);
+  font-size: clamp(1.45rem, 3vw, 2.3rem);
 }
 
-.hcm-section-3 .hcm-active-section > h3 {
-  font-size: 0;
-}
-
-.hcm-section-3 .hcm-active-section > h3::after {
-  content: "Reclamation";
+.hcm-section-7 .hcm-active-section > h3::after {
+  content: "2026 Lens";
   font-size: clamp(1.45rem, 3vw, 2.3rem);
 }
 
@@ -273,7 +279,7 @@
   outline: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .hcm-section-steps {
     display: flex;
     overflow-x: auto;
@@ -282,7 +288,7 @@
   }
 
   .hcm-section-steps button {
-    flex: 0 0 124px;
+    flex: 0 0 118px;
     scroll-snap-align: start;
   }
 }
@@ -293,7 +299,7 @@
   }
 
   .hcm-section-steps button {
-    flex-basis: 108px;
+    flex-basis: 104px;
     min-height: 54px;
     padding-inline: 0.35rem;
   }
