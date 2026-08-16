@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { AudioProvider } from "@/context/audioprovider";
 
 import "@/index.css";
+import "@/styles/mobile-responsive.css";
 import App from "@/App";
 
 const root = ReactDOM.createRoot(
