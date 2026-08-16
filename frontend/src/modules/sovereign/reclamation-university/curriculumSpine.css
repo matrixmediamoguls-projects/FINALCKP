@@ -1,0 +1,81 @@
+/* CurriculumSpine — generic navigation shell shared by every Hermetic Hall
+   module. It carries no colors of its own: it reads --gold, --ivory, --line,
+   --line-2, --bronze, --bronze-dim, --panel, --obsidian-2, --accent,
+   --f-display and --f-hud from whichever module wrapper it is nested inside
+   (e.g. .rux for Vibration, .rup for Polarity), so a new module gets a
+   correctly themed spine for free just by defining those tokens. */
+
+.rus{ position:relative; }
+
+/* ---------------------------------------------------- COMPACT / MOBILE -- */
+.rus-current{
+  display:flex; width:100%; align-items:center; justify-content:space-between; gap:12px;
+  padding:13px 16px; background:linear-gradient(180deg,var(--panel),var(--obsidian-2));
+  border:1px solid var(--line); border-radius:3px; color:var(--ivory); cursor:pointer;
+  font-family:var(--f-read,inherit);
+}
+.rus-current-module{
+  font-family:var(--f-hud); font-size:8px; letter-spacing:.26em; color:var(--bronze-dim);
+  text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.rus-current-row{ display:flex; align-items:center; gap:8px; min-width:0; margin-left:auto; }
+.rus-current-count{ font-family:var(--f-hud); font-size:11px; color:var(--accent); letter-spacing:.06em; }
+.rus-current-sep{ color:var(--bronze-dim); }
+.rus-current-label{
+  font-family:var(--f-display); font-size:12.5px; letter-spacing:.08em; color:var(--ivory);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.rus-current-chev{
+  width:8px; height:8px; border-right:1px solid var(--gold); border-bottom:1px solid var(--gold);
+  transform:rotate(45deg); transition:transform .2s; flex:0 0 auto;
+}
+.rus.is-open .rus-current-chev{ transform:rotate(-135deg); }
+
+/* --------------------------------------------------------------- LIST --- */
+.rus-list{
+  display:none; flex-direction:column; gap:0;
+  position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:40;
+  background:linear-gradient(180deg,var(--panel),var(--obsidian-2));
+  border:1px solid var(--line); border-radius:3px; padding:6px;
+  max-height:min(70vh,520px); overflow-y:auto;
+  box-shadow:0 18px 44px -16px rgba(0,0,0,.6);
+}
+.rus.is-open .rus-list{ display:flex; }
+.rus-thread{ display:none; }
+
+.rus-item{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  background:transparent; border:0; border-radius:2px; padding:10px 10px;
+  color:var(--bronze); cursor:pointer; transition:background .18s,color .18s;
+}
+.rus-item:hover{ background:rgba(255,255,255,.035); color:var(--ivory); }
+.rus-mark{ width:6px; height:6px; border-radius:50%; background:var(--line-2); flex:0 0 auto; }
+.rus-num{ font-family:var(--f-hud); font-size:9px; letter-spacing:.18em; color:var(--bronze-dim); flex:0 0 22px; }
+.rus-label{ font-family:var(--f-display); font-size:12.5px; letter-spacing:.05em; flex:1 1 auto; min-width:0; }
+.rus-state{ font-size:11px; color:var(--accent); flex:0 0 auto; width:14px; text-align:center; }
+.rus-sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+.rus-item.is-active{ color:var(--ivory); background:rgba(255,255,255,.04); }
+.rus-item.is-active .rus-mark{ background:var(--accent); box-shadow:0 0 8px var(--accent); }
+.rus-item.is-active .rus-label{ color:var(--gold-bright,var(--gold)); }
+.rus-item.is-completed .rus-mark{ background:var(--gold); }
+.rus-item.is-locked{ opacity:.4; cursor:not-allowed; }
+.rus-item.is-locked:hover{ background:transparent; color:var(--bronze); }
+
+/* --------------------------------------------------------------- DESKTOP -- */
+@media (min-width:901px){
+  .rus-current{ display:none; }
+  .rus-list{
+    display:flex; position:static; max-height:none; overflow:visible;
+    border:1px solid var(--line); padding:10px 6px; background:linear-gradient(180deg,var(--panel),var(--obsidian-2));
+  }
+  .rus-thread{
+    display:block; position:absolute; left:19px; top:14px; bottom:14px; width:1px;
+    background:var(--line-2);
+  }
+  .rus-item{ padding:11px 12px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .rus *{ transition-duration:.01ms !important; }
+}

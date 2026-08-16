@@ -4,6 +4,7 @@ import ReclamationModuleEngine from '../modules/sovereign/reclamation-university
 import HermeticCurriculumModule from '../modules/sovereign/reclamation-university/HermeticCurriculumModule';
 import HermeticSuppliedModuleExperience from '../modules/sovereign/reclamation-university/HermeticSuppliedModuleExperience';
 import VibrationModuleExperience from '../modules/sovereign/reclamation-university/VibrationModuleExperience';
+import PolarityModuleExperience from '../modules/sovereign/reclamation-university/PolarityModuleExperience';
 import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
 import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
@@ -15,6 +16,8 @@ import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHa
  * This page loads the faculty and module from the curriculum registry.
  * Mentalism and Correspondence use the supplied Hermetic material experience.
  * Vibration uses its own eleven-tab experience with instrumented progress.
+ * Polarity uses the newer curriculum-spine experience (CurriculumSpine + the
+ * shared eleven-section contract in curriculumSections.js).
  * The remaining principles continue to use the existing curriculum renderer.
  */
 export default function ReclamationModulePage() {
@@ -69,17 +72,26 @@ export default function ReclamationModulePage() {
     );
   }
 
+  if (isHermeticHall && module.slug === 'polarity') {
+    return (
+      <PolarityModuleExperience
+        module={module}
+        faculty={faculty}
+        onComplete={() =>
+          navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/rhythm')
+        }
+      />
+    );
+  }
+
   if (isHermeticHall && ['mentalism', 'correspondence'].includes(module.slug)) {
+    const nextSlug = { mentalism: 'correspondence', correspondence: 'vibration' }[module.slug];
     return (
       <HermeticSuppliedModuleExperience
         moduleSlug={module.slug}
         progress={0}
         onComplete={() =>
-          navigate(
-            `/experiencemode/sovereign/reclamation-university/hermetic-hall/${
-              module.slug === 'mentalism' ? 'correspondence' : 'vibration'
-            }`
-          )
+          navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${nextSlug}`)
         }
       />
     );

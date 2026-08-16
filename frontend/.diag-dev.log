@@ -532,3 +532,4 @@ at AppWithBackground (http://localhost:3001/src/App.jsx?t=1786858572105:831:19)\
 (http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)"}
 1:36:15 AM [vite] (client) hmr update /src/App.jsx, /src/index.css
 1:36:18 AM [vite] (client) hmr update /src/index.css
+3:05:10 AM [vite] (client) page reload public/coming-soon.html

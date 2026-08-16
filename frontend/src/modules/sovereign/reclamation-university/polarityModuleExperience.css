@@ -1,0 +1,227 @@
+/* Reclamation University — Hermetic Hall — Module IV: Polarity
+   Scoped under .rup so it cannot leak into the rest of the app.
+   Same token vocabulary as Module III (Vibration)'s .rux, with the Polarity
+   accent — ivory/violet — standing in for the red used there. curriculumSpine.css
+   reads these same tokens, so CurriculumSpine inherits the theme for free. */
+
+.rup{
+  --obsidian:#08080B;
+  --obsidian-2:#0D0D12;
+  --panel:#111117;
+  --panel-2:#15151C;
+  --line:#221E28;
+  --line-2:#31283A;
+  --gold:#C9A227;
+  --gold-bright:#E9CE72;
+  --gold-dim:#6E5D2C;
+  --ivory:#F1ECE2;
+  --bronze:#9D8862;
+  --bronze-dim:#6E6149;
+  --violet:#8B6FD9;
+  --violet-bright:#C3AEFF;
+  --violet-glow:rgba(139,111,217,.32);
+  --accent:var(--violet);
+
+  --f-display:'Cinzel',Georgia,serif;
+  --f-quote:'Cinzel',Georgia,serif;
+  --f-read:var(--font-body,Inter,system-ui,sans-serif);
+  --f-hud:var(--font-mono,'JetBrains Mono',monospace);
+
+  background:var(--obsidian);
+  color:var(--ivory);
+  font-family:var(--f-read);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+.rup *{ box-sizing:border-box; }
+.rup::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(900px 520px at 70% 6%, rgba(139,111,217,.08), transparent 70%),
+    radial-gradient(700px 480px at 10% 94%, rgba(201,162,39,.05), transparent 70%);
+}
+.rup-shell{ position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:0 28px 130px; }
+
+/* ------------------------------------------------------------ TOP HEADER -- */
+.rup-top{ display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 0 18px; border-bottom:1px solid var(--line); }
+.rup-brand{ font-family:var(--f-display); font-size:13px; letter-spacing:.34em; color:var(--gold); }
+.rup-context{ font-family:var(--f-hud); font-size:10px; letter-spacing:.42em; color:var(--bronze); }
+.rup-progress{ display:flex; align-items:center; gap:12px; }
+.rup-progress-label{ font-family:var(--f-hud); font-size:9px; letter-spacing:.3em; color:var(--bronze-dim); }
+.rup-progress-val{ font-family:var(--f-hud); font-size:14px; color:var(--violet-bright); letter-spacing:.08em; }
+
+/* -------------------------------------------------------- PRINCIPLE RAIL -- */
+.rup-rail{ display:flex; gap:8px; padding:16px 0; overflow-x:auto; scrollbar-width:none; }
+.rup-rail::-webkit-scrollbar{ display:none; }
+.rup-node{
+  flex:1 0 auto; min-width:108px; background:transparent; cursor:default; text-align:left;
+  border:1px solid rgba(52,44,30,.7); border-radius:2px; padding:11px 12px 10px;
+  display:flex; flex-direction:column; gap:7px; transition:border-color .25s,background .25s,opacity .25s;
+  opacity:.42; color:inherit;
+}
+.rup-node.is-done{ opacity:.62; }
+.rup-node.is-active{
+  opacity:1; border-color:var(--violet); background:linear-gradient(180deg,rgba(139,111,217,.1),rgba(0,0,0,0));
+  box-shadow:0 0 0 1px rgba(201,162,39,.14), 0 8px 26px -14px var(--violet-glow);
+}
+.rup-node-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.rup-node-num{ font-family:var(--f-display); font-size:10px; letter-spacing:.28em; color:var(--bronze); }
+.rup-node.is-active .rup-node-num{ color:var(--violet-bright); }
+.rup-node-name{ font-family:var(--f-display); font-size:11px; letter-spacing:.12em; color:var(--ivory); }
+.rup-node-state{ font-family:var(--f-hud); font-size:7.5px; letter-spacing:.22em; color:var(--bronze-dim); }
+.rup-node.is-active .rup-node-state{ color:var(--violet-bright); }
+
+/* -------------------------------------------------------------- LAYOUT --- */
+.rup-layout{ display:grid; grid-template-columns:250px minmax(0,1fr); gap:26px; padding-top:16px; align-items:start; }
+.rup-spine{ position:sticky; top:16px; }
+.rup-view{ padding:8px 0 40px; animation:rup-enter .4s ease both; min-width:0; }
+@keyframes rup-enter{ from{ opacity:0; transform:translateY(8px) } to{ opacity:1; transform:none } }
+
+.rup-eyebrow{ font-family:var(--f-hud); font-size:9px; letter-spacing:.36em; color:var(--violet-bright); margin-bottom:16px; }
+.rup-h1{ font-family:var(--f-display); font-size:clamp(32px,5vw,58px); line-height:1.03; letter-spacing:.03em; color:var(--ivory); margin:0 0 14px; font-weight:500; }
+.rup-h2{ font-family:var(--f-display); font-size:clamp(19px,2.3vw,26px); letter-spacing:.06em; color:var(--ivory); margin:0 0 12px; font-weight:500; }
+.rup-h3{ font-family:var(--f-display); font-size:13px; letter-spacing:.2em; color:var(--gold); margin:0 0 10px; font-weight:500; }
+.rup-sub{ font-family:var(--f-quote); font-size:clamp(18px,2.2vw,24px); font-style:italic; color:var(--bronze); line-height:1.35; margin:0 0 20px; }
+.rup-p{ font-size:15px; line-height:1.76; color:#DCD5C8; max-width:66ch; margin:0 0 15px; font-weight:300; }
+.rup-lede{ font-size:16.5px; line-height:1.7; color:var(--ivory); max-width:64ch; font-weight:300; }
+.rup-question{ font-family:var(--f-quote); font-size:clamp(20px,2.4vw,27px); line-height:1.34; color:var(--violet-bright); border-left:1px solid var(--violet); padding-left:20px; margin:26px 0; max-width:38ch; }
+.rup-rule{ height:1px; background:linear-gradient(90deg,var(--line-2),transparent); margin:36px 0; border:0; }
+.rup-grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.rup-split{ display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start; }
+
+/* --------------------------------------------------------------- PANELS -- */
+.rup-panel{ background:linear-gradient(180deg,var(--panel),var(--obsidian-2)); border:1px solid var(--line); border-radius:3px; padding:20px; }
+.rup-panel.accent{ border-color:rgba(139,111,217,.36); }
+.rup-panel-label{ font-family:var(--f-hud); font-size:8px; letter-spacing:.28em; color:var(--bronze-dim); margin-bottom:9px; }
+.rup-quote{ margin:0; padding:18px 20px; border:1px solid rgba(139,111,217,.32); background:rgba(139,111,217,.06); font:italic 1.15rem/1.5 var(--f-quote); color:var(--violet-bright); }
+
+/* ------------------------------------------------------------- SPECTRUM -- */
+.rup-spectrum{ margin-top:22px; }
+.rup-spectrum-poles{ display:flex; justify-content:space-between; font-family:var(--f-hud); font-size:9px; letter-spacing:.24em; color:var(--bronze); margin-bottom:8px; }
+.rup-spectrum input[type="range"]{
+  -webkit-appearance:none; width:100%; height:2px; background:linear-gradient(90deg,var(--ivory),var(--violet));
+  border-radius:2px; outline:none; cursor:pointer;
+}
+.rup-spectrum input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--violet-bright);
+  border:2px solid var(--obsidian); box-shadow:0 0 12px var(--violet-glow); cursor:pointer;
+}
+.rup-spectrum input[type="range"]::-moz-range-thumb{
+  width:14px; height:14px; border-radius:50%; background:var(--violet-bright); border:2px solid var(--obsidian); cursor:pointer;
+}
+.rup-spectrum-readout{ margin-top:10px; font-family:var(--f-hud); font-size:10px; letter-spacing:.14em; color:var(--violet-bright); }
+.rup-spectrum-micro{ margin-top:6px; font-size:12px; color:var(--bronze); font-style:italic; }
+.rup-mini-spectrum{ display:flex; align-items:center; gap:10px; margin:10px 0; }
+.rup-mini-spectrum span{ font-family:var(--f-hud); font-size:9px; letter-spacing:.14em; color:var(--bronze); white-space:nowrap; }
+.rup-mini-spectrum i{ flex:1; height:2px; background:linear-gradient(90deg,var(--ivory),var(--violet)); border-radius:2px; }
+
+/* ---------------------------------------------------------------- DRAWER -- */
+.rup-drawer-toggle{ background:transparent; border:1px solid var(--line-2); color:var(--bronze); font-family:var(--f-hud); font-size:9px; letter-spacing:.2em; padding:8px 12px; border-radius:2px; cursor:pointer; margin-top:18px; }
+.rup-drawer-toggle:hover{ color:var(--ivory); border-color:var(--gold); }
+.rup-drawer{ margin-top:12px; padding:16px 18px; border:1px solid var(--line); border-radius:3px; background:rgba(0,0,0,.2); }
+.rup-drawer p{ font-size:13px; line-height:1.6; color:var(--bronze); margin:0 0 10px; }
+.rup-drawer p:last-child{ margin-bottom:0; }
+
+/* ------------------------------------------------------------ ACCORDION -- */
+.rup-acc{ background:linear-gradient(180deg,var(--panel),var(--obsidian-2)); border:1px solid var(--line); border-radius:3px; overflow:hidden; transition:border-color .25s; }
+.rup-acc.is-open{ border-color:rgba(139,111,217,.42); }
+.rup-acc-head{ width:100%; background:transparent; border:0; color:inherit; text-align:left; cursor:pointer; padding:18px 20px; display:flex; gap:14px; align-items:flex-start; }
+.rup-acc-head:hover .rup-acc-title{ color:var(--violet-bright); }
+.rup-acc-mark{ font-family:var(--f-hud); font-size:11px; color:var(--violet); flex:0 0 auto; padding-top:2px; width:24px; }
+.rup-acc-title{ font-family:var(--f-display); font-size:13.5px; letter-spacing:.1em; color:var(--ivory); margin:0 0 6px; transition:color .2s; font-weight:500; }
+.rup-acc-teaser{ font-size:13px; line-height:1.58; color:var(--bronze); font-weight:300; }
+.rup-acc-chev{ margin-left:auto; color:var(--gold-dim); font-size:16px; line-height:1; transition:transform .25s; flex:0 0 auto; }
+.rup-acc.is-open .rup-acc-chev{ transform:rotate(45deg); color:var(--gold); }
+.rup-acc-body{ padding:0 20px 20px 58px; }
+.rup-practice{ border-left:1px solid var(--violet); padding-left:14px; margin-top:14px; }
+.rup-practice-tag{ font-family:var(--f-hud); font-size:8px; letter-spacing:.26em; color:var(--violet); margin-bottom:6px; }
+.rup-practice-txt{ font-size:13.5px; line-height:1.6; color:var(--ivory); font-weight:300; }
+
+/* -------------------------------------------------------------- PROCESS -- */
+.rup-process{ display:flex; align-items:stretch; gap:0; border:1px solid var(--line); border-radius:3px; overflow:hidden; }
+.rup-process-step{ flex:1; padding:16px 12px; border-right:1px solid var(--line); min-width:0; }
+.rup-process-step:last-child{ border-right:none; }
+.rup-process-k{ font-family:var(--f-hud); font-size:9px; letter-spacing:.18em; color:var(--violet-bright); margin-bottom:8px; }
+.rup-process-v{ font-size:12px; line-height:1.5; color:var(--bronze-dim); font-weight:300; }
+
+/* --------------------------------------------------------------- DOMAIN -- */
+.rup-dom-grid{ display:grid; gap:12px; }
+
+/* ---------------------------------------------------------- RECLAMATION -- */
+.rup-prism{ position:relative; border:1px solid var(--line); border-radius:3px; background:#05050A; padding:34px 20px; display:flex; align-items:center; justify-content:center; }
+.rup-lyric{ font-family:var(--f-quote); font-size:clamp(19px,2.4vw,27px); line-height:1.42; color:var(--violet-bright); font-style:italic; margin:18px 0 0; }
+.rup-lyric-meta{ font-family:var(--f-hud); font-size:8.5px; letter-spacing:.26em; color:var(--bronze-dim); margin-top:14px; }
+
+/* ----------------------------------------------------------------- LENS -- */
+.rup-lens-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+
+/* ---------------------------------------------------------------- FORMS -- */
+.rup-input,.rup-area{ width:100%; background:#0A0A10; border:1px solid var(--line); border-radius:2px; color:var(--ivory); font-family:var(--f-read); font-size:14px; font-weight:300; padding:12px 14px; line-height:1.6; transition:border-color .2s; }
+.rup-input:focus,.rup-area:focus{ outline:none; border-color:var(--violet); }
+.rup-area{ min-height:120px; resize:vertical; }
+.rup-input::placeholder,.rup-area::placeholder{ color:#4A443A; }
+.rup-field{ margin-bottom:16px; }
+.rup-field label{ display:block; font-family:var(--f-hud); font-size:9px; letter-spacing:.16em; color:var(--bronze); margin-bottom:8px; }
+
+/* -------------------------------------------------------------- BUTTONS -- */
+.rup-btn{ font-family:var(--f-read); font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; padding:11px 18px; border-radius:2px; cursor:pointer; transition:all .22s; background:transparent; border:1px solid var(--line-2); color:var(--bronze); }
+.rup-btn:hover{ border-color:var(--gold); color:var(--gold-bright); }
+.rup-btn:disabled{ opacity:.35; cursor:not-allowed; }
+.rup-cta{ font-family:var(--f-display); font-size:12px; letter-spacing:.2em; padding:14px 26px; border-radius:2px; cursor:pointer; background:linear-gradient(180deg,rgba(201,162,39,.16),rgba(201,162,39,.05)); border:1px solid var(--gold); color:var(--gold-bright); transition:all .22s; }
+.rup-cta:hover{ background:rgba(201,162,39,.24); box-shadow:0 0 26px -8px rgba(233,206,114,.6); }
+.rup-cta:disabled{ opacity:.35; cursor:not-allowed; box-shadow:none; }
+
+/* --------------------------------------------------------------- STEPS --- */
+.rup-steps{ display:flex; gap:0; border:1px solid var(--line); border-radius:3px; overflow:hidden; margin-bottom:20px; flex-wrap:wrap; }
+.rup-step-tab{ flex:1 1 auto; min-width:80px; background:transparent; border:0; border-right:1px solid var(--line); color:var(--bronze-dim); cursor:pointer; padding:10px 8px; text-align:center; font-family:var(--f-hud); font-size:9px; letter-spacing:.12em; transition:all .2s; }
+.rup-step-tab:last-child{ border-right:none; }
+.rup-step-tab.is-current{ color:var(--violet-bright); background:rgba(139,111,217,.08); }
+.rup-step-tab.is-done{ color:var(--gold); }
+.rup-when{ display:grid; gap:8px; padding-left:0; list-style:none; margin:0 0 18px; }
+.rup-when li{ font-size:13px; color:var(--bronze); padding-left:16px; position:relative; line-height:1.5; }
+.rup-when li::before{ content:"—"; position:absolute; left:0; color:var(--violet); }
+
+/* ------------------------------------------------------------- ARTIFACT -- */
+.rup-artifact-grid{ display:grid; gap:14px; }
+.rup-artifact-card{ padding:18px 20px; border:1px solid var(--line); border-radius:3px; background:rgba(11,10,16,.9); }
+.rup-artifact-card h4{ margin:0 0 8px; font-family:var(--f-hud); font-size:9px; letter-spacing:.2em; color:var(--violet-bright); }
+.rup-artifact-card p{ margin:0; font-size:14px; line-height:1.65; color:var(--ivory); font-weight:300; }
+.rup-carry{ margin-top:20px; padding:20px; border:1px solid var(--gold-dim); border-radius:3px; background:rgba(201,162,39,.05); }
+.rup-carry span{ display:block; font-family:var(--f-hud); font-size:8px; letter-spacing:.24em; color:var(--gold); margin-bottom:8px; }
+.rup-carry p{ margin:0; font:italic 1.05rem/1.5 var(--f-quote); color:var(--gold-bright); }
+
+/* -------------------------------------------------------------- SUMMARY -- */
+.rup-badges{ display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 8px; }
+.rup-badge{ font-family:var(--f-hud); font-size:9px; letter-spacing:.14em; padding:8px 12px; border-radius:2px; border:1px solid var(--line-2); color:var(--bronze-dim); }
+.rup-badge.on{ border-color:var(--gold); color:var(--gold-bright); background:rgba(201,162,39,.08); }
+.rup-learned{ display:grid; gap:10px; padding-left:18px; margin:16px 0; }
+.rup-learned li{ font-size:14px; line-height:1.6; color:#D6CEC0; font-weight:300; }
+
+/* --------------------------------------------------------------- FOOTER -- */
+.rup-foot{ position:fixed; left:0; right:0; bottom:0; z-index:30; background:rgba(8,8,11,.95); backdrop-filter:blur(10px); border-top:1px solid var(--line); }
+.rup-foot-in{ max-width:1280px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.rup-meta{ display:flex; gap:24px; align-items:center; }
+.rup-meta-k{ font-family:var(--f-hud); font-size:8px; letter-spacing:.24em; color:var(--bronze-dim); }
+.rup-meta-v{ font-family:var(--f-hud); font-size:11px; color:var(--ivory); letter-spacing:.08em; margin-top:4px; }
+.rup-save{ font-family:var(--f-hud); font-size:9px; letter-spacing:.14em; color:var(--bronze-dim); }
+
+/* ------------------------------------------------------------- A11Y/RWD -- */
+.rup :focus-visible{ outline:2px solid var(--violet-bright); outline-offset:2px; }
+@media (max-width:900px){
+  .rup-shell{ padding:0 18px 150px; }
+  .rup-layout{ grid-template-columns:1fr; }
+  .rup-spine{ position:static; }
+  .rup-split{ grid-template-columns:1fr; gap:30px; }
+  .rup-grid-2,.rup-lens-grid{ grid-template-columns:1fr; }
+  .rup-process{ flex-direction:column; }
+  .rup-process-step{ border-right:none; border-bottom:1px solid var(--line); }
+  .rup-foot-in{ padding:11px 18px; flex-wrap:wrap; gap:12px; }
+  .rup-meta{ gap:14px; flex-wrap:wrap; }
+  .rup-acc-body{ padding-left:20px; }
+  .rup-cta{ flex:1 1 100%; text-align:center; }
+}
+@media (prefers-reduced-motion:reduce){
+  .rup-view{ animation:none; }
+  .rup *{ transition-duration:.01ms !important; }
+}
