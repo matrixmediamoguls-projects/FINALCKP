@@ -1,0 +1,447 @@
+import { useMemo, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, BookOpen, ShieldCheck } from 'lucide-react';
+import SovereignModulePanel from '../../../components/sovereign/SovereignModulePanel';
+import ModuleBriefScene from './ModuleBriefScene';
+import PairedTrackPortal from './PairedTrackPortal';
+import ShadowCodeSelector from './ShadowCodeSelector';
+import LightCodeMapper from './LightCodeMapper';
+import DeclarationBuilder from './DeclarationBuilder';
+import IntegrationKeyReveal from './IntegrationKeyReveal';
+import RecUniJournalSave from './RecUniJournalSave';
+import { useReclamationModuleProgress } from '../../../hooks/useReclamationModuleProgress';
+import './reclamationModule.css';
+import './reclamationModuleOverrides.css';
+
+/**
+ * ReclamationModuleEngine
+ * 
+ * A generic, reusable module orchestrator that handles:
+ * - Loading curriculum module data
+ * - Loading user's prior state
+ * - Enforcing gate requirements
+ * - Restoring the last active scene
+ * - Mapping Shadow Codes to allowed Light Codes
+ * - Validating declaration completion
+ * - Saving progress incrementally
+ * - Saving final completion record
+ * - Revealing Integration Key only after completion criteria are met
+ * - Emitting analytics events
+ */
+
+const SCENE_TITLES = [
+  ['01', 'Receive the Signal', 'Listen to every paired track and identify its teaching.'],
+  ['02', 'Name the Pattern', 'Choose the Shadow Code that best describes the restriction.'],
+  ['03', 'Retrieve the Law', 'Translate that pattern into a usable Light Code.'],
+  ['04', 'Write Your Declaration', 'Put the recovered law into your own words and seal it.'],
+  ['05', 'Integrate and Save', 'Receive the Integration Key and preserve your record.'],
+];
+
+function UniversityMasthead({ faculty, module, activeSceneIndex, onExit }) {
+  const progress = Math.round(((activeSceneIndex + 1) / SCENE_TITLES.length) * 100);
+
+  return (
+    <header className="rec-university-masthead">
+      <button type="button" className="rec-university-back" onClick={onExit}>
+        <ArrowLeft size={16} aria-hidden="true" />
+        <span>University Hall</span>
+      </button>
+      <div className="rec-university-identity">
+        <span className="rec-university-seal" aria-hidden="true"><BookOpen size={20} /></span>
+        <div>
+          <p>Reclamation University</p>
+          <strong>The Sovereign Athenaeum</strong>
+        </div>
+      </div>
+      <div className="rec-university-context">
+        <p>{faculty?.title}</p>
+        <span>{module?.title}</span>
+      </div>
+      <div className="rec-university-progress" aria-label={`${progress}% of module sequence reached`}>
+        <div><span>Sequence</span><strong>{String(activeSceneIndex + 1).padStart(2, '0')} / 05</strong></div>
+        <i><b style={{ width: `${progress}%` }} /></i>
+      </div>
+    </header>
+  );
+}
+
+function SceneShell({ activeSceneIndex, canAdvance, lockMessage, onBack, onAdvance, onSceneSelect, children }) {
+  const activeScene = SCENE_TITLES[activeSceneIndex];
+  const isFinalScene = activeSceneIndex === SCENE_TITLES.length - 1;
+
+  return (
+    <div className="rec-module-sequence-shell">
+      <header className="rec-module-command-header">
+        <div>
+          <p className="rec-module-kicker">The Reclamation Method · Guided Practicum</p>
+          <h2>{activeScene[1]}</h2>
+          <p>{activeScene[2]}</p>
+        </div>
+        <span className="rec-module-session-mark"><ShieldCheck size={16} /> Progress secured</span>
+      </header>
+
+      <nav className="rec-module-scene-rail" aria-label="Module scene progress">
+        {SCENE_TITLES.map(([number, title], index) => {
+          const isActive = index === activeSceneIndex;
+          const isPast = index < activeSceneIndex;
+          return (
+            <button
+              type="button"
+              key={title}
+              className={`${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}
+              onClick={() => isPast && onSceneSelect(index)}
+              disabled={!isPast && !isActive}
+              aria-current={isActive ? 'step' : undefined}
+            >
+              <b>{number}</b>
+              <small>{title}</small>
+            </button>
+          );
+        })}
+      </nav>
+
+      <section className="rec-module-active-scene" aria-label={activeScene[1]}>
+        {children}
+      </section>
+
+      <footer className="rec-module-gate-controls">
+        <button type="button" className="rec-module-secondary-action" onClick={onBack} disabled={activeSceneIndex === 0}>
+          Previous Step
+        </button>
+        <div>
+          <span className={`rec-module-gate-status ${canAdvance || isFinalScene ? 'is-open' : ''}`}>
+            {isFinalScene ? 'Ready to complete' : canAdvance ? 'Step complete' : lockMessage}
+          </span>
+          {!isFinalScene && (
+            <button type="button" className="rec-module-action" onClick={onAdvance} disabled={!canAdvance}>
+              Continue to Step {activeSceneIndex + 2}
+            </button>
+          )}
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default function ReclamationModuleEngine({ module, faculty }) {
+  const navigate = useNavigate();
+  const [hasEnteredModule, setHasEnteredModule] = useState(false);
+  const [activeSceneIndex, setActiveSceneIndex] = useState(0);
+  const [listenedTracks, setListenedTracks] = useState([]);
+  const [selectedAnchorKey, setSelectedAnchorKey] = useState(null);
+  const [selectedShadowCodes, setSelectedShadowCodes] = useState([]);
+  const [retrievedLightCodes, setRetrievedLightCodes] = useState([]);
+  const [declaration, setDeclaration] = useState({});
+  const [declarationSealed, setDeclarationSealed] = useState(false);
+
+  // Load progress from Supabase
+  const { progress, isLoading, isSaving, saveProgress, saveCompletion, trackEvent } =
+    useReclamationModuleProgress(module?.id, faculty?.slug, module?.slug);
+
+  // Initialize from loaded progress
+  useEffect(() => {
+    if (progress && !isLoading) {
+      const shadowIdByLegacyId = new Map(
+        (module?.shadowCodes || []).map((code) => [code.displayId || code.id, code.id])
+      );
+      const normalizedShadowCodes = (progress.selected_shadow_codes || [])
+        .map((codeId) => shadowIdByLegacyId.get(codeId) || codeId)
+        .filter((codeId) => (module?.shadowCodes || []).some((code) => code.id === codeId));
+      setHasEnteredModule(true);
+      setActiveSceneIndex(progress.active_scene || 0);
+      const sourceTrackIds = module?.sourceTrackIds || [];
+      const normalizedListenedTracks = (progress.listened_track_ids || [])
+        .map((trackId) => {
+          const legacyPosition = Number(trackId);
+          if (
+            Number.isInteger(legacyPosition)
+            && legacyPosition > 0
+            && legacyPosition <= sourceTrackIds.length
+          ) {
+            return sourceTrackIds[legacyPosition - 1];
+          }
+          return String(trackId);
+        })
+        .filter((trackId) => sourceTrackIds.includes(trackId));
+      setListenedTracks([...new Set(normalizedListenedTracks)]);
+      setSelectedShadowCodes(normalizedShadowCodes);
+      setRetrievedLightCodes(progress.retrieved_light_codes || []);
+      setDeclaration(progress.declaration_json || {});
+      if (progress.status === 'completed') {
+        setDeclarationSealed(true);
+      }
+    }
+  }, [progress, isLoading, module]);
+
+  // Initialize default anchor key
+  useEffect(() => {
+    if (!selectedAnchorKey && module?.lyricAnchors?.length > 0) {
+      setSelectedAnchorKey(module.lyricAnchors[0].key);
+    }
+  }, [module, selectedAnchorKey]);
+
+  // Initialize declaration fields
+  useEffect(() => {
+    if (module?.declarationFields && Object.keys(declaration).length === 0) {
+      const initialDeclaration = {};
+      module.declarationFields.forEach((field) => {
+        initialDeclaration[field.key] = '';
+      });
+      setDeclaration(initialDeclaration);
+    }
+  }, [module, declaration]);
+
+  const isDeclarationComplete = useMemo(
+    () => Object.values(declaration).every((value) => String(value || '').trim().length > 2),
+    [declaration]
+  );
+
+  const moduleUnlocked = useMemo(
+    () =>
+      hasEnteredModule &&
+      listenedTracks.length === (module?.sourceTrackIds?.length || 0) &&
+      selectedShadowCodes.length > 0 &&
+      retrievedLightCodes.length > 0 &&
+      declarationSealed,
+    [hasEnteredModule, listenedTracks, module, selectedShadowCodes, retrievedLightCodes, declarationSealed]
+  );
+
+  const requirements = [
+    { label: 'Transmission received', complete: hasEnteredModule },
+    { label: `All track signals received (${listenedTracks.length}/${module?.sourceTrackIds?.length || 0})`, complete: listenedTracks.length === (module?.sourceTrackIds?.length || 0) },
+    { label: 'Shadow Code marked', complete: selectedShadowCodes.length > 0 },
+    { label: 'Light Code retrieved', complete: retrievedLightCodes.length > 0 },
+    { label: 'First Law sealed', complete: declarationSealed },
+  ];
+
+  const sceneAdvanceRules = [
+    { canAdvance: listenedTracks.length === (module?.sourceTrackIds?.length || 0), lockMessage: `Receive all ${module?.sourceTrackIds?.length || 0} signal keys.` },
+    { canAdvance: selectedShadowCodes.length > 0, lockMessage: 'Mark at least one Shadow Code.' },
+    { canAdvance: retrievedLightCodes.length > 0, lockMessage: 'Retrieve at least one Light Code.' },
+    { canAdvance: declarationSealed, lockMessage: 'Seal the First Law.' },
+    { canAdvance: moduleUnlocked, lockMessage: 'Final chamber active.' },
+  ];
+
+  const markListenedTrack = async (trackId) => {
+    if (listenedTracks.includes(trackId)) return;
+
+    const newListenedTracks = [...listenedTracks, trackId];
+    setListenedTracks(newListenedTracks);
+    const saveResult = await saveProgress({
+      status: 'in_progress', activeScene: activeSceneIndex, listenedTrackIds: newListenedTracks,
+      selectedShadowCodes, retrievedLightCodes, declarationJson: declaration,
+    });
+    trackEvent('track_listened', { trackId, listened: true });
+    return saveResult;
+  };
+
+  const toggleShadowCode = (codeId) => {
+    setSelectedShadowCodes((current) => {
+      const next = current.includes(codeId) ? current.filter((item) => item !== codeId) : [...current, codeId];
+      // Filter light codes to only those that map to selected shadow codes
+      const allowedLightCodes = (module?.lightMappings || [])
+        .filter((item) => next.includes(item.shadowId))
+        .map((item) => item.lightId);
+      setRetrievedLightCodes((lights) => lights.filter((item) => allowedLightCodes.includes(item)));
+      saveProgress({
+        status: 'in_progress', activeScene: activeSceneIndex, listenedTrackIds: listenedTracks,
+        selectedShadowCodes: next, retrievedLightCodes: retrievedLightCodes.filter((item) => allowedLightCodes.includes(item)),
+        declarationJson: declaration,
+      });
+      trackEvent('shadow_code_selected', { codeId, selected: !current.includes(codeId) });
+      return next;
+    });
+  };
+
+  const toggleLightCode = (lightId) => {
+    const isSelected = !retrievedLightCodes.includes(lightId);
+    const nextLightCodes = retrievedLightCodes.includes(lightId)
+      ? retrievedLightCodes.filter((item) => item !== lightId)
+      : [...retrievedLightCodes, lightId];
+    setRetrievedLightCodes(nextLightCodes);
+    saveProgress({
+      status: 'in_progress', activeScene: activeSceneIndex, listenedTrackIds: listenedTracks,
+      selectedShadowCodes, retrievedLightCodes: nextLightCodes, declarationJson: declaration,
+    });
+    trackEvent('light_code_retrieved', { lightId, retrieved: isSelected });
+  };
+
+  const updateDeclaration = (field, value) => {
+    setDeclarationSealed(false);
+    setDeclaration((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleSceneAdvance = async () => {
+    const newSceneIndex = Math.min(SCENE_TITLES.length - 1, activeSceneIndex + 1);
+    setActiveSceneIndex(newSceneIndex);
+
+    // Save progress after advancing
+    await saveProgress({
+      status: 'in_progress',
+      activeScene: newSceneIndex,
+      listenedTrackIds: listenedTracks,
+      selectedShadowCodes,
+      retrievedLightCodes,
+      declarationJson: declaration,
+    });
+  };
+
+  const handleSaveCompletion = async () => {
+    const result = await saveCompletion({
+      selectedShadowCodes,
+      retrievedLightCodes,
+      declaration,
+      integrationKey: module.integrationKey,
+      journalEntry: {
+        entryType: 'module_completion',
+        title: `${faculty?.title} — ${module?.title}`,
+        body: `Completed ${module?.title} and received Integration Key.`,
+      },
+    });
+
+    return result;
+  };
+
+  const activeRule = sceneAdvanceRules[activeSceneIndex];
+
+  // Build source tracks for the portal
+  const sourceTracksForPortal = (module?.sourceTrackIds || []).map((trackId, index) => ({
+    id: trackId,
+    trackOrder: index + 1,
+    keyLabel: `KEY ${String.fromCharCode(73 + index)}: ${module?.lyricAnchors?.[index]?.label || 'Signal Key'}`,
+    title: trackId,
+    function: module?.lyricAnchors?.[index]?.teaching || 'Receive the signal.',
+    lyricAnchor: module?.lyricAnchors?.[index]?.line || '',
+  }));
+
+  const activeScene = [
+    <PairedTrackPortal
+      key="signal-keys"
+      sourceTracks={sourceTracksForPortal}
+      lyricAnchors={module?.lyricAnchors || []}
+      listenedTracks={listenedTracks}
+      selectedAnchorKey={selectedAnchorKey}
+      onMarkListened={markListenedTrack}
+      onAnchorSelect={setSelectedAnchorKey}
+      onTrackError={(track, error) => trackEvent('track_load_failed', {
+        trackId: track.title,
+        message: error?.message || 'Unknown track error',
+      })}
+    />,
+    <ShadowCodeSelector
+      key="shadow-scan"
+      shadowCodes={module?.shadowCodes || []}
+      selectedShadowCodes={selectedShadowCodes}
+      onToggleShadowCode={toggleShadowCode}
+    />,
+    <LightCodeMapper
+      key="light-retrieval"
+      mappings={module?.lightMappings || []}
+      selectedShadowCodes={selectedShadowCodes}
+      retrievedLightCodes={retrievedLightCodes}
+      onRetrieveLightCode={toggleLightCode}
+    />,
+    <DeclarationBuilder
+      key="first-law"
+      declaration={declaration}
+      declarationFields={module?.declarationFields || []}
+      onChange={updateDeclaration}
+      onComplete={() => setDeclarationSealed(isDeclarationComplete)}
+      isComplete={isDeclarationComplete}
+      isSealed={declarationSealed}
+    />,
+    <div key="final-unlock" className="rec-module-final-grid">
+      <IntegrationKeyReveal
+        isUnlocked={moduleUnlocked}
+        integrationKey={module?.integrationKey || ''}
+        badge={`${faculty?.title} — ${module?.title}`}
+        nextPath={`Next Module — ${faculty?.title}`}
+        requirements={requirements}
+      />
+      <RecUniJournalSave
+        moduleId={module?.id}
+        selectedShadowCodes={selectedShadowCodes}
+        retrievedLightCodes={retrievedLightCodes}
+        declaration={declaration}
+        integrationKey={module?.integrationKey || ''}
+        disabled={!moduleUnlocked}
+        onSave={handleSaveCompletion}
+        isSaving={isSaving}
+      />
+    </div>,
+  ][activeSceneIndex];
+
+  if (!module) {
+    return (
+      <div className="rec-module-root">
+        <SovereignModulePanel eyebrow="Reclamation University" title="Module Not Found">
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <p>This module could not be loaded. Please return to the university.</p>
+            <button
+              type="button"
+              onClick={() => navigate('/experiencemode/sovereign/reclamation-university')}
+              style={{ marginTop: '1rem' }}
+            >
+              Return to University
+            </button>
+          </div>
+        </SovereignModulePanel>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="rec-module-root">
+        <SovereignModulePanel eyebrow="Reclamation University" title="Loading Module">
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <p>Initializing module experience...</p>
+          </div>
+        </SovereignModulePanel>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rec-module-root">
+      <div className="rec-module-atmosphere" aria-hidden="true" />
+      {!hasEnteredModule ? (
+        <div className="rec-module-campus-frame">
+          <UniversityMasthead faculty={faculty} module={module} activeSceneIndex={0} onExit={() => navigate('/experiencemode/sovereign/reclamation-university')} />
+          <ModuleBriefScene
+            copy={module?.initiationCopy || []}
+            module={module}
+            onCross={() => {
+              setHasEnteredModule(true);
+              trackEvent('module_brief_completed');
+              saveProgress({
+                status: 'in_progress',
+                activeScene: 0,
+                listenedTrackIds: [],
+                selectedShadowCodes: [],
+                retrievedLightCodes: [],
+                declarationJson: {},
+              });
+            }}
+          />
+        </div>
+      ) : (
+        <div className="rec-module-campus-frame">
+          <UniversityMasthead faculty={faculty} module={module} activeSceneIndex={activeSceneIndex} onExit={() => navigate('/experiencemode/sovereign/reclamation-university')} />
+          <SovereignModulePanel eyebrow={faculty?.title} title={module?.title}>
+            <SceneShell
+              activeSceneIndex={activeSceneIndex}
+              canAdvance={activeRule.canAdvance}
+              lockMessage={activeRule.lockMessage}
+              onBack={() => setActiveSceneIndex(Math.max(0, activeSceneIndex - 1))}
+              onAdvance={handleSceneAdvance}
+              onSceneSelect={setActiveSceneIndex}
+            >
+              {activeScene}
+            </SceneShell>
+          </SovereignModulePanel>
+        </div>
+      )}
+    </div>
+  );
+}

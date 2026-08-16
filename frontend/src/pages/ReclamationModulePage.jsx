@@ -1,7 +1,11 @@
 import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import ReclamationModuleEngine from '../modules/sovereign/reclamation-university/ReclamationModuleEngine';
 import HermeticCurriculumModule from '../modules/sovereign/reclamation-university/HermeticCurriculumModule';
-import { getFacultyBySlug } from '../data/reclamationUniversityCurriculum';
+import HermeticSuppliedModuleExperience from '../modules/sovereign/reclamation-university/HermeticSuppliedModuleExperience';
+import VibrationModuleExperience from '../modules/sovereign/reclamation-university/VibrationModuleExperience';
+import PolarityModuleExperience from '../modules/sovereign/reclamation-university/PolarityModuleExperience';
+import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
 import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
 /**
@@ -9,9 +13,13 @@ import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHa
  *
  * Route: /experiencemode/sovereign/reclamation-university/:facultySlug/:moduleSlug
  *
- * Hermetic Hall principles use one dedicated curriculum experience with the
- * canonical 11-section sequence. The retired generic module engine and the
- * principle-specific legacy renderers are no longer routed here.
+ * This page loads the faculty and module from the curriculum registry.
+ * Mentalism and Correspondence use the supplied Hermetic material experience.
+ * Vibration and Polarity each have their own dedicated, fully-authored
+ * experience with instrumented progress. The remaining Hermetic Hall
+ * principles fall back to the generic curriculum renderer until they get
+ * their own dedicated build. Non-Hermetic-Hall faculties use the original
+ * module engine.
  */
 export default function ReclamationModulePage() {
   const navigate = useNavigate();
@@ -23,8 +31,8 @@ export default function ReclamationModulePage() {
     [facultySlug, isHermeticHall]
   );
   const module = useMemo(
-    () => (isHermeticHall ? getHermeticHallModule(moduleSlug) : null),
-    [isHermeticHall, moduleSlug]
+    () => (isHermeticHall ? getHermeticHallModule(moduleSlug) : getModuleBySlug(facultySlug, moduleSlug)),
+    [facultySlug, isHermeticHall, moduleSlug]
   );
 
   if (!faculty || !module) {
@@ -53,5 +61,49 @@ export default function ReclamationModulePage() {
     );
   }
 
-  return <HermeticCurriculumModule module={module} faculty={faculty} />;
+  if (isHermeticHall && module.slug === 'vibration') {
+    return (
+      <VibrationModuleExperience
+        module={module}
+        faculty={faculty}
+        onComplete={() =>
+          navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/polarity')
+        }
+      />
+    );
+  }
+
+  if (isHermeticHall && module.slug === 'polarity') {
+    return (
+      <PolarityModuleExperience
+        module={module}
+        faculty={faculty}
+        onComplete={() =>
+          navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/rhythm')
+        }
+      />
+    );
+  }
+
+  if (isHermeticHall && ['mentalism', 'correspondence'].includes(module.slug)) {
+    return (
+      <HermeticSuppliedModuleExperience
+        moduleSlug={module.slug}
+        progress={0}
+        onComplete={() =>
+          navigate(
+            `/experiencemode/sovereign/reclamation-university/hermetic-hall/${
+              module.slug === 'mentalism' ? 'correspondence' : 'vibration'
+            }`
+          )
+        }
+      />
+    );
+  }
+
+  if (isHermeticHall) {
+    return <HermeticCurriculumModule module={module} faculty={faculty} />;
+  }
+
+  return <ReclamationModuleEngine module={module} faculty={faculty} />;
 }
