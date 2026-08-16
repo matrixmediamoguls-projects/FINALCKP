@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReclamationCodex
-from "../acts/reclamation/ReclamationCodex";
+from "../acts/Reclamation/ReclamationCodex";
 import ActPortal from "./ActPortal";
 
 export default function PortalGrid() {

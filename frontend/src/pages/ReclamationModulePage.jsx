@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ReclamationModuleEngine from '../modules/sovereign/reclamation-university/ReclamationModuleEngine';
 import HermeticCurriculumModule from '../modules/sovereign/reclamation-university/HermeticCurriculumModule';
 import HermeticSuppliedModuleExperience from '../modules/sovereign/reclamation-university/HermeticSuppliedModuleExperience';
+import VibrationModuleExperience from '../modules/sovereign/reclamation-university/VibrationModuleExperience';
 import { getFacultyBySlug, getModuleBySlug } from '../data/reclamationUniversityCurriculum';
 import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHallCurriculum';
 
@@ -13,6 +14,7 @@ import { HERMETIC_HALL_FACULTY, getHermeticHallModule } from '../data/hermeticHa
  *
  * This page loads the faculty and module from the curriculum registry.
  * Mentalism and Correspondence use the supplied Hermetic material experience.
+ * Vibration uses its own eleven-tab experience with instrumented progress.
  * The remaining principles continue to use the existing curriculum renderer.
  */
 export default function ReclamationModulePage() {
@@ -52,6 +54,18 @@ export default function ReclamationModulePage() {
           Return to University
         </button>
       </div>
+    );
+  }
+
+  if (isHermeticHall && module.slug === 'vibration') {
+    return (
+      <VibrationModuleExperience
+        module={module}
+        faculty={faculty}
+        onComplete={() =>
+          navigate('/experiencemode/sovereign/reclamation-university/hermetic-hall/polarity')
+        }
+      />
     );
   }
 
