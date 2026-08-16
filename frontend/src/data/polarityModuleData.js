@@ -189,6 +189,14 @@ export const LENS = [
     prac: "Ask what decisions remained yours, what material was transformed, what was disclosed, and what relationship the work creates with its audience." },
 ];
 
+export const LENS_SOURCES = {
+  label: "Explore Sources",
+  body: [
+    "These six domains are Layer 2 — Contemporary Analogy: modern situations chosen to help you think with the Polarity principle, not empirical claims about how algorithms, platforms, or institutions work in every case.",
+    "Where a domain touches an evidence-based claim (e.g. mental-health language, algorithmic behavior), treat it as a starting frame, not a citation — verify specifics against current, qualified sources before acting on them.",
+  ],
+};
+
 export const REFLECTION_CONTENT = {
   primary: "Where have you been treating a position on a spectrum as a permanent identity — and what becomes possible when you name the next degree instead?",
   supports: [

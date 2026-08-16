@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, LayoutDashboard, Pencil, Download, FileDown } from "lucide-react";
+import jsPDF from "jspdf";
 import CurriculumSpine from "./CurriculumSpine";
+import ReclamationLessonMedia from "./ReclamationLessonMedia";
 import { CURRICULUM_SECTIONS } from "./curriculumSections";
 import {
   POLARITY_META, PRINCIPLES, INTRO_CONTENT, PRINCIPLE_CONTENT, KEY_CONCEPTS,
-  WHY_IT_MATTERS, DOMAINS, RECLAMATION_CONTENT, LENS, REFLECTION_CONTENT,
+  WHY_IT_MATTERS, DOMAINS, RECLAMATION_CONTENT, LENS, LENS_SOURCES, REFLECTION_CONTENT,
   PROTOCOL_WHEN, PROTOCOL_STEPS, WORKED_EXAMPLE, SUMMARY_CONTENT,
 } from "../../../data/polarityModuleData";
 import "./curriculumSpine.css";
@@ -23,13 +26,14 @@ const PRIMARY_ACTION = {
   reflection: "Continue to Protocol",
   protocol: "Generate My Polarity Map",
   artifact: "Continue to Summary",
-  summary: "Complete Module",
+  summary: "Continue to Module V — Rhythm",
 };
 
 const EMPTY_PROTOCOL = { poles: "", continuum: "", degree: "", bothTruths: "", movement: "", evidence: "" };
 const EMPTY_ARTIFACT = { binary: "", situation: "", continuum: "", degree: "", bothTruths: "", direction: "", practice: "", evidence: "", carryForward: "" };
 
 export default function PolarityModuleExperience({ faculty, onComplete }) {
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const [maxIndex, setMaxIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState([]);
@@ -40,6 +44,7 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
   const [spectrumValue, setSpectrumValue] = useState(5);
   const [showSources, setShowSources] = useState(false);
   const [showWorkedExample, setShowWorkedExample] = useState(false);
+  const [showLensSources, setShowLensSources] = useState(false);
 
   const [reflection, setReflection] = useState("");
   const [reflectionSavedAt, setReflectionSavedAt] = useState(null);
@@ -51,8 +56,13 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
   const [artifactGenerated, setArtifactGenerated] = useState(false);
   const [artifact, setArtifact] = useState(EMPTY_ARTIFACT);
   const [artifactSituation, setArtifactSituation] = useState("");
+  const [patternStatement, setPatternStatement] = useState("");
+  const [artifactCreatedAt, setArtifactCreatedAt] = useState(null);
+  const [artifactUpdatedAt, setArtifactUpdatedAt] = useState(null);
+  const [dashboardSavedAt, setDashboardSavedAt] = useState(null);
 
   const [moduleCompleted, setModuleCompleted] = useState(false);
+  const [ceremonyPlaying, setCeremonyPlaying] = useState(false);
 
   /* -------------------------------------------------------- PERSISTENCE -- */
   useEffect(() => {
@@ -71,6 +81,9 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
         if (d.artifactGenerated) setArtifactGenerated(true);
         if (d.artifact) setArtifact({ ...EMPTY_ARTIFACT, ...d.artifact });
         if (d.artifactSituation != null) setArtifactSituation(d.artifactSituation);
+        if (d.patternStatement != null) setPatternStatement(d.patternStatement);
+        if (d.artifactCreatedAt != null) setArtifactCreatedAt(d.artifactCreatedAt);
+        if (d.artifactUpdatedAt != null) setArtifactUpdatedAt(d.artifactUpdatedAt);
         if (d.moduleCompleted) setModuleCompleted(true);
       }
     } catch (e) { /* private mode or disabled storage */ }
@@ -82,11 +95,13 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
     const payload = {
       activeIndex, maxIndex, completedIds, reflection, reflectionSavedAt,
       protocolResponses, protocolDone, protocolStepIndex,
-      artifactGenerated, artifact, artifactSituation, moduleCompleted,
+      artifactGenerated, artifact, artifactSituation, patternStatement,
+      artifactCreatedAt, artifactUpdatedAt, moduleCompleted,
     };
     try { window.localStorage.setItem(STORE_KEY, JSON.stringify(payload)); } catch (e) { /* ignore */ }
   }, [hydrated, activeIndex, maxIndex, completedIds, reflection, reflectionSavedAt,
-      protocolResponses, protocolDone, protocolStepIndex, artifactGenerated, artifact, artifactSituation, moduleCompleted]);
+      protocolResponses, protocolDone, protocolStepIndex, artifactGenerated, artifact, artifactSituation,
+      patternStatement, artifactCreatedAt, artifactUpdatedAt, moduleCompleted]);
 
   /* Autosave indicator for the reflection textarea only. */
   useEffect(() => {
@@ -131,21 +146,61 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
       degree: r.degree || "Your actual position, based on evidence rather than the best- or worst-case story.",
       bothTruths: r.bothTruths || "Both halves of what is actually true, held at once.",
       direction: r.movement || "One observable degree of movement toward the condition you want to strengthen.",
-      practice: r.movement || "",
+      practice: r.movement || "One observable degree of movement toward the condition you want to strengthen.",
       evidence: r.evidence || "What would show you used more than two options.",
       carryForward: buildCarryForward(r),
     });
+    setPatternStatement(buildPatternStatement(r));
+    const now = new Date().toISOString();
+    setArtifactCreatedAt((prev) => prev || now);
+    setArtifactUpdatedAt(now);
     setArtifactGenerated(true);
     setCompletedIds((prev) => (prev.includes("protocol") ? prev : [...prev, "protocol"]));
   };
 
-  const updateArtifactField = (field, value) => setArtifact((a) => ({ ...a, [field]: value }));
+  const updateArtifactField = (field, value) => {
+    setArtifact((a) => ({ ...a, [field]: value }));
+    setArtifactUpdatedAt(new Date().toISOString());
+  };
+
+  const regeneratePatternStatement = () => setPatternStatement(buildPatternStatement(protocolResponses));
+
+  const editMap = () => setArtifactGenerated(false);
+
+  const saveToDashboard = () => setDashboardSavedAt(new Date().toISOString());
+
+  const exportArtifactMarkdown = () => {
+    const md = buildArtifactMarkdown(artifact, patternStatement, artifactCreatedAt, artifactUpdatedAt);
+    downloadFile(`polarity-map-${Date.now()}.md`, md, "text/markdown");
+  };
+
+  const exportArtifactPdf = () => {
+    const doc = new jsPDF({ unit: "pt", format: "letter" });
+    buildArtifactPdf(doc, artifact, patternStatement, artifactCreatedAt, artifactUpdatedAt);
+    doc.save(`polarity-map-${Date.now()}.pdf`);
+  };
 
   /* -------------------------------------------------------------- SUMMARY -- */
   const completeModule = () => {
-    setModuleCompleted(true);
     setCompletedIds((prev) => (prev.includes("summary") ? prev : [...prev, "summary"]));
-    if (onComplete) onComplete();
+
+    if (moduleCompleted) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    setModuleCompleted(true);
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    setCeremonyPlaying(true);
+    setTimeout(() => {
+      setCeremonyPlaying(false);
+      if (onComplete) onComplete();
+    }, 1800);
   };
 
   const footerLabel = useMemo(() => {
@@ -181,6 +236,15 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
               <div className="rup-progress-label">YOUR PROGRESS</div>
               <div className="rup-progress-val">{progressPct}%</div>
             </div>
+            <button
+              type="button"
+              className="rup-dashboard-emblem"
+              title="Return to Reclamation University"
+              aria-label="Return to Reclamation University dashboard"
+              onClick={() => navigate("/experiencemode/sovereign/reclamation-university")}
+            >
+              <LayoutDashboard size={16} />
+            </button>
           </div>
         </header>
 
@@ -388,9 +452,20 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
                         <line x1="190" y1="90" x2="320" y2="160" stroke="var(--violet)" strokeWidth="1.5" opacity="0.9" />
                       </svg>
                     </div>
-                    <p className="rup-lyric">“{RECLAMATION_CONTENT.lyric}”</p>
+                    <p className="rup-lyric">"{RECLAMATION_CONTENT.lyric}"</p>
                     <div className="rup-lyric-meta">FEATURED LYRIC</div>
                   </div>
+                </div>
+
+                <div className="rup-media-embed">
+                  <ReclamationLessonMedia
+                    lesson={{ number: "IV", summary: RECLAMATION_CONTENT.insight }}
+                    contextBody={[
+                      ...RECLAMATION_CONTENT.context,
+                      RECLAMATION_CONTENT.lyric,
+                      ...RECLAMATION_CONTENT.analysis,
+                    ].join("\n\n")}
+                  />
                 </div>
               </section>
             )}
@@ -409,6 +484,15 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
                     </div>
                   ))}
                 </div>
+
+                <button type="button" className="rup-drawer-toggle" onClick={() => setShowLensSources((s) => !s)} aria-expanded={showLensSources}>
+                  {showLensSources ? "Hide" : "Show"} {LENS_SOURCES.label}
+                </button>
+                {showLensSources && (
+                  <div className="rup-drawer">
+                    {LENS_SOURCES.body.map((p) => <p key={p.slice(0, 24)}>{p}</p>)}
+                  </div>
+                )}
               </section>
             )}
 
@@ -470,6 +554,15 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
                       Save {protocolStepIndex < PROTOCOL_STEPS.length - 1 ? "& Continue" : "Step"}
                     </button>
                   </div>
+                  {protocolStepIndex < PROTOCOL_STEPS.length - 1 && (
+                    <button
+                      type="button"
+                      className="rup-skip"
+                      onClick={() => setProtocolStepIndex((i) => Math.min(PROTOCOL_STEPS.length - 1, i + 1))}
+                    >
+                      Skip this step for now — your progress is saved and you can return anytime →
+                    </button>
+                  )}
                 </div>
 
                 <button type="button" className="rup-drawer-toggle" onClick={() => setShowWorkedExample((s) => !s)} aria-expanded={showWorkedExample}>
@@ -510,18 +603,52 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
                 )}
 
                 {artifactGenerated && (
-                  <div className="rup-artifact-grid">
-                    <ArtifactField label="THE BINARY I WAS GIVEN" value={artifact.binary} onChange={(v) => updateArtifactField("binary", v)} />
-                    <ArtifactField label="THE CONTINUUM BENEATH IT" value={artifact.continuum} onChange={(v) => updateArtifactField("continuum", v)} />
-                    <ArtifactField label="MY ACTUAL POSITION" value={artifact.degree} onChange={(v) => updateArtifactField("degree", v)} />
-                    <ArtifactField label="WHAT IS ALSO TRUE" value={artifact.bothTruths} onChange={(v) => updateArtifactField("bothTruths", v)} />
-                    <ArtifactField label="MY ONE-DEGREE DIRECTION" value={artifact.direction} onChange={(v) => updateArtifactField("direction", v)} />
-                    <ArtifactField label="EVIDENCE I WILL LOOK FOR" value={artifact.evidence} onChange={(v) => updateArtifactField("evidence", v)} />
-                    <div className="rup-carry">
-                      <span>CARRY-FORWARD LINE</span>
-                      <p>{artifact.carryForward}</p>
+                  <>
+                    <div className="rup-pattern">
+                      <div className="rup-pattern-label">PATTERN STATEMENT · BASED ON WHAT YOU WROTE</div>
+                      <textarea
+                        className="rup-area"
+                        value={patternStatement}
+                        onChange={(e) => setPatternStatement(e.target.value)}
+                      />
+                      <div className="rup-pattern-actions">
+                        <button type="button" className="rup-btn" onClick={regeneratePatternStatement}>Regenerate</button>
+                      </div>
                     </div>
-                  </div>
+
+                    <div className="rup-artifact-grid">
+                      <ArtifactField label="THE BINARY I WAS GIVEN" value={artifact.binary} onChange={(v) => updateArtifactField("binary", v)} />
+                      <ArtifactField label="THE CONTINUUM BENEATH IT" value={artifact.continuum} onChange={(v) => updateArtifactField("continuum", v)} />
+                      <ArtifactField label="MY ACTUAL POSITION" value={artifact.degree} onChange={(v) => updateArtifactField("degree", v)} />
+                      <ArtifactField label="WHAT IS ALSO TRUE" value={artifact.bothTruths} onChange={(v) => updateArtifactField("bothTruths", v)} />
+                      <ArtifactField label="MY ONE-DEGREE DIRECTION" value={artifact.direction} onChange={(v) => updateArtifactField("direction", v)} />
+                      <ArtifactField label="PRACTICE FOR THIS WEEK" value={artifact.practice} onChange={(v) => updateArtifactField("practice", v)} />
+                      <ArtifactField label="EVIDENCE I WILL LOOK FOR" value={artifact.evidence} onChange={(v) => updateArtifactField("evidence", v)} />
+                      <div className="rup-carry">
+                        <span>CARRY-FORWARD LINE</span>
+                        <p>{artifact.carryForward}</p>
+                      </div>
+                    </div>
+
+                    <div className="rup-artifact-meta">
+                      <div className="rup-artifact-meta-title">MODULE IV — POLARITY</div>
+                      <div className="rup-artifact-meta-row">
+                        <span>Created: <b>{artifactCreatedAt ? new Date(artifactCreatedAt).toLocaleDateString() : "—"}</b></span>
+                        <span>Last updated: <b>{artifactUpdatedAt ? new Date(artifactUpdatedAt).toLocaleDateString() : "—"}</b></span>
+                        <span>Status: <b>Active Practice</b></span>
+                      </div>
+                    </div>
+
+                    <div className="rup-artifact-actions">
+                      <button type="button" className="rup-btn" onClick={saveToDashboard}>Save to Dashboard</button>
+                      <button type="button" className="rup-btn" onClick={editMap}><Pencil size={12} style={{ verticalAlign: "middle", marginRight: 6 }} />Edit Map</button>
+                      <button type="button" className="rup-btn" onClick={exportArtifactMarkdown}><FileDown size={12} style={{ verticalAlign: "middle", marginRight: 6 }} />Export Markdown</button>
+                      <button type="button" className="rup-btn" onClick={exportArtifactPdf}><Download size={12} style={{ verticalAlign: "middle", marginRight: 6 }} />Export PDF</button>
+                    </div>
+                    {dashboardSavedAt && (
+                      <div className="rup-save-flash">SAVED TO DASHBOARD · {new Date(dashboardSavedAt).toLocaleTimeString()}</div>
+                    )}
+                  </>
                 )}
               </section>
             )}
@@ -557,6 +684,15 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
         </div>
       </div>
 
+      {ceremonyPlaying && (
+        <div className="rup-ceremony" role="status" aria-live="polite">
+          <div className="rup-ceremony-band" />
+          <div className="rup-ceremony-title">MODULE IV — POLARITY</div>
+          <div className="rup-ceremony-line l1">I CAN LOCATE THE CONTINUUM.</div>
+          <div className="rup-ceremony-line l2">I CAN CHOOSE THE NEXT DEGREE.</div>
+        </div>
+      )}
+
       {/* FOOTER */}
       <div className="rup-foot">
         <div className="rup-foot-in">
@@ -583,6 +719,154 @@ function buildCarryForward(r) {
   const from = r.poles ? r.poles.split(/\bor\b|\/|,/i)[0]?.trim() : "___";
   const to = r.movement || "___";
   return `I do not need to become ${from ? "the opposite of myself" : "___"}. I can move toward ${to} by staying honest about the degree I am actually at.`;
+}
+
+function buildPatternStatement(r) {
+  const poleParts = r.poles ? r.poles.split(/\bor\b|\/|,/i).map((p) => p.trim()).filter(Boolean) : [];
+  const poleA = poleParts[0] || "one extreme";
+  const poleB = poleParts[1] || "the other";
+  const continuum = r.continuum || "the shared condition underneath";
+  const degree = r.degree || "somewhere between the two, based on evidence";
+  return `When this comes up, I tend to frame it as ${poleA} or ${poleB}. The continuum is ${continuum}. I am actually at ${degree}.`;
+}
+
+function buildArtifactMarkdown(artifact, patternStatement, createdAt, updatedAt) {
+  const dateStr = (v) => (v ? new Date(v).toLocaleDateString() : "—");
+  return `# POLARITY MAP
+## My Range of Choice
+
+**Pattern Statement**
+${patternStatement}
+
+**The Binary I Was Given**
+${artifact.binary}
+
+**The Continuum Beneath It**
+${artifact.continuum}
+
+**My Actual Position**
+${artifact.degree}
+
+**What Is Also True**
+${artifact.bothTruths}
+
+**My One-Degree Direction**
+${artifact.direction}
+
+**Practice For This Week**
+${artifact.practice}
+
+**Evidence I Will Look For**
+${artifact.evidence}
+
+**Carry-Forward Line**
+${artifact.carryForward}
+
+---
+MODULE IV — POLARITY
+Created: ${dateStr(createdAt)}
+Last updated: ${dateStr(updatedAt)}
+Status: Active Practice
+`;
+}
+
+function downloadFile(filename, content, mimeType) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function buildArtifactPdf(doc, artifact, patternStatement, createdAt, updatedAt) {
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const margin = 56;
+  const contentWidth = pageWidth - margin * 2;
+  const dateStr = (v) => (v ? new Date(v).toLocaleDateString() : "—");
+
+  /* Cover */
+  doc.setFont("times", "italic");
+  doc.setFontSize(11);
+  doc.text("RECLAMATION UNIVERSITY · HERMETIC HALL", margin, 120);
+  doc.setFont("times", "bold");
+  doc.setFontSize(30);
+  doc.text("MODULE IV — POLARITY", margin, 160);
+  doc.setFont("times", "normal");
+  doc.setFontSize(16);
+  doc.text("Polarity Map — My Range of Choice", margin, 190);
+  doc.setFontSize(11);
+  doc.text(`Created ${dateStr(createdAt)}  ·  Last updated ${dateStr(updatedAt)}`, margin, 214);
+
+  /* Polarity Map */
+  doc.addPage();
+  let y = 70;
+  const addBlock = (label, value) => {
+    doc.setFont("times", "bold");
+    doc.setFontSize(10);
+    doc.text(label, margin, y);
+    y += 16;
+    doc.setFont("times", "normal");
+    doc.setFontSize(12);
+    const lines = doc.splitTextToSize(value || "—", contentWidth);
+    doc.text(lines, margin, y);
+    y += lines.length * 15 + 20;
+  };
+  doc.setFont("times", "bold");
+  doc.setFontSize(18);
+  doc.text("POLARITY MAP", margin, y);
+  y += 34;
+  addBlock("PATTERN STATEMENT", patternStatement);
+  addBlock("THE BINARY I WAS GIVEN", artifact.binary);
+  addBlock("THE CONTINUUM BENEATH IT", artifact.continuum);
+  addBlock("MY ACTUAL POSITION", artifact.degree);
+  addBlock("WHAT IS ALSO TRUE", artifact.bothTruths);
+
+  /* Continuum visualization */
+  doc.addPage();
+  y = 70;
+  doc.setFont("times", "bold");
+  doc.setFontSize(14);
+  doc.text("CONTINUUM", margin, y);
+  y += 30;
+  doc.setDrawColor(139, 111, 217);
+  doc.setLineWidth(1.2);
+  doc.line(margin, y, pageWidth - margin, y);
+  doc.setFillColor(139, 111, 217);
+  doc.circle(pageWidth / 2, y, 4, "F");
+  doc.setFont("times", "normal");
+  doc.setFontSize(10);
+  doc.text("POLE", margin, y - 10);
+  doc.text("POLE", pageWidth - margin - 20, y - 10);
+  y += 40;
+  addBlock("MY ONE-DEGREE DIRECTION", artifact.direction);
+  addBlock("PRACTICE FOR THIS WEEK", artifact.practice);
+  addBlock("EVIDENCE I WILL LOOK FOR", artifact.evidence);
+
+  /* Carry-forward */
+  doc.addPage();
+  y = 90;
+  doc.setFont("times", "italic");
+  doc.setFontSize(18);
+  const carryLines = doc.splitTextToSize(`"${artifact.carryForward}"`, contentWidth);
+  doc.text(carryLines, margin, y);
+
+  /* Metadata */
+  doc.addPage();
+  y = 90;
+  doc.setFont("times", "bold");
+  doc.setFontSize(14);
+  doc.text("ARTIFACT METADATA", margin, y);
+  y += 28;
+  doc.setFont("times", "normal");
+  doc.setFontSize(11);
+  doc.text(`Module: IV — Polarity`, margin, y); y += 18;
+  doc.text(`Created: ${dateStr(createdAt)}`, margin, y); y += 18;
+  doc.text(`Last updated: ${dateStr(updatedAt)}`, margin, y); y += 18;
+  doc.text(`Status: Active Practice`, margin, y);
 }
 
 function ArtifactField({ label, value, onChange }) {
