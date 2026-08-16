@@ -1,31 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Activity,
+  ArrowLeft,
   ArrowRight,
   BookOpen,
   Check,
   ChevronLeft,
   ChevronRight,
   FileText,
-  Home,
   Library,
-  Maximize2,
   PenLine,
   Radio,
   ShieldCheck,
   Sparkles,
-  X,
 } from "lucide-react";
 import { COURSE_MODULES } from "../../../data/hermeticCourseData";
-import {
-  ARTIFACT_FIELDS,
-  COHERENCE_QUESTIONS,
-  LESSONS as VIBRATION_LESSONS,
-  LIGHT_CODES,
-  SHADOW_CODES,
-  TRACKS,
-} from "../../../data/hermeticVibrationModuleData";
+import { LESSONS as VIBRATION_LESSONS } from "../../../data/hermeticVibrationModuleData";
 import { useReclamationModuleProgress } from "../../../hooks/useReclamationModuleProgress";
 import {
   getCurriculumAdvanceLabel,
@@ -42,143 +32,57 @@ import "./hermeticCurriculumModule.css";
 import "./hermeticLearningExperience.css";
 import "./hermeticJourneyTabs.css";
 
+const ICONS = [
+  Sparkles,
+  BookOpen,
+  Library,
+  ShieldCheck,
+  Radio,
+  Radio,
+  Sparkles,
+  PenLine,
+  ShieldCheck,
+  FileText,
+  Check,
+];
+
 const EMPTY_RECORD = {
   completedLessons: [],
   reflections: {},
   artifact: {},
-  answers: {},
 };
-const VIEW_LABELS = {
-  orientation: "Orientation",
-  lessons: "Lessons",
-  lesson: "Lesson Reader",
-  caseFiles: "Lyrical Case Files",
-  codes: "Shadow / Light Codes",
-  artifact: "Integration Artifact",
-  assessment: "Coherence Test",
+
+const JOURNEY_PROCESS_STEPS = {
+  Intro: ["Frame the inquiry", "Locate the principle", "Prepare to observe"],
+  Principle: ["Name the law", "Define its mechanism", "Establish the governing idea"],
+  "Key Concepts": ["Identify the terms", "Connect the mechanics", "Build the model"],
+  "Why It Matters": ["Locate the stakes", "Recognize the consequence", "Establish relevance"],
+  Domains: ["Observe the domain", "Trace the pattern", "Compare expressions"],
+  Reclamation: ["Hear the signal", "Recognize the motif", "Claim the meaning"],
+  "2026 Lens": ["Observe the present", "Read the system", "Locate the implication"],
+  Reflection: ["Observe", "Recognize", "Connect", "Choose"],
+  Protocol: ["Name", "Test", "Record", "Repeat"],
+  Artifact: ["Preserve the insight", "Name the evidence", "Carry it forward"],
+  Summary: ["Consolidate", "Integrate", "Continue"],
 };
-const LAW_ACCENTS = [
-  "#d7a64a",
-  "#ef2b2d",
-  "#e0643d",
-  "#39c6ba",
-  "#8ebf67",
-  "#7ea6ff",
-  "#d68cff",
-];
-const JOURNEY_PHASES = JOURNEY_TAB_LABELS.map((label, index) => ({
-  id: label.toLowerCase().replace(/\s+/g, "-"),
-  label,
-  icon: [
-    Sparkles,
-    BookOpen,
-    Library,
-    Activity,
-    Radio,
-    Radio,
-    Sparkles,
-    PenLine,
-    ShieldCheck,
-    FileText,
-    Check,
-  ][index],
-}));
-
-export function getSectionPhase(section, index, total) {
-  const heading = section?.heading?.toLowerCase() || "";
-  const matchedPhase = JOURNEY_PHASES.find((phase) => {
-    const label = phase.label.toLowerCase();
-    return heading === label || heading.includes(label);
-  });
-  if (matchedPhase) return matchedPhase.id;
-
-  // Keep the curriculum in the canonical 11-section order when authored
-  // headings are not yet explicit enough to classify themselves.
-  return JOURNEY_PHASES[Math.min(index, JOURNEY_PHASES.length - 1)].id;
-}
-
-function LessonJourneyMap({ sections, activeIndex, onOpen }) {
-  const phaseMap = JOURNEY_PHASES.map((phase) => {
-    const sectionIndexes = sections
-      .map((section, index) =>
-        getSectionPhase(section, index, sections.length) === phase.id
-          ? index
-          : -1,
-      )
-      .filter((index) => index >= 0);
-    return { ...phase, sectionIndexes };
-  });
-  const activePhase = getSectionPhase(
-    sections[activeIndex],
-    activeIndex,
-    sections.length,
-  );
-
-  return (
-    <nav className="hcm-journey-map" aria-label="11-section lesson journey">
-      {phaseMap.map((phase) => {
-        const PhaseIcon = phase.icon;
-        const isComplete = phase.sectionIndexes.length > 0 && phase.sectionIndexes.every(
-          (index) => index < activeIndex,
-        );
-        const isActive = activePhase === phase.id;
-        return (
-          <button
-            type="button"
-            key={phase.id}
-            className={[
-              isActive ? "is-active" : "",
-              isComplete ? "is-complete" : "",
-              !phase.sectionIndexes.length ? "is-empty" : "",
-            ].filter(Boolean).join(" ")}
-            onClick={() => phase.sectionIndexes.length && onOpen(phase.sectionIndexes[0])}
-            disabled={!phase.sectionIndexes.length}
-            aria-current={isActive ? "step" : undefined}
-          >
-            <span>
-              {isComplete ? <Check size={16} /> : <PhaseIcon size={17} />}
-            </span>
-            <strong>{phase.label}</strong>
-            <small>{phase.sectionIndexes.length}</small>
-          </button>
-        );
-      })}
-    </nav>
-  );
-}
-
-const MENTALISM_OBJECTIVES = [
-  "Articulate the Principle of Mentalism as a first cause: “The ALL is Mind; the universe is mental,” and distinguish events from interpretations.",
-  "Recognize hidden influences shaping perception, including conditioning, media environments, and digital systems.",
-  "Identify inherited beliefs and thought forms that operate as unconscious code in daily decisions.",
-  "Understand how repeated thinking, emotional memory, and reinforcement crystallize into stable thought forms and identity patterns.",
-  "Evaluate the role of tools, technology, and language as extensions of prior vision instead of autonomous authors.",
-  "Begin reclaiming authorship through reflection, protocol exercises, and a structured thirty day plan.",
-];
-
-const MENTALISM_PAGE_QUESTIONS = [
-  "What is this?",
-  "Why does it matter?",
-  "Where do I already see this?",
-  "How does it actually work?",
-  "How does this connect to the Reclamation album?",
-  "How can I apply it?",
-  "What should I observe after finishing this page?",
-];
 
 const localRecordKey = (moduleId) => `ru_hermetic_curriculum_${moduleId}`;
 
 function loadLocalRecord(moduleId) {
+  if (typeof window === "undefined") return null;
   try {
-    return (
-      JSON.parse(window.localStorage.getItem(localRecordKey(moduleId))) || null
-    );
+    return JSON.parse(window.localStorage.getItem(localRecordKey(moduleId))) || null;
   } catch {
     return null;
   }
 }
 
-function normalizeRecord(progress, fallback = null) {
+function saveLocalRecord(moduleId, record) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(localRecordKey(moduleId), JSON.stringify(record));
+}
+
+function normalizeRecord(progress, fallback) {
   const saved = progress?.declaration_json?.curriculum;
   return {
     ...EMPTY_RECORD,
@@ -189,292 +93,394 @@ function normalizeRecord(progress, fallback = null) {
       : fallback?.completedLessons || [],
     reflections: saved?.reflections || fallback?.reflections || {},
     artifact: saved?.artifact || fallback?.artifact || {},
-    answers: saved?.answers || fallback?.answers || {},
   };
 }
 
-function lessonTextEditsKey(moduleId, lessonId) {
-  return `reclamation-university:text-edits:${moduleId}:${lessonId}`;
+function SectionIcon({ index }) {
+  const Icon = ICONS[index] || BookOpen;
+  return <Icon size={15} />;
 }
 
-function loadLessonTextEdits(moduleId, lessonId) {
-  if (!moduleId || !lessonId || typeof window === "undefined") return {};
-  try {
-    return JSON.parse(
-      window.localStorage.getItem(lessonTextEditsKey(moduleId, lessonId)) || "{}",
-    );
-  } catch {
-    return {};
-  }
-}
-
-function SectionIcon({ type }) {
-  if (type === "warning") return <ShieldCheck size={15} />;
-  if (type === "activation" || type === "exercise")
-    return <Sparkles size={15} />;
-  return <BookOpen size={15} />;
-}
-
-function groupLessonPassages(body) {
-  const sourcePassages = String(body || "")
-    .split(/\n{2,}/)
-    .map((passage) => passage.trim())
-    .filter(Boolean);
-  const groupedPassages = [];
-  let proseBuffer = [];
-
-  const flushProse = () => {
-    if (!proseBuffer.length) return;
-    groupedPassages.push(proseBuffer.join(" "));
-    proseBuffer = [];
-  };
-
-  sourcePassages.forEach((passage) => {
-    const lines = passage.split("\n").map((line) => line.trim()).filter(Boolean);
-    const isStandalone =
-      lines.length > 1 ||
-      passage.includes("→") ||
-      /^["“]/.test(passage) ||
-      /["”]$/.test(passage) ||
-      /[:?]$/.test(passage);
-    const bufferedLength =
-      proseBuffer.join(" ").length + passage.length + proseBuffer.length;
-
-    if (isStandalone) {
-      flushProse();
-      groupedPassages.push(passage);
-      return;
-    }
-
-    if (proseBuffer.length >= 4 || bufferedLength > 440) flushProse();
-    proseBuffer.push(passage);
-  });
-
-  flushProse();
-  return groupedPassages;
-}
-
-function LessonSectionBody({ body }) {
-  const [activePassageGroup, setActivePassageGroup] = useState(0);
-  const passages = groupLessonPassages(body);
-  const passageGroups = Array.from(
-    { length: Math.ceil(passages.length / 5) },
-    (_, index) => passages.slice(index * 5, index * 5 + 5),
+function LessonJourneyMap({ sections, activeIndex, onOpen }) {
+  return (
+    <nav className="hcm-section-steps" aria-label="11-section curriculum">
+      {sections.map((section, index) => (
+        <button
+          key={section.id || section.label || index}
+          type="button"
+          className={[
+            index === activeIndex ? "is-active" : "",
+            index < activeIndex ? "is-complete" : "",
+          ].filter(Boolean).join(" ")}
+          onClick={() => onOpen(index)}
+          aria-current={index === activeIndex ? "step" : undefined}
+        >
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <strong>{section.label}</strong>
+        </button>
+      ))}
+    </nav>
   );
+}
 
-  useEffect(() => {
-    setActivePassageGroup(0);
-  }, [body]);
+function JourneyProcessDiagram({ label }) {
+  const steps = JOURNEY_PROCESS_STEPS[label];
+  if (!steps) return null;
+  return (
+    <section className="hcm-process-diagram" aria-label={`${label} process`}>
+      <span>{label} journey</span>
+      <div>
+        {steps.map((step, index) => (
+          <article key={step}>
+            <b>{String(index + 1).padStart(2, "0")}</b>
+            <strong>{step}</strong>
+            {index < steps.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
 
-  const visiblePassages = passageGroups[activePassageGroup] || [];
+function LessonSectionBody({ item }) {
+  const paragraphs = String(item?.body || "")
+    .split(/\n{2,}/)
+    .map((value) => value.trim())
+    .filter(Boolean);
 
   return (
     <div className="hcm-reading-flow">
       <div className="hcm-prose">
-      {visiblePassages.map((passage, index) => {
-        const lines = passage.split("\n").map((line) => line.trim()).filter(Boolean);
-        const isSequence = passage.includes("→") && lines.length === 1;
-        const isQuote =
-          lines.length === 1 &&
-          (/^["“]/.test(passage) || /["”]$/.test(passage));
-        const isLineGroup = lines.length >= 3;
-
-        let renderedPassage;
-
-        if (isSequence) {
-          renderedPassage = (
-            <div className="hcm-flow-sequence" key={`${passage}-${index}`}>
-              {passage.split("→").map((step, stepIndex, steps) => (
-                <span key={`${step}-${stepIndex}`}>
-                  <b>{step.trim()}</b>
-                  {stepIndex < steps.length - 1 && <ArrowRight size={14} />}
-                </span>
-              ))}
-            </div>
-          );
-        } else if (isQuote) {
-          renderedPassage = (
-            <blockquote key={`${passage}-${index}`}>{passage}</blockquote>
-          );
-        } else if (isLineGroup) {
-          renderedPassage = (
-            <div className="hcm-line-group" key={`${passage}-${index}`}>
-              {lines.map((line, lineIndex) => (
-                <span key={`${line}-${lineIndex}`}>{line}</span>
-              ))}
-            </div>
-          );
-        } else {
-          renderedPassage = <p key={`${passage}-${index}`}>{passage}</p>;
-        }
-
-        return (
-          <div className="hcm-passage-unit" key={`${passage}-${index}`}>
-            {renderedPassage}
-          </div>
-        );
-      })}
+        {paragraphs.map((paragraph, index) => {
+          const lines = paragraph.split("\n").map((line) => line.trim()).filter(Boolean);
+          if (lines.length > 2) {
+            return (
+              <div className="hcm-line-group" key={index}>
+                {lines.map((line) => <span key={line}>{line}</span>)}
+              </div>
+            );
+          }
+          if (/^[“\"]/.test(paragraph)) {
+            return <blockquote key={index}>{paragraph}</blockquote>;
+          }
+          return <p key={index}>{paragraph}</p>;
+        })}
       </div>
-      {passageGroups.length > 1 && (
-        <div className="hcm-passage-controls" aria-label="Section reading flow">
-          <button
-            type="button"
-            disabled={activePassageGroup === 0}
-            onClick={() => setActivePassageGroup((index) => index - 1)}
-          >
-            <ChevronLeft size={14} /> Previous part
-          </button>
-          <div>
-            <span>
-              Part {activePassageGroup + 1} of {passageGroups.length}
-            </span>
-            <i>
-              {passageGroups.map((_, index) => (
-                <b
-                  key={index}
-                  className={index <= activePassageGroup ? "is-read" : ""}
-                />
-              ))}
-            </i>
-          </div>
-          <button
-            type="button"
-            disabled={activePassageGroup === passageGroups.length - 1}
-            onClick={() => setActivePassageGroup((index) => index + 1)}
-          >
-            Next part <ArrowRight size={14} />
-          </button>
-        </div>
-      )}
+      {item?.bullets?.length ? (
+        <ul>
+          {item.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}
+        </ul>
+      ) : null}
+      {item?.numbered?.length ? (
+        <ol>
+          {item.numbered.map((entry) => <li key={entry}>{entry}</li>)}
+        </ol>
+      ) : null}
+      {item?.callout ? <blockquote>{item.callout}</blockquote> : null}
     </div>
   );
 }
 
-function LessonExhibits({
-  exhibits = [],
-  variant = "inline",
-  lessonNumber = "",
-}) {
-  const [expandedExhibit, setExpandedExhibit] = useState(null);
-  const sourcedExhibits = exhibits.filter((exhibit) => exhibit.src);
-  const visibleExhibits =
-    variant === "concept-panel"
-      ? Array.from({ length: 2 }, (_, index) => {
-          const exhibit = sourcedExhibits[index] || sourcedExhibits[0];
-          if (exhibit) {
-            return index === 0
-              ? exhibit
-              : {
-                  ...exhibit,
-                  id: `${exhibit.id}-study-${index + 1}`,
-                  label: `Exhibit ${lessonNumber || ""}${lessonNumber ? "." : ""}${index + 1}`,
-                };
-          }
-          return {
-            id: `exhibit-${lessonNumber || "lesson"}-${index + 1}-pending`,
-            label: `Exhibit ${lessonNumber || ""}${lessonNumber ? "." : ""}${index + 1}`,
-            title: "Exhibit awaiting curation",
-            status: "pending",
-          };
-        })
-      : exhibits;
+export default function HermeticCurriculumModule({ module, faculty }) {
+  const navigate = useNavigate();
+  const courseModule = useMemo(
+    () => COURSE_MODULES.find((item) => item.number === module.order),
+    [module.order],
+  );
+  const lessons = courseModule?.number === 3
+    ? VIBRATION_LESSONS
+    : courseModule?.lessons || [];
+
+  const [activeLessonId, setActiveLessonId] = useState(lessons[0]?.id || "");
+  const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const [record, setRecord] = useState(() =>
+    normalizeRecord(null, loadLocalRecord(module.id)),
+  );
+  const [saveState, setSaveState] = useState("idle");
+
+  const { progress, isLoading, saveProgress } = useReclamationModuleProgress(
+    module.id,
+    faculty.slug,
+    module.slug,
+  );
 
   useEffect(() => {
-    if (!expandedExhibit) return undefined;
-    const closeOnEscape = (event) => {
-      if (event.key === "Escape") setExpandedExhibit(null);
-    };
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [expandedExhibit]);
+    if (!isLoading) setRecord(normalizeRecord(progress, loadLocalRecord(module.id)));
+  }, [isLoading, module.id, progress]);
 
-  if (!visibleExhibits.length) return null;
+  useEffect(() => {
+    setActiveLessonId(lessons[0]?.id || "");
+    setActiveSectionIndex(0);
+    setActiveItemIndex(0);
+  }, [module.id, lessons]);
+
+  const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) || lessons[0];
+  const activeLessonIndex = Math.max(0, lessons.findIndex((lesson) => lesson.id === activeLesson?.id));
+  const activeContent = activeLesson
+    ? activeLesson.content || buildHermeticLessonContent({
+        lesson: activeLesson,
+        lessonIndex: activeLessonIndex,
+        lessonCount: lessons.length,
+        curriculumSections: module.curriculumSections,
+      })
+    : null;
+
+  const sections = useMemo(
+    () => buildLessonJourneyTabs({ content: activeContent, lesson: activeLesson }),
+    [activeContent, activeLesson],
+  );
+  const activeSection = sections[activeSectionIndex] || sections[0];
+  const activeItems = activeSection?.items || [];
+  const activeItem = activeItems[activeItemIndex] || activeItems[0] || activeSection;
+  const completionPercent = lessons.length
+    ? Math.round((record.completedLessons.length / lessons.length) * 100)
+    : 0;
+  const sectionPercent = sections.length
+    ? Math.round(((activeSectionIndex + 1) / sections.length) * 100)
+    : 0;
+
+  const persist = async (nextRecord) => {
+    setRecord(nextRecord);
+    saveLocalRecord(module.id, nextRecord);
+    setSaveState("saving");
+    const result = await saveProgress({
+      status: nextRecord.completedLessons.length === lessons.length ? "completed" : "in_progress",
+      activeScene: activeSectionIndex,
+      listenedTrackIds: nextRecord.completedLessons,
+      declarationJson: { curriculum: nextRecord },
+    });
+    setSaveState(result?.error ? "local" : "saved");
+    window.setTimeout(() => setSaveState("idle"), 1800);
+  };
+
+  const updateReflection = (value) => {
+    setRecord((current) => ({
+      ...current,
+      reflections: { ...current.reflections, [activeLesson.id]: value },
+    }));
+  };
+
+  const completeLesson = () => {
+    if (!activeLesson || record.completedLessons.includes(activeLesson.id)) return;
+    persist({
+      ...record,
+      completedLessons: [...record.completedLessons, activeLesson.id],
+    });
+  };
+
+  const nextDestination = activeLesson
+    ? getNextCurriculumDestination({
+        lessons,
+        activeLessonId: activeLesson.id,
+        hallModules: faculty.modules || [],
+        moduleOrder: module.order,
+      })
+    : { type: "hall" };
+
+  const openNextLesson = () => {
+    if (nextDestination.type === "lesson") {
+      setActiveLessonId(nextDestination.lessonId);
+      setActiveSectionIndex(0);
+      setActiveItemIndex(0);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (nextDestination.type === "module") {
+      navigate(`/experiencemode/sovereign/reclamation-university/hermetic-hall/${nextDestination.slug}`);
+      return;
+    }
+    navigate("/experiencemode/sovereign/reclamation-university");
+  };
+
+  if (!activeLesson) return null;
 
   return (
-    <>
-      {variant === "artifact-panel" || variant === "concept-panel" ? (
-        <section
-          className={`hcm-artifact-panel${variant === "concept-panel" ? " is-concept-exhibits" : ""}`}
-          aria-label="Lesson exhibits"
-        >
-          <header>
-            <span><BookOpen size={14} /> Exhibits</span>
-            <small>Two framed studies</small>
-          </header>
-          <div className="hcm-artifact-panel__grid">
-            {visibleExhibits.map((exhibit) =>
-              exhibit.src ? (
-                <button
-                  type="button"
-                  key={exhibit.id}
-                  className="hcm-artifact-slot"
-                  onClick={() => setExpandedExhibit(exhibit)}
-                  aria-label={`Expand ${exhibit.label}: ${exhibit.title}`}
-                >
-                  <img src={exhibit.src} alt={exhibit.alt} />
-                  <span>
-                    <small>{exhibit.label}</small>
-                    <strong>{exhibit.title}</strong>
-                    <i><Maximize2 size={13} /> Expand</i>
-                  </span>
-                </button>
-              ) : (
-                <div key={exhibit.id} className="hcm-artifact-slot is-pending">
-                  <small>{exhibit.label}</small>
-                  <strong>{exhibit.title}</strong>
-                  <span>Awaiting exhibit asset</span>
-                </div>
-              ),
-            )}
-          </div>
-        </section>
-      ) : (
-        <section className="hcm-exhibit-gallery" aria-label="Lesson exhibits">
-          {exhibits.map((exhibit) => (
-            <figure key={exhibit.id} className="hcm-exhibit-card">
-              {exhibit.src ? (
-                <button
-                  type="button"
-                  onClick={() => setExpandedExhibit(exhibit)}
-                  aria-label={`Expand ${exhibit.label}: ${exhibit.title}`}
-                >
-                  <img src={exhibit.src} alt={exhibit.alt} />
-                </button>
-              ) : null}
-              <figcaption>
-                <small>{exhibit.label}</small>
-                <strong>{exhibit.title}</strong>
-                {exhibit.description ? <span>{exhibit.description}</span> : null}
-              </figcaption>
-            </figure>
-          ))}
-        </section>
-      )}
+    <main className="hcm-root" style={{ "--hcm-accent": module.accent || "#c9a461" }}>
+      <div className="hcm-atmosphere" aria-hidden="true" />
 
-      {expandedExhibit && (
-        <div className="hcm-exhibit-lightbox" role="dialog" aria-modal="true" aria-label={expandedExhibit.title}>
-          <button type="button" className="hcm-exhibit-lightbox__close" onClick={() => setExpandedExhibit(null)} aria-label="Close exhibit">
-            <X size={18} />
-          </button>
-          <div className="hcm-exhibit-lightbox__frame">
-            {expandedExhibit.src ? <img src={expandedExhibit.src} alt={expandedExhibit.alt} /> : null}
-            <div>
-              <small>{expandedExhibit.label}</small>
-              <strong>{expandedExhibit.title}</strong>
-              {expandedExhibit.description ? <span>{expandedExhibit.description}</span> : null}
-            </div>
-          </div>
+      <header className="hcm-topbar">
+        <div className="hcm-brand">
+          <span className="hcm-brand-mark"><Library size={22} /></span>
+          <strong>Reclamation<br />University</strong>
         </div>
-      )}
-    </>
+        <div className="hcm-breadcrumbs">
+          <button type="button" onClick={() => navigate("/experiencemode/sovereign/reclamation-university")}>University Hall</button>
+          <ChevronRight size={13} />
+          <button type="button" onClick={() => navigate("/experiencemode/sovereign/reclamation-university/hermetic-hall")}>The Hermetic Hall</button>
+          <ChevronRight size={13} />
+          <strong>{module.title}</strong>
+        </div>
+        <div className="hcm-progress" aria-label={`${completionPercent}% complete`}>
+          <span>Course progress</span>
+          <strong>{completionPercent}%</strong>
+          <i><b style={{ width: `${completionPercent}%` }} /></i>
+        </div>
+      </header>
+
+      <div className="hcm-layout is-lesson-view">
+        <aside className="hcm-campus-nav">
+          <button type="button" className="hcm-campus-seal" onClick={() => navigate("/experiencemode/sovereign/reclamation-university")}>
+            <span><Library size={28} /></span>
+            <strong>RU</strong>
+            <small>Reclamation University</small>
+          </button>
+          <nav>
+            <button type="button" className="is-current"><BookOpen size={17} /><span>Curriculum</span></button>
+            <button type="button" onClick={() => navigate("/experiencemode/sovereign/reclamation-university/hermetic-hall")}><ArrowLeft size={17} /><span>Hermetic Hall</span></button>
+          </nav>
+        </aside>
+
+        <aside className="hcm-index">
+          <p className="hcm-eyebrow">Principle Curriculum</p>
+          <h2>{module.title}</h2>
+          <p>{courseModule?.subtitle || faculty.title}</p>
+          <ol>
+            {lessons.map((lesson) => (
+              <li key={lesson.id}>
+                <button
+                  type="button"
+                  className={activeLessonId === lesson.id ? "is-active" : ""}
+                  onClick={() => {
+                    setActiveLessonId(lesson.id);
+                    setActiveSectionIndex(0);
+                    setActiveItemIndex(0);
+                  }}
+                >
+                  <span>{record.completedLessons.includes(lesson.id) ? <Check size={13} /> : lesson.number}</span>
+                  <div><strong>{lesson.title}</strong><small>{lesson.subtitle || "Curriculum lesson"}</small></div>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </aside>
+
+        <section className="hcm-stage" aria-label="Principle curriculum">
+          <article className={`hcm-reader hcm-section-${activeSectionIndex}`}>
+            <div className="hcm-lesson-hero">
+              <div>
+                <p className="hcm-eyebrow">{faculty.title} · Lesson {activeLesson.number}</p>
+                <h1>{activeLesson.title}</h1>
+                {activeLesson.subtitle && <h2>{activeLesson.subtitle}</h2>}
+              </div>
+              <div className="hcm-lesson-sigil" aria-label={`${sectionPercent}% curriculum progress`}>
+                <span>{String(sectionPercent).padStart(2, "0")}%</span>
+                <b>Curriculum</b>
+              </div>
+            </div>
+
+            {activeLessonContentIntro(activeContent) && (
+              <aside className="hcm-central-question">
+                <span>Central question</span>
+                <p>{activeLessonContentIntro(activeContent)}</p>
+              </aside>
+            )}
+
+            <div className="hcm-guided-reader">
+              <div className="hcm-section-progress">
+                <div>
+                  <span>Curriculum sequence</span>
+                  <strong>Section {activeSectionIndex + 1} of {JOURNEY_TAB_LABELS.length}</strong>
+                </div>
+                <i><b style={{ width: `${sectionPercent}%` }} /></i>
+              </div>
+              <LessonJourneyMap sections={sections} activeIndex={activeSectionIndex} onOpen={(index) => { setActiveSectionIndex(index); setActiveItemIndex(0); }} />
+            </div>
+
+            {activeSection && (
+              <section className="hcm-content-block hcm-active-section is-doctrine">
+                <div className="hcm-learning-grid">
+                  <div className="hcm-teaching-canvas">
+                    <div className="hcm-section-stage">
+                      <div className="hcm-content-label"><SectionIcon index={activeSectionIndex} /> {activeSection.label}</div>
+                      <span>{String(activeSectionIndex + 1).padStart(2, "0")}</span>
+                    </div>
+                    <h3>{activeSection.label}</h3>
+
+                    {activeItems.length ? (
+                      <section className="hcm-journey-subsections is-paged">
+                        <article className="hcm-journey-subsection is-active-card">
+                          <header className="hcm-card-heading">
+                            <span>Page {activeItemIndex + 1} of {activeItems.length}</span>
+                            <h4>{activeItem?.heading || activeSection.label}</h4>
+                          </header>
+                          <LessonSectionBody item={activeItem} />
+                        </article>
+                        {activeItems.length > 1 && (
+                          <nav className="hcm-card-pagination" aria-label={`${activeSection.label} pages`}>
+                            <button type="button" disabled={activeItemIndex === 0} onClick={() => setActiveItemIndex((value) => Math.max(0, value - 1))}><ChevronLeft size={15} /> Previous</button>
+                            <div>
+                              {activeItems.map((item, index) => (
+                                <button key={`${item.heading}-${index}`} type="button" className={index === activeItemIndex ? "is-active" : ""} onClick={() => setActiveItemIndex(index)} aria-label={`Page ${index + 1}`} />
+                              ))}
+                            </div>
+                            <button type="button" disabled={activeItemIndex === activeItems.length - 1} onClick={() => setActiveItemIndex((value) => Math.min(activeItems.length - 1, value + 1))}>Next <ChevronRight size={15} /></button>
+                          </nav>
+                        )}
+                      </section>
+                    ) : (
+                      <p className="hcm-empty-tab">{getEmptyJourneyTabCopy(activeSection.label, activeLesson)}</p>
+                    )}
+
+                    {activeSection.label === "Reclamation" && (
+                      <ReclamationLessonMedia lesson={activeLesson} contextBody={activeSection.body} referenceAnnotations={module.lyricAnchors || []} />
+                    )}
+
+                    {activeSection.label === "Reflection" && (
+                      <label className="hcm-inline-reflection">
+                        <span>Guided reflection</span>
+                        <textarea value={record.reflections[activeLesson.id] || ""} placeholder="What does this principle reveal in your experience?" onChange={(event) => updateReflection(event.target.value)} onBlur={() => persist(record)} />
+                        <small>Saved with your lesson progress</small>
+                      </label>
+                    )}
+
+                    {activeSection.label === "Artifact" && (
+                      <section className="hcm-lesson-artifact">
+                        <span>Artifact</span>
+                        <h4>Preserve what you are carrying forward</h4>
+                        <p>Create a durable record of the insight, evidence, or decision you want beyond this lesson.</p>
+                        <textarea value={record.artifact[activeLesson.id] || ""} placeholder="Create your artifact…" onChange={(event) => setRecord((current) => ({ ...current, artifact: { ...current.artifact, [activeLesson.id]: event.target.value } }))} onBlur={() => persist(record)} />
+                      </section>
+                    )}
+                  </div>
+
+                  <aside className="hcm-insight-stack">
+                    <section className="hcm-key-insight">
+                      <span><Sparkles size={15} /> {activeSection.label}</span>
+                      <h4>{activeItem?.heading || activeSection.label}</h4>
+                      <p>{String(activeItem?.body || activeSection.body || "").split(/\n{2,}/)[0]}</p>
+                    </section>
+                    <section className="hcm-pattern-gallery">
+                      <article><span>01</span><p>Understand the principle.</p></article>
+                      <article><span>02</span><p>Observe its expression.</p></article>
+                      <article><span>03</span><p>Translate it into practice.</p></article>
+                    </section>
+                  </aside>
+                </div>
+                <JourneyProcessDiagram label={activeSection.label} />
+              </section>
+            )}
+
+            <div className="hcm-section-controls">
+              <button type="button" className="hcm-secondary" disabled={activeSectionIndex === 0} onClick={() => { setActiveSectionIndex((value) => value - 1); setActiveItemIndex(0); }}><ChevronLeft size={15} /> Previous</button>
+              {activeSectionIndex < sections.length - 1 ? (
+                <button type="button" className="hcm-primary" onClick={() => { setActiveSectionIndex((value) => value + 1); setActiveItemIndex(0); }}>Continue to {sections[activeSectionIndex + 1]?.label} <ArrowRight size={15} /></button>
+              ) : (
+                <button type="button" className="hcm-primary" onClick={completeLesson}>Complete Lesson <Check size={15} /></button>
+              )}
+            </div>
+
+            <footer className="hcm-reader-footer">
+              <span>{saveState === "saving" ? "Saving…" : saveState === "saved" ? "Progress saved" : saveState === "local" ? "Saved locally" : ""}</span>
+              <button type="button" className="hcm-primary hcm-next-lesson" onClick={openNextLesson}>{getCurriculumAdvanceLabel(nextDestination)} <ArrowRight size={15} /></button>
+            </footer>
+          </article>
+        </section>
+      </div>
+    </main>
   );
 }
 
-// The remainder of this component remains the dedicated Hermetic curriculum
-// renderer. Its lesson content, persistence, exhibits, reflection, protocol,
-// artifact, and summary views are intentionally preserved while the journey
-// navigation above now exposes the canonical 11-section sequence.
+function activeLessonContentIntro(content) {
+  return content?.intro || content?.centralQuestion || "";
+}
