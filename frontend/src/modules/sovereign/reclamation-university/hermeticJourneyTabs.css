@@ -1,46 +1,57 @@
 .hcm-guided-reader {
+  display: grid;
+  grid-template-columns: minmax(190px, 235px) minmax(0, 1fr);
   margin: 1.25rem 0 1.5rem;
   border: 1px solid rgba(215, 166, 74, 0.2);
   background: rgba(12, 9, 7, 0.72);
+  overflow: hidden;
 }
 
 .hcm-section-progress {
+  grid-column: 1 / -1;
   padding: 0.8rem 1rem 0.7rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .hcm-section-steps {
-  display: grid;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
   gap: 0;
-  overflow: visible;
-  border: 0;
-  background: transparent;
+  min-width: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.18);
 }
 
 .hcm-section-steps button {
   position: relative;
-  min-width: 0;
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  align-items: center;
   min-height: 58px;
-  padding: 0.85rem 0.35rem 0.75rem;
+  padding: 0.72rem 0.8rem;
   border: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
   border-radius: 0;
   background: transparent;
-  color: rgba(247, 239, 228, 0.56);
-  text-align: center;
+  color: rgba(247, 239, 228, 0.52);
+  text-align: left;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease;
 }
 
 .hcm-section-steps button:last-child {
-  border-right: 0;
+  border-bottom: 0;
 }
 
 .hcm-section-steps button::after {
   position: absolute;
+  top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  height: 2px;
+  left: auto;
+  width: 2px;
+  height: auto;
   content: "";
   background: transparent;
   box-shadow: none;
@@ -53,7 +64,7 @@
 
 .hcm-section-steps button.is-active {
   color: #f7efe4;
-  background: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 7%, transparent);
+  background: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 8%, transparent);
 }
 
 .hcm-section-steps button.is-active::after {
@@ -67,7 +78,7 @@
 
 .hcm-section-steps button > span {
   display: block;
-  margin-bottom: 0.2rem;
+  margin: 0;
   color: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 72%, rgba(247, 239, 228, 0.45));
   font-size: 0.55rem;
   font-weight: 700;
@@ -77,16 +88,15 @@
 .hcm-section-steps button strong {
   display: block;
   overflow: hidden;
-  font-size: clamp(0.55rem, 0.67vw, 0.72rem);
+  font-size: clamp(0.62rem, 0.72vw, 0.76rem);
   font-weight: 700;
   letter-spacing: 0.025em;
   line-height: 1.2;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-/* Reclamation and 2026 Lens are intentionally explicit in the canonical
-   curriculum; do not rename either to an internal renderer label. */
+/* The canonical curriculum has eleven sections. Reclamation and 2026 Lens
+   remain explicit labels throughout the navigation and content. */
 .hcm-section-steps button:nth-child(6) strong,
 .hcm-section-steps button:nth-child(7) strong {
   white-space: normal;
@@ -110,6 +120,7 @@
 .hcm-journey-subsections {
   display: grid;
   gap: 1.15rem;
+  min-width: 0;
 }
 
 .hcm-journey-subsections.is-paged {
@@ -279,28 +290,62 @@
   outline: none;
 }
 
-@media (max-width: 1100px) {
-  .hcm-section-steps {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    scrollbar-width: thin;
+/* The curriculum moves horizontally through the reading stage while the
+   eleven section controls remain stacked vertically as a persistent index. */
+@media (max-width: 900px) {
+  .hcm-guided-reader {
+    grid-template-columns: minmax(155px, 190px) minmax(0, 1fr);
   }
 
   .hcm-section-steps button {
-    flex: 0 0 118px;
-    scroll-snap-align: start;
+    grid-template-columns: 1.8rem minmax(0, 1fr);
+    min-height: 54px;
+    padding-inline: 0.65rem;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 680px) {
+  .hcm-guided-reader {
+    grid-template-columns: minmax(118px, 31vw) minmax(0, 1fr);
+  }
+
   .hcm-section-progress {
-    padding-inline: 0.75rem;
+    padding-inline: 0.7rem;
   }
 
   .hcm-section-steps button {
-    flex-basis: 104px;
-    min-height: 54px;
-    padding-inline: 0.35rem;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    min-height: 50px;
+    padding: 0.55rem 0.6rem;
+  }
+
+  .hcm-section-steps button > span {
+    margin-bottom: 0.12rem;
+  }
+
+  .hcm-section-steps button strong {
+    white-space: normal;
+    font-size: 0.58rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hcm-guided-reader {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .hcm-section-steps button {
+    min-height: 46px;
+    padding: 0.5rem;
+  }
+
+  .hcm-section-steps button strong {
+    font-size: 0.54rem;
+    line-height: 1.15;
+  }
+
+  .hcm-section-steps button > span {
+    font-size: 0.48rem;
   }
 }
