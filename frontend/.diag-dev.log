@@ -28,3 +28,507 @@ Port 3000 is in use, trying another one...
   ➜  Network: use --host to expose
 1:09:02 AM [vite] (client) [optimizer] scanning dependencies...
 1:09:05 AM [vite] (client) [optimizer] bundling dependencies...
+1:12:52 AM [vite] (client) page reload public/coming-soon.html
+1:14:05 AM [vite] (client) [console.warn] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+1:14:31 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:14:31 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:14:31 AM [vite] (client) [console.error] The above error occurred in the <VibrationModuleExperience> component:
+
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)
+    at ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)
+    at ProtectedRoute (http://localhost:3001/src/App.jsx:99:27)
+    at RenderedRoute (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)
+    at Routes (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)
+    at AppRoutes (http://localhost:3001/src/App.jsx:163:19)
+    at Suspense
+    at AppWithBackground (http://localhost:3001/src/App.jsx:833:19)
+    at Router (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)
+    at BrowserRouter (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)
+    at ErrorBoundary (http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)
+    at App
+    at AudioProvider (http://localhost:3001/src/context/audioprovider.jsx:19:33)
+    at AuthProvider (http://localhost:3001/src/context/AuthContext.jsx:53:32)
+    at GoogleOAuthProvider (http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+1:14:31 AM [vite] (client) [console.error] Error caught by boundary: ReferenceError: Accordion is not defined
+    at http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:65
+    at Array.map (<anonymous>)
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:27)
+    at renderWithHooks (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:9632:19)
+    at updateFunctionComponent 
+(http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:12122:19)
+    at beginWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:13096:13)
+    at beginWork$1 (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15982:12)
+    at performUnitOfWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15568:12)
+    at workLoopSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15517:36)
+    at renderRootSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15500:6) 
+{"componentStack":"\n    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)\n    at 
+ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)\n    at ProtectedRoute 
+(http://localhost:3001/src/App.jsx:99:27)\n    at RenderedRoute 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)\n    at Routes 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)\n    at AppRoutes 
+(http://localhost:3001/src/App.jsx:163:19)\n    at Suspense\n    at AppWithBackground 
+(http://localhost:3001/src/App.jsx:833:19)\n    at Router 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)\n    at BrowserRouter 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)\n    at ErrorBoundary 
+(http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)\n    at App\n    at AudioProvider 
+(http://localhost:3001/src/context/audioprovider.jsx:19:33)\n    at AuthProvider 
+(http://localhost:3001/src/context/AuthContext.jsx:53:32)\n    at GoogleOAuthProvider 
+(http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)"}
+1:14:33 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:14:33 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:14:33 AM [vite] (client) [console.error] The above error occurred in the <VibrationModuleExperience> component:
+
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)
+    at ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)
+    at ProtectedRoute (http://localhost:3001/src/App.jsx:99:27)
+    at RenderedRoute (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)
+    at Routes (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)
+    at AppRoutes (http://localhost:3001/src/App.jsx:163:19)
+    at Suspense
+    at AppWithBackground (http://localhost:3001/src/App.jsx:833:19)
+    at Router (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)
+    at BrowserRouter (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)
+    at ErrorBoundary (http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)
+    at App
+    at AudioProvider (http://localhost:3001/src/context/audioprovider.jsx:19:33)
+    at AuthProvider (http://localhost:3001/src/context/AuthContext.jsx:53:32)
+    at GoogleOAuthProvider (http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+1:14:33 AM [vite] (client) [console.error] Error caught by boundary: ReferenceError: Accordion is not defined
+    at http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:65
+    at Array.map (<anonymous>)
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:27)
+    at renderWithHooks (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:9632:19)
+    at updateFunctionComponent 
+(http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:12122:19)
+    at beginWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:13096:13)
+    at beginWork$1 (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15982:12)
+    at performUnitOfWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15568:12)
+    at workLoopSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15517:36)
+    at renderRootSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15500:6) 
+{"componentStack":"\n    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)\n    at 
+ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)\n    at ProtectedRoute 
+(http://localhost:3001/src/App.jsx:99:27)\n    at RenderedRoute 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)\n    at Routes 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)\n    at AppRoutes 
+(http://localhost:3001/src/App.jsx:163:19)\n    at Suspense\n    at AppWithBackground 
+(http://localhost:3001/src/App.jsx:833:19)\n    at Router 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)\n    at BrowserRouter 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)\n    at ErrorBoundary 
+(http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)\n    at App\n    at AudioProvider 
+(http://localhost:3001/src/context/audioprovider.jsx:19:33)\n    at AuthProvider 
+(http://localhost:3001/src/context/AuthContext.jsx:53:32)\n    at GoogleOAuthProvider 
+(http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)"}
+1:14:39 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:14:39 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:14:39 AM [vite] (client) [console.error] The above error occurred in the <VibrationModuleExperience> component:
+
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)
+    at ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)
+    at ProtectedRoute (http://localhost:3001/src/App.jsx:99:27)
+    at RenderedRoute (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)
+    at Routes (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)
+    at AppRoutes (http://localhost:3001/src/App.jsx:163:19)
+    at Suspense
+    at AppWithBackground (http://localhost:3001/src/App.jsx:833:19)
+    at Router (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)
+    at BrowserRouter (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)
+    at ErrorBoundary (http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)
+    at App
+    at AudioProvider (http://localhost:3001/src/context/audioprovider.jsx:19:33)
+    at AuthProvider (http://localhost:3001/src/context/AuthContext.jsx:53:32)
+    at GoogleOAuthProvider (http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+1:14:39 AM [vite] (client) [console.error] Error caught by boundary: ReferenceError: Accordion is not defined
+    at http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:65
+    at Array.map (<anonymous>)
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:27)
+    at renderWithHooks (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:9632:19)
+    at updateFunctionComponent 
+(http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:12122:19)
+    at beginWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:13096:13)
+    at beginWork$1 (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15982:12)
+    at performUnitOfWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15568:12)
+    at workLoopSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15517:36)
+    at renderRootSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15500:6) 
+{"componentStack":"\n    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)\n    at 
+ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)\n    at ProtectedRoute 
+(http://localhost:3001/src/App.jsx:99:27)\n    at RenderedRoute 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)\n    at Routes 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)\n    at AppRoutes 
+(http://localhost:3001/src/App.jsx:163:19)\n    at Suspense\n    at AppWithBackground 
+(http://localhost:3001/src/App.jsx:833:19)\n    at Router 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)\n    at BrowserRouter 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)\n    at ErrorBoundary 
+(http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)\n    at App\n    at AudioProvider 
+(http://localhost:3001/src/context/audioprovider.jsx:19:33)\n    at AuthProvider 
+(http://localhost:3001/src/context/AuthContext.jsx:53:32)\n    at GoogleOAuthProvider 
+(http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)"}
+1:15:18 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:15:18 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:15:18 AM [vite] (client) [console.error] The above error occurred in the <VibrationModuleExperience> component:
+
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)
+    at ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)
+    at ProtectedRoute (http://localhost:3001/src/App.jsx:99:27)
+    at RenderedRoute (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)
+    at Routes (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)
+    at AppRoutes (http://localhost:3001/src/App.jsx:163:19)
+    at Suspense
+    at AppWithBackground (http://localhost:3001/src/App.jsx:833:19)
+    at Router (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)
+    at BrowserRouter (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)
+    at ErrorBoundary (http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)
+    at App
+    at AudioProvider (http://localhost:3001/src/context/audioprovider.jsx:19:33)
+    at AuthProvider (http://localhost:3001/src/context/AuthContext.jsx:53:32)
+    at GoogleOAuthProvider (http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+1:15:18 AM [vite] (client) [console.error] Error caught by boundary: ReferenceError: Accordion is not defined
+    at http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:65
+    at Array.map (<anonymous>)
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:27)
+    at renderWithHooks (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:9632:19)
+    at updateFunctionComponent 
+(http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:12122:19)
+    at beginWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:13096:13)
+    at beginWork$1 (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15982:12)
+    at performUnitOfWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15568:12)
+    at workLoopSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15517:36)
+    at renderRootSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15500:6) 
+{"componentStack":"\n    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)\n    at 
+ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)\n    at ProtectedRoute 
+(http://localhost:3001/src/App.jsx:99:27)\n    at RenderedRoute 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)\n    at Routes 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)\n    at AppRoutes 
+(http://localhost:3001/src/App.jsx:163:19)\n    at Suspense\n    at AppWithBackground 
+(http://localhost:3001/src/App.jsx:833:19)\n    at Router 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)\n    at BrowserRouter 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)\n    at ErrorBoundary 
+(http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)\n    at App\n    at AudioProvider 
+(http://localhost:3001/src/context/audioprovider.jsx:19:33)\n    at AuthProvider 
+(http://localhost:3001/src/context/AuthContext.jsx:53:32)\n    at GoogleOAuthProvider 
+(http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)"}
+1:23:59 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:23:59 AM [vite] (client) [Unhandled error] ReferenceError: Accordion is not defined
+ > src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1211:17
+    1209 |              <div className="rux-grid-2">
+    1210 |                {CONCEPTS.map((c, i) => (
+    1211 |                  <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
+         |                   ^
+    1212 |                    audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
+    1213 |                    onAudit={(v) => setAudits({ ...audits, [c.n]: v })}
+ > map src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:1210:24
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+
+1:23:59 AM [vite] (client) [console.error] The above error occurred in the <VibrationModuleExperience> component:
+
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)
+    at ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)
+    at ProtectedRoute (http://localhost:3001/src/App.jsx:99:27)
+    at RenderedRoute (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)
+    at Routes (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)
+    at AppRoutes (http://localhost:3001/src/App.jsx:163:19)
+    at Suspense
+    at AppWithBackground (http://localhost:3001/src/App.jsx:833:19)
+    at Router (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)
+    at BrowserRouter (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)
+    at ErrorBoundary (http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)
+    at App
+    at AudioProvider (http://localhost:3001/src/context/audioprovider.jsx:19:33)
+    at AuthProvider (http://localhost:3001/src/context/AuthContext.jsx:53:32)
+    at GoogleOAuthProvider (http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+1:23:59 AM [vite] (client) [console.error] Error caught by boundary: ReferenceError: Accordion is not defined
+    at http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:65
+    at Array.map (<anonymous>)
+    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:3577:27)
+    at renderWithHooks (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:9632:19)
+    at updateFunctionComponent 
+(http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:12122:19)
+    at beginWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:13096:13)
+    at beginWork$1 (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15982:12)
+    at performUnitOfWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15568:12)
+    at workLoopSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15517:36)
+    at renderRootSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15500:6) 
+{"componentStack":"\n    at VibrationModuleExperience 
+(http://localhost:3001/src/modules/sovereign/reclamation-university/VibrationModuleExperience.jsx:2200:53)\n    at 
+ReclamationModulePage (http://localhost:3001/src/pages/ReclamationModulePage.jsx:37:19)\n    at ProtectedRoute 
+(http://localhost:3001/src/App.jsx:99:27)\n    at RenderedRoute 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4012:26)\n    at Routes 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4643:19)\n    at AppRoutes 
+(http://localhost:3001/src/App.jsx:163:19)\n    at Suspense\n    at AppWithBackground 
+(http://localhost:3001/src/App.jsx:833:19)\n    at Router 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)\n    at BrowserRouter 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)\n    at ErrorBoundary 
+(http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)\n    at App\n    at AudioProvider 
+(http://localhost:3001/src/context/audioprovider.jsx:19:33)\n    at AuthProvider 
+(http://localhost:3001/src/context/AuthContext.jsx:53:32)\n    at GoogleOAuthProvider 
+(http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)"}
+1:24:08 AM [vite] (client) [console.warn] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+1:24:21 AM [vite] (client) [console.error] {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the 
+table 'public.tag_dictionary' in the schema cache"}
+1:24:21 AM [vite] (client) [console.error] {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the 
+table 'public.tag_dictionary' in the schema cache"}
+1:24:22 AM [vite] (client) [console.error] {"code":"PGRST205","details":null,"hint":"Perhaps you meant the table 
+'public.visual_presets'","message":"Could not find the table 'public.vibes_and_scribes' in the schema cache"}
+1:25:14 AM [vite] (client) [console.warn] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+1:25:24 AM [vite] (client) [console.error] {"code":"42703","details":null,"hint":null,"message":"column tracks.act_id 
+does not exist"}
+1:25:35 AM [vite] (client) [console.warn] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+1:25:49 AM [vite] (client) [console.warn] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+1:26:05 AM [vite] (client) [console.error] Visualizer playback failed. AbortError: The play() request was interrupted 
+by a new load request.
+1:26:05 AM [vite] (client) [console.error] Visualizer playback failed. AbortError: The play() request was interrupted 
+by a call to pause().
+1:26:28 AM [vite] (client) [console.warn] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+1:35:20 AM [vite] (client) hmr update /src/index.css
+1:35:27 AM [vite] (client) hmr update /src/index.css
+1:35:46 AM [vite] (client) hmr update /src/components/layout/AppShell.jsx, /src/index.css
+1:35:50 AM [vite] (client) hmr update /src/components/layout/AppShell.jsx, /src/index.css
+1:36:00 AM [vite] (client) hmr update /src/pages/ActNavigation.jsx, /src/index.css
+1:36:08 AM [vite] (client) hmr update /src/pages/ActNavigation.jsx, /src/index.css
+1:36:12 AM [vite] (client) hmr update /src/App.jsx, /src/index.css
+1:36:12 AM [vite] (client) [Unhandled error] ReferenceError: Journal is not defined
+ > AppRoutes src/App.jsx:406:13
+    404 |          element={
+    405 |            <ProtectedRoute>
+    406 |              <Journal />
+        |               ^
+    407 |            </ProtectedRoute>
+    408 |          }
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+ > performUnitOfWork ../node_modules/react-dom/cjs/react-dom.development.js:26596:11
+ > workLoopSync ../node_modules/react-dom/cjs/react-dom.development.js:26505:4
+
+1:36:12 AM [vite] (client) [Unhandled error] ReferenceError: Journal is not defined
+ > AppRoutes src/App.jsx:406:13
+    404 |          element={
+    405 |            <ProtectedRoute>
+    406 |              <Journal />
+        |               ^
+    407 |            </ProtectedRoute>
+    408 |          }
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom.development.js:15486:17
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom.development.js:19617:19
+ > beginWork ../node_modules/react-dom/cjs/react-dom.development.js:21640:15
+ > HTMLUnknownElement.callCallback ../node_modules/react-dom/cjs/react-dom.development.js:4164:13
+ > Object.invokeGuardedCallbackDev ../node_modules/react-dom/cjs/react-dom.development.js:4213:15
+ > invokeGuardedCallback ../node_modules/react-dom/cjs/react-dom.development.js:4277:30
+ > beginWork$1 ../node_modules/react-dom/cjs/react-dom.development.js:27490:6
+ > performUnitOfWork ../node_modules/react-dom/cjs/react-dom.development.js:26596:11
+ > workLoopSync ../node_modules/react-dom/cjs/react-dom.development.js:26505:4
+
+1:36:12 AM [vite] (client) [console.error] The above error occurred in the <AppRoutes> component:
+
+    at AppRoutes (http://localhost:3001/src/App.jsx?t=1786858572105:161:19)
+    at Suspense
+    at AppWithBackground (http://localhost:3001/src/App.jsx?t=1786858572105:831:19)
+    at Router (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)
+    at BrowserRouter (http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)
+    at ErrorBoundary (http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)
+    at App
+    at AudioProvider (http://localhost:3001/src/context/audioprovider.jsx:19:33)
+    at AuthProvider (http://localhost:3001/src/context/AuthContext.jsx:53:32)
+    at GoogleOAuthProvider (http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+1:36:12 AM [vite] (client) [console.error] Error caught by boundary: ReferenceError: Journal is not defined
+    at AppRoutes (http://localhost:3001/src/App.jsx?t=1786858572105:766:89)
+    at renderWithHooks (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:9632:19)
+    at updateFunctionComponent 
+(http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:12122:19)
+    at beginWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:13096:13)
+    at beginWork$1 (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15982:12)
+    at performUnitOfWork (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15568:12)
+    at workLoopSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15517:36)
+    at renderRootSync (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15500:6)
+    at recoverFromConcurrentError 
+(http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15193:21)
+    at performSyncWorkOnRoot (http://localhost:3001/node_modules/.vite/deps/react-dom-rJZxWvwj.js?v=1aaf8ad6:15304:19) 
+{"componentStack":"\n    at AppRoutes (http://localhost:3001/src/App.jsx?t=1786858572105:161:19)\n    at Suspense\n    
+at AppWithBackground (http://localhost:3001/src/App.jsx?t=1786858572105:831:19)\n    at Router 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:4595:29)\n    at BrowserRouter 
+(http://localhost:3001/node_modules/.vite/deps/react-router-dom.js?v=fec607cd:7020:26)\n    at ErrorBoundary 
+(http://localhost:3001/src/components/ErrorBoundary.jsx:9:3)\n    at App\n    at AudioProvider 
+(http://localhost:3001/src/context/audioprovider.jsx:19:33)\n    at AuthProvider 
+(http://localhost:3001/src/context/AuthContext.jsx:53:32)\n    at GoogleOAuthProvider 
+(http://localhost:3001/node_modules/.vite/deps/@react-oauth_google.js?v=37c2f758:38:32)"}
+1:36:15 AM [vite] (client) hmr update /src/App.jsx, /src/index.css
+1:36:18 AM [vite] (client) hmr update /src/index.css

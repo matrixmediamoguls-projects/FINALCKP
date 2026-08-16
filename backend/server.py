@@ -201,22 +201,6 @@ class ReflectionLog(BaseModel):
     items: dict  # {item_id: bool}
     updated_at: str
 
-class JournalEntryCreate(BaseModel):
-    title: str
-    content: str
-    act: Optional[int] = None
-
-class JournalEntry(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    id: str
-    user_id: str
-    title: str
-    content: str
-    act: Optional[int] = None
-    created_at: str
-    updated_at: str
-
-
 # ==================== HELPER FUNCTIONS ====================
 
 def hash_password(password: str) -> str:
@@ -616,73 +600,6 @@ async def update_reflection(item: ReflectionItem, request: Request):
             "items": {item.item_id: item.checked},
             "updated_at": datetime.now(timezone.utc).isoformat()
         }).execute()
-    
-    return {"success": True}
-
-
-# ==================== JOURNAL ENDPOINTS ====================
-
-@api_router.get("/journal", response_model=List[JournalEntry])
-async def get_journal_entries(request: Request):
-    user = await get_current_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    
-    client = await get_db()
-    res = await client.table("journal_entries").select("*").eq("user_id", user["user_id"]).order("created_at", desc=True).limit(100).execute()
-    
-    return res.data
-
-@api_router.post("/journal", response_model=JournalEntry)
-async def create_journal_entry(entry: JournalEntryCreate, request: Request):
-    user = await get_current_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    
-    entry_doc = {
-        "id": str(uuid.uuid4()),
-        "user_id": user["user_id"],
-        "title": entry.title,
-        "content": entry.content,
-        "act": entry.act,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "updated_at": datetime.now(timezone.utc).isoformat()
-    }
-    
-    client = await get_db()
-    await client.table("journal_entries").insert(entry_doc).execute()
-    return JournalEntry(**entry_doc)
-
-@api_router.put("/journal/{entry_id}", response_model=JournalEntry)
-async def update_journal_entry(entry_id: str, entry: JournalEntryCreate, request: Request):
-    user = await get_current_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    
-    client = await get_db()
-    res = await client.table("journal_entries").update({
-        "title": entry.title,
-        "content": entry.content,
-        "act": entry.act,
-        "updated_at": datetime.now(timezone.utc).isoformat()
-    }).eq("id", entry_id).eq("user_id", user["user_id"]).execute()
-    
-    if not res.data:
-        raise HTTPException(status_code=404, detail="Entry not found")
-    
-    return JournalEntry(**res.data[0])
-
-@api_router.delete("/journal/{entry_id}")
-async def delete_journal_entry(entry_id: str, request: Request):
-    user = await get_current_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    
-    client = await get_db()
-    res = await client.table("journal_entries").delete().eq("id", entry_id).eq("user_id", user["user_id"]).execute()
-    
-    if not res.data:
-        raise HTTPException(status_code=404, detail="Entry not found")
     
     return {"success": True}
 

@@ -1,6 +1,6 @@
 """
 Chroma Key Protocol - Backend API Tests v3
-Tests for: Auth, License, Payment, Progress, Reflections, Journal, Protocol Engine
+Tests for: Auth, License, Payment, Progress, Reflections, Protocol Engine
 """
 import pytest
 import requests
@@ -123,43 +123,6 @@ class TestAuthenticatedEndpoints:
         data = response.json()
         assert data.get("success") == True
         print("Reflection update success")
-    
-    def test_journal_crud(self, auth_session_admin):
-        """Test Journal CRUD operations"""
-        # CREATE
-        create_response = auth_session_admin.post(f"{BASE_URL}/api/journal", json={
-            "title": "TEST_Journal Entry",
-            "content": "Test content for journal",
-            "act": 1
-        })
-        assert create_response.status_code == 200
-        created = create_response.json()
-        assert "id" in created
-        entry_id = created["id"]
-        print(f"Journal created: {entry_id}")
-        
-        # READ
-        read_response = auth_session_admin.get(f"{BASE_URL}/api/journal")
-        assert read_response.status_code == 200
-        entries = read_response.json()
-        assert isinstance(entries, list)
-        print(f"Journal entries count: {len(entries)}")
-        
-        # UPDATE
-        update_response = auth_session_admin.put(f"{BASE_URL}/api/journal/{entry_id}", json={
-            "title": "TEST_Updated Journal Entry",
-            "content": "Updated content",
-            "act": 1
-        })
-        assert update_response.status_code == 200
-        updated = update_response.json()
-        assert updated["title"] == "TEST_Updated Journal Entry"
-        print("Journal updated successfully")
-        
-        # DELETE
-        delete_response = auth_session_admin.delete(f"{BASE_URL}/api/journal/{entry_id}")
-        assert delete_response.status_code == 200
-        print("Journal deleted successfully")
     
     def test_logout(self, auth_session_admin):
         """Test logout endpoint"""

@@ -31,17 +31,6 @@ CREATE TABLE reflections (
     UNIQUE(user_id, act)
 );
 
--- 3. journal_entries
-CREATE TABLE journal_entries (
-    id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(user_id) ON DELETE CASCADE,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL,
-    act INTEGER,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
 -- 4. payment_transactions
 CREATE TABLE payment_transactions (
     session_id TEXT PRIMARY KEY,

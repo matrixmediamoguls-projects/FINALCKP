@@ -269,46 +269,6 @@ class TestLicenseValidation:
         print(f"Invalid license key response: {response.status_code}")
 
 
-class TestJournalAPI:
-    """Tests for journal functionality"""
-    
-    @pytest.fixture
-    def auth_session(self):
-        """Get authenticated session"""
-        session = requests.Session()
-        response = session.post(f"{BASE_URL}/api/auth/login", json={
-            "email": ADMIN_EMAIL,
-            "password": ADMIN_PASSWORD
-        })
-        assert response.status_code == 200
-        return session
-    
-    def test_journal_crud(self, auth_session):
-        """Test journal CRUD operations"""
-        # Create
-        create_response = auth_session.post(f"{BASE_URL}/api/journal", json={
-            "title": "TEST_Journal Entry",
-            "content": "Test content for journal",
-            "act": 1
-        })
-        assert create_response.status_code == 200
-        entry = create_response.json()
-        entry_id = entry["id"]
-        print(f"Created journal entry: {entry_id}")
-        
-        # Read
-        list_response = auth_session.get(f"{BASE_URL}/api/journal")
-        assert list_response.status_code == 200
-        entries = list_response.json()
-        assert any(e["id"] == entry_id for e in entries)
-        print(f"Journal list contains {len(entries)} entries")
-        
-        # Delete
-        delete_response = auth_session.delete(f"{BASE_URL}/api/journal/{entry_id}")
-        assert delete_response.status_code == 200
-        print(f"Deleted journal entry: {entry_id}")
-
-
 class TestReflectionsAPI:
     """Tests for reflections functionality"""
     

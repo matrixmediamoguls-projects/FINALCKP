@@ -21,7 +21,6 @@ const LaunchModule = lazy(() => import('./pages/LaunchModule'));
 const Reclamation_User_Journey = lazy(() => import('./pages/Reclamation_User_Journey'));
 const ActPage = lazy(() => import('./pages/ActPage'));
 const LockedAct = lazy(() => import('./pages/LockedAct'));
-const Journal = lazy(() => import('./pages/Journal'));
 const SpinWheel = lazy(() => import('./pages/SpinWheel'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
 const ProtocolChat = lazy(() => import('./pages/ProtocolChat'));
@@ -394,17 +393,6 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ActPage />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* JOURNAL */}
-
-      <Route
-        path="/journal"
-        element={
-          <ProtectedRoute>
-            <Journal />
           </ProtectedRoute>
         }
       />

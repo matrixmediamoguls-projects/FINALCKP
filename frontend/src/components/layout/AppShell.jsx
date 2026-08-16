@@ -17,7 +17,6 @@ const sidebarNav = [
     path: "/listen",
   },
   { id: "wheel", label: "The Wheel", icon: "\u25CE", path: "/wheel" },
-  { id: "journal", label: "Journal", icon: "\u270E", path: "/journal" },
 ];
 
 const acts = [
@@ -117,7 +116,7 @@ const AppShell = ({ children }) => {
     }
 
     if (currentAct >= 4 && completedActs >= 4) {
-      return { label: "Write Reflection", path: "/journal" };
+      return { label: "Enter Sovereign Mode", path: "/self-directed-sovereign-mode" };
     }
 
     return {

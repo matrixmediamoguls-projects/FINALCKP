@@ -11,7 +11,6 @@ import {
   LockKey,
   Play,
   SignOut,
-  Stack,
   Waveform,
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
@@ -150,7 +149,6 @@ function ActCard({ act }) {
 const commandLinks = [
   { label: 'Elemental Protocols', icon: Circuitry, route: '/acts', active: true },
   { label: 'Archaetypes', icon: ChartLineUp, route: '/experiencemode/sovereign/module/archetype' },
-  { label: 'Archive', icon: Stack, route: '/journal' },
 ];
 
 export default function ActNavigation() {
