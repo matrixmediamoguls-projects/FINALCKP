@@ -321,20 +321,6 @@ export default function RhythmModuleExperience({ faculty, onComplete }) {
           </div>
         </header>
 
-        {/* SEVEN-PRINCIPLE NAVIGATION */}
-        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
-        <ol className="rur-rail" aria-label="Position in the Hermetic Hall">
-          {PRINCIPLES.map((p) => (
-            <li
-              key={p.n}
-              className={`rur-node${p.n === "V" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
-            >
-              <div className="rur-node-row"><span className="rur-node-num">{p.n}</span></div>
-              <div className="rur-node-name">{p.name}</div>
-              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
-            </li>
-          ))}
-        </ol>
 
         {/* SPINE + STAGE */}
         <div className="rur-layout">
@@ -349,15 +335,37 @@ export default function RhythmModuleExperience({ faculty, onComplete }) {
             />
           </div>
 
+          <div className="rur-main">
+        {/* SEVEN-PRINCIPLE NAVIGATION */}
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
+        <ol className="rur-rail" aria-label="Position in the Hermetic Hall">
+          {PRINCIPLES.map((p) => (
+            <li
+              key={p.n}
+              className={`rur-node${p.n === "V" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
+            >
+              <div className="rur-node-row"><span className="rur-node-num">{p.n}</span></div>
+              <div className="rur-node-name">{p.name}</div>
+              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
+            </li>
+          ))}
+        </ol>
+          {/* The lesson identity, stated once, above the stage. */}
+          <header className="rur-lesson">
+            <span className="rur-lesson-badge" aria-hidden="true">V</span>
+            <div className="rur-lesson-body">
+              <h1 className="rur-h1 is-section">RHYTHM</h1>
+              <p className="rur-sub">{RHYTHM_META.subtitle}</p>
+            </div>
+          </header>
+
           <div className="rur-stage" id="rur-stage-panel" role="tabpanel">
             {/* ------------------------------------------------------ 01 INTRO */}
             {currentSection.id === "intro" && (
               <section className="rur-view">
                 <div className="rur-split">
                   <div>
-                    <div className="rur-eyebrow">V — RHYTHM</div>
-                    <h1 className="rur-h1">RHYTHM</h1>
-                    <p className="rur-sub">{RHYTHM_META.subtitle}</p>
+                    <div className="rur-eyebrow">01 — INTRO</div>
                     <p className="rur-question">{INTRO_CONTENT.question}</p>
                     <Blocks blocks={INTRO_CONTENT.blocks} />
                   </div>
@@ -1103,7 +1111,8 @@ export default function RhythmModuleExperience({ faculty, onComplete }) {
             )}
           </div>
         </div>
-      </div>
+                </div>
+</div>
 
       {ceremonyPlaying && (
         <div className="rur-ceremony" role="status" aria-live="polite">

@@ -68,42 +68,13 @@
 .rux-progress-val{font-family:var(--ru-f-hud);font-size:18px;
   color:var(--ru-gold-bright);letter-spacing:.06em;}
 
-/* --------------------------------------------------------------- TAB BAR -- */
-.rux-tabs-wrap{position:sticky;top:0;z-index:20;background:rgba(8,8,11,.94);
-  backdrop-filter:blur(10px);border-bottom:1px solid var(--ru-line);
-  margin:0 calc(var(--ru-s6) * -1);padding:0 var(--ru-s6);}
-.rux-tabs{display:flex;gap:2px;padding:var(--ru-s2) 0;}
-.rux-phase{display:flex;align-items:center;gap:2px;padding-right:var(--ru-s3);
-  margin-right:var(--ru-s2);border-right:1px solid var(--ru-line);}
-.rux-phase:last-child{border-right:none;}
-/* Was 7px rotated vertical text — an illegible smudge. Now a plain lead-in
-   label sharing the one micro-type tier. */
-.rux-phase-tag{font-family:var(--ru-f-hud);font-size:var(--ru-label);
-  letter-spacing:.16em;color:var(--ru-bronze-dim);padding-right:var(--ru-s2);
-  white-space:nowrap;}
-.rux-tab{
-  white-space:nowrap;background:transparent;border:1px solid transparent;
-  color:var(--ru-bronze);font-family:var(--ru-f-read);font-size:var(--ru-caption);
-  font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  padding:8px 13px;cursor:pointer;border-radius:2px;
-  transition:color .2s,border-color .2s,background .2s;
-}
-.rux-tab:hover{color:var(--ru-ivory);border-color:var(--ru-line-2);}
-.rux-tab.is-active{
-  color:var(--ru-gold-bright);border-color:var(--ru-gold);background:rgba(201,162,39,.06);
-  box-shadow:0 0 18px -8px rgba(233,206,114,.55);
-}
-/* Sections you have not reached yet. They stay reachable — the module never
-   actually gated them — so this reads as "not yet" rather than "forbidden". */
-.rux-tab.is-ahead{opacity:.5;}
-
 /* --------------------------------------------------------------- LAYOUT -- */
-.rux-view{padding:var(--ru-s7) 0 var(--ru-s6);animation:hh-enter .45s ease both;}
+.rux-view{padding:0 0 var(--ru-s6);animation:hh-enter .45s ease both;}
 @keyframes hh-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* A hero whose second column carries a figure. Below the hero the reading
    column stands alone rather than leaving half the canvas empty. */
-.rux-hero{display:grid;grid-template-columns:1fr 1fr;gap:var(--ru-s7);align-items:center;}
+.rux-hero{display:grid;grid-template-columns:1fr 1fr;gap:var(--ru-s6);align-items:start;}
 
 /* ------------------------------------------------------------- EXHIBIT --- */
 .rux-exhibit{position:relative;border:1px solid var(--ru-line);
@@ -417,3 +388,7 @@
 }
 /* An open accordion must not stretch its closed neighbour to match. */
 .rux-grid-2.is-top{align-items:start;}
+/* CurriculumSpine reads these legacy names; alias them so it themes to the
+   module accent without keeping a second palette. */
+.rux{ --obsidian-2:var(--ru-bg-2); --accent:var(--ru-accent); }
+.rux-hero-q{ margin-top:0; max-width:24ch; }

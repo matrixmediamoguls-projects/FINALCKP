@@ -306,6 +306,23 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
           </div>
         </header>
 
+
+        <div className="rug-layout">
+          <div className="rug-spine">
+            {/* All eleven sections stay reachable — the master forbids locking
+                educational content behind completion gates. */}
+            <CurriculumSpine
+              activeIndex={activeIndex}
+              maxIndex={CURRICULUM_SECTIONS.length - 1}
+              completedIds={completedIds}
+              onSelect={goToIndex}
+              moduleTitle="VII · Gender"
+              stageId="rug-stage-panel"
+              enforceLocks={false}
+            />
+          </div>
+
+          <div className="rug-main">
         {/* SEVEN-PRINCIPLE NAVIGATION */}
         {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
         <ol className="rug-rail" aria-label="Position in the Hermetic Hall">
@@ -323,21 +340,14 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
             </li>
           ))}
         </ol>
-
-        <div className="rug-layout">
-          <div className="rug-spine">
-            {/* All eleven sections stay reachable — the master forbids locking
-                educational content behind completion gates. */}
-            <CurriculumSpine
-              activeIndex={activeIndex}
-              maxIndex={CURRICULUM_SECTIONS.length - 1}
-              completedIds={completedIds}
-              onSelect={goToIndex}
-              moduleTitle="VII · Gender"
-              stageId="rug-stage-panel"
-              enforceLocks={false}
-            />
-          </div>
+          {/* The lesson identity, stated once, above the stage. */}
+          <header className="rug-lesson">
+            <span className="rug-lesson-badge" aria-hidden="true">VII</span>
+            <div className="rug-lesson-body">
+              <h1 className="rug-h1 is-section">GENDER</h1>
+              <p className="rug-sub">{GENDER_META.subtitle}</p>
+            </div>
+          </header>
 
           <div className="rug-stage" id="rug-stage-panel" role="tabpanel">
             {/* ------------------------------------------------------ 01 INTRO */}
@@ -345,9 +355,7 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
               <section className="rug-view">
                 <div className="rug-split">
                   <div>
-                    <div className="rug-eyebrow">VII · GENDER</div>
-                    <h1 className="rug-h1">GENDER</h1>
-                    <p className="rug-sub">{GENDER_META.subtitle}</p>
+                    <div className="rug-eyebrow">01 — INTRO</div>
                     <p className="rug-question">{INTRO_CONTENT.question}</p>
                     <Blocks blocks={INTRO_CONTENT.blocks} />
                   </div>
@@ -1078,7 +1086,8 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
             )}
           </div>
         </div>
-      </div>
+                </div>
+</div>
 
       {ceremonyPlaying && (
         <div className="rug-ceremony" role="status" aria-live="polite">

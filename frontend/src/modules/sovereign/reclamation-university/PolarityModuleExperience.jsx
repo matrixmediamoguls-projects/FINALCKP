@@ -252,19 +252,6 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
           </div>
         </header>
 
-        {/* SEVEN-PRINCIPLE NAVIGATION */}
-        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
-        <ol className="rup-rail" aria-label="Position in the Hermetic Hall">
-          {PRINCIPLES.map((p) => (
-            <li key={p.n} className={`rup-node${p.n === "IV" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}>
-              <div className="rup-node-row">
-                <span className="rup-node-num">{p.n}</span>
-              </div>
-              <div className="rup-node-name">{p.name}</div>
-              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
-            </li>
-          ))}
-        </ol>
 
         {/* SPINE + STAGE */}
         <div className="rup-layout">
@@ -279,12 +266,33 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
             />
           </div>
 
+          <div className="rup-main">
+        {/* SEVEN-PRINCIPLE NAVIGATION */}
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
+        <ol className="rup-rail" aria-label="Position in the Hermetic Hall">
+          {PRINCIPLES.map((p) => (
+            <li key={p.n} className={`rup-node${p.n === "IV" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}>
+              <div className="rup-node-row">
+                <span className="rup-node-num">{p.n}</span>
+              </div>
+              <div className="rup-node-name">{p.name}</div>
+              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
+            </li>
+          ))}
+        </ol>
+          {/* The lesson identity, stated once, above the stage. */}
+          <header className="rup-lesson">
+            <span className="rup-lesson-badge" aria-hidden="true">IV</span>
+            <div className="rup-lesson-body">
+              <h1 className="rup-h1 is-section">POLARITY</h1>
+              <p className="rup-sub">{POLARITY_META.subtitle}</p>
+            </div>
+          </header>
+
           <div className="rup-stage" id="rup-stage-panel" role="tabpanel">
             {currentSection.id === "intro" && (
               <section className="rup-view">
-                <div className="rup-eyebrow">IV — POLARITY</div>
-                <h1 className="rup-h1">POLARITY</h1>
-                <p className="rup-sub">{POLARITY_META.subtitle}</p>
+                <div className="rup-eyebrow">01 — INTRO</div>
                 <p className="rup-question">{INTRO_CONTENT.question}</p>
                 {INTRO_CONTENT.paragraphs.map((p) => <p className="rup-p" key={p.slice(0, 24)}>{p}</p>)}
 
@@ -687,7 +695,8 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
             )}
           </div>
         </div>
-      </div>
+                </div>
+</div>
 
       {ceremonyPlaying && (
         <div className="rup-ceremony" role="status" aria-live="polite">

@@ -331,20 +331,6 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
           </div>
         </header>
 
-        {/* SEVEN-PRINCIPLE NAVIGATION */}
-        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
-        <ol className="ruc-rail" aria-label="Position in the Hermetic Hall">
-          {PRINCIPLES.map((p) => (
-            <li
-              key={p.n}
-              className={`ruc-node${p.n === "VI" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
-            >
-              <div className="ruc-node-row"><span className="ruc-node-num">{p.n}</span></div>
-              <div className="ruc-node-name">{p.name}</div>
-              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
-            </li>
-          ))}
-        </ol>
 
         <div className="ruc-layout">
           <div className="ruc-spine">
@@ -361,15 +347,37 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
             />
           </div>
 
+          <div className="ruc-main">
+        {/* SEVEN-PRINCIPLE NAVIGATION */}
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
+        <ol className="ruc-rail" aria-label="Position in the Hermetic Hall">
+          {PRINCIPLES.map((p) => (
+            <li
+              key={p.n}
+              className={`ruc-node${p.n === "VI" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
+            >
+              <div className="ruc-node-row"><span className="ruc-node-num">{p.n}</span></div>
+              <div className="ruc-node-name">{p.name}</div>
+              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
+            </li>
+          ))}
+        </ol>
+          {/* The lesson identity, stated once, above the stage. */}
+          <header className="ruc-lesson">
+            <span className="ruc-lesson-badge" aria-hidden="true">VI</span>
+            <div className="ruc-lesson-body">
+              <h1 className="ruc-h1 is-section">CAUSE & EFFECT</h1>
+              <p className="ruc-sub">{CAUSE_EFFECT_META.subtitle}</p>
+            </div>
+          </header>
+
           <div className="ruc-stage" id="ruc-stage-panel" role="tabpanel">
             {/* ------------------------------------------------------ 01 INTRO */}
             {currentSection.id === "intro" && (
               <section className="ruc-view">
                 <div className="ruc-split">
                   <div>
-                    <div className="ruc-eyebrow">VI — CAUSE &amp; EFFECT</div>
-                    <h1 className="ruc-h1">CAUSE &amp; EFFECT</h1>
-                    <p className="ruc-sub">{CAUSE_EFFECT_META.subtitle}</p>
+                    <div className="ruc-eyebrow">01 — INTRO</div>
                     <p className="ruc-question">{INTRO_CONTENT.question}</p>
                     <Blocks blocks={INTRO_CONTENT.blocks} prefix="ruc" />
                   </div>
@@ -1144,7 +1152,8 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
             )}
           </div>
         </div>
-      </div>
+                </div>
+</div>
 
       {ceremonyPlaying && (
         <div className="ruc-ceremony" role="status" aria-live="polite">

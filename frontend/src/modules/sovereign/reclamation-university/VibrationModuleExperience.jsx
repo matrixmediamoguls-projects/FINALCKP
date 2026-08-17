@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from "react"
 import { useNavigate } from "react-router-dom";
 import { loadUserProgress, saveUserProgress } from "../../../lib/supabase/reclamationUniversity";
 import useFooterOffset from "./useFooterOffset";
+import CurriculumSpine from "./CurriculumSpine";
+import { CURRICULUM_SECTIONS } from "./curriculumSections";
 import "./vibrationModuleExperience.css";
 
 /* ============================================================================
@@ -852,7 +854,6 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
   const [saveState, setSaveState] = useState("idle");
   const { play, playing } = useSonicDemo();
   const topRef = useRef(null);
-  const tabRefs = useRef([]);
   const seeded = useRef(false);
   const [rootRef, footRef] = useFooterOffset();
 
@@ -870,9 +871,6 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
     setTab(n);
     setMaxTab((m) => Math.max(m, n));
     if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    // The strip scrolls independently of the page, so the newly selected tab
-    // has to be brought into it or advancing can select something off-screen.
-    tabRefs.current[n]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
   };
 
   const advance = () => {
@@ -884,19 +882,6 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
     go(tab + 1);
   };
 
-  /* Roving focus: the selected tab is the only one in the tab order, so after
-     an arrow key the focus has to follow the selection or it lands nowhere. */
-  const onTabKey = (e) => {
-    let next = null;
-    if (e.key === "ArrowRight") next = Math.min(TABS.length - 1, tab + 1);
-    if (e.key === "ArrowLeft") next = Math.max(0, tab - 1);
-    if (e.key === "Home") next = 0;
-    if (e.key === "End") next = TABS.length - 1;
-    if (next === null) return;
-    e.preventDefault();
-    go(next);
-    tabRefs.current[next]?.focus();
-  };
 
   const toggle = (arr, set, i) => set(arr.includes(i) ? arr.filter((x) => x !== i) : [...arr, i]);
 
@@ -982,15 +967,6 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
     return () => clearTimeout(t);
   }, [reflect, plate, steps, audits, introPick, maxTab, complete, hydrated, work.pct]);
 
-  const phases = useMemo(() => {
-    const out = [];
-    TABS.forEach((t, i) => {
-      const last = out[out.length - 1];
-      if (last && last.phase === t.phase) last.items.push({ ...t, i });
-      else out.push({ phase: t.phase, items: [{ ...t, i }] });
-    });
-    return out;
-  }, []);
 
   /* ------------------------------------------------------------ RENDER --- */
   return (
@@ -1016,55 +992,64 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
           </div>
         </header>
 
-        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. It was
-            previously seven disabled buttons that still showed a pointer and a
-            hover state, promising an interaction that did not exist. */}
-        <ol className="rux-rail" aria-label="Position in the Hermetic Hall">
-          {PRINCIPLES.map((p) => {
-            const active = p.n === "III";
-            return (
-              <li key={p.n}
-                className={`rux-node${active ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
-                aria-current={active ? "step" : undefined}>
-                <div className="rux-node-row">
-                  <span className="rux-node-num">{p.n}</span>
-                  <Sigil kind={p.k} size={16} color={active ? "#FF5545" : "#9D8862"} />
-                </div>
-                <div className="rux-node-name">{p.name}</div>
-                <span className="rux-sr">{`${p.name} — ${p.state}`}</span>
-              </li>
-            );
-          })}
-        </ol>
-
-        {/* TAB NAVIGATION */}
-        <div className="rux-tabs-wrap" ref={topRef}>
-          <div className="rux-tabs ru-scroller" role="tablist" aria-label="Module sections" onKeyDown={onTabKey}>
-            {phases.map((ph) => (
-              <div className="rux-phase" key={ph.phase} role="presentation">
-                <div className="rux-phase-tag" role="presentation">{ph.phase}</div>
-                {ph.items.map((t) => (
-                  <button type="button" key={t.id} id={`rux-tab-${t.id}`} role="tab"
-                    ref={(el) => { tabRefs.current[t.i] = el; }}
-                    aria-selected={tab === t.i} aria-controls={`rux-panel-${t.id}`}
-                    tabIndex={tab === t.i ? 0 : -1}
-                    className={`rux-tab${tab === t.i ? " is-active" : ""}${t.i > maxTab ? " is-ahead" : ""}`}
-                    onClick={() => go(t.i)}>{t.label}</button>
-                ))}
-              </div>
-            ))}
+        {/* SPINE + WORKING COLUMN — the geometry Modules I and II established:
+            a persistent curriculum index on the left, the principle cards on
+            top of the working column, and one large stage beneath them. */}
+        <div className="rux-layout">
+          <div className="rux-spine">
+            <CurriculumSpine
+              sections={CURRICULUM_SECTIONS}
+              activeIndex={tab}
+              maxIndex={maxTab}
+              onSelect={go}
+              moduleTitle="III \u00b7 Vibration"
+              stageId="rux-stage-panel"
+              enforceLocks={false}
+            />
           </div>
-        </div>
+
+          <div className="rux-main">
+            {/* Position in the Hall. The spine navigates; these report. */}
+            <ol className="rux-rail" aria-label="Position in the Hermetic Hall">
+              {PRINCIPLES.map((p) => {
+                const active = p.n === "III";
+                return (
+                  <li
+                    key={p.n}
+                    className={`rux-node${active ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
+                    aria-current={active ? "step" : undefined}
+                  >
+                    <div className="rux-node-row">
+                      <span className="rux-node-num">{p.n}</span>
+                      <Sigil kind={p.k} size={18} color={active ? "#FF5545" : "#9D8862"} />
+                    </div>
+                    <div className="rux-node-name">{p.name}</div>
+                    <span className="ru-sr">{`${p.name} \u2014 ${p.state}`}</span>
+                  </li>
+                );
+              })}
+            </ol>
+
+            {/* The lesson identity, stated once, above the stage. */}
+            <header className="rux-lesson">
+              <span className="rux-lesson-badge" aria-hidden="true">III</span>
+              <div className="rux-lesson-body">
+                <h1 className="rux-h1 is-section">VIBRATION</h1>
+                <p className="rux-sub">Nothing Rests. Everything Moves.</p>
+              </div>
+            </header>
+
+            <div className="rux-stage" id="rux-stage-panel" role="tabpanel" ref={topRef}>
 
         {/* ============================================== TAB I — INTRO ==== */}
         {tab === 0 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-hero">
               <div>
-                <div className="rux-eyebrow">III — VIBRATION</div>
-                <h1 className="rux-h1">Nothing Rests.<br />Everything Moves.</h1>
-                <p className="rux-sub">What is moving inside you right now — and where is it taking you?</p>
+                <div className="rux-eyebrow">01 — INTRO</div>
+                <p className="rux-question rux-hero-q">
+                  What is moving inside you right now — and where is it taking you?
+                </p>
               </div>
               <figure className="rux-field-fig"
                 onMouseEnter={() => setHoverWave(true)} onMouseLeave={() => setHoverWave(false)}>
@@ -1171,8 +1156,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================== TAB II — PRINCIPLE ==== */}
         {tab === 1 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow gold">THE LAW OF VIBRATION</div>
             <blockquote style={{ margin: "0 0 46px", maxWidth: "24ch" }}>
               <p className="rux-axiom">
@@ -1260,8 +1244,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ======================================= TAB III — KEY CONCEPTS === */}
         {tab === 2 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">KEY CONCEPTS</div>
             <h1 className="rux-h1 is-section">Four Operating Principles</h1>
             <p className="rux-p" style={{ marginBottom: 30 }}>
@@ -1288,8 +1271,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ======================================= TAB IV — WHY IT MATTERS == */}
         {tab === 3 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">WHY THIS MATTERS</div>
             <div className="rux-split" style={{ marginBottom: 40 }}>
               <div>
@@ -1341,8 +1323,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ============================================ TAB V — DOMAINS ===== */}
         {tab === 4 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">DOMAINS</div>
             <div className="rux-split" style={{ marginBottom: 30 }}>
               <h1 className="rux-h1 is-section">The Same Movement,<br />Six Systems</h1>
@@ -1390,8 +1371,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ======================================== TAB VI — RECLAMATION ==== */}
         {tab === 5 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">RECLAMATION CASE STUDY</div>
             <div className="rux-split">
               <div>
@@ -1501,8 +1481,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================== TAB VII — 2026 LENS === */}
         {tab === 6 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">2026 LENS</div>
             <div className="rux-split" style={{ marginBottom: 36 }}>
               <h1 className="rux-h1 is-section">The Principle, Running on Current Infrastructure</h1>
@@ -1538,8 +1517,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================= TAB VIII — REFLECTION == */}
         {tab === 7 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">REFLECTION</div>
             <div className="rux-panel accent" style={{ padding: "34px 34px 30px", marginBottom: 22 }}>
               <div className="rux-panel-label" style={{ color: "#D2382C" }}>REFLECTION PROMPT</div>
@@ -1570,8 +1548,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================== TAB IX — PROTOCOL ===== */}
         {tab === 8 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">PROTOCOL — FIELD EXERCISE</div>
             <div className="rux-split" style={{ marginBottom: 40 }}>
               <div>
@@ -1659,8 +1636,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ============================================ TAB X — ARTIFACT ==== */}
         {tab === 9 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow">ARTIFACT</div>
             <div className="rux-split" style={{ marginBottom: 40 }}>
               <div>
@@ -1718,8 +1694,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* =========================================== TAB XI — SUMMARY ===== */}
         {tab === 10 && (
-          <section className="rux-view" role="tabpanel"
-            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+          <section className="rux-view">
             <div className="rux-eyebrow gold">MODULE COMPLETE</div>
             <div className="rux-split" style={{ marginBottom: 44 }}>
               <div>
@@ -1780,6 +1755,9 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
             </div>
           </section>
         )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* PERSISTENT ACTION BAR. Its height is measured and published as

@@ -433,65 +433,266 @@
   outline-offset: 2px;
 }
 
-/* ================================================= PRINCIPLE RIBBON ====== */
-/* Where you are in the Hall — a position report, not navigation. It was
-   previously the heaviest element on the page (seven bordered cards, some as
-   disabled buttons with a pointer cursor and a hover state) while the tab bar
-   that actually moves you through the module was a 10.5px strip. The weight
-   now matches the function. */
+/* ================================================== MODULE SHELL ========= */
+/* The geometry Modules I and II established and every Hall module now shares:
+   a persistent vertical curriculum index on the left, the seven principle
+   cards across the top of the working column, and one large stage beneath
+   them carrying the lesson. Nothing competes with the stage for the centre. */
 
-.rux-rail, .rup-rail, .rur-rail, .ruc-rail, .rug-rail {
-  display: flex;
-  gap: var(--ru-s2);
-  padding: var(--ru-s3) 0;
-  margin: 0;
-  list-style: none;
+.rux-layout,
+.rup-layout,
+.rur-layout,
+.ruc-layout,
+.rug-layout {
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
+  gap: var(--ru-s6);
+  align-items: stretch;
+  padding-top: var(--ru-s5);
 }
-.rux-node, .rup-node, .rur-node, .ruc-node, .rug-node {
-  flex: 1 1 0;
+
+/* The index travels with the learner rather than scrolling away from them.
+   The cell itself stretches so the rule runs the height of the column —
+   otherwise the spine reads as a floating box above an empty gutter. */
+.rux-spine,
+.rup-spine,
+.rur-spine,
+.ruc-spine,
+.rug-spine {
+  align-self: stretch;
   min-width: 0;
-  background: transparent;
-  text-align: left;
+  border-right: 1px solid var(--ru-line);
+  padding-right: var(--ru-s5);
+}
+.rux-spine .rus,
+.rup-spine .rus,
+.rur-spine .rus,
+.ruc-spine .rus,
+.rug-spine .rus {
+  position: sticky;
+  top: var(--ru-s4);
+}
+
+.rux-main,
+.rup-main,
+.rur-main,
+.ruc-main,
+.rug-main { min-width: 0; }
+
+/* ------------------------------------------------ PRINCIPLE CARDS ------- */
+/* Seven cards across the top of the working column. They report position in
+   the Hall; the spine on the left is what actually navigates, so these stay
+   non-interactive and never show a pointer or a hover state. */
+
+.rux-rail,
+.rup-rail,
+.rur-rail,
+.ruc-rail,
+.rug-rail {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border: 1px solid var(--ru-line);
+  border-radius: var(--ru-radius);
+  background: var(--ru-bg-2);
+  margin: 0 0 var(--ru-s5);
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+.rux-node,
+.rup-node,
+.rur-node,
+.ruc-node,
+.rug-node {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--ru-s1);
+  padding: var(--ru-s4) var(--ru-s2);
   border: 0;
-  border-top: 2px solid var(--ru-line-2);
-  border-radius: 0;
-  padding: var(--ru-s2) 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  opacity: .5;
-  color: inherit;
-  cursor: default;
-  transition: border-color .25s, opacity .25s;
-}
-.rux-node.is-done, .rup-node.is-done, .rur-node.is-done, .ruc-node.is-done, .rug-node.is-done { opacity: .75; border-top-color: var(--ru-gold-dim); }
-.rux-node.is-active, .rup-node.is-active, .rur-node.is-active, .ruc-node.is-active, .rug-node.is-active { opacity: 1; border-top-color: var(--ru-accent); }
-.rux-node-row, .rup-node-row, .rur-node-row, .ruc-node-row, .rug-node-row { display: flex; align-items: center; justify-content: space-between; gap: var(--ru-s2); }
-.rux-node-num, .rup-node-num, .rur-node-num, .ruc-node-num, .rug-node-num {
-  font-family: var(--ru-f-hud);
-  font-size: var(--ru-label);
-  letter-spacing: .16em;
+  border-right: 1px solid var(--ru-line);
+  background: transparent;
   color: var(--ru-bronze-dim);
+  text-align: center;
+  cursor: default;
+  transition: background .25s, color .25s;
 }
-.rux-node.is-active .rux-node-num, .rup-node.is-active .rup-node-num, .rur-node.is-active .rur-node-num, .ruc-node.is-active .ruc-node-num, .rug-node.is-active .rug-node-num { color: var(--ru-accent-bright); }
-.rux-node-name, .rup-node-name, .rur-node-name, .ruc-node-name, .rug-node-name {
+.rux-node:last-child,
+.rup-node:last-child,
+.rur-node:last-child,
+.ruc-node:last-child,
+.rug-node:last-child { border-right: 0; }
+.rux-node.is-done,
+.rup-node.is-done,
+.rur-node.is-done,
+.ruc-node.is-done,
+.rug-node.is-done { color: var(--ru-bronze); }
+.rux-node.is-active,
+.rup-node.is-active,
+.rur-node.is-active,
+.ruc-node.is-active,
+.rug-node.is-active {
+  color: var(--ru-ivory);
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--ru-accent) 14%, transparent), transparent);
+  box-shadow: inset 0 0 0 1px var(--ru-accent),
+              0 0 18px color-mix(in srgb, var(--ru-accent) 22%, transparent);
+}
+.rux-node-row,
+.rup-node-row,
+.rur-node-row,
+.ruc-node-row,
+.rug-node-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ru-s2);
+}
+.rux-node-num,
+.rup-node-num,
+.rur-node-num,
+.ruc-node-num,
+.rug-node-num {
   font-family: var(--ru-f-display);
   font-size: var(--ru-caption);
-  letter-spacing: .08em;
-  color: var(--ru-bronze);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  letter-spacing: .14em;
+  color: var(--ru-bronze-dim);
 }
-.rux-node.is-active .rux-node-name, .rup-node.is-active .rup-node-name, .rur-node.is-active .rur-node-name, .ruc-node.is-active .ruc-node-name, .rug-node.is-active .rug-node-name { color: var(--ru-ivory); }
-.rux-sigil, .rup-sigil, .rur-sigil, .ruc-sigil, .rug-sigil { opacity: .5; flex: 0 0 auto; }
-.rux-node.is-active .rux-sigil, .rup-node.is-active .rup-sigil, .rur-node.is-active .rur-sigil, .ruc-node.is-active .ruc-sigil, .rug-node.is-active .rug-sigil { opacity: 1; }
-/* The status word sat at 7.5px and was unreadable; the ribbon's colour already
-   carries it, and .ru-sr keeps it available to assistive tech. */
-.rux-node-state, .rup-node-state, .rur-node-state, .ruc-node-state, .rug-node-state { display: none; }
+.rux-node.is-active .rux-node-num,
+.rup-node.is-active .rup-node-num,
+.rur-node.is-active .rur-node-num,
+.ruc-node.is-active .ruc-node-num,
+.rug-node.is-active .rug-node-num { color: var(--ru-accent-bright); }
+.rux-node-name,
+.rup-node-name,
+.rur-node-name,
+.ruc-node-name,
+.rug-node-name {
+  font-family: var(--ru-f-display);
+  font-size: var(--ru-label);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: inherit;
+  line-height: 1.25;
+  text-wrap: balance;
+  max-width: 100%;
+}
+.rux-sigil,
+.rup-sigil,
+.rur-sigil,
+.ruc-sigil,
+.rug-sigil { opacity: .55; flex: 0 0 auto; }
+.rux-node.is-active .rux-sigil,
+.rup-node.is-active .rup-sigil,
+.rur-node.is-active .rur-sigil,
+.ruc-node.is-active .ruc-sigil,
+.rug-node.is-active .rug-sigil { opacity: 1; }
+/* The status word sat at 7.5px and was unreadable. Card state carries it for
+   sighted readers; .ru-sr keeps the word for assistive tech. */
+.rux-node-state,
+.rup-node-state,
+.rur-node-state,
+.ruc-node-state,
+.rug-node-state { display: none; }
+
+/* --------------------------------------------------- LESSON HEADER ------ */
+.rux-lesson,
+.rup-lesson,
+.rur-lesson,
+.ruc-lesson,
+.rug-lesson {
+  display: flex;
+  align-items: center;
+  gap: var(--ru-s4);
+  padding: 0 0 var(--ru-s4);
+  border-bottom: 1px solid var(--ru-line);
+  margin-bottom: var(--ru-s5);
+}
+.rux-lesson-badge,
+.rup-lesson-badge,
+.rur-lesson-badge,
+.ruc-lesson-badge,
+.rug-lesson-badge {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--ru-gold-dim);
+  border-radius: 50%;
+  font-family: var(--ru-f-display);
+  font-size: var(--ru-h2);
+  color: var(--ru-gold);
+}
+.rux-lesson-body,
+.rup-lesson-body,
+.rur-lesson-body,
+.ruc-lesson-body,
+.rug-lesson-body { min-width: 0; }
+.rux-lesson-body h1,
+.rup-lesson-body h1,
+.rur-lesson-body h1,
+.ruc-lesson-body h1,
+.rug-lesson-body h1 { margin: 0; font-size: var(--ru-title); }
+.rux-lesson-body p,
+.rup-lesson-body p,
+.rur-lesson-body p,
+.ruc-lesson-body p,
+.rug-lesson-body p { margin: var(--ru-s1) 0 0; max-width: 46ch; }
+
+/* ------------------------------------------------------------ STAGE ----- */
+/* One large central core area. Everything the section renders lives here. */
+.rux-stage,
+.rup-stage,
+.rur-stage,
+.ruc-stage,
+.rug-stage { min-width: 0; }
+
+@media (max-width: 1080px) {
+  .rux-layout,
+.rup-layout,
+.rur-layout,
+.ruc-layout,
+.rug-layout { grid-template-columns: 1fr; gap: var(--ru-s5); }
+  .rux-spine,
+.rup-spine,
+.rur-spine,
+.ruc-spine,
+.rug-spine { border-right: 0; padding-right: 0; }
+  .rux-spine .rus,
+  .rup-spine .rus,
+  .rur-spine .rus,
+  .ruc-spine .rus,
+  .rug-spine .rus { position: static; }
+  .rux-rail,
+.rup-rail,
+.rur-rail,
+.ruc-rail,
+.rug-rail { grid-template-columns: repeat(7, 116px); overflow-x: auto; }
+}
 
 @media (max-width: 900px) {
-  .rux-node-name, .rup-node-name, .rur-node-name, .ruc-node-name, .rug-node-name { display: none; }
+  .rux-node-name,
+.rup-node-name,
+.rur-node-name,
+.ruc-node-name,
+.rug-node-name { display: none; }
+  .rux-rail,
+.rup-rail,
+.rur-rail,
+.ruc-rail,
+.rug-rail { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .rux-lesson,
+.rup-lesson,
+.rur-lesson,
+.ruc-lesson,
+.rug-lesson { gap: var(--ru-s3); }
+  .rux-lesson-badge,
+.rup-lesson-badge,
+.rur-lesson-badge,
+.ruc-lesson-badge,
+.rug-lesson-badge { width: 44px; height: 44px; font-size: var(--ru-lede); }
 }
 
 .ru-sr {
