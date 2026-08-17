@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 .hermetic-hall {
   position: relative;
   width: 100%;
@@ -5,7 +6,7 @@
   overflow: hidden;
   color: #ead2a0;
   background: #050504 url('/reclamation-university/hermetic-hall-selector.png') center / cover no-repeat;
-  font-family: var(--font-body);
+  font-family: var(--ru-f-read);
   isolation: isolate;
 }
 
@@ -34,7 +35,7 @@
 
 .hh-topbar h1 {
   margin: 0;
-  font-size: clamp(1.2rem, 2.1vw, 2.25rem);
+  font-size: var(--ru-h2);
   font-weight: 400;
   font-family: var(--font-display);
   letter-spacing: .27em;
@@ -42,7 +43,7 @@
 
 .hh-brand,
 .hh-instruction {
-  font-size: clamp(.64rem, 1.12vw, 1.22rem);
+  font-size: var(--ru-label);
   letter-spacing: .08em;
 }
 
@@ -102,14 +103,14 @@
 }
 
 .hh-focus-copy span {
-  font-size: clamp(.54rem, 1.05vw, 1.08rem);
+  font-size: var(--ru-label);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
 
 .hh-focus-copy h2 {
   margin: .3rem 0 .1rem;
-  font-size: clamp(1rem, 2.35vw, 2.45rem);
+  font-size: var(--ru-title);
   font-weight: 400;
   font-family: var(--font-display);
   letter-spacing: .06em;
@@ -119,7 +120,7 @@
 
 .hh-focus-copy p {
   margin: .3rem 0 0;
-  font-size: clamp(.54rem, 1vw, 1.05rem);
+  font-size: var(--ru-body-sm);
   font-style: italic;
 }
 
@@ -137,7 +138,7 @@
 .hh-progress span {
   display: block;
   margin-bottom: .32rem;
-  font-size: clamp(.48rem, .72vw, .76rem);
+  font-size: var(--ru-label);
   letter-spacing: .11em;
   text-transform: uppercase;
 }
@@ -185,7 +186,7 @@
   bottom: -2.1rem;
   margin: 0;
   color: #e5c88d;
-  font-size: .72rem;
+  font-size: var(--ru-label);
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -205,13 +206,13 @@
 }
 
 .hh-footer strong {
-  font-size: clamp(.64rem, 1.2vw, 1.22rem);
+  font-size: var(--ru-body-sm);
   font-weight: 400;
   letter-spacing: .31em;
 }
 
 .hh-footer span {
-  font-size: clamp(.52rem, .84vw, .86rem);
+  font-size: var(--ru-label);
   letter-spacing: .2em;
 }
 

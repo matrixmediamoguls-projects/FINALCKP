@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 .hcm-root {
   --hcm-ink: #060504;
   --hcm-panel: rgba(17, 13, 11, .88);
@@ -546,7 +547,7 @@
 .hcm-artifact label > span {
   display: block;
   color: var(--hcm-gold);
-  font-size: .58rem;
+  font-size: var(--ru-label);
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -619,7 +620,7 @@
 .hcm-save-state {
   margin-left: auto;
   color: var(--hcm-muted);
-  font-size: .58rem;
+  font-size: var(--ru-label);
   white-space: nowrap;
 }
 
@@ -692,13 +693,13 @@
   place-items: center;
   color: var(--hcm-gold);
   border: 1px solid rgba(201, 164, 97, .26);
-  font-size: .58rem;
+  font-size: var(--ru-label);
 }
 
 .hcm-index li strong,
 .hcm-index li small { display: block; }
 .hcm-index li strong { font: 600 .72rem/1.2 'Inter', sans-serif; }
-.hcm-index li small { margin-top: .25rem; color: #787269; font-size: .59rem; }
+.hcm-index li small { margin-top: .25rem; color: #787269; font-size: var(--ru-label); }
 
 .hcm-stage {
   min-width: 0;
@@ -760,11 +761,11 @@
 }
 
 .hcm-doctrine svg { color: var(--hcm-gold); }
-.hcm-doctrine span { color: var(--hcm-gold); font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; }
+.hcm-doctrine span { color: var(--hcm-gold); font-size: var(--ru-label); letter-spacing: .16em; text-transform: uppercase; }
 .hcm-doctrine p { margin: .45rem 0 0; color: #d7d0c5; line-height: 1.65; }
 
 .hcm-track-list { display: flex; flex-wrap: wrap; gap: .65rem; margin: 0 0 2rem; }
-.hcm-track-list span { padding: .65rem .8rem; border: 1px solid rgba(255,255,255,.08); color: var(--hcm-muted); font-size: .67rem; }
+.hcm-track-list span { padding: .65rem .8rem; border: 1px solid rgba(255,255,255,.08); color: var(--hcm-muted); font-size: var(--ru-label); }
 .hcm-track-list strong { color: #ddd5c7; }
 
 .hcm-primary,
@@ -815,10 +816,10 @@
 }
 
 .hcm-lesson-grid button:hover { transform: translateY(-3px); border-color: rgba(201, 164, 97, .48); }
-.hcm-lesson-grid button > span { color: var(--hcm-gold); font-size: .65rem; letter-spacing: .18em; }
+.hcm-lesson-grid button > span { color: var(--hcm-gold); font-size: var(--ru-label); letter-spacing: .18em; }
 .hcm-lesson-grid h2 { margin: 2rem 0 .75rem; font-size: 1.8rem; line-height: 1; }
 .hcm-lesson-grid p { display: -webkit-box; overflow: hidden; color: var(--hcm-muted); font-size: .77rem; line-height: 1.65; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
-.hcm-lesson-grid b { display: inline-flex; align-items: center; gap: .4rem; margin-top: auto; color: var(--hcm-gold); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; }
+.hcm-lesson-grid b { display: inline-flex; align-items: center; gap: .4rem; margin-top: auto; color: var(--hcm-gold); font-size: var(--ru-label); letter-spacing: .12em; text-transform: uppercase; }
 
 .hcm-reader {
   width: min(960px, 100%);
@@ -834,7 +835,7 @@
 }
 
 .hcm-reader header button { display: inline-flex; align-items: center; gap: .4rem; }
-.hcm-reader header span { color: var(--hcm-muted); font-size: .63rem; letter-spacing: .12em; text-transform: uppercase; }
+.hcm-reader header span { color: var(--hcm-muted); font-size: var(--ru-label); letter-spacing: .12em; text-transform: uppercase; }
 .hcm-reader > .hcm-eyebrow { margin-top: 3rem; }
 .hcm-reader > h1 { font-size: clamp(3rem, 7vw, 7rem); }
 .hcm-reader > h2 { margin: -1rem 0 2rem; color: var(--hcm-gold); font-size: 1.25rem; font-style: italic; font-weight: 500; }
@@ -932,7 +933,7 @@
 .hcm-content-block.is-signal { border-left-color: #b63138; }
 .hcm-content-block.is-activation,
 .hcm-content-block.is-exercise { border-left-color: #749b7b; }
-.hcm-content-label { display: flex; align-items: center; gap: .45rem; color: var(--hcm-gold); font-size: .58rem; letter-spacing: .15em; text-transform: uppercase; }
+.hcm-content-label { display: flex; align-items: center; gap: .45rem; color: var(--hcm-gold); font-size: var(--ru-label); letter-spacing: .15em; text-transform: uppercase; }
 .hcm-content-block h3 { margin: .8rem 0 .65rem; font-size: 1.75rem; }
 .hcm-content-block p,
 .hcm-content-block li { color: #bdb6ab; font-size: .84rem; line-height: 1.75; }
@@ -1012,7 +1013,7 @@
   border: 1px solid rgba(201, 164, 97, .14);
   background: var(--hcm-panel);
 }
-.hcm-library-view section header span { color: var(--hcm-gold); font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; }
+.hcm-library-view section header span { color: var(--hcm-gold); font-size: var(--ru-label); letter-spacing: .16em; text-transform: uppercase; }
 .hcm-library-view section header h2 { margin: .5rem 0; font-size: 2rem; }
 .hcm-library-view section header p { color: var(--hcm-muted); line-height: 1.65; }
 .hcm-lyrics { display: grid; gap: .5rem; margin: 1rem 0; }
@@ -1021,7 +1022,7 @@
 .hcm-lyrics p { margin: .4rem 0 0; color: var(--hcm-muted); font-size: .72rem; }
 .hcm-library-view dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
 .hcm-library-view dl div { padding: .8rem; border: 1px solid rgba(255,255,255,.07); }
-.hcm-library-view dt { color: var(--hcm-gold); font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; }
+.hcm-library-view dt { color: var(--hcm-gold); font-size: var(--ru-label); letter-spacing: .12em; text-transform: uppercase; }
 .hcm-library-view dd { margin: .55rem 0 0; color: var(--hcm-muted); font-size: .72rem; line-height: 1.5; }
 
 .hcm-code-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }

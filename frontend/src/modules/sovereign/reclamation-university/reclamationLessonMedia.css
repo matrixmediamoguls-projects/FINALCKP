@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 .rlm-root {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -24,7 +25,7 @@
   align-items: center;
   gap: 0.45rem;
   color: var(--hcm-law-accent, #d7a64a);
-  font-size: 0.68rem;
+  font-size: var(--ru-label);
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -169,7 +170,7 @@
 
 .rlm-metadata dt {
   color: rgba(247, 239, 228, 0.42);
-  font-size: 0.6rem;
+  font-size: var(--ru-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }

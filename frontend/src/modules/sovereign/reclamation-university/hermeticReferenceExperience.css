@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 .hme-root{height:100vh;height:100dvh;min-height:0;overflow:hidden;background-color:#030403;background-image:url('/reclamation-university/mentalism-mind-diagram.png');background-repeat:no-repeat;background-position:68% 45%;background-size:58%;font-family:Georgia,'Times New Roman',serif}
 .hme-root::before{content:"";position:fixed;inset:0;pointer-events:none;background:rgba(1,2,2,.89)}
 .hme-header,.hme-shell{position:relative;z-index:1}
@@ -80,5 +81,5 @@
 .hme-stage-principle .hme-screen{padding-bottom:76px}
 .hme-stage-principle .hme-footer{position:relative;grid-template-columns:185px 240px minmax(0,1fr)}
 .hme-stage-principle .hme-footer>button{position:absolute;right:14px;top:-68px;width:min(390px,38%);height:54px;margin:0}
-@media(max-width:1180px){.hme-lens{grid-template-rows:auto 1fr}.hme-lens>header{grid-template-columns:1fr;gap:7px;padding-bottom:9px}.hme-lens>header>div{padding-left:0;border-left:0}.hme-lens-grid article{grid-template-columns:34% 1fr}.hme-lens-grid h3{font-size:.75rem}.hme-lens-grid p{font-size:.58rem}}
+@media(max-width:1180px){.hme-lens{grid-template-rows:auto 1fr}.hme-lens>header{grid-template-columns:1fr;gap:7px;padding-bottom:9px}.hme-lens>header>div{padding-left:0;border-left:0}.hme-lens-grid article{grid-template-columns:34% 1fr}.hme-lens-grid h3{font-size:.75rem}.hme-lens-grid p{font-size:var(--ru-label)}}
 @media(max-width:820px){.hme-lens{display:block}.hme-lens>header{display:block;padding:10px 0 18px}.hme-lens>header>div{margin-top:12px}.hme-lens-grid{grid-template-columns:1fr;grid-template-rows:none}.hme-lens-grid article{min-height:190px}.hme-lens-grid h3{font-size:1rem}.hme-lens-grid p{font-size:.78rem}.hme-stage-principle .hme-screen{padding-bottom:22px}.hme-stage-principle .hme-footer{grid-template-columns:1fr 1fr}.hme-stage-principle .hme-footer>button{position:static;width:auto;height:auto;margin:8px;grid-column:1/-1}}

@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 .rec-module-root {
   --fd-obsidian: #050505;
   --fd-deep: #090606;
@@ -92,7 +93,7 @@
   color: #a1a1aa;
   background: rgba(255, 255, 255, 0.025);
   font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
+  font-size: var(--ru-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -606,7 +607,7 @@
 
 .rec-module-kicker {
   color: #fca5a5;
-  font-size: 0.66rem;
+  font-size: var(--ru-label);
 }
 
 .rec-module-panel {
@@ -635,7 +636,7 @@
   border-radius: 999px;
   padding: 0.4rem 0.62rem;
   font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
-  font-size: 0.62rem;
+  font-size: var(--ru-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #a1a1aa;

@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useFooterOffset from "./useFooterOffset";
 import { ArrowRight, LayoutDashboard, Pencil, Download, FileDown } from "lucide-react";
 import jsPDF from "jspdf";
 import CurriculumSpine from "./CurriculumSpine";
@@ -297,8 +298,11 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
     lever: artifact.lever || protocolResponses.lever,
   };
 
+  // Reserve exactly the height the fixed action bar occupies.
+  const [rootRef, footRef] = useFooterOffset();
+
   return (
-    <div className="ruc">
+    <div className="ruc" ref={rootRef}>
       <div className="ruc-shell">
         {/* TOP HEADER */}
         <header className="ruc-top">
@@ -328,18 +332,19 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
         </header>
 
         {/* SEVEN-PRINCIPLE NAVIGATION */}
-        <nav className="ruc-rail" aria-label="The Seven Hermetic Principles">
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
+        <ol className="ruc-rail" aria-label="Position in the Hermetic Hall">
           {PRINCIPLES.map((p) => (
-            <div
+            <li
               key={p.n}
               className={`ruc-node${p.n === "VI" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
             >
               <div className="ruc-node-row"><span className="ruc-node-num">{p.n}</span></div>
               <div className="ruc-node-name">{p.name}</div>
-              <div className="ruc-node-state">{p.state}</div>
-            </div>
+              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
+            </li>
           ))}
-        </nav>
+        </ol>
 
         <div className="ruc-layout">
           <div className="ruc-spine">
@@ -1152,7 +1157,7 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
         </div>
       )}
 
-      <div className="ruc-foot">
+      <div className="ruc-foot" ref={footRef}>
         <div className="ruc-foot-in">
           <div className="ruc-meta">
             <div>

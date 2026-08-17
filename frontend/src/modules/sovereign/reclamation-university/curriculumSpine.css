@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 /* CurriculumSpine — generic navigation shell shared by every Hermetic Hall
    module. It carries no colors of its own: it reads --gold, --ivory, --line,
    --line-2, --bronze, --bronze-dim, --panel, --obsidian-2, --accent,
@@ -15,7 +16,7 @@
   font-family:var(--f-read,inherit);
 }
 .rus-current-module{
-  font-family:var(--f-hud); font-size:8px; letter-spacing:.26em; color:var(--bronze-dim);
+  font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.26em; color:var(--bronze-dim);
   text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .rus-current-row{ display:flex; align-items:center; gap:8px; min-width:0; margin-left:auto; }
@@ -50,7 +51,7 @@
 }
 .rus-item:hover{ background:rgba(255,255,255,.035); color:var(--ivory); }
 .rus-mark{ width:6px; height:6px; border-radius:50%; background:var(--line-2); flex:0 0 auto; }
-.rus-num{ font-family:var(--f-hud); font-size:9px; letter-spacing:.18em; color:var(--bronze-dim); flex:0 0 22px; }
+.rus-num{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.18em; color:var(--bronze-dim); flex:0 0 22px; }
 .rus-label{ font-family:var(--f-display); font-size:12.5px; letter-spacing:.05em; flex:1 1 auto; min-width:0; }
 .rus-state{ font-size:11px; color:var(--accent); flex:0 0 auto; width:14px; text-align:center; }
 .rus-sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }

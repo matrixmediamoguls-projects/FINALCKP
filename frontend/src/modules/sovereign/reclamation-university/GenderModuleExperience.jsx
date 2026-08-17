@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useFooterOffset from "./useFooterOffset";
 import { ArrowRight, LayoutDashboard, Pencil, Download, FileDown } from "lucide-react";
 import jsPDF from "jspdf";
 import CurriculumSpine from "./CurriculumSpine";
@@ -272,8 +273,11 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
     ]),
   );
 
+  // Reserve exactly the height the fixed action bar occupies.
+  const [rootRef, footRef] = useFooterOffset();
+
   return (
-    <div className="rug">
+    <div className="rug" ref={rootRef}>
       <div className="rug-shell">
         {/* TOP HEADER */}
         <header className="rug-top">
@@ -303,9 +307,10 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
         </header>
 
         {/* SEVEN-PRINCIPLE NAVIGATION */}
-        <nav className="rug-rail" aria-label="The Seven Hermetic Principles">
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
+        <ol className="rug-rail" aria-label="Position in the Hermetic Hall">
           {PRINCIPLES.map((p) => (
-            <div
+            <li
               key={p.n}
               className={`rug-node${p.n === "VII" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
             >
@@ -314,10 +319,10 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
                 {p.n === "VII" && <DualCurrentMark className="rug-node-sigil" />}
               </div>
               <div className="rug-node-name">{p.name}</div>
-              <div className="rug-node-state">{p.state}</div>
-            </div>
+              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
+            </li>
           ))}
-        </nav>
+        </ol>
 
         <div className="rug-layout">
           <div className="rug-spine">
@@ -1088,7 +1093,7 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
         </div>
       )}
 
-      <div className="rug-foot">
+      <div className="rug-foot" ref={footRef}>
         <div className="rug-foot-in">
           <div className="rug-meta">
             <div>

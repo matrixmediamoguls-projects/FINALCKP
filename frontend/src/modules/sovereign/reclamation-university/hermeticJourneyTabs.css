@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 .hcm-guided-reader {
   display: grid;
   grid-template-columns: minmax(190px, 235px) minmax(0, 1fr);
@@ -80,7 +81,7 @@
   display: block;
   margin: 0;
   color: color-mix(in srgb, var(--hcm-law-accent, #d7a64a) 72%, rgba(247, 239, 228, 0.45));
-  font-size: 0.55rem;
+  font-size: var(--ru-label);
   font-weight: 700;
   letter-spacing: 0.12em;
 }
@@ -252,7 +253,7 @@
 
 .hcm-lesson-artifact > span {
   color: var(--hcm-law-accent, #d7a64a);
-  font-size: 0.66rem;
+  font-size: var(--ru-label);
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -326,7 +327,7 @@
 
   .hcm-section-steps button strong {
     white-space: normal;
-    font-size: 0.58rem;
+    font-size: var(--ru-label);
   }
 }
 
@@ -341,11 +342,11 @@
   }
 
   .hcm-section-steps button strong {
-    font-size: 0.54rem;
+    font-size: var(--ru-label);
     line-height: 1.15;
   }
 
   .hcm-section-steps button > span {
-    font-size: 0.48rem;
+    font-size: var(--ru-label);
   }
 }
