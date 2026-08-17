@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useFooterOffset from "./useFooterOffset";
 import { ArrowRight, LayoutDashboard, Pencil, Download, FileDown } from "lucide-react";
 import jsPDF from "jspdf";
 import CurriculumSpine from "./CurriculumSpine";
@@ -286,8 +287,11 @@ export default function RhythmModuleExperience({ faculty, onComplete }) {
     response: artifact.response || protocolResponses.response,
   };
 
+  // Reserve exactly the height the fixed action bar occupies.
+  const [rootRef, footRef] = useFooterOffset();
+
   return (
-    <div className="rur">
+    <div className="rur" ref={rootRef}>
       <div className="rur-shell">
         {/* TOP HEADER */}
         <header className="rur-top">
@@ -318,18 +322,19 @@ export default function RhythmModuleExperience({ faculty, onComplete }) {
         </header>
 
         {/* SEVEN-PRINCIPLE NAVIGATION */}
-        <nav className="rur-rail" aria-label="The Seven Hermetic Principles">
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
+        <ol className="rur-rail" aria-label="Position in the Hermetic Hall">
           {PRINCIPLES.map((p) => (
-            <div
+            <li
               key={p.n}
               className={`rur-node${p.n === "V" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
             >
               <div className="rur-node-row"><span className="rur-node-num">{p.n}</span></div>
               <div className="rur-node-name">{p.name}</div>
-              <div className="rur-node-state">{p.state}</div>
-            </div>
+              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
+            </li>
           ))}
-        </nav>
+        </ol>
 
         {/* SPINE + STAGE */}
         <div className="rur-layout">
@@ -1110,7 +1115,7 @@ export default function RhythmModuleExperience({ faculty, onComplete }) {
       )}
 
       {/* FOOTER */}
-      <div className="rur-foot">
+      <div className="rur-foot" ref={footRef}>
         <div className="rur-foot-in">
           <div className="rur-meta">
             <div>

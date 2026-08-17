@@ -1,0 +1,552 @@
+/* ============================================================================
+   RECLAMATION UNIVERSITY — SHARED DESIGN SYSTEM
+   ----------------------------------------------------------------------------
+   Single source of truth for typography, colour and spacing across every
+   Hermetic Hall module (Vibration, Polarity, Rhythm, Cause & Effect, Gender)
+   and the Hall viewport itself.
+
+   HOW IT WORKS
+   Each module keeps its own class prefix (.rux- .rup- .rur- .ruc- .rug-) so no
+   JSX had to be rewritten. This file declares the shared vocabulary once, for
+   every prefix at the same time. A module stylesheet should therefore contain
+   ONLY two things:
+
+     1. its accent triplet   --ru-accent / --ru-accent-bright / --ru-accent-glow
+        plus its two tinted rule colours --ru-line / --ru-line-2
+     2. components that genuinely exist only in that module
+
+   Anything a module redefines here (a heading size, a body colour, a label)
+   is drift. Put it back.
+
+   RULES THAT ARE NOT NEGOTIABLE
+   • No type below 11px. The old 7–10px HUD tier is gone.
+   • --ru-accent is for borders, rules and fills. Accent *text* uses
+     --ru-accent-bright, which clears 4.5:1 on the obsidian ground.
+   • Font sizes live here, not in a JSX style={{}}.
+   ========================================================================= */
+
+.rux, .rup, .rur, .ruc, .rug, .hermetic-hall {
+
+  /* ---------------------------------------------------------------- GROUND */
+  --ru-bg:          #08080B;
+  --ru-bg-2:        #0D0D12;
+  --ru-panel:       #111117;
+  --ru-panel-2:     #15151C;
+  --ru-well:        #0A0A10;
+
+  /* ------------------------------------------------------------- MATERIALS */
+  --ru-gold:        #C9A227;
+  --ru-gold-bright: #E9CE72;
+  --ru-gold-dim:    #6E5D2C;
+  --ru-ivory:       #F1ECE2;
+  --ru-read:        #DCD5C8;   /* long-form body                    11.9:1 */
+  --ru-bronze:      #9D8862;   /* secondary text                     5.8:1 */
+  --ru-bronze-dim:  #8A7A5C;   /* micro-labels, was #6E6149 (3.3:1)  4.8:1 */
+  --ru-placeholder: #8A7A5C;   /* was #4A443A (2.1:1)                4.8:1 */
+
+  /* Default accent. Every module overrides this triplet and nothing else. */
+  --ru-accent:        #D2382C;
+  --ru-accent-bright: #FF5545;
+  --ru-accent-glow:   rgba(210, 56, 44, .30);
+
+  --ru-line:        #241F16;
+  --ru-line-2:      #332B1E;
+
+  /* ----------------------------------------------------------------- TYPE */
+  --ru-f-display: 'Cinzel', Georgia, serif;
+  --ru-f-quote:   'Cormorant Garamond', Georgia, serif;  /* has a true italic */
+  --ru-f-read:    var(--font-body, Inter, system-ui, sans-serif);
+  --ru-f-hud:     var(--font-mono, 'JetBrains Mono', monospace);
+
+  --ru-display:  clamp(34px, 5.2vw, 58px);
+  --ru-title:    clamp(26px, 3.4vw, 40px);
+  --ru-h2:       clamp(20px, 2.2vw, 27px);
+  --ru-h3:       14px;
+  --ru-quote:    clamp(21px, 2.6vw, 30px);
+  --ru-lede:     17px;
+  --ru-body:     16px;
+  --ru-body-sm:  14px;
+  --ru-caption:  13px;
+  --ru-label:    11px;   /* floor. nothing smaller anywhere. */
+
+  --ru-ls-label: .22em;
+  --ru-ls-h3:    .18em;
+
+  /* -------------------------------------------------------------- SPACING */
+  --ru-s1: 4px;   --ru-s2: 8px;   --ru-s3: 12px;  --ru-s4: 16px;
+  --ru-s5: 24px;  --ru-s6: 32px;  --ru-s7: 48px;  --ru-s8: 64px;
+
+  --ru-radius: 3px;
+  --ru-measure: 68ch;
+
+  /* Height of the fixed action bar. Set at runtime by useFooterOffset so the
+     shell can never be occluded by it; this is only the pre-measurement
+     fallback. */
+  --ru-foot-h: 132px;
+}
+
+/* ============================================================== HEADINGS == */
+
+.rux-h1, .rup-h1, .rur-h1, .ruc-h1, .rug-h1, .ru-h1 {
+  font-family: var(--ru-f-display);
+  font-size: var(--ru-display);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: .02em;
+  color: var(--ru-ivory);
+  margin: 0 0 var(--ru-s4);
+  text-wrap: balance;
+}
+
+/* A section heading inside a tab. Same face, one step down from the hero. */
+.rux-h1.is-section, .rup-h1.is-section, .rur-h1.is-section,
+.ruc-h1.is-section, .rug-h1.is-section, .ru-h1.is-section {
+  font-size: var(--ru-title);
+  line-height: 1.12;
+}
+
+.rux-h2, .rup-h2, .rur-h2, .ruc-h2, .rug-h2, .ru-h2 {
+  font-family: var(--ru-f-display);
+  font-size: var(--ru-h2);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: .05em;
+  color: var(--ru-ivory);
+  margin: 0 0 var(--ru-s3);
+  text-wrap: balance;
+}
+
+.rux-h3, .rup-h3, .rur-h3, .ruc-h3, .rug-h3, .ru-h3 {
+  font-family: var(--ru-f-display);
+  font-size: var(--ru-h3);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: var(--ru-ls-h3);
+  color: var(--ru-gold);
+  margin: 0 0 var(--ru-s3);
+}
+
+/* ================================================================= BODY == */
+
+.rux-p, .rup-p, .rur-p, .ruc-p, .rug-p, .ru-p {
+  font-family: var(--ru-f-read);
+  font-size: var(--ru-body);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--ru-read);
+  max-width: 66ch;
+  margin: 0 0 var(--ru-s4);
+}
+.rux-p strong, .rup-p strong, .rur-p strong, .ruc-p strong, .rug-p strong,
+.ru-p strong { color: var(--ru-ivory); font-weight: 600; }
+
+.rux-p.is-small, .rup-p.is-small, .rur-p.is-small,
+.ruc-p.is-small, .rug-p.is-small, .ru-p.is-small {
+  font-size: var(--ru-body-sm);
+  line-height: 1.7;
+}
+
+.rux-lede, .rup-lede, .rur-lede, .ruc-lede, .rug-lede, .ru-lede {
+  font-family: var(--ru-f-read);
+  font-size: var(--ru-lede);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ru-ivory);
+  max-width: 64ch;
+  margin: 0 0 var(--ru-s4);
+}
+
+/* A single short line of emphasis in a run of them. */
+.rux-beat, .rup-beat, .rur-beat, .ruc-beat, .rug-beat, .ru-beat {
+  font-family: var(--ru-f-read);
+  font-size: var(--ru-lede);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ru-ivory);
+  margin: 0 0 var(--ru-s2);
+}
+
+/* ================================================ DISPLAY / EDITORIAL === */
+
+/* The italic voice. Cormorant Garamond, so this is a drawn italic rather
+   than a browser-slanted roman. */
+.rux-sub, .rup-sub, .rur-sub, .ruc-sub, .rug-sub, .ru-sub {
+  font-family: var(--ru-f-quote);
+  font-size: var(--ru-quote);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--ru-bronze);
+  margin: 0 0 var(--ru-s5);
+  max-width: 34ch;
+}
+
+.rux-question, .rup-question, .rur-question, .ruc-question, .rug-question,
+.ru-question {
+  font-family: var(--ru-f-quote);
+  font-size: var(--ru-quote);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.34;
+  color: var(--ru-gold-bright);
+  border-left: 1px solid var(--ru-accent);
+  padding-left: var(--ru-s5);
+  margin: var(--ru-s6) 0;
+  max-width: 36ch;
+}
+
+.rux-lyric, .rup-lyric, .rur-lyric, .ruc-lyric, .rug-lyric, .ru-lyric {
+  font-family: var(--ru-f-quote);
+  font-size: var(--ru-quote);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.42;
+  color: var(--ru-gold-bright);
+  margin: 0;
+}
+
+/* Pull quote / central lesson. The largest italic setting. */
+.ru-pull {
+  font-family: var(--ru-f-quote);
+  font-size: clamp(23px, 3vw, 34px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.42;
+  color: var(--ru-ivory);
+  margin: 0;
+  max-width: 30ch;
+}
+
+/* ================================================== LABELS & MICRO-TYPE == */
+/* One tier. 11px, mono, wide tracking. Everything that used to be 7, 7.5, 8,
+   8.5, 9, 9.5 or 10px is now this. */
+
+.rux-eyebrow, .rup-eyebrow, .rur-eyebrow, .ruc-eyebrow, .rug-eyebrow,
+.rux-panel-label, .rup-panel-label, .rur-panel-label, .ruc-panel-label, .rug-panel-label,
+.rux-field-k, .rup-field-k, .rur-field-k, .ruc-field-k, .rug-field-k,
+.rux-meta-k, .rup-meta-k, .rur-meta-k, .ruc-meta-k, .rug-meta-k,
+.ru-label {
+  font-family: var(--ru-f-hud);
+  font-size: var(--ru-label);
+  font-weight: 400;
+  letter-spacing: var(--ru-ls-label);
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--ru-bronze-dim);
+}
+
+/* The eyebrow is the one label that carries accent colour. */
+.rux-eyebrow, .rup-eyebrow, .rur-eyebrow, .ruc-eyebrow, .rug-eyebrow {
+  color: var(--ru-accent-bright);
+  margin-bottom: var(--ru-s5);
+}
+.rux-eyebrow.gold, .rup-eyebrow.gold, .rur-eyebrow.gold,
+.ruc-eyebrow.gold, .rug-eyebrow.gold { color: var(--ru-gold); }
+
+.rux-panel-label, .rup-panel-label, .rur-panel-label,
+.ruc-panel-label, .rug-panel-label { margin-bottom: var(--ru-s3); }
+
+.rux-field-k, .rup-field-k, .rur-field-k, .ruc-field-k, .rug-field-k {
+  margin-bottom: var(--ru-s2);
+}
+
+.rux-index, .rup-index, .rur-index, .ruc-index, .rug-index, .ru-index {
+  font-family: var(--ru-f-hud);
+  font-size: var(--ru-label);
+  letter-spacing: .18em;
+  color: var(--ru-accent-bright);
+}
+
+.rux-meta-v, .rup-meta-v, .rur-meta-v, .ruc-meta-v, .rug-meta-v, .ru-meta-v {
+  font-family: var(--ru-f-hud);
+  font-size: var(--ru-caption);
+  letter-spacing: .06em;
+  color: var(--ru-ivory);
+  margin-top: var(--ru-s1);
+}
+
+.rux-field-v, .rup-field-v, .rur-field-v, .ruc-field-v, .rug-field-v,
+.ru-field-v {
+  font-family: var(--ru-f-read);
+  font-size: var(--ru-body-sm);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ru-read);
+}
+
+/* ================================================================ RULES == */
+
+.rux-rule, .rup-rule, .rur-rule, .ruc-rule, .rug-rule, .ru-rule {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, var(--ru-line-2), transparent);
+  margin: var(--ru-s7) 0;
+}
+
+/* =============================================================== LAYOUT == */
+
+.rux-measure, .rup-measure, .rur-measure, .ruc-measure, .rug-measure,
+.ru-measure { max-width: var(--ru-measure); }
+
+.rux-split, .rup-split, .rur-split, .ruc-split, .rug-split, .ru-split {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: var(--ru-s7);
+  align-items: start;
+}
+
+.rux-grid-2, .rup-grid-2, .rur-grid-2, .ruc-grid-2, .rug-grid-2, .ru-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ru-s4);
+}
+.rux-grid-3, .rup-grid-3, .rur-grid-3, .ruc-grid-3, .rug-grid-3, .ru-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ru-s4);
+}
+
+/* The shell reserves exactly the measured height of the fixed action bar. */
+.rux-shell, .rup-shell, .rur-shell, .ruc-shell, .rug-shell, .ru-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--ru-s6) calc(var(--ru-foot-h) + var(--ru-s7));
+}
+
+/* =============================================================== PANELS == */
+
+.rux-panel, .rup-panel, .rur-panel, .ruc-panel, .rug-panel, .ru-panel {
+  background: linear-gradient(180deg, var(--ru-panel), var(--ru-bg-2));
+  border: 1px solid var(--ru-line);
+  border-radius: var(--ru-radius);
+  padding: var(--ru-s5);
+}
+.rux-panel.accent, .rup-panel.accent, .rur-panel.accent,
+.ruc-panel.accent, .rug-panel.accent, .ru-panel.accent {
+  border-color: color-mix(in srgb, var(--ru-accent) 34%, transparent);
+}
+
+/* ============================================================== CONTROLS == */
+
+.rux-btn, .rup-btn, .rur-btn, .ruc-btn, .rug-btn, .ru-btn {
+  font-family: var(--ru-f-read);
+  font-size: var(--ru-caption);
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 11px 18px;
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--ru-line-2);
+  color: var(--ru-bronze);
+  transition: border-color .22s, color .22s, background .22s;
+}
+.rux-btn:hover, .rup-btn:hover, .rur-btn:hover, .ruc-btn:hover, .rug-btn:hover,
+.ru-btn:hover { border-color: var(--ru-gold); color: var(--ru-gold-bright); }
+.rux-btn.on, .rup-btn.on, .rur-btn.on, .ruc-btn.on, .rug-btn.on, .ru-btn.on {
+  border-color: var(--ru-accent); color: var(--ru-accent-bright);
+}
+
+.rux-cta, .rup-cta, .rur-cta, .ruc-cta, .rug-cta, .ru-cta {
+  font-family: var(--ru-f-display);
+  font-size: var(--ru-caption);
+  letter-spacing: .18em;
+  padding: 14px 26px;
+  border-radius: 2px;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(201,162,39,.16), rgba(201,162,39,.05));
+  border: 1px solid var(--ru-gold);
+  color: var(--ru-gold-bright);
+  transition: background .22s, box-shadow .22s;
+}
+.rux-cta:hover, .rup-cta:hover, .rur-cta:hover, .ruc-cta:hover, .rug-cta:hover,
+.ru-cta:hover { background: rgba(201,162,39,.24); box-shadow: 0 0 26px -8px rgba(233,206,114,.6); }
+.rux-cta.done, .rup-cta.done, .rur-cta.done, .ruc-cta.done, .rug-cta.done,
+.ru-cta.done {
+  border-color: var(--ru-accent);
+  color: var(--ru-accent-bright);
+  background: color-mix(in srgb, var(--ru-accent) 12%, transparent);
+}
+
+.rux-input, .rup-input, .rur-input, .ruc-input, .rug-input, .ru-input,
+.rux-area,  .rup-area,  .rur-area,  .ruc-area,  .rug-area,  .ru-area {
+  width: 100%;
+  background: var(--ru-well);
+  border: 1px solid var(--ru-line);
+  border-radius: 2px;
+  color: var(--ru-ivory);
+  font-family: var(--ru-f-read);
+  font-size: var(--ru-body-sm);
+  font-weight: 300;
+  line-height: 1.6;
+  padding: 12px 14px;
+  transition: border-color .2s;
+}
+.rux-input:focus, .rup-input:focus, .rur-input:focus, .ruc-input:focus, .rug-input:focus,
+.ru-input:focus,
+.rux-area:focus, .rup-area:focus, .rur-area:focus, .ruc-area:focus, .rug-area:focus,
+.ru-area:focus { outline: none; border-color: var(--ru-gold); }
+
+.rux-area, .rup-area, .rur-area, .ruc-area, .rug-area, .ru-area {
+  min-height: 92px; resize: vertical;
+}
+
+/* Placeholders are examples, not answers. Italic keeps them from reading as
+   already-filled input. */
+.rux-input::placeholder, .rup-input::placeholder, .rur-input::placeholder,
+.ruc-input::placeholder, .rug-input::placeholder, .ru-input::placeholder,
+.rux-area::placeholder,  .rup-area::placeholder,  .rur-area::placeholder,
+.ruc-area::placeholder,  .rug-area::placeholder,  .ru-area::placeholder {
+  color: var(--ru-placeholder);
+  font-style: italic;
+}
+
+/* ============================================================= FIXED BAR == */
+
+.rux-foot, .rup-foot, .rur-foot, .ruc-foot, .rug-foot, .ru-foot {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 30;
+  background: rgba(8, 8, 11, .95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--ru-line);
+}
+.rux-foot-in, .rup-foot-in, .rur-foot-in, .ruc-foot-in, .rug-foot-in,
+.ru-foot-in {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--ru-s3) var(--ru-s6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ru-s5);
+}
+
+/* ================================================================ A11Y === */
+
+.rux :focus-visible, .rup :focus-visible, .rur :focus-visible,
+.ruc :focus-visible, .rug :focus-visible, .hermetic-hall :focus-visible {
+  outline: 2px solid var(--ru-gold-bright);
+  outline-offset: 2px;
+}
+
+/* ================================================= PRINCIPLE RIBBON ====== */
+/* Where you are in the Hall — a position report, not navigation. It was
+   previously the heaviest element on the page (seven bordered cards, some as
+   disabled buttons with a pointer cursor and a hover state) while the tab bar
+   that actually moves you through the module was a 10.5px strip. The weight
+   now matches the function. */
+
+.rux-rail, .rup-rail, .rur-rail, .ruc-rail, .rug-rail {
+  display: flex;
+  gap: var(--ru-s2);
+  padding: var(--ru-s3) 0;
+  margin: 0;
+  list-style: none;
+}
+.rux-node, .rup-node, .rur-node, .ruc-node, .rug-node {
+  flex: 1 1 0;
+  min-width: 0;
+  background: transparent;
+  text-align: left;
+  border: 0;
+  border-top: 2px solid var(--ru-line-2);
+  border-radius: 0;
+  padding: var(--ru-s2) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: .5;
+  color: inherit;
+  cursor: default;
+  transition: border-color .25s, opacity .25s;
+}
+.rux-node.is-done, .rup-node.is-done, .rur-node.is-done, .ruc-node.is-done, .rug-node.is-done { opacity: .75; border-top-color: var(--ru-gold-dim); }
+.rux-node.is-active, .rup-node.is-active, .rur-node.is-active, .ruc-node.is-active, .rug-node.is-active { opacity: 1; border-top-color: var(--ru-accent); }
+.rux-node-row, .rup-node-row, .rur-node-row, .ruc-node-row, .rug-node-row { display: flex; align-items: center; justify-content: space-between; gap: var(--ru-s2); }
+.rux-node-num, .rup-node-num, .rur-node-num, .ruc-node-num, .rug-node-num {
+  font-family: var(--ru-f-hud);
+  font-size: var(--ru-label);
+  letter-spacing: .16em;
+  color: var(--ru-bronze-dim);
+}
+.rux-node.is-active .rux-node-num, .rup-node.is-active .rup-node-num, .rur-node.is-active .rur-node-num, .ruc-node.is-active .ruc-node-num, .rug-node.is-active .rug-node-num { color: var(--ru-accent-bright); }
+.rux-node-name, .rup-node-name, .rur-node-name, .ruc-node-name, .rug-node-name {
+  font-family: var(--ru-f-display);
+  font-size: var(--ru-caption);
+  letter-spacing: .08em;
+  color: var(--ru-bronze);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rux-node.is-active .rux-node-name, .rup-node.is-active .rup-node-name, .rur-node.is-active .rur-node-name, .ruc-node.is-active .ruc-node-name, .rug-node.is-active .rug-node-name { color: var(--ru-ivory); }
+.rux-sigil, .rup-sigil, .rur-sigil, .ruc-sigil, .rug-sigil { opacity: .5; flex: 0 0 auto; }
+.rux-node.is-active .rux-sigil, .rup-node.is-active .rup-sigil, .rur-node.is-active .rur-sigil, .ruc-node.is-active .ruc-sigil, .rug-node.is-active .rug-sigil { opacity: 1; }
+/* The status word sat at 7.5px and was unreadable; the ribbon's colour already
+   carries it, and .ru-sr keeps it available to assistive tech. */
+.rux-node-state, .rup-node-state, .rur-node-state, .ruc-node-state, .rug-node-state { display: none; }
+
+@media (max-width: 900px) {
+  .rux-node-name, .rup-node-name, .rur-node-name, .ruc-node-name, .rug-node-name { display: none; }
+}
+
+.ru-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Horizontal scrollers get an edge fade so it is visible that they scroll. */
+.ru-scroller {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ru-line-2) transparent;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent 100%);
+}
+.ru-scroller.at-end { mask-image: none; }
+
+/* ================================================================== RWD == */
+
+@media (max-width: 900px) {
+  .rux, .rup, .rur, .ruc, .rug, .hermetic-hall {
+    --ru-body: 15.5px;
+    --ru-lede: 16.5px;
+  }
+  .rux-shell, .rup-shell, .rur-shell, .ruc-shell, .rug-shell, .ru-shell {
+    padding-left: var(--ru-s4);
+    padding-right: var(--ru-s4);
+  }
+  .rux-split, .rup-split, .rur-split, .ruc-split, .rug-split, .ru-split {
+    grid-template-columns: 1fr;
+    gap: var(--ru-s6);
+  }
+  .rux-grid-2, .rup-grid-2, .rur-grid-2, .ruc-grid-2, .rug-grid-2, .ru-grid-2,
+  .rux-grid-3, .rup-grid-3, .rur-grid-3, .ruc-grid-3, .rug-grid-3, .ru-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .rux-foot-in, .rup-foot-in, .rur-foot-in, .ruc-foot-in, .rug-foot-in,
+  .ru-foot-in {
+    padding: 10px var(--ru-s4);
+    gap: var(--ru-s3);
+    flex-wrap: wrap;
+  }
+  .rux-sub, .rup-sub, .rur-sub, .ruc-sub, .rug-sub, .ru-sub { max-width: none; }
+}
+
+/* Between the single-column break and full width, three-up is too tight. */
+@media (min-width: 901px) and (max-width: 1180px) {
+  .rux-grid-3, .rup-grid-3, .rur-grid-3, .ruc-grid-3, .rug-grid-3, .ru-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rux *, .rup *, .rur *, .ruc *, .rug *, .hermetic-hall * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}

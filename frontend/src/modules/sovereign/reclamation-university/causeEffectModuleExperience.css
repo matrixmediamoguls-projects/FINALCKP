@@ -1,3 +1,4 @@
+@import './recUniSystem.css';
 /* Reclamation University — Hermetic Hall — Module VI: Cause & Effect
    Scoped under .ruc so it cannot leak into the rest of the app.
 
@@ -31,8 +32,16 @@
   --green-glow:rgba(78,158,106,.32);
   --accent:var(--green);
 
+  /* Bind this module's accent to the shared system. Everything else —
+     type scale, panels, controls, layout — comes from recUniSystem.css. */
+  --ru-accent:var(--green);
+  --ru-accent-bright:var(--green-bright);
+  --ru-accent-glow:var(--green-glow);
+  --ru-line:var(--line);
+  --ru-line-2:var(--line-2);
+
   --f-display:'Cinzel',Georgia,serif;
-  --f-quote:'Cinzel',Georgia,serif;
+  --f-quote:'Cormorant Garamond',Georgia,serif;
   --f-read:var(--font-body,Inter,system-ui,sans-serif);
   --f-hud:var(--font-mono,'JetBrains Mono',monospace);
 
@@ -50,67 +59,28 @@
     radial-gradient(900px 520px at 72% 6%, rgba(78,158,106,.07), transparent 70%),
     radial-gradient(700px 480px at 8% 94%, rgba(201,162,39,.05), transparent 70%);
 }
-.ruc-shell{ position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:0 28px 130px; }
 
 /* ------------------------------------------------------------ TOP HEADER -- */
 .ruc-top{ display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 0 18px; border-bottom:1px solid var(--line); }
 .ruc-brand{ font-family:var(--f-display); font-size:13px; letter-spacing:.34em; color:var(--gold); }
-.ruc-context{ font-family:var(--f-hud); font-size:10px; letter-spacing:.42em; color:var(--bronze); }
+.ruc-context{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.42em; color:var(--bronze); }
 .ruc-progress{ display:flex; align-items:center; gap:14px; }
-.ruc-progress-label{ font-family:var(--f-hud); font-size:9px; letter-spacing:.3em; color:var(--bronze-dim); }
+.ruc-progress-label{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.3em; color:var(--bronze-dim); }
 .ruc-progress-val{ font-family:var(--f-hud); font-size:14px; color:var(--green-bright); letter-spacing:.08em; }
-.ruc-progress-sub{ font-family:var(--f-hud); font-size:9px; letter-spacing:.16em; color:var(--bronze-dim); margin-top:3px; }
+.ruc-progress-sub{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.16em; color:var(--bronze-dim); margin-top:3px; }
 .ruc-dashboard-emblem{ display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; border:1px solid var(--line-2); background:transparent; color:var(--bronze); cursor:pointer; transition:all .2s; flex:0 0 auto; }
 .ruc-dashboard-emblem:hover{ border-color:var(--gold); color:var(--gold-bright); }
-
-/* -------------------------------------------------------- PRINCIPLE RAIL -- */
-.ruc-rail{ display:flex; gap:8px; padding:16px 0; overflow-x:auto; scrollbar-width:none; }
-.ruc-rail::-webkit-scrollbar{ display:none; }
-.ruc-node{
-  flex:1 0 auto; min-width:108px; background:transparent; cursor:default; text-align:left;
-  border:1px solid rgba(52,44,30,.7); border-radius:2px; padding:11px 12px 10px;
-  display:flex; flex-direction:column; gap:7px; transition:border-color .25s,background .25s,opacity .25s;
-  opacity:.42; color:inherit;
-}
-.ruc-node.is-done{ opacity:.62; }
-.ruc-node.is-active{
-  opacity:1; border-color:var(--green); background:linear-gradient(180deg,rgba(78,158,106,.1),rgba(0,0,0,0));
-  box-shadow:0 0 0 1px rgba(201,162,39,.14), 0 8px 26px -14px var(--green-glow);
-}
-.ruc-node-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.ruc-node-num{ font-family:var(--f-display); font-size:10px; letter-spacing:.28em; color:var(--bronze); }
-.ruc-node.is-active .ruc-node-num{ color:var(--green-bright); }
-.ruc-node-name{ font-family:var(--f-display); font-size:11px; letter-spacing:.12em; color:var(--ivory); }
-.ruc-node-state{ font-family:var(--f-hud); font-size:7.5px; letter-spacing:.22em; color:var(--bronze-dim); }
-.ruc-node.is-active .ruc-node-state{ color:var(--green-bright); }
 
 /* -------------------------------------------------------------- LAYOUT --- */
 .ruc-layout{ display:grid; grid-template-columns:250px minmax(0,1fr); gap:26px; padding-top:16px; align-items:start; }
 .ruc-spine{ position:sticky; top:16px; }
 .ruc-view{ padding:8px 0 40px; animation:ruc-enter .4s ease both; min-width:0; }
 @keyframes ruc-enter{ from{ opacity:0; transform:translateY(8px) } to{ opacity:1; transform:none } }
-
-.ruc-eyebrow{ font-family:var(--f-hud); font-size:9px; letter-spacing:.36em; color:var(--green-bright); margin-bottom:16px; }
-.ruc-h1{ font-family:var(--f-display); font-size:clamp(30px,4.6vw,54px); line-height:1.04; letter-spacing:.03em; color:var(--ivory); margin:0 0 14px; font-weight:500; }
-.ruc-h2{ font-family:var(--f-display); font-size:clamp(19px,2.3vw,26px); letter-spacing:.06em; color:var(--ivory); margin:0 0 12px; font-weight:500; }
-.ruc-h3{ font-family:var(--f-display); font-size:13px; letter-spacing:.2em; color:var(--gold); margin:0 0 10px; font-weight:500; }
-.ruc-sub{ font-family:var(--f-quote); font-size:clamp(18px,2.2vw,24px); font-style:italic; color:var(--bronze); line-height:1.35; margin:0 0 20px; }
-/* Reading typography prioritises legibility; display serif is never used for
-   long-form instructional copy. */
-.ruc-p{ font-size:15px; line-height:1.76; color:#DCD5C8; max-width:66ch; margin:0 0 15px; font-weight:300; }
-.ruc-lede{ font-size:16.5px; line-height:1.7; color:var(--ivory); max-width:64ch; font-weight:300; }
-.ruc-question{ font-family:var(--f-quote); font-size:clamp(19px,2.3vw,26px); line-height:1.34; color:var(--green-bright); border-left:1px solid var(--green); padding-left:20px; margin:26px 0; max-width:40ch; }
 .ruc-note{ font-size:13.5px; line-height:1.6; color:var(--bronze); font-style:italic; margin:0 0 18px; max-width:60ch; }
-.ruc-split{ display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start; }
 
 .ruc-lines{ display:grid; gap:7px; margin:0 0 20px; max-width:64ch; }
 .ruc-lines span{ font-size:15.5px; line-height:1.5; color:#DCD5C8; font-weight:300; }
 .ruc-lines.is-tight{ gap:4px; }
-
-/* --------------------------------------------------------------- PANELS -- */
-.ruc-panel{ background:linear-gradient(180deg,var(--panel),var(--obsidian-2)); border:1px solid var(--line); border-radius:3px; padding:20px; }
-.ruc-panel.accent{ border-color:rgba(78,158,106,.36); }
-.ruc-panel-label{ font-family:var(--f-hud); font-size:8px; letter-spacing:.28em; color:var(--bronze-dim); margin-bottom:9px; }
 .ruc-quote{ margin:0; padding:18px 20px; border:1px solid rgba(78,158,106,.32); background:rgba(78,158,106,.06); font:italic 1.12rem/1.5 var(--f-quote); color:var(--green-bright); }
 
 /* ----------------------------------------------------------- CHAIN / SVG -- */
@@ -119,20 +89,20 @@
 .ruc-chain-link{ stroke:var(--line-2); stroke-width:1.2; }
 .ruc-chain-link.is-lit{ stroke:var(--green); }
 .ruc-chain-node circle{ fill:var(--obsidian); stroke:var(--line-2); stroke-width:1.4; transition:stroke .2s,fill .2s; cursor:pointer; }
-.ruc-chain-node text{ font-family:var(--f-hud); font-size:8px; letter-spacing:.16em; fill:var(--bronze); transition:fill .2s; }
+.ruc-chain-node text{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.16em; fill:var(--bronze); transition:fill .2s; }
 .ruc-chain-node:hover circle,.ruc-chain-node.is-active circle{ stroke:var(--green); fill:rgba(78,158,106,.16); }
 .ruc-chain-node:hover text,.ruc-chain-node.is-active text{ fill:var(--green-bright); }
 .ruc-chain-node.is-terminal circle{ stroke:var(--gold-bright); }
 .ruc-chain-readout{ margin-top:16px; border-top:1px solid var(--line); padding-top:14px; min-height:52px; }
-.ruc-chain-readout b{ display:block; font-family:var(--f-hud); font-size:9px; letter-spacing:.26em; color:var(--green-bright); margin-bottom:6px; }
+.ruc-chain-readout b{ display:block; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.26em; color:var(--green-bright); margin-bottom:6px; }
 .ruc-chain-readout p{ margin:0; font-size:13.5px; line-height:1.6; color:#D6CEC0; font-weight:300; }
-.ruc-chain-hint{ margin-top:10px; font-family:var(--f-hud); font-size:9px; letter-spacing:.18em; color:var(--bronze-dim); }
+.ruc-chain-hint{ margin-top:10px; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.18em; color:var(--bronze-dim); }
 
 /* Node/step selector rows — used by the chain, cascade and exhibit. */
 .ruc-steps-row{ display:flex; border:1px solid var(--line); border-radius:3px; overflow:hidden; flex-wrap:wrap; }
 .ruc-step-btn{
   flex:1 1 auto; min-width:96px; background:transparent; border:0; border-right:1px solid var(--line);
-  color:var(--bronze-dim); cursor:pointer; padding:11px 8px; font-family:var(--f-hud); font-size:8.5px;
+  color:var(--bronze-dim); cursor:pointer; padding:11px 8px; font-family:var(--f-hud); font-size:var(--ru-label);
   letter-spacing:.16em; transition:all .2s; text-align:center;
 }
 .ruc-step-btn:last-child{ border-right:none; }
@@ -147,10 +117,10 @@
 .ruc-upstream{ display:grid; gap:0; border:1px solid var(--line); border-radius:3px; overflow:hidden; margin-top:16px; }
 .ruc-upstream-row{ display:grid; grid-template-columns:150px minmax(0,1fr); gap:16px; padding:14px 16px; border-bottom:1px solid var(--line); align-items:baseline; }
 .ruc-upstream-row:last-child{ border-bottom:none; }
-.ruc-upstream-row b{ font-family:var(--f-hud); font-size:8.5px; letter-spacing:.2em; color:var(--green-bright); }
+.ruc-upstream-row b{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.2em; color:var(--green-bright); }
 .ruc-upstream-row.is-effect b{ color:var(--gold-bright); }
 .ruc-upstream-row span{ font-size:13.5px; line-height:1.6; color:#D6CEC0; font-weight:300; }
-.ruc-upstream-arrow{ font-family:var(--f-hud); font-size:9px; letter-spacing:.2em; color:var(--bronze-dim); text-align:center; padding:6px 0; }
+.ruc-upstream-arrow{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.2em; color:var(--bronze-dim); text-align:center; padding:6px 0; }
 
 /* ------------------------------------------------------------ ACCORDION -- */
 .ruc-acc{ background:linear-gradient(180deg,var(--panel),var(--obsidian-2)); border:1px solid var(--line); border-radius:3px; overflow:hidden; transition:border-color .25s; }
@@ -164,16 +134,16 @@
 .ruc-acc.is-open .ruc-acc-chev{ transform:rotate(45deg); color:var(--gold); }
 .ruc-acc-body{ padding:0 20px 20px 58px; }
 .ruc-ask{ border-left:1px solid var(--green); padding-left:14px; margin-top:14px; }
-.ruc-ask-tag{ font-family:var(--f-hud); font-size:8px; letter-spacing:.26em; color:var(--green); margin-bottom:6px; }
+.ruc-ask-tag{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.26em; color:var(--green); margin-bottom:6px; }
 .ruc-ask-txt{ font-size:13.5px; line-height:1.6; color:var(--ivory); font-weight:300; }
 /* Complexity notes carry the master's guardrail against deterministic reading,
    so they are marked as caution rather than styled like body copy. */
 .ruc-complexity{ margin-top:12px; padding:12px 14px; border:1px dashed var(--line-2); border-radius:3px; background:rgba(0,0,0,.2); }
-.ruc-complexity b{ display:block; font-family:var(--f-hud); font-size:8px; letter-spacing:.24em; color:var(--bronze); margin-bottom:6px; }
+.ruc-complexity b{ display:block; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.24em; color:var(--bronze); margin-bottom:6px; }
 .ruc-complexity p{ margin:0; font-size:13px; line-height:1.6; color:var(--bronze); font-weight:300; }
 
 /* ---------------------------------------------------------------- DRAWER -- */
-.ruc-drawer-toggle{ background:transparent; border:1px solid var(--line-2); color:var(--bronze); font-family:var(--f-hud); font-size:9px; letter-spacing:.2em; padding:8px 12px; border-radius:2px; cursor:pointer; margin-top:18px; }
+.ruc-drawer-toggle{ background:transparent; border:1px solid var(--line-2); color:var(--bronze); font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.2em; padding:8px 12px; border-radius:2px; cursor:pointer; margin-top:18px; }
 .ruc-drawer-toggle:hover{ color:var(--ivory); border-color:var(--gold); }
 .ruc-drawer{ margin-top:12px; padding:16px 18px; border:1px solid var(--line); border-radius:3px; background:rgba(0,0,0,.2); }
 .ruc-drawer p{ font-size:13px; line-height:1.6; color:var(--bronze); margin:0 0 10px; }
@@ -181,16 +151,15 @@
 
 /* --------------------------------------------------------------- TERMS --- */
 .ruc-terms{ display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 0; }
-.ruc-term{ font-family:var(--f-hud); font-size:9px; letter-spacing:.18em; padding:9px 14px; border-radius:2px; border:1px solid var(--line-2); background:transparent; color:var(--bronze); cursor:pointer; transition:all .2s; }
+.ruc-term{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.18em; padding:9px 14px; border-radius:2px; border:1px solid var(--line-2); background:transparent; color:var(--bronze); cursor:pointer; transition:all .2s; }
 .ruc-term:hover{ color:var(--ivory); border-color:var(--bronze-dim); }
 .ruc-term.is-on{ border-color:var(--green); color:var(--green-bright); background:rgba(78,158,106,.1); }
 
 /* ---------------------------------------------------------- RECLAMATION -- */
 .ruc-archive{ position:relative; border:1px solid var(--line); border-radius:3px; background:#05050A; padding:24px 20px; }
 .ruc-archive-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-.ruc-archive-grid span{ font-family:var(--f-hud); font-size:9px; letter-spacing:.2em; color:var(--bronze); border:1px solid var(--line); border-radius:2px; padding:9px 10px; text-align:center; }
-.ruc-lyric{ font-family:var(--f-quote); font-size:clamp(18px,2.3vw,25px); line-height:1.42; color:var(--green-bright); font-style:italic; margin:18px 0 0; }
-.ruc-lyric-meta{ font-family:var(--f-hud); font-size:8.5px; letter-spacing:.26em; color:var(--bronze-dim); margin-top:14px; }
+.ruc-archive-grid span{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.2em; color:var(--bronze); border:1px solid var(--line); border-radius:2px; padding:9px 10px; text-align:center; }
+.ruc-lyric-meta{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.26em; color:var(--bronze-dim); margin-top:14px; }
 .ruc-tracklist{ display:grid; gap:10px; margin:14px 0 0; padding:0; }
 .ruc-tracklist li{ font-size:14px; line-height:1.62; color:#D6CEC0; font-weight:300; list-style:none; padding-left:16px; position:relative; }
 .ruc-tracklist li::before{ content:"—"; position:absolute; left:0; color:var(--green); }
@@ -201,62 +170,47 @@
 /* agency ≠ blame · consequence ≠ punishment · pattern ≠ fate · evidence ≠ revenge */
 .ruc-distinctions{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:18px; }
 .ruc-distinction{ display:flex; align-items:center; justify-content:center; gap:10px; border:1px solid var(--line-2); border-radius:3px; padding:13px 10px; }
-.ruc-distinction b{ font-family:var(--f-hud); font-size:9px; letter-spacing:.18em; color:var(--green-bright); }
+.ruc-distinction b{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.18em; color:var(--green-bright); }
 .ruc-distinction i{ font-style:normal; font-family:var(--f-hud); font-size:12px; color:var(--gold); }
-.ruc-distinction s{ font-family:var(--f-hud); font-size:9px; letter-spacing:.18em; color:var(--bronze-dim); text-decoration:line-through; }
+.ruc-distinction s{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.18em; color:var(--bronze-dim); text-decoration:line-through; }
 
 /* ----------------------------------------------------------------- LENS -- */
 .ruc-lens-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
 .ruc-trace{ margin-top:14px; }
 .ruc-trace-tabs{ display:flex; gap:4px; flex-wrap:wrap; }
-.ruc-trace-tab{ flex:1 1 auto; min-width:74px; font-family:var(--f-hud); font-size:7.5px; letter-spacing:.14em; padding:7px 5px; border-radius:2px; border:1px solid var(--line); background:transparent; color:var(--bronze-dim); cursor:pointer; transition:all .2s; }
+.ruc-trace-tab{ flex:1 1 auto; min-width:74px; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.14em; padding:7px 5px; border-radius:2px; border:1px solid var(--line); background:transparent; color:var(--bronze-dim); cursor:pointer; transition:all .2s; }
 .ruc-trace-tab.is-on{ border-color:var(--green); color:var(--green-bright); background:rgba(78,158,106,.09); }
 .ruc-trace-out{ margin-top:10px; font-size:13px; line-height:1.6; color:#D6CEC0; font-weight:300; min-height:34px; }
-
-/* ---------------------------------------------------------------- FORMS -- */
-.ruc-input,.ruc-area{ width:100%; background:#0A0A10; border:1px solid var(--line); border-radius:2px; color:var(--ivory); font-family:var(--f-read); font-size:14px; font-weight:300; padding:12px 14px; line-height:1.6; transition:border-color .2s; }
-.ruc-input:focus,.ruc-area:focus{ outline:none; border-color:var(--green); }
-.ruc-area{ min-height:120px; resize:vertical; }
-.ruc-input::placeholder,.ruc-area::placeholder{ color:#4A443A; }
 .ruc-field{ margin-bottom:16px; }
-.ruc-field label{ display:block; font-family:var(--f-hud); font-size:9px; letter-spacing:.16em; color:var(--bronze); margin-bottom:8px; }
+.ruc-field label{ display:block; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.16em; color:var(--bronze); margin-bottom:8px; }
 .ruc-buckets{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:6px; }
-.ruc-bucket label{ display:block; font-family:var(--f-hud); font-size:8.5px; letter-spacing:.18em; color:var(--green-bright); margin-bottom:7px; }
+.ruc-bucket label{ display:block; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.18em; color:var(--green-bright); margin-bottom:7px; }
 .ruc-bucket .ruc-area{ min-height:86px; }
-
-/* -------------------------------------------------------------- BUTTONS -- */
-.ruc-btn{ font-family:var(--f-read); font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; padding:11px 18px; border-radius:2px; cursor:pointer; transition:all .22s; background:transparent; border:1px solid var(--line-2); color:var(--bronze); }
-.ruc-btn:hover{ border-color:var(--gold); color:var(--gold-bright); }
-.ruc-btn:disabled{ opacity:.35; cursor:not-allowed; }
-.ruc-btn.is-on{ border-color:var(--green); color:var(--green-bright); background:rgba(78,158,106,.1); }
-.ruc-cta{ font-family:var(--f-display); font-size:12px; letter-spacing:.2em; padding:14px 26px; border-radius:2px; cursor:pointer; background:linear-gradient(180deg,rgba(201,162,39,.16),rgba(201,162,39,.05)); border:1px solid var(--gold); color:var(--gold-bright); transition:all .22s; }
-.ruc-cta:hover{ background:rgba(201,162,39,.24); box-shadow:0 0 26px -8px rgba(233,206,114,.6); }
-.ruc-cta:disabled{ opacity:.35; cursor:not-allowed; box-shadow:none; }
 
 /* --------------------------------------------------------------- STEPS --- */
 .ruc-steps{ display:flex; gap:0; border:1px solid var(--line); border-radius:3px; overflow:hidden; margin-bottom:20px; flex-wrap:wrap; }
-.ruc-step-tab{ flex:1 1 auto; min-width:64px; background:transparent; border:0; border-right:1px solid var(--line); color:var(--bronze-dim); cursor:pointer; padding:10px 8px; text-align:center; font-family:var(--f-hud); font-size:9px; letter-spacing:.12em; transition:all .2s; }
+.ruc-step-tab{ flex:1 1 auto; min-width:64px; background:transparent; border:0; border-right:1px solid var(--line); color:var(--bronze-dim); cursor:pointer; padding:10px 8px; text-align:center; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.12em; transition:all .2s; }
 .ruc-step-tab:last-child{ border-right:none; }
 .ruc-step-tab.is-current{ color:var(--green-bright); background:rgba(78,158,106,.08); }
 .ruc-step-tab.is-done{ color:var(--gold); }
 .ruc-when{ display:grid; gap:8px; padding-left:0; list-style:none; margin:0 0 18px; }
 .ruc-when li{ font-size:13px; color:var(--bronze); padding-left:16px; position:relative; line-height:1.5; }
 .ruc-when li::before{ content:"—"; position:absolute; left:0; color:var(--green); }
-.ruc-workspace-tag{ display:inline-block; font-family:var(--f-hud); font-size:8px; letter-spacing:.2em; color:var(--gold); border:1px solid var(--gold-dim); border-radius:2px; padding:4px 8px; margin-bottom:12px; }
+.ruc-workspace-tag{ display:inline-block; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.2em; color:var(--gold); border:1px solid var(--gold-dim); border-radius:2px; padding:4px 8px; margin-bottom:12px; }
 
 /* Learner-added timeline. Populates from entries only — dates never imply cause. */
 .ruc-timeline{ margin-top:16px; border:1px solid var(--line); border-radius:3px; padding:16px; background:rgba(0,0,0,.2); }
 .ruc-timeline-row{ display:grid; grid-template-columns:14px minmax(0,1fr); gap:12px; align-items:start; padding:8px 0; }
 .ruc-timeline-row i{ width:8px; height:8px; border-radius:50%; background:var(--green); margin-top:6px; display:block; }
 .ruc-timeline-row span{ font-size:13.5px; line-height:1.6; color:#D6CEC0; font-weight:300; }
-.ruc-timeline-note{ margin-top:10px; font-family:var(--f-hud); font-size:8.5px; letter-spacing:.14em; color:var(--bronze-dim); }
+.ruc-timeline-note{ margin-top:10px; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.14em; color:var(--bronze-dim); }
 
 /* ------------------------------------------------------------- ARTIFACT -- */
 .ruc-artifact-grid{ display:grid; gap:14px; }
-.ruc-artifact-stage{ font-family:var(--f-hud); font-size:8.5px; letter-spacing:.24em; color:var(--gold); margin:22px 0 10px; }
+.ruc-artifact-stage{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.24em; color:var(--gold); margin:22px 0 10px; }
 .ruc-artifact-stage:first-of-type{ margin-top:0; }
 .ruc-artifact-card{ padding:18px 20px; border:1px solid var(--line); border-radius:3px; background:rgba(11,10,16,.9); }
-.ruc-artifact-card h4{ margin:0 0 4px; font-family:var(--f-hud); font-size:9px; letter-spacing:.2em; color:var(--green-bright); }
+.ruc-artifact-card h4{ margin:0 0 4px; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.2em; color:var(--green-bright); }
 .ruc-artifact-card small{ display:block; font-size:12px; line-height:1.5; color:var(--bronze-dim); margin-bottom:10px; }
 .ruc-artifact-card.is-lever{ border-color:var(--gold); background:rgba(201,162,39,.05); }
 .ruc-artifact-card.is-lever h4{ color:var(--gold-bright); }
@@ -264,7 +218,7 @@
 /* Generated interpretation is never presented as objective truth: it is
    labelled a draft, and carries its own accept/reject controls. */
 .ruc-draft{ padding:20px; border:1px dashed rgba(78,158,106,.5); border-radius:3px; background:rgba(78,158,106,.05); margin-bottom:18px; }
-.ruc-draft-label{ font-family:var(--f-hud); font-size:8px; letter-spacing:.26em; color:var(--green-bright); margin-bottom:6px; }
+.ruc-draft-label{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.26em; color:var(--green-bright); margin-bottom:6px; }
 .ruc-draft-caveat{ font-size:12px; line-height:1.55; color:var(--bronze); font-style:italic; margin:0 0 12px; }
 .ruc-draft .ruc-area{ background:transparent; border:none; padding:0; font:italic 1.02rem/1.55 var(--f-quote); color:var(--ivory); min-height:70px; }
 .ruc-draft-actions{ margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; }
@@ -278,38 +232,32 @@
 
 .ruc-artifact-meta{ margin-top:22px; padding:16px 20px; border:1px solid var(--line); border-radius:3px; }
 .ruc-artifact-meta-title{ font-family:var(--f-display); font-size:11px; letter-spacing:.2em; color:var(--gold); margin-bottom:10px; }
-.ruc-artifact-meta-row{ display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--f-hud); font-size:10px; letter-spacing:.06em; color:var(--bronze-dim); }
+.ruc-artifact-meta-row{ display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.06em; color:var(--bronze-dim); }
 .ruc-artifact-meta-row b{ color:var(--ivory); font-weight:400; }
 .ruc-artifact-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
-.ruc-save-flash{ margin-top:10px; font-family:var(--f-hud); font-size:10px; letter-spacing:.14em; color:var(--gold-bright); }
-.ruc-save{ font-family:var(--f-hud); font-size:9px; letter-spacing:.14em; color:var(--bronze-dim); }
+.ruc-save-flash{ margin-top:10px; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.14em; color:var(--gold-bright); }
+.ruc-save{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.14em; color:var(--bronze-dim); }
 
 /* -------------------------------------------------------- SKIP / MEDIA --- */
-.ruc-skip{ background:none; border:none; color:var(--bronze-dim); font-family:var(--f-hud); font-size:10px; letter-spacing:.12em; cursor:pointer; padding:0; margin-top:12px; text-decoration:underline; text-underline-offset:3px; }
+.ruc-skip{ background:none; border:none; color:var(--bronze-dim); font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.12em; cursor:pointer; padding:0; margin-top:12px; text-decoration:underline; text-underline-offset:3px; }
 .ruc-skip:hover{ color:var(--ivory); }
 .ruc-media-embed{ margin-top:32px; }
 
 /* -------------------------------------------------------------- SUMMARY -- */
 .ruc-badges{ display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 8px; }
-.ruc-badge{ font-family:var(--f-hud); font-size:9px; letter-spacing:.14em; padding:8px 12px; border-radius:2px; border:1px solid var(--line-2); color:var(--bronze-dim); }
+.ruc-badge{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.14em; padding:8px 12px; border-radius:2px; border:1px solid var(--line-2); color:var(--bronze-dim); }
 .ruc-badge.on{ border-color:var(--gold); color:var(--gold-bright); background:rgba(201,162,39,.08); }
 .ruc-learned{ display:grid; gap:10px; margin:16px 0; padding:0; list-style:none; }
 .ruc-learned li{ font-size:14px; line-height:1.6; color:#D6CEC0; font-weight:300; display:grid; grid-template-columns:30px minmax(0,1fr); gap:12px; }
-.ruc-learned li b{ font-family:var(--f-hud); font-size:9px; letter-spacing:.14em; color:var(--green); padding-top:3px; }
+.ruc-learned li b{ font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.14em; color:var(--green); padding-top:3px; }
 .ruc-discovered{ display:grid; gap:12px; margin:18px 0; }
 .ruc-discovered div{ border-left:1px solid var(--green); padding-left:14px; }
-.ruc-discovered b{ display:block; font-family:var(--f-hud); font-size:8.5px; letter-spacing:.2em; color:var(--green); margin-bottom:6px; }
+.ruc-discovered b{ display:block; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.2em; color:var(--green); margin-bottom:6px; }
 .ruc-discovered p{ margin:0; font-size:14px; line-height:1.6; color:#D6CEC0; font-weight:300; }
 .ruc-carry{ margin-top:20px; padding:20px; border:1px solid var(--gold-dim); border-radius:3px; background:rgba(201,162,39,.05); }
-.ruc-carry span{ display:block; font-family:var(--f-hud); font-size:8px; letter-spacing:.24em; color:var(--gold); margin-bottom:8px; }
+.ruc-carry span{ display:block; font-family:var(--f-hud); font-size:var(--ru-label); letter-spacing:.24em; color:var(--gold); margin-bottom:8px; }
 .ruc-carry p{ margin:0; font:italic 1.05rem/1.5 var(--f-quote); color:var(--gold-bright); }
-
-/* --------------------------------------------------------------- FOOTER -- */
-.ruc-foot{ position:fixed; left:0; right:0; bottom:0; z-index:30; background:rgba(8,8,11,.95); backdrop-filter:blur(10px); border-top:1px solid var(--line); }
-.ruc-foot-in{ max-width:1280px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .ruc-meta{ display:flex; gap:24px; align-items:center; }
-.ruc-meta-k{ font-family:var(--f-hud); font-size:8px; letter-spacing:.24em; color:var(--bronze-dim); }
-.ruc-meta-v{ font-family:var(--f-hud); font-size:11px; color:var(--ivory); letter-spacing:.08em; margin-top:4px; }
 
 /* -------------------------------------------------------- COMPLETION --- */
 /* Nodes illuminate in sequence, then the chain stabilizes. The animation
@@ -349,20 +297,16 @@
 .ruc-sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
 @media (max-width:900px){
-  .ruc-shell{ padding:0 18px 150px; }
   .ruc-layout{ grid-template-columns:1fr; }
   .ruc-spine{ position:static; }
-  .ruc-split{ grid-template-columns:1fr; gap:30px; }
   .ruc-lens-grid,.ruc-archive-grid,.ruc-buckets,.ruc-distinctions{ grid-template-columns:1fr; }
   /* Causal diagrams become vertical sequences rather than shrunken rows. */
   .ruc-steps-row{ flex-direction:column; }
   .ruc-step-btn{ border-right:none; border-bottom:1px solid var(--line); }
   .ruc-step-btn:last-child{ border-bottom:none; }
   .ruc-upstream-row{ grid-template-columns:1fr; gap:5px; }
-  .ruc-foot-in{ padding:11px 18px; flex-wrap:wrap; gap:12px; }
   .ruc-meta{ gap:14px; flex-wrap:wrap; }
   .ruc-acc-body{ padding-left:20px; }
-  .ruc-cta{ flex:1 1 100%; text-align:center; }
 }
 
 @media (prefers-reduced-motion:reduce){

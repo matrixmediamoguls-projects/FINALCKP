@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { loadUserProgress, saveUserProgress } from "../../../lib/supabase/reclamationUniversity";
+import useFooterOffset from "./useFooterOffset";
 import "./vibrationModuleExperience.css";
 
 /* ============================================================================
@@ -66,14 +67,18 @@ function ResonanceField({ height = 260, variant = "ambient", onZone }) {
       const mid = h / 2;
       const px = pointer.current.x;
       const near = pointer.current.active;
-      const base = variant === "annotated" ? 26 : 1.6;
-      const bloom = variant === "annotated" ? 16 : 40;
+      /* The ambient field used to rest at amplitude 1.6 — a flat line that read
+         as a rendering artifact, so the caption named two things the viewer
+         could not see. It now rests at a legible amplitude and still blooms
+         under the pointer, which is what the lesson is actually about. */
+      const base = variant === "annotated" ? 26 : 14;
+      const bloom = variant === "annotated" ? 16 : 34;
       const sigma = w * 0.16;
 
       // the apparent surface — a still gold hairline
       ctx.beginPath();
       ctx.moveTo(0, mid); ctx.lineTo(w, mid);
-      ctx.strokeStyle = "rgba(201,162,39,0.26)";
+      ctx.strokeStyle = "rgba(201,162,39,0.55)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -140,7 +145,12 @@ function ResonanceField({ height = 260, variant = "ambient", onZone }) {
     };
   }, [height, variant, onZone]);
 
-  return <div ref={wrapRef} style={{ width: "100%" }}><canvas ref={canvasRef} style={{ display: "block", cursor: "crosshair" }} /></div>;
+  return (
+    <div ref={wrapRef} className="rux-canvas-wrap">
+      <canvas ref={canvasRef} className="rux-canvas is-probe" role="img"
+        aria-label="A still gold line marks the apparent surface. Beneath it, red waveforms carry the movement that is actually there; moving a pointer across the field amplifies the movement nearest to it." />
+    </div>
+  );
 }
 
 /* ------------------------------------------------------------- EXHIBIT --- */
@@ -224,8 +234,8 @@ function TremorToStar() {
           d={`M0 ${372 - i * 6} q40 ${-14 - i * 5} 78 2 t76 -22 t74 -42 t78 -62 t76 -50 t80 -34 t78 -10`}
           fill="none" stroke="url(#hhWave)" strokeWidth={i === 0 ? 2 : 1} opacity={o} />
       ))}
-      <text x="26" y="404" fill="#6E6149" fontFamily="var(--f-hud)" fontSize="8" letterSpacing="3">BENEATH THE SURFACE</text>
-      <text x="614" y="176" fill="#6E6149" fontFamily="var(--f-hud)" fontSize="8" letterSpacing="3" textAnchor="end">ARRIVAL</text>
+      <text x="26" y="404" fill="#8A7A5C" fontFamily="var(--f-hud)" fontSize="10" letterSpacing="2.4">BENEATH THE SURFACE</text>
+      <text x="614" y="176" fill="#8A7A5C" fontFamily="var(--f-hud)" fontSize="10" letterSpacing="2.4" textAnchor="end">ARRIVAL</text>
     </svg>
   );
 }
@@ -585,26 +595,32 @@ function useSonicDemo() {
 function QuestionBlock({ item, idx }) {
   const [picked, setPicked] = useState(null);
   return (
-    <div className="rux-panel" style={{ marginBottom: 14 }}>
+    <div className="rux-panel rux-stack-sm">
       <div className="rux-panel-label">KNOWLEDGE CHECK {String(idx + 1).padStart(2, "0")}</div>
-      <div style={{ fontSize: 15.5, lineHeight: 1.6, color: "#F1ECE2", marginBottom: 16, fontWeight: 400 }}>{item.q}</div>
-      <div style={{ display: "grid", gap: 8 }}>
+      <p className="rux-p">{item.q}</p>
+      <div className="rux-stack">
         {item.opts.map((o, i) => {
           const chosen = picked === i;
           const cls = chosen ? (o.ok ? "rux-opt right" : "rux-opt wrong") : "rux-opt";
           return (
             <div key={i}>
-              <button className={cls} onClick={() => setPicked(i)}>{o.t}</button>
-              {chosen && <div className="rux-fb"><strong style={{ color: o.ok ? "#E9CE72" : "#FF5545", fontWeight: 600 }}>
-                {o.ok ? "SIGNAL. " : "NOISE. "}</strong>{o.fb}</div>}
+              <button type="button" className={cls} onClick={() => setPicked(i)}>{o.t}</button>
+              {chosen && (
+                <div className="rux-fb">
+                  <strong className={`rux-fb-verdict ${o.ok ? "right" : "wrong"}`}>
+                    {o.ok ? "SIGNAL. " : "NOISE. "}
+                  </strong>
+                  {o.fb}
+                </div>
+              )}
             </div>
           );
         })}
       </div>
       {picked !== null && !item.opts[picked].ok && (
-        <div style={{ marginTop: 14, fontSize: 12.5, color: "#9D8862", fontWeight: 300 }}>
+        <p className="rux-note rux-note-top">
           Choose again — a wrong reading is where the distinction gets sharper.
-        </div>
+        </p>
       )}
     </div>
   );
@@ -674,12 +690,15 @@ function SpectrumTuner({ active, onSelect }) {
   return (
     <div className="rux-tuner">
       <div className="rux-tuner-head">
-        <span className="rux-panel-label" style={{ margin: 0 }}>SPECTRUM — SELECT A SYSTEM TO RETUNE</span>
-        <span style={{ fontFamily: "var(--f-hud)", fontSize: 8, letterSpacing: ".22em", color: "#D2382C" }}>
+        <span className="rux-panel-label rux-flush">SPECTRUM — SELECT A SYSTEM TO RETUNE</span>
+        <span className="rux-tuner-read">
           {String(active + 1).padStart(2, "0")} / 06 · {DOMAINS[active].name}
         </span>
       </div>
-      <div ref={wrapRef}><canvas ref={canvasRef} style={{ display: "block" }} /></div>
+      <div ref={wrapRef}>
+        <canvas ref={canvasRef} className="rux-canvas" role="img"
+          aria-label={`Waveform retuned for ${DOMAINS[active].name}: ${DOMAINS[active].obs}`} />
+      </div>
       <div className="rux-stops" role="tablist" aria-label="Domains">
         {DOMAINS.map((d, i) => (
           <button key={d.n} role="tab" aria-selected={active === i}
@@ -700,14 +719,48 @@ function AuditStrip({ audit, value, onPick }) {
   const picked = value != null ? audit.opts[value] : null;
   return (
     <div className="rux-audit">
-      <div className="rux-field-k" style={{ color: "#D2382C" }}>RUN IT ON YOURSELF</div>
-      <div className="rux-audit-q" style={{ marginTop: 8 }}>{audit.q}</div>
+      <div className="rux-field-k is-accent">RUN IT ON YOURSELF</div>
+      <div className="rux-audit-q">{audit.q}</div>
       <div className="rux-chips">
         {audit.opts.map((o, i) => (
-          <button key={i} className={`rux-chip${value === i ? " on" : ""}`} onClick={() => onPick(i)}>{o.t}</button>
+          <button type="button" key={i} className={`rux-chip${value === i ? " on" : ""}`}
+            aria-pressed={value === i} onClick={() => onPick(i)}>{o.t}</button>
         ))}
       </div>
-      {picked && <div className="rux-fb" style={{ marginTop: 14 }}>{picked.fb}</div>}
+      {picked && <div className="rux-fb">{picked.fb}</div>}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------ ACCORDION -- */
+/* One of the four operating principles. Collapsed it shows the claim; opened
+   it shows the argument and then hands the learner the self-audit, so the
+   concept always ends in something they do rather than something they read. */
+function Accordion({ item, open, audit, auditValue, onAudit, onToggle }) {
+  const panelId = `rux-acc-${item.n}`;
+  return (
+    <div className={`rux-acc${open ? " is-open" : ""}`}>
+      <button type="button" className="rux-acc-head" onClick={onToggle}
+        aria-expanded={open} aria-controls={panelId}>
+        <span className="rux-acc-mark">{item.n}</span>
+        <span>
+          <span className="rux-acc-title">{item.title}</span>
+          <span className="rux-acc-teaser">{item.teaser}</span>
+        </span>
+        <span className="rux-acc-chev" aria-hidden="true">+</span>
+      </button>
+      {open && (
+        <div className="rux-acc-body" id={panelId}>
+          {item.body.map((b, i) => (
+            <p className="rux-p is-small" key={i}>{b}</p>
+          ))}
+          <div className="rux-practice">
+            <div className="rux-practice-tag">PRACTICE</div>
+            <div className="rux-practice-txt">{item.practice}</div>
+          </div>
+          <AuditStrip audit={audit} value={auditValue} onPick={onAudit} />
+        </div>
+      )}
     </div>
   );
 }
@@ -722,7 +775,7 @@ function ManualPlate({ v, sealed }) {
   const Row = ({ id, label, y, color = "#D2382C" }) => (
     <g>
       <circle cx="46" cy={y} r="4" fill={line(id) ? color : "#241F16"} />
-      <text x="70" y={y - 7} fill="#6E6149" fontFamily="var(--f-hud)" fontSize="7" letterSpacing="2.4">{label}</text>
+      <text x="70" y={y - 7} fill="#8A7A5C" fontFamily="var(--f-hud)" fontSize="10" letterSpacing="2">{label}</text>
       <text x="70" y={y + 11} fill={line(id) ? "#F1ECE2" : "#332B1E"} fontFamily="var(--f-quote)"
         fontSize="17" fontStyle="italic">
         {line(id) ? (line(id).length > 46 ? line(id).slice(0, 46) + "…" : line(id)) : "—"}
@@ -739,9 +792,9 @@ function ManualPlate({ v, sealed }) {
       </defs>
       <rect width="520" height="560" fill="#08080B" />
       <rect x="14" y="14" width="492" height="532" fill="none" stroke="#241F16" />
-      <text x="34" y="46" fill="#9D8862" fontFamily="var(--f-display)" fontSize="11" letterSpacing="4">VIBRATION / ENERGY MAP</text>
-      <text x="486" y="46" fill="#6E6149" fontFamily="var(--f-hud)" fontSize="7.5" letterSpacing="2.4" textAnchor="end">
-        RECLAMATION MANUAL · PAGE 03
+      <text x="34" y="46" fill="#9D8862" fontFamily="var(--f-display)" fontSize="12" letterSpacing="2.6">VIBRATION / ENERGY MAP</text>
+      <text x="486" y="46" fill="#8A7A5C" fontFamily="var(--f-hud)" fontSize="10" letterSpacing="2" textAnchor="end">
+        PAGE 03
       </text>
       <line x1="34" y1="62" x2="486" y2="62" stroke="#241F16" />
 
@@ -754,7 +807,7 @@ function ManualPlate({ v, sealed }) {
       <g>
         <circle cx="46" cy="404" r="9" fill="none" stroke="#C9A227" strokeWidth="1" />
         <path d="M42 404 L50 404 M46 400 L46 408" stroke="#C9A227" strokeWidth="1" />
-        <text x="70" y="408" fill="#C9A227" fontFamily="var(--f-hud)" fontSize="7" letterSpacing="2.4">REDIRECT</text>
+        <text x="70" y="408" fill="#C9A227" fontFamily="var(--f-hud)" fontSize="10" letterSpacing="2">REDIRECT</text>
       </g>
       <path d="M46 413 L46 452" stroke="#C9A227" strokeWidth="1.4" />
       <Row id="signal" label="DELIBERATE SIGNAL" y={462} color="#C9A227" />
@@ -764,7 +817,7 @@ function ManualPlate({ v, sealed }) {
       {sealed && (
         <g>
           <rect x="366" y="514" width="120" height="20" fill="none" stroke="#C9A227" />
-          <text x="426" y="528" fill="#E9CE72" fontFamily="var(--f-hud)" fontSize="7" letterSpacing="2.6" textAnchor="middle">
+          <text x="426" y="528" fill="#E9CE72" fontFamily="var(--f-hud)" fontSize="10" letterSpacing="2" textAnchor="middle">
             PAGE COMPLETE
           </text>
         </g>
@@ -799,7 +852,9 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
   const [saveState, setSaveState] = useState("idle");
   const { play, playing } = useSonicDemo();
   const topRef = useRef(null);
+  const tabRefs = useRef([]);
   const seeded = useRef(false);
+  const [rootRef, footRef] = useFooterOffset();
 
   const motion = Math.round(((maxTab + 1) / TABS.length) * 100);
   const ZONES = ["AMPLITUDE", "FREQUENCY", "MOVEMENT", "RESONANCE"];
@@ -815,6 +870,9 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
     setTab(n);
     setMaxTab((m) => Math.max(m, n));
     if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    // The strip scrolls independently of the page, so the newly selected tab
+    // has to be brought into it or advancing can select something off-screen.
+    tabRefs.current[n]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
   };
 
   const advance = () => {
@@ -826,9 +884,18 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
     go(tab + 1);
   };
 
+  /* Roving focus: the selected tab is the only one in the tab order, so after
+     an arrow key the focus has to follow the selection or it lands nowhere. */
   const onTabKey = (e) => {
-    if (e.key === "ArrowRight") { e.preventDefault(); go(tab + 1); }
-    if (e.key === "ArrowLeft") { e.preventDefault(); go(tab - 1); }
+    let next = null;
+    if (e.key === "ArrowRight") next = Math.min(TABS.length - 1, tab + 1);
+    if (e.key === "ArrowLeft") next = Math.max(0, tab - 1);
+    if (e.key === "Home") next = 0;
+    if (e.key === "End") next = TABS.length - 1;
+    if (next === null) return;
+    e.preventDefault();
+    go(next);
+    tabRefs.current[next]?.focus();
   };
 
   const toggle = (arr, set, i) => set(arr.includes(i) ? arr.filter((x) => x !== i) : [...arr, i]);
@@ -927,64 +994,61 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
   /* ------------------------------------------------------------ RENDER --- */
   return (
-    <div className="rux">
+    <div className="rux" ref={rootRef}>
       <div className="rux-shell">
 
-        {/* TOP HEADER */}
+        {/* TOP HEADER — identity and save state only. Progress is reported once,
+            in the action bar, where MOTION and PROGRESS can be read against
+            each other. */}
         <header className="rux-top">
           <div>
             <div className="rux-brand">RECLAMATION UNIVERSITY</div>
-            <div className="rux-context" style={{ marginTop: 6 }}>
+            <div className="rux-context">
               {faculty?.title?.toUpperCase() || "HERMETIC HALL"}
-              <span style={{ color: saveState === "saved" ? "#6E5D2C" : saveState === "saving" ? "#4A443A" : "#4A443A", marginLeft: 14 }}>
-                {saveState === "saved" ? "· MANUAL SAVED" : saveState === "saving" ? "· SAVING" : saveState === "off" ? "· LOCAL SESSION ONLY" : ""}
-              </span>
+              {saveState !== "idle" && (
+                <span className={`rux-save is-${saveState}`}>
+                  {saveState === "saved" ? "· MANUAL SAVED"
+                    : saveState === "saving" ? "· SAVING"
+                    : "· LOCAL SESSION ONLY"}
+                </span>
+              )}
             </div>
-          </div>
-          <div className="rux-progress">
-            <div style={{ textAlign: "right" }}>
-              <div className="rux-progress-label">WORK COMPLETED</div>
-              <div className="rux-progress-val">{progress}%</div>
-            </div>
-            <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
-              <circle cx="19" cy="19" r="16" fill="none" stroke="#241F16" strokeWidth="2" />
-              <circle cx="19" cy="19" r="16" fill="none" stroke="#332B1E" strokeWidth="2" strokeLinecap="round"
-                strokeDasharray={`${(motion / 100) * 100.5} 100.5`} transform="rotate(-90 19 19)" />
-              <circle cx="19" cy="19" r="16" fill="none" stroke="#C9A227" strokeWidth="2" strokeLinecap="round"
-                strokeDasharray={`${(progress / 100) * 100.5} 100.5`} transform="rotate(-90 19 19)" />
-              <circle cx="19" cy="19" r="3" fill="#D2382C" />
-            </svg>
           </div>
         </header>
 
-        {/* SEVEN-PRINCIPLE NAVIGATION */}
-        <nav className="rux-rail" aria-label="The Seven Hermetic Principles">
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. It was
+            previously seven disabled buttons that still showed a pointer and a
+            hover state, promising an interaction that did not exist. */}
+        <ol className="rux-rail" aria-label="Position in the Hermetic Hall">
           {PRINCIPLES.map((p) => {
             const active = p.n === "III";
             return (
-              <button key={p.n} className={`rux-node${active ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
-                aria-current={active ? "page" : undefined} disabled={!active}>
+              <li key={p.n}
+                className={`rux-node${active ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}
+                aria-current={active ? "step" : undefined}>
                 <div className="rux-node-row">
                   <span className="rux-node-num">{p.n}</span>
                   <Sigil kind={p.k} size={16} color={active ? "#FF5545" : "#9D8862"} />
                 </div>
                 <div className="rux-node-name">{p.name}</div>
-                <div className="rux-node-state">{p.state}</div>
-              </button>
+                <span className="rux-sr">{`${p.name} — ${p.state}`}</span>
+              </li>
             );
           })}
-        </nav>
+        </ol>
 
         {/* TAB NAVIGATION */}
         <div className="rux-tabs-wrap" ref={topRef}>
-          <div className="rux-tabs" role="tablist" aria-label="Module sections" onKeyDown={onTabKey}>
+          <div className="rux-tabs ru-scroller" role="tablist" aria-label="Module sections" onKeyDown={onTabKey}>
             {phases.map((ph) => (
-              <div className="rux-phase" key={ph.phase}>
-                <div className="rux-phase-tag">{ph.phase}</div>
+              <div className="rux-phase" key={ph.phase} role="presentation">
+                <div className="rux-phase-tag" role="presentation">{ph.phase}</div>
                 {ph.items.map((t) => (
-                  <button key={t.id} role="tab" aria-selected={tab === t.i}
+                  <button type="button" key={t.id} id={`rux-tab-${t.id}`} role="tab"
+                    ref={(el) => { tabRefs.current[t.i] = el; }}
+                    aria-selected={tab === t.i} aria-controls={`rux-panel-${t.id}`}
                     tabIndex={tab === t.i ? 0 : -1}
-                    className={`rux-tab${tab === t.i ? " is-active" : ""}${t.i > maxTab ? " is-locked" : ""}`}
+                    className={`rux-tab${tab === t.i ? " is-active" : ""}${t.i > maxTab ? " is-ahead" : ""}`}
                     onClick={() => go(t.i)}>{t.label}</button>
                 ))}
               </div>
@@ -994,27 +1058,27 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ============================================== TAB I — INTRO ==== */}
         {tab === 0 && (
-          <section className="rux-view" role="tabpanel">
-            <div className="rux-split">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
+            <div className="rux-hero">
               <div>
                 <div className="rux-eyebrow">III — VIBRATION</div>
                 <h1 className="rux-h1">Nothing Rests.<br />Everything Moves.</h1>
                 <p className="rux-sub">What is moving inside you right now — and where is it taking you?</p>
               </div>
-              <div onMouseEnter={() => setHoverWave(true)} onMouseLeave={() => setHoverWave(false)}
-                   style={{ position: "relative", paddingTop: 30 }}>
+              <figure className="rux-field-fig"
+                onMouseEnter={() => setHoverWave(true)} onMouseLeave={() => setHoverWave(false)}>
                 <ResonanceField height={230} variant="ambient" />
-                <div style={{ marginTop: 14, minHeight: 18, fontFamily: "var(--f-hud)", fontSize: 8,
-                  letterSpacing: ".28em", color: hoverWave ? "#FF5545" : "#4A443A", transition: "color .3s" }}>
+                <figcaption className="rux-field-cap">
                   {hoverWave ? "MOVEMENT EXISTS BENEATH APPEARANCE." : "GOLD LINE — APPEARANCE.  RED — WHAT IS ACTUALLY MOVING."}
-                </div>
-              </div>
+                </figcaption>
+              </figure>
             </div>
 
             <hr className="rux-rule" />
 
             <div className="rux-measure">
-              <p className="rux-lede" style={{ marginBottom: 24 }}>If you have already tried self-help, you may recognize the pattern.</p>
+              <p className="rux-lede">If you have already tried self-help, you may recognize the pattern.</p>
               <p className="rux-beat">You learn something.</p>
               <p className="rux-beat">You get inspired.</p>
               <p className="rux-beat">You make a plan.</p>
@@ -1034,7 +1098,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
               <div className="rux-panel accent">
                 <div className="rux-panel-label" style={{ color: "#D2382C" }}>BEFORE YOU READ FURTHER</div>
-                <div className="rux-audit-q" style={{ fontSize: 16, margin: "10px 0 14px" }}>{INTRO_CHECK.q}</div>
+                <div className="rux-audit-q">{INTRO_CHECK.q}</div>
                 <div className="rux-chips">
                   {INTRO_CHECK.opts.map((o, i) => (
                     <button key={i} className={`rux-chip${introPick === i ? " on" : ""}`}
@@ -1088,7 +1152,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                   .map((q, i) => (
                     <div key={i} style={{ display: "flex", gap: 14, alignItems: "baseline" }}>
                       <span className="rux-index">{String(i + 1).padStart(2, "0")}</span>
-                      <span style={{ fontFamily: "var(--f-quote)", fontSize: 20, color: "#F1ECE2", fontStyle: "italic" }}>{q}</span>
+                      <span className="rux-qline">{q}</span>
                     </div>
                   ))}
               </div>
@@ -1098,7 +1162,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                 of observing movement early enough to influence it. Because if you wait until a pattern becomes a crisis,
                 you are no longer working with the beginning of the movement. You are trying to clean up its consequences.
               </p>
-              <p className="rux-p" style={{ fontFamily: "var(--f-quote)", fontSize: 25, fontStyle: "italic", color: "#E9CE72", lineHeight: 1.4 }}>
+              <p className="rux-closer">
                 Vibration teaches you to catch the tremor before the earthquake.
               </p>
             </div>
@@ -1107,11 +1171,11 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================== TAB II — PRINCIPLE ==== */}
         {tab === 1 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow gold">THE LAW OF VIBRATION</div>
             <blockquote style={{ margin: "0 0 46px", maxWidth: "24ch" }}>
-              <p style={{ fontFamily: "var(--f-quote)", fontSize: "clamp(30px,5vw,58px)", lineHeight: 1.16,
-                color: "#F1ECE2", fontStyle: "italic", margin: 0 }}>
+              <p className="rux-axiom">
                 “Nothing rests; everything moves; everything vibrates.”
               </p>
             </blockquote>
@@ -1121,14 +1185,11 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                 <div className="rux-panel-label">DIAGRAM — MOVE ACROSS THE FIELD</div>
               </div>
               <ResonanceField height={210} variant="annotated" onZone={setZone} />
-              <div style={{ display: "flex", borderTop: "1px solid #241F16" }}>
+              <div className="rux-zones">
                 {ZONES.map((z, i) => (
-                  <div key={z} style={{ flex: 1, padding: "12px 14px", borderRight: i < 3 ? "1px solid #241F16" : "none",
-                    background: zone === i ? "rgba(210,56,44,.09)" : "transparent", transition: "background .2s" }}>
-                    <div style={{ fontFamily: "var(--f-hud)", fontSize: 8, letterSpacing: ".22em",
-                      color: zone === i ? "#FF5545" : "#6E6149" }}>{z}</div>
-                    <div style={{ fontSize: 12, color: zone === i ? "#D8D1C4" : "#4A443A", marginTop: 6,
-                      fontWeight: 300, lineHeight: 1.45 }}>{ZONE_DEF[z]}</div>
+                  <div key={z} className={`rux-zone${zone === i ? " is-on" : ""}`}>
+                    <div className={`rux-zone-k${zone === i ? " is-on" : ""}`}>{z}</div>
+                    <div className={`rux-zone-v${zone === i ? " is-on" : ""}`}>{ZONE_DEF[z]}</div>
                   </div>
                 ))}
               </div>
@@ -1157,7 +1218,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                     <div className="rux-field-v">A measurable physical phenomenon involving oscillation, frequency, amplitude, resonance, and related properties.</div>
                   </div>
                 </div>
-                <p className="rux-p" style={{ marginTop: 20, marginBottom: 0, fontSize: 14 }}>
+                <p className="rux-p is-small">
                   The scientific meaning can give us useful models for thinking about the philosophical principle.
                   It does not scientifically prove the Hermetic principle. That distinction is not a weakness —
                   <strong> discernment is part of the practice.</strong>
@@ -1186,11 +1247,11 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
               <div style={{ display: "grid", gap: 14, marginTop: 24 }}>
                 <div className="rux-panel" style={{ opacity: .6 }}>
                   <div className="rux-panel-label">THE QUESTION MOST PEOPLE ASK</div>
-                  <div style={{ fontFamily: "var(--f-quote)", fontSize: 26, fontStyle: "italic", color: "#9D8862" }}>“Where am I?”</div>
+                  <div className="rux-qmuted is-lg">“Where am I?”</div>
                 </div>
                 <div className="rux-panel accent">
                   <div className="rux-panel-label" style={{ color: "#D2382C" }}>THE DEEPER QUESTION</div>
-                  <div style={{ fontFamily: "var(--f-quote)", fontSize: 30, fontStyle: "italic", color: "#E9CE72" }}>“Where is this movement taking me?”</div>
+                  <div className="rux-qlead">“Where is this movement taking me?”</div>
                 </div>
               </div>
             </div>
@@ -1199,14 +1260,15 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ======================================= TAB III — KEY CONCEPTS === */}
         {tab === 2 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">KEY CONCEPTS</div>
-            <h1 className="rux-h1" style={{ fontSize: "clamp(28px,4vw,44px)" }}>Four Operating Principles</h1>
+            <h1 className="rux-h1 is-section">Four Operating Principles</h1>
             <p className="rux-p" style={{ marginBottom: 30 }}>
               Vibration becomes usable when it stops being an idea and becomes four things you can actually run.
               Open each one when you are ready to work with it.
             </p>
-            <div className="rux-grid-2">
+            <div className="rux-grid-2 is-top">
               {CONCEPTS.map((c, i) => (
                 <Accordion key={c.n} item={c} open={openConcepts.includes(i)}
                   audit={CONCEPT_AUDITS[c.n]} auditValue={audits[c.n]}
@@ -1218,7 +1280,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                   }} />
               ))}
             </div>
-            <div style={{ fontFamily: "var(--f-hud)", fontSize: 9, letterSpacing: ".24em", color: "#6E6149", marginTop: 20 }}>
+            <div className="rux-count">
               {Object.keys(audits).length}/4 SELF-AUDITS RUN
             </div>
           </section>
@@ -1226,11 +1288,12 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ======================================= TAB IV — WHY IT MATTERS == */}
         {tab === 3 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">WHY THIS MATTERS</div>
             <div className="rux-split" style={{ marginBottom: 40 }}>
               <div>
-                <h1 className="rux-h1" style={{ fontSize: "clamp(26px,3.6vw,40px)" }}>
+                <h1 className="rux-h1 is-section">
                   A single moment tells you very little about direction.
                 </h1>
               </div>
@@ -1238,7 +1301,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                 <p className="rux-p">Most people evaluate their lives through isolated moments.</p>
                 <div style={{ display: "grid", gap: 6, margin: "16px 0 20px" }}>
                   {["“I had a good day.”", "“Everything went wrong today.”", "“I finally felt motivated.”", "“I completely fell apart.”"]
-                    .map((q, i) => <div key={i} style={{ fontFamily: "var(--f-quote)", fontSize: 19, color: "#9D8862", fontStyle: "italic" }}>{q}</div>)}
+                    .map((q, i) => <div key={i} className="rux-qmuted">{q}</div>)}
                 </div>
                 <p className="rux-p">
                   You need to learn to distinguish <strong>state</strong> from <strong>trajectory</strong>.
@@ -1255,8 +1318,8 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
               {CONSEQUENCES.map((c, i) => (
                 <div className="rux-panel" key={i}>
                   <div className="rux-index">{String(i + 1).padStart(2, "0")}</div>
-                  <div className="rux-h3" style={{ margin: "10px 0 12px", fontSize: 14 }}>{c.t}</div>
-                  {c.b.map((b, j) => <p key={j} className="rux-p" style={{ fontSize: 14, marginBottom: 10 }}>{b}</p>)}
+                  <div className="rux-h3">{c.t}</div>
+                  {c.b.map((b, j) => <p key={j} className="rux-p is-small">{b}</p>)}
                 </div>
               ))}
             </div>
@@ -1278,10 +1341,11 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ============================================ TAB V — DOMAINS ===== */}
         {tab === 4 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">DOMAINS</div>
             <div className="rux-split" style={{ marginBottom: 30 }}>
-              <h1 className="rux-h1" style={{ fontSize: "clamp(26px,3.6vw,42px)" }}>The Same Movement,<br />Six Systems</h1>
+              <h1 className="rux-h1 is-section">The Same Movement,<br />Six Systems</h1>
               <p className="rux-p" style={{ paddingTop: 10 }}>
                 A principle earns its authority by holding in more than one place. This is one wave, retuned six times —
                 a fast, shallow oscillation in one system and a slow, heavy one in another. The skill you are building is
@@ -1307,16 +1371,16 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
               <div className="rux-grid-2" style={{ gap: 30 }}>
                 <div>
                   <div className="rux-field"><div className="rux-field-k">OBSERVATION</div>
-                    <div className="rux-field-v" style={{ fontSize: 15, lineHeight: 1.7 }}>{DOMAINS[domain].obs}</div></div>
+                    <div className="rux-field-v">{DOMAINS[domain].obs}</div></div>
                   <div className="rux-field" style={{ marginBottom: 0 }}><div className="rux-field-k">PATTERN</div>
-                    <div className="rux-field-v" style={{ fontSize: 15, lineHeight: 1.7 }}>{DOMAINS[domain].pat}</div></div>
+                    <div className="rux-field-v">{DOMAINS[domain].pat}</div></div>
                 </div>
                 <div>
                   <div className="rux-field"><div className="rux-field-k">WHY IT MATTERS</div>
-                    <div className="rux-field-v" style={{ fontSize: 15, lineHeight: 1.7 }}>{DOMAINS[domain].why}</div></div>
+                    <div className="rux-field-v">{DOMAINS[domain].why}</div></div>
                   <div style={{ borderLeft: "1px solid #D2382C", paddingLeft: 16 }}>
                     <div className="rux-field-k" style={{ color: "#D2382C" }}>PRACTICE</div>
-                    <div className="rux-field-v" style={{ color: "#F1ECE2", fontSize: 15, lineHeight: 1.7 }}>{DOMAINS[domain].prac}</div>
+                    <div className="rux-field-v">{DOMAINS[domain].prac}</div>
                   </div>
                 </div>
               </div>
@@ -1326,7 +1390,8 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ======================================== TAB VI — RECLAMATION ==== */}
         {tab === 5 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">RECLAMATION CASE STUDY</div>
             <div className="rux-split">
               <div>
@@ -1339,14 +1404,14 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                     {lyricOpen ? "Hide Lyric Context" : "View Lyric Context"}
                   </button>
                 </div>
-                <div style={{ fontSize: 11, color: "#4A443A", marginTop: 10, fontWeight: 300, lineHeight: 1.5 }}>
+                <div className="rux-note rux-note-top">
                   Synthesized demonstration — a tremor beneath hearing, an arrival, and the protocol signature.
                   Not the master recording.
                 </div>
                 {lyricOpen && (
                   <div className="rux-panel" style={{ marginTop: 14 }}>
                     <div className="rux-panel-label">SURROUNDING CONTEXT — “I AM THE SIGNAL”</div>
-                    <div style={{ fontFamily: "var(--f-quote)", fontSize: 17, lineHeight: 1.8, color: "#CFC7B8", fontStyle: "italic" }}>
+                    <div className="rux-lyric-block">
                       Broadcasting muted for the sake of survival<br />
                       But the window just cracked open this is the arrival<br />
                       <span style={{ color: "#E9CE72" }}>An underground tremor rising through the ground</span><br />
@@ -1370,8 +1435,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "18px 0 26px" }}>
                   {["Your communication", "Your reactions", "Your standards", "Your attention", "Your behavior",
                     "Your creative work", "Your silence", "Your presence", "Your absence"].map((s) => (
-                    <span key={s} style={{ fontFamily: "var(--f-hud)", fontSize: 8, letterSpacing: ".18em",
-                      color: "#9D8862", border: "1px solid #241F16", padding: "6px 9px", borderRadius: 2 }}>
+                    <span key={s} className="rux-signal-tag">
                       {s.toUpperCase()}
                     </span>
                   ))}
@@ -1400,20 +1464,20 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                   <div style={{ display: "grid", gap: 14 }}>
                     <div>
                       <div className="rux-panel-label">YOU STOP ASKING</div>
-                      <div style={{ fontFamily: "var(--f-quote)", fontSize: 21, fontStyle: "italic", color: "#9D8862" }}>
+                      <div className="rux-qmuted is-lg">
                         “Why is this suddenly happening to me?”
                       </div>
                     </div>
                     <div>
                       <div className="rux-panel-label" style={{ color: "#D2382C" }}>AND BEGIN ASKING</div>
-                      <div style={{ fontFamily: "var(--f-quote)", fontSize: 23, fontStyle: "italic", color: "#E9CE72" }}>
+                      <div className="rux-qlead">
                         “What has been moving beneath the surface that I can finally see?”
                       </div>
                     </div>
                   </div>
                 </div>
                 <p className="rux-p">Elsewhere, the lyric states:</p>
-                <p className="rux-lyric" style={{ fontSize: 24, margin: "10px 0 18px" }}>
+                <p className="rux-lyric rux-lyric-inline">
                   “Coherence is the warfare, don’t fight, just stand tall.”
                 </p>
                 <p className="rux-p">
@@ -1425,7 +1489,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
                 <div className="rux-panel accent" style={{ marginTop: 30 }}>
                   <div className="rux-panel-label" style={{ color: "#D2382C" }}>RECLAMATION INSIGHT</div>
-                  <p style={{ fontFamily: "var(--f-quote)", fontSize: 23, lineHeight: 1.5, color: "#F1ECE2", fontStyle: "italic", margin: 0 }}>
+                  <p className="ru-pull">
                     Vibration is not the ability to manufacture a better mood. It is the discipline of recognizing what is
                     already moving through you and deciding what deserves permission to continue.
                   </p>
@@ -1437,10 +1501,11 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================== TAB VII — 2026 LENS === */}
         {tab === 6 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">2026 LENS</div>
             <div className="rux-split" style={{ marginBottom: 36 }}>
-              <h1 className="rux-h1" style={{ fontSize: "clamp(26px,3.6vw,42px)" }}>The Principle, Running on Current Infrastructure</h1>
+              <h1 className="rux-h1 is-section">The Principle, Running on Current Infrastructure</h1>
               <p className="rux-p" style={{ paddingTop: 8 }}>
                 This is not a news feed. It is a systems analysis. Each entry names a mechanism that is operating right now,
                 the Hermetic reading of it, and one thing you can actually do about it.
@@ -1473,17 +1538,18 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================= TAB VIII — REFLECTION == */}
         {tab === 7 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">REFLECTION</div>
             <div className="rux-panel accent" style={{ padding: "34px 34px 30px", marginBottom: 22 }}>
               <div className="rux-panel-label" style={{ color: "#D2382C" }}>REFLECTION PROMPT</div>
-              <h1 className="rux-h1" style={{ fontSize: "clamp(24px,3.2vw,38px)", margin: "10px 0 22px", maxWidth: "20ch" }}>
+              <h1 className="rux-h1 is-section rux-prompt-h">
                 {REFLECT_PRIMARY}
               </h1>
               <textarea className="rux-area" style={{ minHeight: 130 }} value={reflect.primary}
                 placeholder="Write plainly. Accuracy matters more than how the answer sounds."
                 onChange={(e) => setReflect({ ...reflect, primary: e.target.value })} />
-              <div style={{ fontSize: 12, color: "#4A443A", marginTop: 12, fontWeight: 300 }}>
+              <div className="rux-note rux-note-top">
                 Stays on this device. Nothing is submitted. This answer carries forward into your Energy Map.
               </div>
             </div>
@@ -1493,7 +1559,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
               {REFLECTIONS.map((r, i) => (
                 <div className="rux-panel" key={r.id}>
                   <div className="rux-index">{String(i + 1).padStart(2, "0")}</div>
-                  <div style={{ fontSize: 15.5, color: "#F1ECE2", margin: "10px 0 14px", lineHeight: 1.55 }}>{r.q}</div>
+                  <p className="rux-p is-small rux-prompt">{r.q}</p>
                   <textarea className="rux-area" value={reflect[r.id]} placeholder="—"
                     onChange={(e) => setReflect({ ...reflect, [r.id]: e.target.value })} />
                 </div>
@@ -1504,11 +1570,12 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ========================================== TAB IX — PROTOCOL ===== */}
         {tab === 8 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">PROTOCOL — FIELD EXERCISE</div>
             <div className="rux-split" style={{ marginBottom: 40 }}>
               <div>
-                <h1 className="rux-h1" style={{ fontSize: "clamp(28px,4vw,48px)" }}>The Frequency Check</h1>
+                <h1 className="rux-h1 is-section">The Frequency Check</h1>
                 <p className="rux-sub" style={{ marginBottom: 0 }}>Name the state. Trace what feeds it. Replace one response.</p>
               </div>
               <div style={{ paddingTop: 8 }}>
@@ -1521,8 +1588,8 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                 <div style={{ display: "grid", gap: 8, marginTop: 10 }}>
                   {PROTOCOL_WHEN.map((w, i) => (
                     <div key={i} style={{ display: "flex", gap: 12, alignItems: "baseline" }}>
-                      <span style={{ color: "#D2382C", fontSize: 10 }}>—</span>
-                      <span style={{ fontSize: 14.5, color: "#D6CEC0", fontWeight: 300, lineHeight: 1.6 }}>{w}</span>
+                      <span className="rux-dash" aria-hidden="true">—</span>
+                      <span className="rux-field-v">{w}</span>
                     </div>
                   ))}
                 </div>
@@ -1539,20 +1606,16 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
                       display: "flex", gap: 20, alignItems: "flex-start", textAlign: "left", cursor: "pointer",
                       borderColor: on ? "rgba(210,56,44,.5)" : undefined, color: "inherit", width: "100%",
                     }}>
-                    <span style={{
-                      flex: "0 0 auto", width: 26, height: 26, borderRadius: "50%", border: `1px solid ${on ? "#D2382C" : "#332B1E"}`,
-                      display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--f-hud)",
-                      fontSize: 9, color: on ? "#FF5545" : "#6E6149", marginTop: 2,
-                    }}>{on ? "✓" : s.n}</span>
+                    <span className={`rux-stepmark${on ? " is-on" : ""}`}>{on ? "✓" : s.n}</span>
                     <span>
-                      <span className="rux-h3" style={{ display: "block", marginBottom: 7, color: on ? "#E9CE72" : "#C9A227" }}>{s.t}</span>
+                      <span className={`rux-h3 rux-block${on ? " is-on" : ""}`}>{s.t}</span>
                       <span className="rux-field-v" style={{ display: "block" }}>{s.d}</span>
                     </span>
                   </button>
                 );
               })}
             </div>
-            <div style={{ fontFamily: "var(--f-hud)", fontSize: 9, letterSpacing: ".24em", color: "#6E6149", marginTop: 16 }}>
+            <div className="rux-count">
               {steps.length}/5 STEPS MARKED
             </div>
 
@@ -1596,11 +1659,12 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* ============================================ TAB X — ARTIFACT ==== */}
         {tab === 9 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow">ARTIFACT</div>
             <div className="rux-split" style={{ marginBottom: 40 }}>
               <div>
-                <h1 className="rux-h1" style={{ fontSize: "clamp(28px,4vw,48px)" }}>Vibration<br />Energy Map</h1>
+                <h1 className="rux-h1 is-section">Vibration<br />Energy Map</h1>
                 <p className="rux-sub" style={{ marginBottom: 0 }}>What is moving through you, and what you are choosing to send instead.</p>
               </div>
               <p className="rux-p" style={{ paddingTop: 8 }}>
@@ -1610,27 +1674,38 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
               </p>
             </div>
 
-            <div className="rux-split" style={{ gap: 46 }}>
-              <div style={{ display: "grid", gap: 12 }}>
-                {ARTIFACT_FIELDS.map((f) => (
-                  <div className="rux-panel" key={f.id}
-                    style={{ borderColor: (plate[f.id] || "").trim() ? "rgba(201,162,39,.34)" : undefined }}>
-                    <div style={{ display: "flex", gap: 12, alignItems: "baseline", marginBottom: 4 }}>
-                      <span className="rux-index" style={{ color: f.n > "04" ? "#C9A227" : "#D2382C" }}>{f.n}</span>
-                      <span className="rux-h3" style={{ margin: 0, fontSize: 12 }}>{f.label}</span>
-                    </div>
-                    <div style={{ fontSize: 13.5, color: "#9D8862", margin: "8px 0 12px", fontWeight: 300, lineHeight: 1.55 }}>{f.q}</div>
-                    <input className="rux-input" value={plate[f.id]} placeholder={f.ph}
-                      onChange={(e) => setPlate({ ...plate, [f.id]: e.target.value })} />
+            {/* The map has two halves and the split is the whole idea of it:
+                01–04 describe the current you are already carrying, 05–06 are
+                what you choose to send instead. That was previously carried
+                only by the colour of a numeral, so it was invisible. */}
+            <div className="rux-split">
+              <div>
+                {[
+                  { legend: "WHAT IS ALREADY MOVING", cls: "", fields: ARTIFACT_FIELDS.slice(0, 4) },
+                  { legend: "WHAT YOU SEND INSTEAD", cls: " is-redirect", fields: ARTIFACT_FIELDS.slice(4) },
+                ].map((group) => (
+                  <div className="rux-plate-group" key={group.legend}>
+                    <div className={`rux-plate-legend${group.cls}`}>{group.legend}</div>
+                    {group.fields.map((f) => (
+                      <div className={`rux-panel${(plate[f.id] || "").trim() ? " is-set" : ""}`} key={f.id}>
+                        <div className="rux-artifact-head">
+                          <span className={`rux-index${f.n > "04" ? " is-gold" : ""}`}>{f.n}</span>
+                          <span className="rux-h3 rux-flush">{f.label}</span>
+                        </div>
+                        <div className="rux-ask">{f.q}</div>
+                        <input className="rux-input" value={plate[f.id]} placeholder={f.ph}
+                          onChange={(e) => setPlate({ ...plate, [f.id]: e.target.value })} />
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
 
-              <div style={{ position: "sticky", top: 78 }}>
+              <div className="rux-plate-col">
                 <div className="rux-media"><ManualPlate v={plate} sealed={sealed} /></div>
-                <div className="rux-panel" style={{ marginTop: 14, borderColor: sealed ? "rgba(201,162,39,.42)" : undefined }}>
+                <div className={`rux-panel rux-plate-note${sealed ? " is-set" : ""}`}>
                   <div className="rux-panel-label">{sealed ? "PAGE 03 — COMPLETE" : `PAGE 03 — ${plateFilled}/6 LINES SET`}</div>
-                  <p className="rux-p" style={{ fontSize: 14, marginBottom: 0, color: sealed ? "#F1ECE2" : "#9D8862" }}>
+                  <p className={`rux-p is-small rux-flush-b${sealed ? " is-sealed" : ""}`}>
                     {sealed
                       ? "Your map is complete. Keep it somewhere you will see it before the trigger arrives, not after. The practice line is the only one that does any work — the other five exist to make it accurate."
                       : "The current fills as you name each line. Write specifics, not categories: “multiple requests arriving at once,” not “stress.”"}
@@ -1643,7 +1718,8 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
         {/* =========================================== TAB XI — SUMMARY ===== */}
         {tab === 10 && (
-          <section className="rux-view" role="tabpanel">
+          <section className="rux-view" role="tabpanel"
+            id={`rux-panel-${TABS[tab].id}`} aria-labelledby={`rux-tab-${TABS[tab].id}`} tabIndex={-1}>
             <div className="rux-eyebrow gold">MODULE COMPLETE</div>
             <div className="rux-split" style={{ marginBottom: 44 }}>
               <div>
@@ -1666,8 +1742,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
 
             <div className="rux-panel accent" style={{ padding: "34px", marginBottom: 44 }}>
               <div className="rux-panel-label" style={{ color: "#D2382C" }}>THE CENTRAL LESSON</div>
-              <p style={{ fontFamily: "var(--f-quote)", fontSize: "clamp(23px,3vw,34px)", lineHeight: 1.42,
-                color: "#F1ECE2", fontStyle: "italic", margin: "12px 0 0", maxWidth: "30ch" }}>
+              <p className="ru-pull rux-pull-top">
                 You do not need to create movement from nothing. You need to notice the movement already underway, and
                 decide what continues through you.
               </p>
@@ -1677,7 +1752,7 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
               {CONCEPTS.map((c) => (
                 <div className="rux-panel" key={c.n}>
                   <div className="rux-index">{c.n}</div>
-                  <div className="rux-h3" style={{ margin: "9px 0 8px", fontSize: 13 }}>{c.title}</div>
+                  <div className="rux-h3">{c.title}</div>
                   <div className="rux-field-v">{c.teaser}</div>
                 </div>
               ))}
@@ -1707,13 +1782,16 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
         )}
       </div>
 
-      {/* PERSISTENT FOOTER — META + PRIMARY ACTION */}
-      <div className="rux-foot">
+      {/* PERSISTENT ACTION BAR. Its height is measured and published as
+          --ru-foot-h so the shell reserves exactly the space it occupies —
+          previously a fixed 140/150px guess that the bar outgrew on narrow
+          viewports, putting the bottom of every page out of reach. */}
+      <div className="rux-foot" ref={footRef}>
         <div className="rux-foot-in">
           <div className="rux-meta">
-            <div style={{ maxWidth: 240 }}>
-              <div className="rux-meta-k" style={{ color: "#D2382C" }}>SKILL BEING BUILT</div>
-              <div style={{ fontSize: 12.5, color: "#F1ECE2", marginTop: 5, lineHeight: 1.4, fontWeight: 400 }}>
+            <div className="rux-skill-wrap">
+              <div className="rux-meta-k is-accent">SKILL BEING BUILT</div>
+              <div className="rux-skill">
                 {TABS[tab].skill}
               </div>
             </div>
@@ -1724,13 +1802,13 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
               </div>
               <div className="rux-meter">
                 <div className="rux-meta-k">MOTION</div>
-                <div className="rux-meta-v" style={{ color: "#6E6149" }}>{motion}%</div>
-                <div className="rux-bar"><span style={{ width: `${motion}%`, background: "#6E5D2C" }} /></div>
+                <div className="rux-meta-v is-motion">{motion}%</div>
+                <div className="rux-bar"><span className="motion" style={{ width: `${motion}%` }} /></div>
               </div>
               <div className="rux-meter">
                 <div className="rux-meta-k">PROGRESS</div>
                 <div className="rux-meta-v">{progress}%</div>
-                <div className="rux-bar"><span style={{ width: `${progress}%`, background: "linear-gradient(90deg,#D2382C,#C9A227)" }} /></div>
+                <div className="rux-bar"><span className="progress" style={{ width: `${progress}%` }} /></div>
               </div>
             </div>
           </div>
@@ -1739,10 +1817,11 @@ export default function VibrationModuleExperience({ module, faculty, onComplete 
           </button>
         </div>
         {drifting && (
-          <div className="rux-foot-in" style={{ paddingTop: 0, paddingBottom: 12 }}>
-            <div className="rux-diag">
-              Motion is not progress until it has direction. You have moved through {motion}% of this module and completed {progress}% of the work in it.
-            </div>
+          <div className="rux-foot-in is-diag">
+            <p className="rux-diag">
+              Motion is not progress until it has direction. You have read through {motion}% of this
+              module and completed {progress}% of the work in it.
+            </p>
           </div>
         )}
       </div>

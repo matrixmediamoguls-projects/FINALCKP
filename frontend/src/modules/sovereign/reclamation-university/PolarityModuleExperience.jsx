@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useFooterOffset from "./useFooterOffset";
 import { ArrowRight, LayoutDashboard, Pencil, Download, FileDown } from "lucide-react";
 import jsPDF from "jspdf";
 import CurriculumSpine from "./CurriculumSpine";
@@ -220,8 +221,11 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
     markCompleteAndAdvance();
   };
 
+  // Reserve exactly the height the fixed action bar occupies.
+  const [rootRef, footRef] = useFooterOffset();
+
   return (
-    <div className="rup">
+    <div className="rup" ref={rootRef}>
       <div className="rup-shell">
         {/* TOP HEADER */}
         <header className="rup-top">
@@ -249,17 +253,18 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
         </header>
 
         {/* SEVEN-PRINCIPLE NAVIGATION */}
-        <nav className="rup-rail" aria-label="The Seven Hermetic Principles">
+        {/* SEVEN-PRINCIPLE RIBBON — a position report, not navigation. */}
+        <ol className="rup-rail" aria-label="Position in the Hermetic Hall">
           {PRINCIPLES.map((p) => (
-            <div key={p.n} className={`rup-node${p.n === "IV" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}>
+            <li key={p.n} className={`rup-node${p.n === "IV" ? " is-active" : ""}${p.state === "COMPLETE" ? " is-done" : ""}`}>
               <div className="rup-node-row">
                 <span className="rup-node-num">{p.n}</span>
               </div>
               <div className="rup-node-name">{p.name}</div>
-              <div className="rup-node-state">{p.state}</div>
-            </div>
+              <span className="ru-sr">{`${p.name} — ${p.state}`}</span>
+            </li>
           ))}
-        </nav>
+        </ol>
 
         {/* SPINE + STAGE */}
         <div className="rup-layout">
@@ -694,7 +699,7 @@ export default function PolarityModuleExperience({ faculty, onComplete }) {
       )}
 
       {/* FOOTER */}
-      <div className="rup-foot">
+      <div className="rup-foot" ref={footRef}>
         <div className="rup-foot-in">
           <div className="rup-meta">
             <div>
