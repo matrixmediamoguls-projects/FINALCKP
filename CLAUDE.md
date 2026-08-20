@@ -138,18 +138,24 @@ Canonical live paths are under `/acts` and `/experiencemode/...`, e.g.
 
 ### Large files — read ranges, never whole
 ```
-1830  modules/sovereign/reclamation-university/VibrationModuleExperience.jsx
-1456  modules/sovereign/reclamation-university/CauseEffectModuleExperience.jsx
-1403  modules/sovereign/reclamation-university/RhythmModuleExperience.jsx
+1830  modules/sovereign/reclamation-university/VibrationModuleExperience.jsx  ~25k tok
+1456  modules/sovereign/reclamation-university/CauseEffectModuleExperience.jsx ~17k
+1403  modules/sovereign/reclamation-university/RhythmModuleExperience.jsx     ~16k
 1399  data/visualResonanceManifest.js
-1374  modules/sovereign/reclamation-university/GenderModuleExperience.jsx
- 888  modules/sovereign/reclamation-university/PolarityModuleExperience.jsx
+1374  modules/sovereign/reclamation-university/GenderModuleExperience.jsx     ~16k
+ 888  modules/sovereign/reclamation-university/PolarityModuleExperience.jsx   ~11k
  864  data/causeEffectModuleData.js       ← prose-heavy, never full-text grep
- 828  data/hermeticVibrationModuleData.js ← prose-heavy, never full-text grep
  813  components/layout/AppShell.jsx
  802  data/rhythmModuleData.js            ← prose-heavy
  709  data/genderModuleData.js            ← prose-heavy
 ```
+Line count is a poor proxy in `src/data/` — those files hold long prose lines, so a
+single grep hit can print thousands of characters. Grep them for `id:` / `slug:` /
+`export`, never for body text.
+
+Lesson prose for the Vibration module lives in `data/hermetic/vibration/lesson-3-N.json`
+(6 files, ~4–8k tokens each); `data/hermeticVibrationModuleData.js` imports them and
+keeps only structure. Read one lesson JSON, not the set.
 Also never dump: `node_modules/`, `frontend/build/`, `frontend/public/**` binaries (many 2–3 MB
 PNG/SVG/GIF assets), `ckp-changes.bundle`, `docs/*.xlsx`.
 
