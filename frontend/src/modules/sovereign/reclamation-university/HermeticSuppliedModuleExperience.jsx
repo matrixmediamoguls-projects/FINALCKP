@@ -5,8 +5,10 @@ import {
   Target, Waves,
 } from "lucide-react";
 import suppliedCopy from "../../../data/hermeticSuppliedModules.txt?raw";
+import InteractiveExperience from "./InteractiveExperience";
 import "./hermeticMaterialExperience.css";
 import "./hermeticReferenceExperience.css";
+import "./interactiveExperience.css";
 
 const TABS = [
   ["INTRO", "Intro", BookOpen],
@@ -37,7 +39,7 @@ const MODULES = {
   correspondence: { index: 1, marker: "MODULE II — CORRESPONDENCE", title: "Correspondence", subtitle: "As Within, So Without." },
 };
 
-const SECTION_PATTERN = new RegExp(`^(${TABS.map(([id]) => id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})$`, "gm");
+const SECTION_PATTERN = new RegExp(`^(${TABS.map(([id]) => id.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&")).join("|")})$`, "gm");
 
 function parseModules() {
   return Object.fromEntries(Object.entries(MODULES).map(([slug, metadata], moduleIndex, entries) => {
@@ -124,7 +126,7 @@ function MentalismLensScreen({ section }) {
   </div>;
 }
 
-function CopyScreen({ section, moduleTitle, moduleSlug, activeTab, response, onResponse }) {
+function CopyScreen({ section, moduleTitle, moduleSlug, activeTab, response, onResponse, hideReflection }) {
   if (moduleSlug === "mentalism" && activeTab === "PRINCIPLE") return <MentalismPrincipleScreen section={section}/>;
   if (moduleSlug === "mentalism" && activeTab === "2026 LENS") return <MentalismLensScreen section={section}/>;
   const blocks = section.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
@@ -145,19 +147,107 @@ function CopyScreen({ section, moduleTitle, moduleSlug, activeTab, response, onR
         return <p key={`${block}-${index}`} className={index === 0 ? "hme-lede" : undefined}>{block}</p>;
       })}
     </section>
-    {isReflection && <section className="hme-panel"><h3>Your Reflection</h3><textarea value={response} onChange={(event) => onResponse(event.target.value)} placeholder={`Record what ${moduleTitle} helps you notice...`}/></section>}
+    {isReflection && !hideReflection && <section className="hme-panel"><h3>Your Reflection</h3><textarea value={response} onChange={(event) => onResponse(event.target.value)} placeholder={`Record what ${moduleTitle} helps you notice...`}/></section>}
   </div>;
+}
+
+function getMentalismInteraction(tab) {
+  if (tab === "KEY CONCEPTS") {
+    return {
+      mode: "classification",
+      prompt: "Separate the event from the meaning assigned to it. Classify each statement as Observation or Interpretation.",
+      items: [
+        { id: "event", label: "Someone did not respond to your message.", options: ["Observation", "Interpretation"] },
+        { id: "meaning", label: "They are deliberately ignoring me.", options: ["Observation", "Interpretation"] },
+        { id: "story", label: "This proves I am not valued.", options: ["Observation", "Interpretation"] },
+      ],
+    };
+  }
+  if (tab === "REFLECTION") {
+    return {
+      mode: "reflection",
+      prompt: "Identify one recurring thought pattern you are ready to observe rather than automatically obey.",
+      placeholder: "Name the pattern, the trigger, and what you normally make it mean…",
+      rows: 7,
+    };
+  }
+  if (tab === "PROTOCOL") {
+    return {
+      mode: "sequence",
+      prompt: "Put the Mentalism reclamation loop in the order you will use it in the field.",
+      items: [
+        { id: "name", label: "Name the thought" },
+        { id: "observe", label: "Observe the mechanism" },
+        { id: "test", label: "Test the interpretation" },
+        { id: "choose", label: "Choose the response" },
+        { id: "prove", label: "Prove it through action" },
+      ],
+      correctOrder: ["name", "observe", "test", "choose", "prove"],
+    };
+  }
+  if (tab === "SUMMARY") {
+    return {
+      mode: "knowledge-lock",
+      prompt: "Knowledge Lock: complete the principle in your own words. What comes before manifestation in the Mentalism framework?",
+      placeholder: "Enter the key concept…",
+      answer: "mind",
+    };
+  }
+  return null;
 }
 
 export default function HermeticSuppliedModuleExperience({ moduleSlug, progress = 0, onComplete }) {
   const moduleCopy = MODULE_COPY[moduleSlug];
   const [activeTab, setActiveTab] = useState("PRINCIPLE");
   const [response, setResponse] = useState("");
+  const [interactiveValue, setInteractiveValue] = useState(() => {
+    if (typeof window === "undefined") return "";
+    try {
+      return JSON.parse(window.localStorage.getItem(`ru_interactive_${moduleSlug}`) || "{}")?.["PRINCIPLE"] || "";
+    } catch {
+      return "";
+    }
+  });
+  const [interactionComplete, setInteractionComplete] = useState(() => new Set());
   const activeIndex = TABS.findIndex(([id]) => id === activeTab);
   const next = TABS[Math.min(activeIndex + 1, TABS.length - 1)];
   const displayedProgress = progress || (activeTab === "2026 LENS" ? 72 : 42);
   const completedProgressSteps = activeTab === "2026 LENS" ? 5 : Math.min(activeIndex + 1, 8);
-  const screen = useMemo(() => <CopyScreen section={moduleCopy.sections[activeTab] || ""} moduleTitle={moduleCopy.title} moduleSlug={moduleSlug} activeTab={activeTab} response={response} onResponse={setResponse}/>, [activeTab, moduleCopy, moduleSlug, response]);
+  const interaction = moduleSlug === "mentalism" ? getMentalismInteraction(activeTab) : null;
 
-  return <main className="hme-root"><header className="hme-header"><div className="hme-brand"><span><Sparkles/></span><strong>Reclamation<br/>University</strong><i/><small>Hermetic Hall</small></div><div className="hme-progress"><span>Your progress</span><i><b style={{ width: `${displayedProgress}%` }}/></i><strong>{displayedProgress}%</strong></div></header><div className="hme-shell"><aside className="hme-tabs">{TABS.map(([id, label, Icon]) => <button type="button" key={id} className={id === activeTab ? "is-active" : ""} onClick={() => setActiveTab(id)}><span><Icon size={22}/></span><strong>{label}</strong></button>)}</aside><section className="hme-main"><PrincipleStrip activePrinciple={moduleCopy.index}/><article className={`hme-stage hme-stage-${activeTab.toLowerCase().replace(/\s+/g, "-")}`}><header className="hme-lesson-title"><span>{PRINCIPLES[moduleCopy.index][0]}</span><div><h1>{moduleCopy.title}</h1><p>{moduleCopy.subtitle}</p></div></header><div className="hme-screen">{screen}</div><footer className="hme-footer"><div className="hme-stat"><small>Est. time</small><strong>18 min</strong></div><div className="hme-stat"><small>Principle {PRINCIPLES[moduleCopy.index][0]} of VII</small><strong>{moduleCopy.title}</strong></div><div className="hme-stat hme-lesson-progress"><small>Lesson progress</small><span>{Array.from({ length: 8 }, (_, index) => <i key={index} className={index < completedProgressSteps ? "is-complete" : ""}/>)}</span></div>{activeTab !== "SUMMARY" ? <button type="button" onClick={() => setActiveTab(next[0])}>Continue to {next[1]} <ArrowRight size={20}/></button> : <button type="button" onClick={onComplete}>Next Module <ArrowRight size={20}/></button>}</footer></article></section></div></main>;
+  const persistInteraction = (value) => {
+    setInteractiveValue(value);
+    if (typeof window !== "undefined") {
+      try {
+        const key = `ru_interactive_${moduleSlug}`;
+        const current = JSON.parse(window.localStorage.getItem(key) || "{}");
+        window.localStorage.setItem(key, JSON.stringify({ ...current, [activeTab]: value }));
+      } catch {
+        // The curriculum remains usable if browser persistence is unavailable.
+      }
+    }
+  };
+
+  const openTab = (tab) => {
+    setActiveTab(tab);
+    if (typeof window !== "undefined") {
+      try {
+        const current = JSON.parse(window.localStorage.getItem(`ru_interactive_${moduleSlug}`) || "{}");
+        setInteractiveValue(current?.[tab] || "");
+      } catch {
+        setInteractiveValue("");
+      }
+    }
+  };
+
+  const screen = useMemo(() => <CopyScreen section={moduleCopy.sections[activeTab] || ""} moduleTitle={moduleCopy.title} moduleSlug={moduleSlug} activeTab={activeTab} response={response} onResponse={setResponse} hideReflection={Boolean(interaction)}/>, [activeTab, moduleCopy, moduleSlug, response, interaction]);
+
+  const finishInteraction = (value) => {
+    persistInteraction(value);
+    setInteractionComplete((current) => new Set([...current, activeTab]));
+  };
+
+  const canContinue = !interaction || interactionComplete.has(activeTab);
+
+  return <main className="hme-root"><header className="hme-header"><div className="hme-brand"><span><Sparkles/></span><strong>Reclamation<br/>University</strong><i/><small>Hermetic Hall</small></div><div className="hme-progress"><span>Your progress</span><i><b style={{ width: `${displayedProgress}%` }}/></i><strong>{displayedProgress}%</strong></div></header><div className="hme-shell"><aside className="hme-tabs">{TABS.map(([id, label, Icon]) => <button type="button" key={id} className={id === activeTab ? "is-active" : ""} onClick={() => openTab(id)}><span><Icon size={22}/></span><strong>{label}</strong>{interactionComplete.has(id) && <Check size={13} aria-label="Interaction complete"/>}</button>)}</aside><section className="hme-main"><PrincipleStrip activePrinciple={moduleCopy.index}/><article className={`hme-stage hme-stage-${activeTab.toLowerCase().replace(/\s+/g, "-")}`}><header className="hme-lesson-title"><span>{PRINCIPLES[moduleCopy.index][0]}</span><div><h1>{moduleCopy.title}</h1><p>{moduleCopy.subtitle}</p></div></header><div className="hme-screen">{screen}{interaction && <InteractiveExperience interaction={interaction} value={interactiveValue} onChange={persistInteraction} onComplete={finishInteraction}/>}</div><footer className="hme-footer"><div className="hme-stat"><small>Est. time</small><strong>18 min</strong></div><div className="hme-stat"><small>Principle {PRINCIPLES[moduleCopy.index][0]} of VII</small><strong>{moduleCopy.title}</strong></div><div className="hme-stat hme-lesson-progress"><small>Lesson progress</small><span>{Array.from({ length: 8 }, (_, index) => <i key={index} className={index < completedProgressSteps ? "is-complete" : ""}/>)}</span></div>{activeTab !== "SUMMARY" ? <button type="button" disabled={!canContinue} onClick={() => openTab(next[0])}>{canContinue ? `Continue to ${next[1]}` : "Complete the exercise to continue"} <ArrowRight size={20}/></button> : <button type="button" disabled={!canContinue} onClick={onComplete}>{canContinue ? "Next Module" : "Complete the knowledge lock"} <ArrowRight size={20}/></button>}</footer></article></section></div></main>;
 }
