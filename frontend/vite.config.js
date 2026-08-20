@@ -30,4 +30,12 @@ export default defineConfig({
   build: {
     outDir: 'build',
   },
+  test: {
+    // Default to the fast `node` environment; component tests opt into jsdom
+    // with a `// @vitest-environment jsdom` docblock so the pure-logic suites
+    // stay fast.
+    environment: 'node',
+    include: ['src/**/*.test.{js,jsx}'],
+    restoreMocks: true,
+  },
 });

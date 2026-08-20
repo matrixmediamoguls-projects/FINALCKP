@@ -93,3 +93,6 @@ android-sdk/frontend/node_modules/.cache/default-development/0.pack
 frontend/node_modules/.cache/default-development/2.pack
 frontend/node_modules/.cache/default-development/0.pack
 frontend/node_modules/.cache/default-development/0.pack
+
+# Claude Code local overrides (project .claude/settings.json IS committed)
+.claude/settings.local.json

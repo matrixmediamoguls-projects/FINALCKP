@@ -1,99 +1,101 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+// @vitest-environment jsdom
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import ErrorBoundary from './ErrorBoundary';
 
+const ThrowError = () => {
+  throw new Error('Test error');
+};
+
 describe('ErrorBoundary', () => {
-  // Mock console.error to avoid noise during tests
+  // React logs the caught error to console.error; silence it so the run stays readable.
   beforeEach(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    console.error.mockRestore();
+    cleanup();
+    vi.restoreAllMocks();
   });
 
-  test('renders children when no error', () => {
+  it('renders children when no error', () => {
     render(
       <ErrorBoundary>
         <div>Test Content</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
-    expect(screen.getByText('Test Content')).toBeInTheDocument();
+
+    expect(screen.getByText('Test Content')).toBeTruthy();
   });
 
-  test('displays error message when child component throws', () => {
-    const ThrowError = () => {
-      throw new Error('Test error');
+  it('displays the fallback when a child throws', () => {
+    render(
+      <ErrorBoundary>
+        <ThrowError />
+      </ErrorBoundary>,
+    );
+
+    expect(screen.getByText('Something went wrong')).toBeTruthy();
+    expect(screen.getByText(/unexpected error occurred/i)).toBeTruthy();
+  });
+
+  it('offers a Try Again control on the fallback', () => {
+    render(
+      <ErrorBoundary>
+        <ThrowError />
+      </ErrorBoundary>,
+    );
+
+    expect(screen.getByText('Try Again')).toBeTruthy();
+  });
+
+  it('recovers once Try Again is pressed and the child stops throwing', () => {
+    let shouldThrow = true;
+    const MaybeThrow = () => {
+      if (shouldThrow) throw new Error('Test error');
+      return <div>Test Content</div>;
     };
 
     render(
       <ErrorBoundary>
-        <ThrowError />
-      </ErrorBoundary>
+        <MaybeThrow />
+      </ErrorBoundary>,
     );
 
-    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-    expect(screen.getByText(/unexpected error occurred/i)).toBeInTheDocument();
+    expect(screen.getByText('Something went wrong')).toBeTruthy();
+
+    // Clear the fault before resetting, otherwise the retry re-throws
+    // immediately and the boundary correctly stays in its error state.
+    shouldThrow = false;
+    fireEvent.click(screen.getByText('Try Again'));
+
+    expect(screen.getByText('Test Content')).toBeTruthy();
   });
 
-  test('shows Try Again button to reset error', () => {
-    const ThrowError = () => {
-      throw new Error('Test error');
-    };
+  it('sends the user home when Go Home is pressed', () => {
+    const originalLocation = window.location;
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      writable: true,
+      value: { href: '' },
+    });
 
-    render(
-      <ErrorBoundary>
-        <ThrowError />
-      </ErrorBoundary>
-    );
+    try {
+      render(
+        <ErrorBoundary>
+          <ThrowError />
+        </ErrorBoundary>,
+      );
 
-    const tryAgainBtn = screen.getByText('Try Again');
-    expect(tryAgainBtn).toBeInTheDocument();
-  });
+      fireEvent.click(screen.getByText('Go Home'));
 
-  test('Try Again button resets error state', () => {
-    const ThrowError = () => {
-      throw new Error('Test error');
-    };
-
-    const { rerender } = render(
-      <ErrorBoundary>
-        <ThrowError />
-      </ErrorBoundary>
-    );
-
-    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-
-    // After clicking Try Again, if child no longer throws, it should render normally
-    const tryAgainBtn = screen.getByText('Try Again');
-    fireEvent.click(tryAgainBtn);
-
-    // After reset, render a working component
-    rerender(
-      <ErrorBoundary>
-        <div>Test Content</div>
-      </ErrorBoundary>
-    );
-
-    expect(screen.getByText('Test Content')).toBeInTheDocument();
-  });
-
-  test('Go Home button redirects to home', () => {
-    const ThrowError = () => {
-      throw new Error('Test error');
-    };
-
-    delete window.location;
-    window.location = { href: '' };
-
-    render(
-      <ErrorBoundary>
-        <ThrowError />
-      </ErrorBoundary>
-    );
-
-    const goHomeBtn = screen.getByText('Go Home');
-    fireEvent.click(goHomeBtn);
-
-    expect(window.location.href).toBe('/');
+      expect(window.location.href).toBe('/');
+    } finally {
+      Object.defineProperty(window, 'location', {
+        configurable: true,
+        writable: true,
+        value: originalLocation,
+      });
+    }
   });
 });

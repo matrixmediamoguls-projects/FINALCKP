@@ -40,16 +40,27 @@ const SECTION_MATCHERS = [
   ["Summary", ["summary", "lesson summary", "module summary", "key takeaway", "takeaway", "looking ahead", "closing", "carry forward"]],
 ];
 
-function includesAny(value, terms) {
-  return terms.some((term) => value.includes(term));
-}
-
 export function classifyJourneySection(section, index = 0) {
   const heading = String(section?.heading || "").toLowerCase();
 
+  // The longest matching term wins rather than the first one in list order.
+  // Scanning in order would let a broad term shadow a specific one authored
+  // further down the list -- "Reclamation Protocol" matches the Reclamation
+  // tab's "reclamation" before ever reaching the Protocol tab's own
+  // "reclamation protocol", which sent authored protocol work to the wrong tab.
+  let matchedLabel = null;
+  let matchedLength = 0;
+
   for (const [label, terms] of SECTION_MATCHERS) {
-    if (includesAny(heading, terms)) return label;
+    for (const term of terms) {
+      if (term.length > matchedLength && heading.includes(term)) {
+        matchedLabel = label;
+        matchedLength = term.length;
+      }
+    }
   }
+
+  if (matchedLabel) return matchedLabel;
 
   // When authored content does not yet have a recognizable heading, preserve
   // the canonical 11-section order rather than collapsing it into a generic tab.

@@ -161,7 +161,7 @@ function LessonSectionBody({ item }) {
               </div>
             );
           }
-          if (/^[“\"]/.test(paragraph)) {
+          if (/^[“"]/.test(paragraph)) {
             return <blockquote key={index}>{paragraph}</blockquote>;
           }
           return <p key={index}>{paragraph}</p>;
