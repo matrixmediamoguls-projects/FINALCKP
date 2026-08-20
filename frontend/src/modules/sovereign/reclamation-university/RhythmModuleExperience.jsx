@@ -15,6 +15,9 @@ import {
 } from "../../../data/rhythmModuleData";
 import "./curriculumSpine.css";
 import "./rhythmModuleExperience.css";
+import { downloadFile, formatDate, createArtifactKit } from "./reclamationArtifactKit";
+
+const { Blocks, Drawer, ArtifactField } = createArtifactKit("rur");
 
 const STORE_KEY = "ckp-hermetic-hall-module-5";
 
@@ -1142,17 +1145,7 @@ export default function RhythmModuleExperience({ faculty, onComplete }) {
 
 /* The master sets much of Module V one line per line. `lines` blocks preserve
    that cadence; `p` blocks carry the passages written as prose. */
-function Blocks({ blocks }) {
-  return blocks.map((block, index) =>
-    block.kind === "lines" ? (
-      <div className="rur-lines" key={index}>
-        {block.value.map((line) => <span key={line}>{line}</span>)}
-      </div>
-    ) : (
-      <p className="rur-p" key={index}>{block.value}</p>
-    )
-  );
-}
+
 
 /* Interactive cycle. The SVG is pointer sugar and is hidden from assistive
    tech; PhaseButtons below it is the real, keyboard-reachable control, and the
@@ -1201,46 +1194,13 @@ function PhaseButtons({ activeIndex, onSelect, label }) {
   );
 }
 
-function Drawer({ open, onToggle, label, body, rows }) {
-  return (
-    <>
-      <button type="button" className="rur-drawer-toggle" onClick={onToggle} aria-expanded={open}>
-        {open ? "Hide" : "Show"} {label}
-      </button>
-      {open && (
-        <div className="rur-drawer">
-          {rows
-            ? rows.map((row) => (
-                <p key={row.k}><strong style={{ color: "var(--bronze)" }}>{row.k}.</strong> {row.v}</p>
-              ))
-            : body.map((p) => <p key={p.slice(0, 24)}>{p}</p>)}
-        </div>
-      )}
-    </>
-  );
-}
 
-function ArtifactField({ label, question, value, onChange, highlight }) {
-  return (
-    <div className={`rur-artifact-card${highlight ? " is-intervention" : ""}`}>
-      <h4>{label}</h4>
-      <small>{question}</small>
-      <textarea
-        className="rur-area"
-        style={{ minHeight: 70, background: "transparent", border: "none", padding: 0, color: "var(--ivory)" }}
-        value={value}
-        aria-label={label}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-}
+
+
 
 /* ---------------------------------------------------------------- HELPERS -- */
 
-function formatDate(value) {
-  return value ? new Date(value).toLocaleDateString() : "—";
-}
+
 
 /* Generation is template-fill over the learner's own words. It may summarize
    and reorganize; it must never diagnose, infer motive, or claim certainty
@@ -1390,14 +1350,4 @@ function buildArtifactPdf(doc, artifact, patternStatement, createdAt, updatedAt)
   doc.text("Status: Living Artifact", margin, y);
 }
 
-function downloadFile(filename, content, mimeType) {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+

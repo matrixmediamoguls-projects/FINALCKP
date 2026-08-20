@@ -16,6 +16,9 @@ import {
 } from "../../../data/causeEffectModuleData";
 import "./curriculumSpine.css";
 import "./causeEffectModuleExperience.css";
+import { downloadFile, formatDate, formatDateTime, createArtifactKit } from "./reclamationArtifactKit";
+
+const { Blocks, Drawer, ArtifactField } = createArtifactKit("ruc");
 
 const STORE_KEY = "ckp-hermetic-hall-module-6";
 
@@ -371,7 +374,7 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
                     <h1 className="ruc-h1">CAUSE &amp; EFFECT</h1>
                     <p className="ruc-sub">{CAUSE_EFFECT_META.subtitle}</p>
                     <p className="ruc-question">{INTRO_CONTENT.question}</p>
-                    <Blocks blocks={INTRO_CONTENT.blocks} prefix="ruc" />
+                    <Blocks blocks={INTRO_CONTENT.blocks} />
                   </div>
 
                   <div>
@@ -424,7 +427,7 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
                 <h2 className="ruc-h2">{PRINCIPLE_CONTENT.title}</h2>
                 <blockquote className="ruc-quote">{PRINCIPLE_CONTENT.quote}</blockquote>
                 <div style={{ marginTop: 20 }}>
-                  <Blocks blocks={PRINCIPLE_CONTENT.blocks} prefix="ruc" />
+                  <Blocks blocks={PRINCIPLE_CONTENT.blocks} />
                 </div>
 
                 <div className="ruc-h3" style={{ marginTop: 24 }}>
@@ -1185,17 +1188,7 @@ export default function CauseEffectModuleExperience({ faculty, onComplete }) {
 
 /* ------------------------------------------------------------- COMPONENTS -- */
 
-function Blocks({ blocks, prefix }) {
-  return blocks.map((block, index) =>
-    block.kind === "lines" ? (
-      <div className={`${prefix}-lines`} key={index}>
-        {block.value.map((line) => <span key={line}>{line}</span>)}
-      </div>
-    ) : (
-      <p className={`${prefix}-p`} key={index}>{block.value}</p>
-    )
-  );
-}
+
 
 /* The chain is pointer sugar and hidden from assistive tech; NodeButtons below
    it is the keyboard-reachable control and the readout is the text equivalent.
@@ -1256,50 +1249,15 @@ function NodeButtons({ nodes, activeIndex, onSelect, label }) {
   );
 }
 
-function Drawer({ open, onToggle, label, body, rows }) {
-  return (
-    <>
-      <button type="button" className="ruc-drawer-toggle" onClick={onToggle} aria-expanded={open}>
-        {open ? "Hide" : "Show"} {label}
-      </button>
-      {open && (
-        <div className="ruc-drawer">
-          {rows
-            ? rows.map((row) => (
-                <p key={row.k}><strong style={{ color: "var(--bronze)" }}>{row.k}.</strong> {row.v}</p>
-              ))
-            : body.map((p) => <p key={p.slice(0, 24)}>{p}</p>)}
-        </div>
-      )}
-    </>
-  );
-}
 
-function ArtifactField({ label, question, value, onChange, highlight }) {
-  return (
-    <div className={`ruc-artifact-card${highlight ? " is-lever" : ""}`}>
-      <h4>{label}</h4>
-      <small>{question}</small>
-      <textarea
-        className="ruc-area"
-        style={{ minHeight: 70, background: "transparent", border: "none", padding: 0, color: "var(--ivory)" }}
-        value={value}
-        aria-label={label}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-}
+
+
 
 /* ---------------------------------------------------------------- HELPERS -- */
 
-function formatDate(value) {
-  return value ? new Date(value).toLocaleDateString() : "—";
-}
 
-function formatDateTime(value) {
-  return value ? new Date(value).toLocaleString() : "—";
-}
+
+
 
 /* Agency is assembled from the four buckets with their labels intact, so the
    distinction the learner drew survives into the artifact instead of collapsing
@@ -1443,14 +1401,4 @@ function buildArtifactPdf(doc, artifact, createdAt, updatedAt) {
   doc.text("Status: Living Artifact", margin, y);
 }
 
-function downloadFile(filename, content, mimeType) {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+

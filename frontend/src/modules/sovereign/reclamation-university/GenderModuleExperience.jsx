@@ -14,6 +14,9 @@ import {
 } from "../../../data/genderModuleData";
 import "./curriculumSpine.css";
 import "./genderModuleExperience.css";
+import { downloadFile, formatDate, formatDateTime, createArtifactKit } from "./reclamationArtifactKit";
+
+const { Blocks, Drawer, ArtifactField } = createArtifactKit("rug");
 
 const STORE_KEY = "ckp-hermetic-hall-module-7";
 
@@ -1121,17 +1124,7 @@ export default function GenderModuleExperience({ faculty, onComplete }) {
 
 /* ------------------------------------------------------------- COMPONENTS -- */
 
-function Blocks({ blocks }) {
-  return blocks.map((block, index) =>
-    block.kind === "lines" ? (
-      <div className="rug-lines" key={index}>
-        {block.value.map((line) => <span key={line}>{line}</span>)}
-      </div>
-    ) : (
-      <p className="rug-p" key={index}>{block.value}</p>
-    )
-  );
-}
+
 
 /* The module's mark: two currents entering a generative relationship and
    continuing as one. Deliberately not a literal male/female symbol. */
@@ -1188,48 +1181,15 @@ function CurrentsDiagram({ activeIndex, disturbance = 0, onSelect }) {
   );
 }
 
-function Drawer({ open, onToggle, label, rows }) {
-  return (
-    <>
-      <button type="button" className="rug-drawer-toggle" onClick={onToggle} aria-expanded={open}>
-        {open ? "Hide" : "Show"} {label}
-      </button>
-      {open && (
-        <div className="rug-drawer">
-          {rows.map((row) => (
-            <p key={row.k}><strong style={{ color: "var(--bronze)" }}>{row.k}.</strong> {row.v}</p>
-          ))}
-        </div>
-      )}
-    </>
-  );
-}
 
-function ArtifactField({ label, question, value, onChange }) {
-  return (
-    <div className="rug-artifact-card">
-      <h4>{label}</h4>
-      <small>{question}</small>
-      <textarea
-        className="rug-area"
-        style={{ minHeight: 70, background: "transparent", border: "none", padding: 0, color: "var(--ivory)" }}
-        value={value}
-        aria-label={label}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-}
+
+
 
 /* ---------------------------------------------------------------- HELPERS -- */
 
-function formatDate(value) {
-  return value ? new Date(value).toLocaleDateString() : "—";
-}
 
-function formatDateTime(value) {
-  return value ? new Date(value).toLocaleString() : "—";
-}
+
+
 
 /* The master's two-sentence frame, kept verbatim, with the learner's own
    sentences on their own lines beneath each slot. The Force Dialogue collects
@@ -1361,14 +1321,4 @@ function buildArtifactPdf(doc, artifact, createdAt, updatedAt) {
   doc.text("This artifact is living.", margin, y);
 }
 
-function downloadFile(filename, content, mimeType) {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+

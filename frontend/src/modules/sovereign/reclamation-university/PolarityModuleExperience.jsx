@@ -13,6 +13,9 @@ import {
 } from "../../../data/polarityModuleData";
 import "./curriculumSpine.css";
 import "./polarityModuleExperience.css";
+import { downloadFile, createArtifactKit } from "./reclamationArtifactKit";
+
+const { ArtifactField } = createArtifactKit("rup");
 
 const STORE_KEY = "ckp-hermetic-hall-module-4";
 
@@ -775,17 +778,7 @@ Status: Active Practice
 `;
 }
 
-function downloadFile(filename, content, mimeType) {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+
 
 function buildArtifactPdf(doc, artifact, patternStatement, createdAt, updatedAt) {
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -874,15 +867,4 @@ function buildArtifactPdf(doc, artifact, patternStatement, createdAt, updatedAt)
   doc.text(`Status: Active Practice`, margin, y);
 }
 
-function ArtifactField({ label, value, onChange }) {
-  return (
-    <div className="rup-artifact-card">
-      <h4>{label}</h4>
-      <textarea
-        className="rup-area" style={{ minHeight: 70, background: "transparent", border: "none", padding: 0, color: "var(--ivory)" }}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-}
+

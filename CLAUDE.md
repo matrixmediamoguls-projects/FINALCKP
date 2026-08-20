@@ -128,7 +128,13 @@ Canonical live paths are under `/acts` and `/experiencemode/...`, e.g.
 ### Key directories
 - `src/acts/` — per-act experience code (Act II, III, IV, Reclamation)
 - `src/modules/sovereign/`, `src/modules/ImmersiveProtocol/` — Sovereign Mode / immersive protocol
-- `src/modules/sovereign/reclamation-university/` — the RU module engine and per-principle experiences
+- `src/modules/sovereign/reclamation-university/` — the RU module engine and per-principle experiences.
+  Two shared pieces already exist — extend them rather than re-implementing per module:
+  `hermeticJourneyTabs.js` (canonical 11-tab classification/grouping) and
+  `reclamationArtifactKit.jsx` (`downloadFile`, `formatDate`/`formatDateTime`, and
+  `createArtifactKit(prefix)` → prefix-bound `Blocks` / `Drawer` / `ArtifactField`).
+  Per-module `buildArtifactPdf` / `buildArtifactMarkdown` / `buildPatternStatement` are
+  **deliberately not shared** — each lays out a different diagram and document structure.
 - `src/lib/supabase/` — one file per Supabase domain (tracks, journal/"vibesAndScribes", archetypes,
   elemental codex, "matrxAlchemizr" lyric tagging, sonic artifacts, reclamationUniversity)
 - `src/services/supabase/client.js` — the Supabase singleton; every data path goes through here
@@ -139,11 +145,11 @@ Canonical live paths are under `/acts` and `/experiencemode/...`, e.g.
 ### Large files — read ranges, never whole
 ```
 1830  modules/sovereign/reclamation-university/VibrationModuleExperience.jsx  ~25k tok
-1456  modules/sovereign/reclamation-university/CauseEffectModuleExperience.jsx ~17k
-1403  modules/sovereign/reclamation-university/RhythmModuleExperience.jsx     ~16k
+1405  modules/sovereign/reclamation-university/CauseEffectModuleExperience.jsx ~16k
 1399  data/visualResonanceManifest.js
-1374  modules/sovereign/reclamation-university/GenderModuleExperience.jsx     ~16k
- 888  modules/sovereign/reclamation-university/PolarityModuleExperience.jsx   ~11k
+1354  modules/sovereign/reclamation-university/RhythmModuleExperience.jsx     ~15k
+1325  modules/sovereign/reclamation-university/GenderModuleExperience.jsx     ~15k
+ 871  modules/sovereign/reclamation-university/PolarityModuleExperience.jsx   ~10k
  864  data/causeEffectModuleData.js       ← prose-heavy, never full-text grep
  813  components/layout/AppShell.jsx
  802  data/rhythmModuleData.js            ← prose-heavy
