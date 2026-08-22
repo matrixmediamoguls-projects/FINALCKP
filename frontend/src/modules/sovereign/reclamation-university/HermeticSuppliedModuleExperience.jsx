@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity, ArrowRight, BookOpen, Brain, Building2, Check, CircleDot,
   FileText, Flame, Globe2, Lightbulb, PenLine, RefreshCw, Sparkles,
   Target, Waves,
 } from "lucide-react";
+import { useAuth } from "../../../context/AuthContext";
+import { SovereignProvider, useSovereign } from "../../../sovereign/runtime";
 import suppliedCopy from "../../../data/hermeticSuppliedModules.txt?raw";
 import "./hermeticMaterialExperience.css";
 import "./hermeticReferenceExperience.css";
@@ -149,10 +151,57 @@ function CopyScreen({ section, moduleTitle, moduleSlug, activeTab, response, onR
   </div>;
 }
 
-export default function HermeticSuppliedModuleExperience({ moduleSlug, progress = 0, onComplete }) {
+/* Persistence (Phase 8 of the Sovereign OS migration, docs/ARCHITECTURE.md):
+   this module previously had none at all — the active tab and reflection
+   textarea were plain useState, wiped on every unmount/reload
+   (SOVEREIGN_STATE_MAP.md duplication finding #3). Routes both through the
+   Sovereign Runtime's local+remote sync instead, keyed per module slug so
+   Mentalism and Correspondence don't collide. */
+export default function HermeticSuppliedModuleExperience(props) {
+  const { user } = useAuth();
+  const namespace = user?.id || "anonymous";
+  return (
+    <SovereignProvider namespace={namespace} userId={user?.id}>
+      <HermeticSuppliedModuleExperienceInner {...props} />
+    </SovereignProvider>
+  );
+}
+
+function HermeticSuppliedModuleExperienceInner({ moduleSlug, progress = 0, onComplete }) {
   const moduleCopy = MODULE_COPY[moduleSlug];
+  const { reflection, session } = useSovereign();
+  const MODULE_ID = `hermetic-hall/${moduleSlug}`;
   const [activeTab, setActiveTab] = useState("PRINCIPLE");
   const [response, setResponse] = useState("");
+  const [hydrated, setHydrated] = useState(false);
+
+  const applyRecord = useCallback((d) => {
+    if (!d) return;
+    if (d.activeTab) setActiveTab(d.activeTab);
+    if (typeof d.response === "string") setResponse(d.response);
+  }, []);
+
+  const appliedSyncStatusRef = useRef(null);
+  useEffect(() => {
+    if (session.syncStatus === "syncing") return;
+    if (appliedSyncStatusRef.current === session.syncStatus) return;
+    appliedSyncStatusRef.current = session.syncStatus;
+    const record = reflection.entries[`${MODULE_ID}:record`]?.response ?? null;
+    applyRecord(record);
+    setHydrated(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session.syncStatus, reflection, applyRecord, MODULE_ID]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    const payload = { activeTab, response };
+    const t = setTimeout(() => {
+      reflection.recordReflection(MODULE_ID, "record", payload);
+    }, 800);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, response, hydrated, MODULE_ID]);
+
   const activeIndex = TABS.findIndex(([id]) => id === activeTab);
   const next = TABS[Math.min(activeIndex + 1, TABS.length - 1)];
   const displayedProgress = progress || (activeTab === "2026 LENS" ? 72 : 42);
