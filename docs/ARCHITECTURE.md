@@ -14,11 +14,11 @@ component described here.
 
 ## Migration status
 
-This repo has completed **Phase 1 (Repository Sanitization)** and **Phase 2
-(State Inventory)** of the Sovereign OS migration. Nothing described under
-"Target architecture" below has been built yet. The **current architecture**
-section reflects the real, active system as of this phase and is the one to
-trust for day-to-day development until later phases land.
+This repo has completed **Phase 1 (Repository Sanitization)**, **Phase 2
+(State Inventory)**, and a first pass of **Phase 3 (Sovereign Runtime)** of
+the Sovereign OS migration. The **current architecture** section above still
+reflects the real, active system that ships to users — the runtime below is
+new, standalone scaffolding that nothing in the app reads or writes yet.
 
 Phase 2 produced `docs/SOVEREIGN_STATE_MAP.md`, a full inventory of every
 existing state store (module progress, journal, declarations, audio state,
@@ -27,9 +27,31 @@ found significant duplication — most notably **seven independent,
 incompatible Reclamation-University progress-tracking systems** and **two
 independently-writable stores for a user's `current_act`/`completed_acts`**
 (Supabase Auth metadata vs. backend Postgres `users`), where the live UI
-only writes one of them. Read that doc before designing the Sovereign
-Runtime (Phase 3) — it exists specifically so Phase 3 isn't designed against
-assumption.
+only writes one of them.
+
+Phase 3 added `frontend/src/sovereign/runtime/` — a React Context +
+`useReducer` runtime (`SovereignProvider`, `sovereignReducer`,
+`sovereignActions`, `sovereignSelectors`, and the `useSovereign()` hook) with
+the state shape and action set the migration guide specifies: `identity`,
+`curriculum` (a registry of per-module `SovereignModuleState`), `module`
+(the active module, exposed with bound `advanceStep`/`completeStep`),
+`media`, `reflection`, `concepts`, `synthesis`, `artifact`, and `session`.
+State only ever changes through the explicit actions in
+`sovereignActions.js` (`startModule`, `advanceStep`, `completeStep`,
+`recordReflection`, `selectConcept`, `connectConcepts`, `executeProtocol`,
+`generateArtifact`, `sealArtifact`) — components never get a raw `dispatch`.
+`sovereignReducer.test.js` covers the reducer's invariants (dedup on
+repeated completions/concept selection, non-clobbering identity merges,
+`sealArtifact` refusing to fire before a draft exists, etc.).
+
+This runtime is intentionally **not wired into the app yet** — no existing
+component imports it, and it does not yet replace any of the 13 duplication
+findings in `SOVEREIGN_STATE_MAP.md`. Per the migration guide's sequencing
+rule (don't build a downstream layer on a faked upstream one), the next
+steps are Phase 4 (formalize the 11-step curriculum lifecycle and real
+step-completion criteria on top of `SovereignModuleState`) and Phase 5
+(local-first autosave via `hydrate()`), before anything in Reclamation
+University is migrated to actually consume this runtime.
 
 ## Current architecture (active today)
 

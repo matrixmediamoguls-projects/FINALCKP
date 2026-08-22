@@ -1,0 +1,124 @@
+import { describe, expect, it } from 'vitest';
+import { sovereignReducer } from './sovereignReducer';
+import { createInitialState } from './sovereignState';
+import {
+  startModule,
+  advanceStep,
+  completeStep,
+  recordReflection,
+  selectConcept,
+  connectConcepts,
+  executeProtocol,
+  generateArtifact,
+  sealArtifact,
+  setIdentity,
+  hydrate,
+} from './sovereignActions';
+
+describe('sovereignReducer', () => {
+  it('starts a module, creating it and marking it active', () => {
+    const state = sovereignReducer(createInitialState(), startModule('mentalism'));
+
+    expect(state.curriculum.activeModuleId).toBe('mentalism');
+    expect(state.curriculum.modules.mentalism.status).toBe('in_progress');
+    expect(state.curriculum.modules.mentalism.startedAt).not.toBeNull();
+  });
+
+  it('does not reset startedAt or demote a completed module when started again', () => {
+    let state = sovereignReducer(createInitialState(), startModule('mentalism'));
+    const firstStartedAt = state.curriculum.modules.mentalism.startedAt;
+    state = sovereignReducer(state, completeStep('mentalism', 'intro'));
+    state = { ...state, curriculum: { ...state.curriculum, modules: { ...state.curriculum.modules, mentalism: { ...state.curriculum.modules.mentalism, status: 'completed' } } } };
+
+    state = sovereignReducer(state, startModule('mentalism'));
+
+    expect(state.curriculum.modules.mentalism.startedAt).toBe(firstStartedAt);
+    expect(state.curriculum.modules.mentalism.status).toBe('completed');
+  });
+
+  it('advances the current step and counts interactions', () => {
+    let state = sovereignReducer(createInitialState(), startModule('mentalism'));
+    state = sovereignReducer(state, advanceStep('mentalism', 'principle'));
+
+    expect(state.curriculum.modules.mentalism.currentStep).toBe('principle');
+    expect(state.curriculum.modules.mentalism.interactionCount).toBe(1);
+  });
+
+  it('completes a step without duplicating it', () => {
+    let state = sovereignReducer(createInitialState(), completeStep('mentalism', 'intro'));
+    state = sovereignReducer(state, completeStep('mentalism', 'intro'));
+
+    expect(state.curriculum.modules.mentalism.completedSteps).toEqual(['intro']);
+  });
+
+  it('keys reflection entries by module + prompt so different modules never collide', () => {
+    let state = sovereignReducer(createInitialState(), recordReflection('mentalism', 'q1', 'answer A'));
+    state = sovereignReducer(state, recordReflection('correspondence', 'q1', 'answer B'));
+
+    expect(state.reflection.entries['mentalism:q1'].response).toBe('answer A');
+    expect(state.reflection.entries['correspondence:q1'].response).toBe('answer B');
+  });
+
+  it('selects a concept without duplicating it', () => {
+    let state = sovereignReducer(createInitialState(), selectConcept('shadow-work'));
+    state = sovereignReducer(state, selectConcept('shadow-work'));
+
+    expect(state.concepts.selected).toEqual(['shadow-work']);
+  });
+
+  it('records a concept connection', () => {
+    const state = sovereignReducer(createInitialState(), connectConcepts('a', 'b', 'CAUSES'));
+
+    expect(state.concepts.connections).toHaveLength(1);
+    expect(state.concepts.connections[0]).toMatchObject({
+      fromConceptId: 'a',
+      toConceptId: 'b',
+      relationship: 'CAUSES',
+    });
+  });
+
+  it('records a protocol execution', () => {
+    const state = sovereignReducer(createInitialState(), executeProtocol('vision-quest', { intensity: 3 }));
+
+    expect(state.synthesis.protocolExecutions).toHaveLength(1);
+    expect(state.synthesis.protocolExecutions[0].protocolId).toBe('vision-quest');
+  });
+
+  it('cannot seal an artifact before one has been generated', () => {
+    const state = sovereignReducer(createInitialState(), sealArtifact());
+
+    expect(state.artifact.status).toBe('empty');
+  });
+
+  it('generates then seals an artifact', () => {
+    let state = sovereignReducer(createInitialState(), generateArtifact({ title: 'My Artifact' }));
+    expect(state.artifact.status).toBe('draft');
+
+    state = sovereignReducer(state, sealArtifact());
+    expect(state.artifact.status).toBe('sealed');
+    expect(state.artifact.sealedAt).not.toBeNull();
+  });
+
+  it('merges identity fields without clobbering the rest', () => {
+    const state = sovereignReducer(createInitialState(), setIdentity({ userId: 'u1', level: 2 }));
+
+    expect(state.identity.userId).toBe('u1');
+    expect(state.identity.level).toBe(2);
+    expect(state.identity.currentAct).toBe(1);
+  });
+
+  it('hydrates by shallow-merging a persisted state tree', () => {
+    const persisted = { identity: { userId: 'u1', email: null, displayName: null, tier: null, level: 5, currentAct: 2, completedActs: [1] } };
+    const state = sovereignReducer(createInitialState(), hydrate(persisted));
+
+    expect(state.identity.userId).toBe('u1');
+    expect(state.identity.level).toBe(5);
+  });
+
+  it('returns the same state reference for an unknown action type', () => {
+    const initial = createInitialState();
+    const state = sovereignReducer(initial, { type: 'not/a/real/action', payload: {} });
+
+    expect(state).toBe(initial);
+  });
+});
