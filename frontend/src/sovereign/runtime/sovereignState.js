@@ -12,7 +12,8 @@
  * @typedef {Object} SovereignModuleState
  * @property {string} moduleId
  * @property {string|null} currentStep
- * @property {string[]} completedSteps
+ * @property {string[]} viewedSteps - steps navigated to; "viewed" is not the same as "complete", see sovereignSteps.js
+ * @property {string[]} completedSteps - explicit completion ledger, written by the completeStep() action
  * @property {string|null} startedAt
  * @property {string|null} lastActiveAt
  * @property {number} timeSpent
@@ -27,6 +28,7 @@ export function createModuleState(moduleId) {
   return {
     moduleId,
     currentStep: null,
+    viewedSteps: [],
     completedSteps: [],
     startedAt: null,
     lastActiveAt: null,

@@ -46,11 +46,31 @@ repeated completions/concept selection, non-clobbering identity merges,
 
 This runtime is intentionally **not wired into the app yet** — no existing
 component imports it, and it does not yet replace any of the 13 duplication
-findings in `SOVEREIGN_STATE_MAP.md`. Per the migration guide's sequencing
-rule (don't build a downstream layer on a faked upstream one), the next
-steps are Phase 4 (formalize the 11-step curriculum lifecycle and real
-step-completion criteria on top of `SovereignModuleState`) and Phase 5
-(local-first autosave via `hydrate()`), before anything in Reclamation
+findings in `SOVEREIGN_STATE_MAP.md`.
+
+Phase 4 added `sovereignSteps.js`: the canonical 11-step curriculum
+lifecycle (`01-intro` … `11-summary`) with **real, per-step completion
+criteria** instead of navigation standing in for completion — the migration
+guide's core rule ("Next" ≠ "complete"). `evaluateModuleSteps(state,
+moduleId)` computes each step's status (`locked`/`active`/`complete`)
+straight from runtime state: simple steps complete once viewed
+(`module.viewedSteps`), `REFLECTION` requires an actual committed reflection
+entry for that module, `PROTOCOL` requires a protocol execution tagged with
+that `moduleId`, `ARTIFACT` requires the artifact to be sealed (not just
+drafted), and `SUMMARY` requires every prior step to genuinely be done.
+Steps lock in order — you can be on the first incomplete step, but you
+can't skip ahead of it. Two things are explicitly flagged as placeholders in
+code comments pending later phases: `KEY_CONCEPTS`'s criterion (any concept
+selected anywhere, since concept selection isn't module-scoped until Phase
+10's Concept Graph) and `ARTIFACT`'s criterion (the runtime has one global
+artifact slot until Phase 14 defines how a per-module artifact review
+relates to the single cross-journey Living Artifact). `sovereignSteps.test.js`
+(9 tests) exercises this against the real reducer, including the exact
+"advancing past a step doesn't complete it" case the guide calls out.
+
+Per the migration guide's sequencing rule (don't build a downstream layer on
+a faked upstream one), the next steps are Phase 5 (local-first autosave via
+`hydrate()`) and Phase 6 (event bus), before anything in Reclamation
 University is migrated to actually consume this runtime.
 
 ## Current architecture (active today)

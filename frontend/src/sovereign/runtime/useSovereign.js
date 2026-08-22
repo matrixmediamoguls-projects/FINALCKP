@@ -11,6 +11,7 @@ import {
   selectSynthesis,
   selectArtifact,
 } from './sovereignSelectors';
+import { evaluateModuleSteps } from './sovereignSteps';
 
 /**
  * The one way app code reads or mutates Sovereign state. Each domain bundles
@@ -33,6 +34,7 @@ export function useSovereign() {
       curriculum: { ...selectCurriculum(state), startModule: actions.startModule },
       module: activeModule && {
         ...activeModule,
+        steps: evaluateModuleSteps(state, activeModule.moduleId),
         advanceStep: (stepId) => actions.advanceStep(activeModule.moduleId, stepId),
         completeStep: (stepId, criteria) =>
           actions.completeStep(activeModule.moduleId, stepId, criteria),
@@ -44,7 +46,11 @@ export function useSovereign() {
         selectConcept: actions.selectConcept,
         connectConcepts: actions.connectConcepts,
       },
-      synthesis: { ...selectSynthesis(state), executeProtocol: actions.executeProtocol },
+      synthesis: {
+        ...selectSynthesis(state),
+        executeProtocol: (protocolId, payload, moduleId) =>
+          actions.executeProtocol(protocolId, payload, moduleId ?? activeModule?.moduleId),
+      },
       artifact: {
         ...selectArtifact(state),
         generateArtifact: actions.generateArtifact,

@@ -51,8 +51,8 @@ export const connectConcepts = (fromConceptId, toConceptId, relationship) =>
     relationship,
   });
 
-export const executeProtocol = (protocolId, payload) =>
-  withMeta(SOVEREIGN_ACTION_TYPES.EXECUTE_PROTOCOL, { protocolId, payload });
+export const executeProtocol = (protocolId, payload, moduleId) =>
+  withMeta(SOVEREIGN_ACTION_TYPES.EXECUTE_PROTOCOL, { protocolId, payload, moduleId });
 
 export const generateArtifact = (draft) =>
   withMeta(SOVEREIGN_ACTION_TYPES.GENERATE_ARTIFACT, { draft });

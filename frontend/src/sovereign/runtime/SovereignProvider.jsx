@@ -26,8 +26,8 @@ export function SovereignProvider({ children, initialState }) {
       selectConcept: (conceptId) => dispatch(actions.selectConcept(conceptId)),
       connectConcepts: (fromConceptId, toConceptId, relationship) =>
         dispatch(actions.connectConcepts(fromConceptId, toConceptId, relationship)),
-      executeProtocol: (protocolId, payload) =>
-        dispatch(actions.executeProtocol(protocolId, payload)),
+      executeProtocol: (protocolId, payload, moduleId) =>
+        dispatch(actions.executeProtocol(protocolId, payload, moduleId)),
       generateArtifact: (draft) => dispatch(actions.generateArtifact(draft)),
       sealArtifact: () => dispatch(actions.sealArtifact()),
     }),

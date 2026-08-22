@@ -46,6 +46,9 @@ export function sovereignReducer(state, action) {
       return updateModule(state, moduleId, (existing) => ({
         ...existing,
         currentStep: stepId,
+        viewedSteps: existing.viewedSteps.includes(stepId)
+          ? existing.viewedSteps
+          : [...existing.viewedSteps, stepId],
         interactionCount: existing.interactionCount + 1,
         lastActiveAt: action.meta.timestamp,
       }));
@@ -103,8 +106,8 @@ export function sovereignReducer(state, action) {
     }
 
     case SOVEREIGN_ACTION_TYPES.EXECUTE_PROTOCOL: {
-      const { protocolId, payload } = action.payload;
-      const execution = { protocolId, payload, executedAt: action.meta.timestamp };
+      const { protocolId, payload, moduleId } = action.payload;
+      const execution = { protocolId, payload, moduleId: moduleId ?? null, executedAt: action.meta.timestamp };
       return {
         ...state,
         synthesis: {

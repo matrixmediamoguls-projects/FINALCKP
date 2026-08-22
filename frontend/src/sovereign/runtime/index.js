@@ -5,3 +5,11 @@ export { sovereignReducer } from './sovereignReducer';
 export { SOVEREIGN_ACTION_TYPES } from './sovereignActions';
 export * as sovereignActions from './sovereignActions';
 export * as sovereignSelectors from './sovereignSelectors';
+export {
+  SOVEREIGN_STEPS,
+  SOVEREIGN_STEP_IDS,
+  SOVEREIGN_STEP_STATUSES,
+  evaluateModuleSteps,
+  isStepComplete,
+  isModuleComplete,
+} from './sovereignSteps';
