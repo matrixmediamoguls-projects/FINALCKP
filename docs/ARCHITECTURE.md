@@ -68,10 +68,26 @@ relates to the single cross-journey Living Artifact). `sovereignSteps.test.js`
 (9 tests) exercises this against the real reducer, including the exact
 "advancing past a step doesn't complete it" case the guide calls out.
 
+Phase 5 added `sovereignLocalPersistence.js` and wired it into
+`SovereignProvider`: pass a `namespace` prop and the runtime restores state
+from `localStorage` on mount (via `useReducer`'s lazy initializer, so
+there's no restore-flash render) and debounce-saves it back (default 500ms)
+on every subsequent change, plus flushes immediately on `beforeunload` and
+on unmount so the last debounce window is never silently dropped. Storage is
+dependency-injected — it falls back to `globalThis.localStorage`, then an
+in-memory stub — so the whole thing is unit-tested (11 tests across
+save/load round-tripping, version-mismatch and corrupted-JSON handling,
+fail-soft behavior when storage throws, and debounce/flush/cancel timing
+with fake timers) without needing a DOM or new test dependencies.
+`namespace` is intentionally not defaulted to anything shared — it needs to
+be scoped to the signed-in user once identity is wired up (Phase 7), or two
+accounts on the same browser would see each other's local state; omitting
+it disables local persistence entirely (e.g. for tests).
+
 Per the migration guide's sequencing rule (don't build a downstream layer on
-a faked upstream one), the next steps are Phase 5 (local-first autosave via
-`hydrate()`) and Phase 6 (event bus), before anything in Reclamation
-University is migrated to actually consume this runtime.
+a faked upstream one), the next step is Phase 6 (event bus), before
+anything in Reclamation University is migrated to actually consume this
+runtime.
 
 ## Current architecture (active today)
 

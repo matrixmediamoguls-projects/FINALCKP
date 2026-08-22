@@ -13,3 +13,10 @@ export {
   isStepComplete,
   isModuleComplete,
 } from './sovereignSteps';
+export {
+  storageKeyFor,
+  savePersistedState,
+  loadPersistedState,
+  clearPersistedState,
+  createAutosave,
+} from './sovereignLocalPersistence';
