@@ -84,8 +84,31 @@ be scoped to the signed-in user once identity is wired up (Phase 7), or two
 accounts on the same browser would see each other's local state; omitting
 it disables local persistence entirely (e.g. for tests).
 
+Phase 6 added `frontend/src/sovereign/events/`: a framework-free event bus
+(`SovereignEventBus.js` — subscribe/subscribeAll/emit, bounded history, a
+throwing listener can't break the runtime or block other listeners) plus
+`mapActionToEvents.js`, which derives events from every dispatched action
+rather than requiring each feature to hand-roll its own emission — the
+structural fix for duplication finding #13 (two disconnected analytics
+systems). `SovereignProvider` now routes every action through this mapper
+and emits the resulting events automatically; `useSovereign().session`
+exposes `subscribe`, `subscribeAll`, and `recentEvents` for consumers.
+
+`STEP_COMPLETED` is the one event that isn't a simple 1:1 action mapping:
+because a step's completion criteria (Phase 4) can depend on state written
+by several different action types, `mapActionToEvents` diffs
+`evaluateModuleSteps()` before/after *every* action and emits
+`STEP_COMPLETED` for whichever steps just crossed into `complete` — direct
+payoff of building Phase 4's real completion criteria before this phase's
+event bus, per the migration guide's sequencing rule. Several event types
+from the guide's taxonomy (`MEDIA_*`, `LYRIC_ANCHOR_SELECTED`,
+`CONCEPT_OPENED`, `REFLECTION_STARTED`/`REFLECTION_UPDATED`,
+`PROTOCOL_STARTED`) are defined in `eventTypes.js` but not yet emitted,
+each commented with which later phase (9, 10, or 12) needs to exist first —
+they depend on runtime pieces that don't have real actions yet.
+
 Per the migration guide's sequencing rule (don't build a downstream layer on
-a faked upstream one), the next step is Phase 6 (event bus), before
+a faked upstream one), the next step is Phase 7 (connect Supabase), before
 anything in Reclamation University is migrated to actually consume this
 runtime.
 

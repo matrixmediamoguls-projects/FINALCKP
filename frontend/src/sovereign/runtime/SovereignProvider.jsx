@@ -3,6 +3,8 @@ import { createInitialState } from './sovereignState';
 import { sovereignReducer } from './sovereignReducer';
 import * as actions from './sovereignActions';
 import { loadPersistedState, createAutosave } from './sovereignLocalPersistence';
+import { createSovereignEventBus } from '../events/SovereignEventBus';
+import { mapActionToEvents } from '../events/mapActionToEvents';
 
 export const SovereignContext = createContext(null);
 
@@ -42,6 +44,13 @@ function initSovereignState({ initialState, namespace, storage }) {
  * accounts on the same shared browser see each other's local state.
  * Autosave is opt-in per instance (omit `namespace` to run with no local
  * persistence, e.g. in tests).
+ *
+ * Event bus (Phase 6): every dispatched action is translated into zero or
+ * more Sovereign events (mapActionToEvents.js) and emitted on the runtime's
+ * event bus, exposed to consumers via useSovereign().session.subscribe /
+ * .subscribeAll / .recentEvents. Pass a custom `eventBus` (e.g. one built
+ * with createSovereignEventBus()) to share a bus across tests or providers;
+ * otherwise one is created per SovereignProvider instance.
  */
 export function SovereignProvider({
   children,
@@ -49,6 +58,7 @@ export function SovereignProvider({
   namespace,
   autosaveDelayMs = 500,
   storage,
+  eventBus,
 }) {
   const [state, dispatch] = useReducer(
     sovereignReducer,
@@ -60,6 +70,11 @@ export function SovereignProvider({
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  const eventBusRef = useRef(null);
+  if (!eventBusRef.current) {
+    eventBusRef.current = eventBus ?? createSovereignEventBus();
+  }
 
   const autosaveRef = useRef(null);
   const isFirstRender = useRef(true);
@@ -92,28 +107,45 @@ export function SovereignProvider({
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [namespace]);
 
-  const boundActions = useMemo(
-    () => ({
-      hydrate: (nextState) => dispatch(actions.hydrate(nextState)),
-      setIdentity: (identity) => dispatch(actions.setIdentity(identity)),
-      startModule: (moduleId) => dispatch(actions.startModule(moduleId)),
-      advanceStep: (moduleId, stepId) => dispatch(actions.advanceStep(moduleId, stepId)),
-      completeStep: (moduleId, stepId, criteria) =>
-        dispatch(actions.completeStep(moduleId, stepId, criteria)),
-      recordReflection: (moduleId, promptId, response) =>
-        dispatch(actions.recordReflection(moduleId, promptId, response)),
-      selectConcept: (conceptId) => dispatch(actions.selectConcept(conceptId)),
-      connectConcepts: (fromConceptId, toConceptId, relationship) =>
-        dispatch(actions.connectConcepts(fromConceptId, toConceptId, relationship)),
-      executeProtocol: (protocolId, payload, moduleId) =>
-        dispatch(actions.executeProtocol(protocolId, payload, moduleId)),
-      generateArtifact: (draft) => dispatch(actions.generateArtifact(draft)),
-      sealArtifact: () => dispatch(actions.sealArtifact()),
-    }),
-    [dispatch],
-  );
+  const boundActions = useMemo(() => {
+    // Routes every action through the event bus: compute the next state
+    // ourselves (the reducer is pure, so this matches what React will
+    // commit), update stateRef synchronously so back-to-back dispatches in
+    // the same tick see a correct prevState, then dispatch for the real
+    // re-render and emit whatever events this action produced.
+    function dispatchAction(action) {
+      const prevState = stateRef.current;
+      const nextState = sovereignReducer(prevState, action);
+      stateRef.current = nextState;
+      dispatch(action);
+      mapActionToEvents(action, { prevState, nextState }).forEach((event) => {
+        eventBusRef.current.emit(event.type, event.payload);
+      });
+    }
 
-  const value = useMemo(() => ({ state, actions: boundActions }), [state, boundActions]);
+    return {
+      hydrate: (nextState) => dispatchAction(actions.hydrate(nextState)),
+      setIdentity: (identity) => dispatchAction(actions.setIdentity(identity)),
+      startModule: (moduleId) => dispatchAction(actions.startModule(moduleId)),
+      advanceStep: (moduleId, stepId) => dispatchAction(actions.advanceStep(moduleId, stepId)),
+      completeStep: (moduleId, stepId, criteria) =>
+        dispatchAction(actions.completeStep(moduleId, stepId, criteria)),
+      recordReflection: (moduleId, promptId, response) =>
+        dispatchAction(actions.recordReflection(moduleId, promptId, response)),
+      selectConcept: (conceptId) => dispatchAction(actions.selectConcept(conceptId)),
+      connectConcepts: (fromConceptId, toConceptId, relationship) =>
+        dispatchAction(actions.connectConcepts(fromConceptId, toConceptId, relationship)),
+      executeProtocol: (protocolId, payload, moduleId) =>
+        dispatchAction(actions.executeProtocol(protocolId, payload, moduleId)),
+      generateArtifact: (draft) => dispatchAction(actions.generateArtifact(draft)),
+      sealArtifact: () => dispatchAction(actions.sealArtifact()),
+    };
+  }, [dispatch]);
+
+  const value = useMemo(
+    () => ({ state, actions: boundActions, eventBus: eventBusRef.current }),
+    [state, boundActions],
+  );
 
   return <SovereignContext.Provider value={value}>{children}</SovereignContext.Provider>;
 }

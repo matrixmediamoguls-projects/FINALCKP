@@ -24,7 +24,7 @@ export function useSovereign() {
   if (!ctx) {
     throw new Error('useSovereign must be used within a SovereignProvider');
   }
-  const { state, actions } = ctx;
+  const { state, actions, eventBus } = ctx;
 
   return useMemo(() => {
     const activeModule = selectActiveModule(state);
@@ -56,7 +56,12 @@ export function useSovereign() {
         generateArtifact: actions.generateArtifact,
         sealArtifact: actions.sealArtifact,
       },
-      session: selectSession(state),
+      session: {
+        ...selectSession(state),
+        subscribe: eventBus.subscribe,
+        subscribeAll: eventBus.subscribeAll,
+        recentEvents: eventBus.getHistory(20),
+      },
     };
-  }, [state, actions]);
+  }, [state, actions, eventBus]);
 }
