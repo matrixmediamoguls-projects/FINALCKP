@@ -107,10 +107,61 @@ from the guide's taxonomy (`MEDIA_*`, `LYRIC_ANCHOR_SELECTED`,
 each commented with which later phase (9, 10, or 12) needs to exist first —
 they depend on runtime pieces that don't have real actions yet.
 
-Per the migration guide's sequencing rule (don't build a downstream layer on
-a faked upstream one), the next step is Phase 7 (connect Supabase), before
-anything in Reclamation University is migrated to actually consume this
-runtime.
+Phase 7 connected Supabase. Two parts:
+
+**Schema** — `supabase/migrations/20260822051703_create_sovereign_runtime_schema.sql`
+adds the guide's seven tables (`sovereign_sessions`, `sovereign_module_state`,
+`sovereign_reflections`, `sovereign_events`, `sovereign_concepts`,
+`sovereign_connections`, `sovereign_artifacts`), mirroring the exact
+conventions the existing `rec_uni_*` schema already established (RLS scoped
+to `auth.uid() = user_id`, `gen_random_uuid()` PKs, an `updated_at` trigger).
+Naming note documented in the migration itself: "sovereign_" here is this
+migration's new runtime and is unrelated to the pre-existing "Sovereign
+Mode" UI under `frontend/src/modules/sovereign/` and the generic
+`getSovereignSupabase()` helper in `frontend/src/lib/supabase/`, which
+predate this migration and mean something different. `synthesis.protocolExecutions`
+deliberately has no table yet — Phase 6's event only carries
+`{protocolId, moduleId}`, not the full protocol payload, so persisting it
+properly belongs with Phase 13's Synthesis Engine instead of being done
+lossily here now.
+
+**Sync layer** — `frontend/src/sovereign/persistence/`:
+- `sovereignRemoteMapping.js`: pure, round-trip-tested field mapping
+  between runtime state and DB rows (snake_case <-> camelCase, plus
+  reconstructing the `moduleId:promptId` reflection-entry keys and the
+  per-module dict shape from flat row lists).
+- `sovereignReconciliation.js`: the actual merge policy for local vs.
+  remote state — whole-module-record adoption from whichever side was more
+  recently active (never a field-by-field blend, which could produce an
+  incoherent record), later-`updatedAt`-wins per reflection entry,
+  set-union for concepts/connections (additive-only today, so nothing to
+  conflict), artifact status-priority so a stale replica can never
+  downgrade a sealed artifact, and local-wins-ties for identity/media so a
+  stale remote snapshot can't hijack what's actively happening in the
+  current session. This is the most rigorously tested module in the whole
+  runtime (21 tests) since it's exactly Phase 19's "Test E: persistence
+  failure" scenario made real.
+- `sovereignSupabaseSync.js`: thin I/O (`fetchRemoteState`,
+  `pushRemoteState`, and a debounced `createRemoteAutosave` mirroring Phase
+  5's local autosave shape) following this codebase's existing
+  `{ data, error }` convention from `lib/supabase/reclamationUniversity.js`,
+  with the Supabase client dependency-injected so it's tested against a
+  hand-built fake client rather than a live connection.
+
+**Wired into `SovereignProvider`** via an opt-in `userId` prop (should match
+whatever `namespace` is set to, so local and remote agree on whose data this
+is): on mount, fetches remote state, reconciles it with local, and
+dispatches the result through `hydrate()`; debounce-pushes state back on
+every subsequent change (2s default). `session.syncStatus` tracks
+`local -> syncing -> synced`, or `error` on a failed fetch — Supabase stays
+additive persistence, never a hard dependency; local state keeps working
+either way. 95/95 tests pass across Phases 3-7.
+
+Per the migration guide's sequencing rule, the next step is Phase 8
+(migrate Reclamation University onto this runtime) — the first phase that
+touches any existing, live component, and the one that actually resolves
+the duplication findings in `SOVEREIGN_STATE_MAP.md` rather than just
+building the replacement alongside them.
 
 ## Current architecture (active today)
 
