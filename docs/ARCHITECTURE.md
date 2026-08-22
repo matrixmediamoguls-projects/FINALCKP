@@ -14,11 +14,22 @@ component described here.
 
 ## Migration status
 
-This repo is in **Phase 1 (Repository Sanitization)** of the Sovereign OS
-migration. Nothing described under "Target architecture" below has been
-built yet. The **current architecture** section reflects the real, active
-system as of this phase and is the one to trust for day-to-day development
-until later phases land.
+This repo has completed **Phase 1 (Repository Sanitization)** and **Phase 2
+(State Inventory)** of the Sovereign OS migration. Nothing described under
+"Target architecture" below has been built yet. The **current architecture**
+section reflects the real, active system as of this phase and is the one to
+trust for day-to-day development until later phases land.
+
+Phase 2 produced `docs/SOVEREIGN_STATE_MAP.md`, a full inventory of every
+existing state store (module progress, journal, declarations, audio state,
+auth, curriculum registry, etc.) and its owner/persistence/consumers. It
+found significant duplication — most notably **seven independent,
+incompatible Reclamation-University progress-tracking systems** and **two
+independently-writable stores for a user's `current_act`/`completed_acts`**
+(Supabase Auth metadata vs. backend Postgres `users`), where the live UI
+only writes one of them. Read that doc before designing the Sovereign
+Runtime (Phase 3) — it exists specifically so Phase 3 isn't designed against
+assumption.
 
 ## Current architecture (active today)
 
