@@ -157,11 +157,61 @@ every subsequent change (2s default). `session.syncStatus` tracks
 additive persistence, never a hard dependency; local state keeps working
 either way. 95/95 tests pass across Phases 3-7.
 
-Per the migration guide's sequencing rule, the next step is Phase 8
-(migrate Reclamation University onto this runtime) — the first phase that
-touches any existing, live component, and the one that actually resolves
-the duplication findings in `SOVEREIGN_STATE_MAP.md` rather than just
-building the replacement alongside them.
+## Phase 8 (in progress): migrating Reclamation University onto the runtime
+
+Phase 8 is the first phase that touches existing, live components rather
+than adding standalone files, and a full field-by-field migration of all
+seven Hermetic Hall module engines (`SOVEREIGN_STATE_MAP.md` §1) in one pass
+isn't a safe or realistic scope — each has its own bespoke interaction
+model built around ~1,000+ lines of content/animation code. Phase 8 is
+being done incrementally, one module at a time, starting with the
+persistence layer only (not a structural rewrite of each module's
+internals) — matching the guide's own framing: *"the Sovereign Runtime
+becomes the operating layer... existing modules don't need to be rewritten
+immediately."*
+
+**Done:** `VibrationModuleExperience.jsx` (Hermetic Hall Module III) — this
+was `SOVEREIGN_STATE_MAP.md`'s duplication finding #2, a real data-loss bug:
+its `saveUserProgress()` call passed `{ progress, state, completed }`, but
+that function's actual signature doesn't destructure those keys, so every
+save silently wiped remote progress back to empty defaults. The component
+is now split into a thin outer wrapper (`SovereignProvider` scoped to
+`namespace={userId || 'anonymous'}` and `userId`) around the existing inner
+implementation, which is otherwise untouched — only its two persistence
+effects changed, from a raw `localStorage` read/write plus the broken
+`saveUserProgress()` call, to `useSovereign().reflection.recordReflection()`
+storing this module's whole local record as one reflection entry keyed
+`hermetic-hall/vibration:record`. This is a persistence-layer swap, not a
+structural migration onto the runtime's typed `module`/`concepts`/
+`artifact` domains — the component's own `reflect`/`plate`/`steps`/`audits`
+state still lives in plain `useState`; mapping those onto the runtime's
+structured domains properly is future work for whichever phase decides how
+Phase 4's step machine should generalize past the "Shadow/Light Code"
+pedagogy (see the Phase 4 section above).
+
+Verification: `npx esbuild` bundle-checked the edited file's imports/syntax;
+started the Vite dev server and loaded both `/` and the (auth-gated) route
+in headless Chromium — no console/page errors attributable to the change
+(the only errors present, blocked font/analytics/video CDN requests, are
+pre-existing sandbox network restrictions present on the untouched homepage
+too), and the protected route correctly redirected to `/login` rather than
+crashing. **Not verified**: the actual signed-in Module III experience —
+that needs real Supabase credentials this environment doesn't have, and
+creating a test account against what's configured as the real production
+Supabase project wasn't judged appropriate just to check this. The existing
+test suite (131 tests across `src/sovereign/`, `matrx-alchemizr/`, and
+`reclamation-university/`) passes except 5 pre-existing failures in
+`hermeticJourneyTabs.test.js`/`hermeticLearningExperience.test.js`,
+confirmed present on the base commit before this change (unrelated files,
+not touched here).
+
+**Remaining for Phase 8**: the other six module engines
+(`ReclamationModuleEngine.jsx`, `HermeticCurriculumModule.jsx`,
+`HermeticSuppliedModuleExperience.jsx`, `PolarityModuleExperience.jsx`,
+`RhythmModuleExperience.jsx`, `CauseEffectModuleExperience.jsx`,
+`GenderModuleExperience.jsx`) each have their own persistence pattern and
+bugs (see `SOVEREIGN_STATE_MAP.md` §1) and need the same kind of
+individually-scoped, individually-verified pass — not a bulk find/replace.
 
 ## Current architecture (active today)
 
